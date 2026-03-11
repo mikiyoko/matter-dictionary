@@ -278,8 +278,8 @@ var DEVICE_TYPES = [
   { id:"heat-pump", deviceTypeId:"0x0309", name:"Heat Pump", nameJa:"ヒートポンプ", category:"hvac", icon:"♨️",
     description:"ヒートポンプ式の給湯・暖房システム。エネルギー管理クラスターと連携した省エネ制御に対応",
     req:["identify","thermostat"], opt:["device-energy-management"],
-    tags:["ヒートポンプ","給湯","暖房","省エネ","HVAC"],
-    notes:"電力料金の安い時間帯に集中して稼働させる省エネ制御が可能。"
+    tags:["ヒートポンプ","給湯","暖房","省エネ","HVAC","エネルギー管理","エコキュート","ヒートポンプ給湯機","深夜電力","太陽光"],
+    notes:"サーモスタットクラスターが必須。Device Energy Management（任意）と連携することで、電力料金の安い時間帯や太陽光余剰電力を使った省エネ沸き上げ制御が可能。エコキュート等のヒートポンプ給湯機が代表的な製品。"
   },
 
   // ===== 🍳 家電 =====
@@ -377,12 +377,7 @@ var DEVICE_TYPES = [
     tags:["蓄電池","バッテリー","太陽光","エネルギー管理","停電対策"],
     notes:null
   },
-  { id:"heat-pump-energy", deviceTypeId:"0x0309", name:"Heat Pump", nameJa:"ヒートポンプ（エネルギー管理）", category:"energy", icon:"♨️",
-    description:"エネルギー管理視点でのヒートポンプデバイス。スマートエネルギー制御に対応",
-    req:["identify"], opt:["device-energy-management"],
-    tags:["ヒートポンプ","エネルギー","省エネ","給湯"],
-    notes:null
-  },
+
   { id:"electrical-sensor", deviceTypeId:"0x0510", name:"Electrical Sensor", nameJa:"電力・エネルギー計測センサー", category:"energy", icon:"⚡",
     description:"電力・電流・電圧・電力量を計測するセンサー。家全体の電力消費を可視化",
     req:["identify"], opt:[],
