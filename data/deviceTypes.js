@@ -1,42 +1,49 @@
 // =====================================================
-// deviceTypes.js — Matter 1.5 デバイスタイプデータ
+// deviceTypes.js — Matter 1.5 デバイスタイプデータ（完全版）
 // 更新方法：新しいデバイスタイプをこの配列に追加するだけ
-// 最終更新：Matter 1.5
+// 最終更新：Matter 1.5（全91件）
 // =====================================================
 
 var DEVICE_TYPES = [
-  // ===== 照明 =====
+
+  // ===== 💡 照明 =====
   { id:"on-off-light", deviceTypeId:"0x0100", name:"On/Off Light", nameJa:"オン/オフ照明", category:"lighting", icon:"💡",
     description:"ON/OFFのみ対応するシンプルな照明。明るさ調整・色変更は不可",
     req:["identify","groups","on-off"], opt:["scenes-management","level-control"],
     tags:["照明","シンプル","スイッチ"],
-    notes:"最もシンプルな照明タイプ。スマートスイッチで既存照明をオン/オフするだけなら十分。Level Controlを搭載しても実際の調光はできません。"
+    notes:"最もシンプルな照明タイプ。スマートスイッチで既存照明をオン/オフするだけなら十分。"
   },
   { id:"dimmable-light", deviceTypeId:"0x0101", name:"Dimmable Light", nameJa:"調光対応照明", category:"lighting", icon:"🔆",
     description:"明るさを段階的に調整できる照明。オン/オフ照明のスーパーセット",
     supersetOf:["on-off-light"], req:["identify","groups","on-off","level-control"], opt:["scenes-management","ballast-configuration"],
     tags:["照明","調光","明るさ","ディマー"],
-    notes:"Level Controlクラスターが必須。MinLevel=1、MaxLevel=254が固定値。調光カーブは対数曲線推奨（人の目の特性に合わせるため）。"
+    notes:"Level Controlクラスターが必須。調光カーブは対数曲線推奨（人の目の特性に合わせるため）。"
   },
   { id:"color-temperature-light", deviceTypeId:"0x010C", name:"Color Temperature Light", nameJa:"色温度調整照明", category:"lighting", icon:"🌅",
     description:"電球色〜昼光色の色温度を変えられる照明。サーカディアン照明の実現に最適",
     supersetOf:["dimmable-light"], req:["identify","groups","on-off","level-control","color-control"], opt:["scenes-management","ballast-configuration"],
     tags:["照明","色温度","サーカディアン","健康","睡眠","2700K","6500K","電球色","昼光色"],
-    notes:"Color Controlクラスターの色温度モード（CT）が必須。2700K（電球色・就寝前）から6500K（昼光色・朝の目覚め）を自動制御することで体内時計に合わせた照明環境が作れます。Apple Homeの「適応照明」機能はこの仕様に基づいています。"
+    notes:"2700K（電球色・就寝前）から6500K（昼光色・朝の目覚め）を自動制御することで体内時計に合わせた照明環境が作れます。Apple Homeの「適応照明」機能はこの仕様に基づいています。"
   },
   { id:"extended-color-light", deviceTypeId:"0x010D", name:"Extended Color Light", nameJa:"フルカラー照明", category:"lighting", icon:"🌈",
     description:"RGB・HSVなどフルカラー対応の照明。色温度調整も含む最上位照明タイプ",
     supersetOf:["color-temperature-light"], req:["identify","groups","on-off","level-control","color-control"], opt:["scenes-management","ballast-configuration"],
     tags:["照明","フルカラー","RGB","HSV","色温度","サーカディアン","アンビエント"],
-    notes:"Color ControlクラスターのHueSaturationモードも必須。色温度調整照明の全機能に加え、任意の色（赤・緑・青など）も表現可能。ゲーミング・パーティー演出・シアタールームなどに活用。"
+    notes:"色温度調整照明の全機能に加え、任意の色（赤・緑・青など）も表現可能。ゲーミング・パーティー演出・シアタールームなどに活用。"
   },
 
-  // ===== スマートプラグ =====
+  // ===== 🔌 スマートプラグ・電源 =====
   { id:"on-off-plugin", deviceTypeId:"0x010A", name:"On/Off Plug-in Unit", nameJa:"スマートプラグ（差し込み型）", category:"plug", icon:"🔌",
     description:"コンセントに差し込むタイプのスマートプラグ。接続した家電のON/OFFをリモート制御",
     req:["identify","groups","on-off"], opt:["scenes-management","level-control"],
     tags:["プラグ","コンセント","スマートプラグ","電源管理"],
     notes:"Meross・TP-Link Tapo等のスマートプラグに対応するタイプ。差し込むだけで既存の家電をスマート化できます。"
+  },
+  { id:"dimmable-plugin", deviceTypeId:"0x010B", name:"Dimmable Plug-In Unit", nameJa:"調光対応スマートプラグ", category:"plug", icon:"🔅",
+    description:"調光機能付きのスマートプラグ。差し込んだランプや照明器具の明るさを調節できる",
+    supersetOf:["on-off-plugin"], req:["identify","groups","on-off","level-control"], opt:["scenes-management"],
+    tags:["プラグ","調光","スマートプラグ"],
+    notes:null
   },
   { id:"mounted-on-off", deviceTypeId:"0x010F", name:"Mounted On/Off Control", nameJa:"壁付けスマートスイッチ", category:"plug", icon:"🔲",
     description:"壁に固定設置するタイプのスマートスイッチ（Matter 1.4〜）。既存の壁スイッチを置き換える",
@@ -44,14 +51,32 @@ var DEVICE_TYPES = [
     tags:["壁スイッチ","固定設置","スマートスイッチ"],
     notes:"Matter 1.4以前の壁付けスイッチはOn/Off Plug-in Unitとして登録されていた。v1.4以降はこのタイプが推奨。工事が必要になる場合があります。"
   },
+  { id:"mounted-dimmable", deviceTypeId:"0x0110", name:"Mounted Dimmable Load Control", nameJa:"壁付け調光スイッチ", category:"plug", icon:"🎚",
+    description:"壁に固定設置する調光機能付きスイッチ。壁付けスマートスイッチのスーパーセット",
+    supersetOf:["mounted-on-off"], req:["identify","on-off","level-control"], opt:["scenes-management"],
+    tags:["壁スイッチ","調光","固定設置"],
+    notes:null
+  },
+  { id:"pump", deviceTypeId:"0x0303", name:"Pump", nameJa:"ポンプ", category:"plug", icon:"🌊",
+    description:"液体・気体を循環させるポンプデバイス。給水・循環・散水システムに使用",
+    req:["identify","on-off"], opt:["level-control"],
+    tags:["ポンプ","給水","循環","散水"],
+    notes:null
+  },
   { id:"water-valve", deviceTypeId:"0x0042", name:"Water Valve", nameJa:"止水バルブ", category:"plug", icon:"🚰",
     description:"水の流れをリモートでON/OFFできるスマートバルブ。水漏れ検知との連携で自動止水が可能",
     req:["identify","on-off"], opt:["boolean-state"],
     tags:["水","バルブ","漏水","止水","散水"],
     notes:"水漏れ検知センサーと組み合わせることで、漏水を検知したら自動的に水を止めるシステムが作れます。"
   },
+  { id:"irrigation-system", deviceTypeId:"0x0040", name:"Irrigation System", nameJa:"自動散水システム", category:"plug", icon:"💦",
+    description:"庭・農地の自動散水を管理するデバイス。タイマー・センサー連動で効率的な水やりを実現",
+    req:["identify","on-off"], opt:[],
+    tags:["散水","庭","農業","水やり","自動"],
+    notes:"雨センサーと組み合わせて「雨の日は散水しない」設定も可能。"
+  },
 
-  // ===== スイッチ =====
+  // ===== 🎛 スイッチ・コントローラー =====
   { id:"on-off-switch", deviceTypeId:"0x0103", name:"On/Off Light Switch", nameJa:"照明スイッチ（オン/オフ）", category:"switch", icon:"🎚",
     description:"照明のON/OFFを操作するスイッチ。「制御する側」のデバイスタイプ",
     req:["identify","on-off"], opt:["groups"],
@@ -64,37 +89,55 @@ var DEVICE_TYPES = [
     tags:["スイッチ","調光","コントローラー"],
     notes:null
   },
+  { id:"color-dimmer-switch", deviceTypeId:"0x0105", name:"Color Dimmer Switch", nameJa:"カラー調光スイッチ", category:"switch", icon:"🎨",
+    description:"照明の明るさ・色・色温度を操作できる多機能スイッチ。調光スイッチのスーパーセット",
+    supersetOf:["dimmer-switch"], req:["identify","on-off","level-control","color-control"], opt:["groups"],
+    tags:["スイッチ","調光","カラー","色温度","コントローラー"],
+    notes:null
+  },
   { id:"generic-switch", deviceTypeId:"0x000F", name:"Generic Switch", nameJa:"汎用スイッチ（スマートボタン）", category:"switch", icon:"⚪",
     description:"何をコントロールするかを縛らない汎用ボタン/スイッチ。シーン切り替えボタンに広く使われる",
     req:["identify"], opt:["groups"],
     tags:["スイッチ","ボタン","シーン","汎用","スマートボタン"],
-    notes:"ラッチ型（トグル）とモーメンタリ型（押している間だけ）の両方に対応。Aqara Button・IKEA Tradfri Remoteなどがこのタイプ。オートメーションのトリガーとして使われることが多い。"
+    notes:"ラッチ型（トグル）とモーメンタリ型（押している間だけ）の両方に対応。Aqara Button・IKEA Tradfri Remoteなどがこのタイプ。"
+  },
+  { id:"control-bridge", deviceTypeId:"0x0840", name:"Control Bridge", nameJa:"コントロールブリッジ", category:"switch", icon:"🔀",
+    description:"複数の機器を一元管理するコントロールブリッジ。シーンや自動化の起点となるデバイス",
+    req:["identify"], opt:["groups"],
+    tags:["ブリッジ","コントローラー","一元管理"],
+    notes:null
+  },
+  { id:"pump-controller", deviceTypeId:"0x0304", name:"Pump Controller", nameJa:"ポンプコントローラー", category:"switch", icon:"🕹",
+    description:"ポンプデバイスを制御する専用コントローラー",
+    req:["identify"], opt:[],
+    tags:["ポンプ","コントローラー","給水"],
+    notes:null
   },
 
-  // ===== センサー =====
+  // ===== 📡 センサー =====
   { id:"contact-sensor", deviceTypeId:"0x0015", name:"Contact Sensor", nameJa:"開閉センサー", category:"sensor", icon:"🔎",
     description:"ドア・窓の開閉を検知するセンサー。帰宅通知・防犯・換気状態管理に活用",
     req:["identify","boolean-state"], opt:[],
     tags:["センサー","開閉","ドア","窓","帰宅通知","防犯"],
-    notes:"Boolean StateクラスターでTrue（開）/False（閉）を報告。バッテリー駆動でICD（間欠接続デバイス）として動作することが多い。"
+    notes:"Boolean StateクラスターでTrue（開）/False（閉）を報告。"
   },
   { id:"occupancy-sensor", deviceTypeId:"0x0107", name:"Occupancy Sensor", nameJa:"人感センサー（在室検知）", category:"sensor", icon:"🚶",
     description:"人・物体の存在を検知するセンサー。照明の自動ON/OFFや空調の在室制御に活用",
     req:["identify","occupancy-sensing"], opt:[],
     tags:["センサー","人感","在室","自動照明","省エネ"],
-    notes:"Occupancy Sensingクラスターで在室（1）/不在（0）を報告。PIR（赤外線）方式が一般的。照明の消し忘れ防止や不在時の空調を止める自動化に活用。"
+    notes:"PIR（赤外線）方式が一般的。照明の消し忘れ防止や不在時の空調を止める自動化に活用。"
   },
   { id:"temperature-sensor", deviceTypeId:"0x0302", name:"Temperature Sensor", nameJa:"温度センサー", category:"sensor", icon:"🌡",
     description:"室内・屋外の温度を計測するセンサー。熱中症アラートやエアコン自動制御に活用",
     req:["identify","temperature-measurement"], opt:[],
     tags:["センサー","温度","熱中症","エアコン"],
-    notes:"温度計測クラスターで°C×100の整数として報告（25℃=2500）。サーモスタットと組み合わせて精密な空調制御が可能。"
+    notes:"サーモスタットと組み合わせて精密な空調制御が可能。"
   },
   { id:"humidity-sensor", deviceTypeId:"0x0307", name:"Humidity Sensor", nameJa:"湿度センサー", category:"sensor", icon:"💧",
     description:"室内の相対湿度を計測するセンサー。カビ・乾燥対策や加湿器の自動制御に活用",
     req:["identify","humidity-measurement"], opt:[],
     tags:["センサー","湿度","カビ","乾燥","加湿器"],
-    notes:"湿度センサーだけでなく温度センサーを内蔵する製品が多い（例：Aqara TH Sensor）。加湿器のON/OFFトリガーとして使える。"
+    notes:"湿度センサーだけでなく温度センサーを内蔵する製品が多い（例：Aqara TH Sensor）。"
   },
   { id:"light-sensor", deviceTypeId:"0x0106", name:"Light Sensor", nameJa:"照度センサー", category:"sensor", icon:"☀️",
     description:"周囲の照度（明るさ）を計測するセンサー。日没検知・自動カーテン・照明の自動調整に活用",
@@ -102,23 +145,47 @@ var DEVICE_TYPES = [
     tags:["センサー","照度","明るさ","日没","カーテン","自動照明"],
     notes:"外が暗くなったらカーテンを閉める、夕方になったら玄関灯を点けるなどの自動化トリガーとして活用。"
   },
+  { id:"pressure-sensor", deviceTypeId:"0x0305", name:"Pressure Sensor", nameJa:"気圧センサー", category:"sensor", icon:"🌀",
+    description:"気圧や液体圧力を計測するセンサー。天気予測・高度計測・流体管理に活用",
+    req:["identify","pressure-measurement"], opt:[],
+    tags:["センサー","気圧","圧力","天気"],
+    notes:null
+  },
+  { id:"flow-sensor", deviceTypeId:"0x0306", name:"Flow Sensor", nameJa:"流量センサー", category:"sensor", icon:"🌊",
+    description:"液体・気体の流量を計測するセンサー。水道使用量の計測や漏水早期発見に活用",
+    req:["identify","flow-measurement"], opt:[],
+    tags:["センサー","流量","水道","節水","漏水"],
+    notes:null
+  },
+  { id:"on-off-sensor", deviceTypeId:"0x0850", name:"On/Off Sensor", nameJa:"オン/オフ検知センサー", category:"sensor", icon:"🔘",
+    description:"機器のON/OFF状態を検知する汎用センサー。既存家電の稼働状態を把握するのに活用",
+    req:["identify","on-off"], opt:[],
+    tags:["センサー","オンオフ","稼働状態","検知"],
+    notes:null
+  },
   { id:"smoke-co-alarm-dev", deviceTypeId:"0x0076", name:"Smoke CO Alarm", nameJa:"煙・CO警報器", category:"sensor", icon:"🚨",
     description:"煙と一酸化炭素（CO）を検知する警報器。バッテリー低下・耐用年数通知も含む",
     req:["identify","smoke-co-alarm"], opt:["temperature-measurement","humidity-measurement"],
     tags:["センサー","煙","CO","一酸化炭素","火災","安全"],
-    notes:"セルフテスト機能・バッテリー警告・耐用年数終了通知がスマートフォンに届く。Matter 1.5では煙検知→窓を自動で開けるなどの連携オートメーションも可能。"
+    notes:"セルフテスト機能・バッテリー警告・耐用年数終了通知がスマートフォンに届く。"
   },
   { id:"air-quality-sensor", deviceTypeId:"0x002C", name:"Air Quality Sensor", nameJa:"空気質センサー", category:"sensor", icon:"🌿",
     description:"PM2.5・VOC・CO₂などを含む室内空気質を総合評価するセンサー。空気清浄機の自動制御に活用",
     req:["identify","air-quality"], opt:["temperature-measurement","humidity-measurement"],
     tags:["センサー","空気質","PM2.5","CO2","VOC","空気清浄機","換気"],
-    notes:"Apple HomeやGoogle Homeで空気質データを確認できる。空気が悪くなったら空気清浄機を自動でオンにするオートメーションが人気。"
+    notes:"空気が悪くなったら空気清浄機を自動でオンにするオートメーションが人気。"
+  },
+  { id:"water-freeze-detector", deviceTypeId:"0x0041", name:"Water Freeze Detector", nameJa:"凍結検知センサー", category:"sensor", icon:"🧊",
+    description:"配管や場所の凍結を検知するセンサー。寒冷地の水道管凍結防止に活用",
+    req:["identify","boolean-state"], opt:[],
+    tags:["センサー","凍結","配管","寒冷地","水道"],
+    notes:null
   },
   { id:"water-leak-detector", deviceTypeId:"0x0043", name:"Water Leak Detector", nameJa:"水漏れ検知センサー", category:"sensor", icon:"🌊",
     description:"キッチン・洗面所などの水漏れを検知するセンサー。止水バルブとの連携で自動止水も可能",
     req:["identify","boolean-state"], opt:[],
     tags:["センサー","水漏れ","漏水","キッチン","洗面所"],
-    notes:"Water Valveと組み合わせることで漏水検知→自動止水が実現。マンション・共働き家庭での安心感に。"
+    notes:"Water Valveと組み合わせることで漏水検知→自動止水が実現。"
   },
   { id:"rain-sensor", deviceTypeId:"0x0044", name:"Rain Sensor", nameJa:"雨センサー", category:"sensor", icon:"🌧",
     description:"雨の降り始めを検知するセンサー。散水停止・窓の自動クローズ・洗濯物取り込み通知に活用",
@@ -126,39 +193,75 @@ var DEVICE_TYPES = [
     tags:["センサー","雨","散水","窓","洗濯"],
     notes:"散水システムと組み合わせて「雨が降ったら自動的に散水を止める」用途が典型的な活用法。"
   },
+  { id:"soil-sensor", deviceTypeId:"0x0045", name:"Soil Sensor", nameJa:"土壌センサー", category:"sensor", icon:"🌱",
+    description:"土壌の水分・栄養状態を計測するセンサー。スマートガーデニング・農業IoTに活用",
+    req:["identify","boolean-state"], opt:[],
+    tags:["センサー","土壌","水分","ガーデニング","農業"],
+    notes:null
+  },
 
-  // ===== 玄関・扉・窓 =====
+  // ===== 🚪 玄関・扉・窓 =====
   { id:"door-lock-dev", deviceTypeId:"0x000A", name:"Door Lock", nameJa:"スマートロック", category:"entry", icon:"🔐",
     description:"PIN・指紋・顔認証・AliroデジタルキーなどマルチモーダルなスマートロックDeviceType",
     req:["identify","door-lock"], opt:[],
     tags:["ロック","施錠","解錠","PIN","指紋","Aliro","デジタルキー","玄関"],
-    notes:"iPhoneウォレットでドアを開けるAliro規格にも対応（製品次第）。誰がいつ解錠したかのログもApple Homeのアクティビティで確認可能。"
+    notes:"iPhoneウォレットでドアを開けるAliro規格にも対応（製品次第）。"
+  },
+  { id:"door-lock-controller", deviceTypeId:"0x000B", name:"Door Lock Controller", nameJa:"スマートロックコントローラー", category:"entry", icon:"🗝",
+    description:"スマートロックを制御する側のデバイス。スマートフォンアプリやリモートパネルなど",
+    req:["identify"], opt:[],
+    tags:["ロック","コントローラー","リモート","玄関"],
+    notes:null
   },
   { id:"window-covering-dev", deviceTypeId:"0x0202", name:"Window Covering", nameJa:"電動ブラインド・カーテン", category:"entry", icon:"🪟",
     description:"電動ブラインド・ロールスクリーン・電動カーテンを制御。開閉率・チルト角度に対応",
     req:["identify","window-covering"], opt:[],
     tags:["ブラインド","カーテン","電動","遮光","日射","採光"],
-    notes:"日の出・日の入りのタイミングでブラインドを自動開閉させるオートメーションが人気。照度センサーと組み合わせると細かい制御も可能。"
+    notes:"日の出・日の入りのタイミングでブラインドを自動開閉させるオートメーションが人気。"
+  },
+  { id:"window-covering-controller", deviceTypeId:"0x0203", name:"Window Covering Controller", nameJa:"ブラインドコントローラー", category:"entry", icon:"🕹",
+    description:"電動ブラインド・カーテンを操作する側のコントローラーデバイス",
+    req:["identify"], opt:[],
+    tags:["ブラインド","カーテン","コントローラー","リモート"],
+    notes:null
   },
   { id:"closure", deviceTypeId:"0x0230", name:"Closure", nameJa:"クロージャー（新世代開閉デバイス）", category:"entry", icon:"🚪",
     description:"v1.5で大幅拡張。窓・ドア・キャビネット・ゲート・ガレージドアなど複雑な開閉機構に対応",
     req:["identify","closure-control"], opt:[],
     tags:["クロージャー","窓","ドア","ガレージ","ゲート","v1.5新規"],
-    notes:"Matter 1.5で新しく追加されたデバイスタイプ。複数のClosurePanelを子デバイスとして持てるため、観音開きのドアやガレージシャッターなど複雑な構造にも対応。"
+    notes:"Matter 1.5で新しく追加されたデバイスタイプ。ガレージシャッターなど複雑な構造にも対応。"
+  },
+  { id:"closure-panel", deviceTypeId:"0x0231", name:"Closure Panel", nameJa:"クロージャーパネル（可動部分）", category:"entry", icon:"🪞",
+    description:"Closureデバイスの可動部分を表すサブデバイス。観音開きの扉の片側などに対応",
+    req:["identify"], opt:[],
+    tags:["クロージャー","パネル","可動部","v1.5新規"],
+    notes:null
+  },
+  { id:"closure-controller", deviceTypeId:"0x023E", name:"Closure Controller", nameJa:"クロージャーコントローラー", category:"entry", icon:"🎮",
+    description:"クロージャーデバイスを操作する側のコントローラー",
+    req:["identify"], opt:[],
+    tags:["クロージャー","コントローラー","v1.5新規"],
+    notes:null
   },
 
-  // ===== HVAC =====
+  // ===== 🌡 HVAC（空調） =====
   { id:"thermostat-dev", deviceTypeId:"0x0301", name:"Thermostat", nameJa:"サーモスタット（温度調節器）", category:"hvac", icon:"🌡",
     description:"空調の司令塔。温度・湿度・在室状態を読み取り、エアコン・床暖房・換気を統合制御",
     req:["identify","thermostat"], opt:["temperature-measurement","occupancy-sensing","fan-control"],
     tags:["サーモスタット","エアコン","温度制御","在室連動","省エネ","HVAC"],
-    notes:"温度センサー・在室センサーをClientとして読み取りながら、エアコンや床暖房を最適に制御。在室時・不在時で設定温度を変えることで省エネに。"
+    notes:"在室時・不在時で設定温度を変えることで省エネに。"
+  },
+  { id:"thermostat-controller", deviceTypeId:"0x030A", name:"Thermostat Controller", nameJa:"サーモスタットコントローラー", category:"hvac", icon:"🕹",
+    description:"サーモスタットを操作する側のコントローラーデバイス",
+    req:["identify"], opt:[],
+    tags:["サーモスタット","コントローラー","空調","HVAC"],
+    notes:null
   },
   { id:"fan-dev", deviceTypeId:"0x002B", name:"Fan", nameJa:"ファン（扇風機・シーリングファン）", category:"hvac", icon:"🌀",
     description:"扇風機・シーリングファン・換気扇の速度・方向・首振りを制御するデバイスタイプ",
     req:["identify","fan-control"], opt:[],
     tags:["ファン","扇風機","シーリングファン","換気","首振り","HVAC"],
-    notes:"Fan ControlクラスターでMultiSpeed・Auto・Wind（自然風）・Rocking（首振り）などをサポート。"
+    notes:null
   },
   { id:"air-purifier", deviceTypeId:"0x002D", name:"Air Purifier", nameJa:"空気清浄機", category:"hvac", icon:"🌬",
     description:"ファン制御と空気質センサーを組み合わせた空気清浄機デバイスタイプ",
@@ -166,41 +269,107 @@ var DEVICE_TYPES = [
     tags:["空気清浄機","HVAC","PM2.5","空気質","自動運転"],
     notes:"空気質センサーと連携して、空気が悪化したら自動で強運転にするオートメーションが実現できます。"
   },
+  { id:"room-air-conditioner", deviceTypeId:"0x0072", name:"Room Air Conditioner", nameJa:"ルームエアコン", category:"hvac", icon:"❄️",
+    description:"Matter対応のルームエアコン。温度設定・モード切替・風量制御をスマートホームから操作可能",
+    req:["identify","on-off","thermostat"], opt:["fan-control","temperature-measurement"],
+    tags:["エアコン","冷房","暖房","HVAC","空調","温度制御"],
+    notes:"在室センサーと組み合わせて不在時に自動オフが可能。"
+  },
+  { id:"heat-pump", deviceTypeId:"0x0309", name:"Heat Pump", nameJa:"ヒートポンプ", category:"hvac", icon:"♨️",
+    description:"ヒートポンプ式の給湯・暖房システム。エネルギー管理クラスターと連携した省エネ制御に対応",
+    req:["identify","thermostat"], opt:["device-energy-management"],
+    tags:["ヒートポンプ","給湯","暖房","省エネ","HVAC"],
+    notes:"電力料金の安い時間帯に集中して稼働させる省エネ制御が可能。"
+  },
 
-  // ===== 家電 =====
+  // ===== 🍳 家電 =====
   { id:"refrigerator", deviceTypeId:"0x0070", name:"Refrigerator", nameJa:"冷蔵庫", category:"appliances", icon:"🧊",
     description:"コンポーズド構成で冷蔵室・冷凍室を個別管理できる冷蔵庫デバイスタイプ",
     req:["identify"], opt:["operational-state"],
     tags:["家電","冷蔵庫","冷凍庫","温度管理"],
-    notes:"冷蔵庫→子エンドポイント：冷蔵室・冷凍室・製氷室という階層構造で定義。日本でのMatter対応冷蔵庫はまだ普及段階（2026年現在）。"
+    notes:"冷蔵室・冷凍室・製氷室を子エンドポイントとして持つ階層構造で定義。"
+  },
+  { id:"temperature-controlled-cabinet", deviceTypeId:"0x0071", name:"Temperature Controlled Cabinet", nameJa:"温度管理庫", category:"appliances", icon:"🗄",
+    description:"ワインセラー・野菜室・薬品保管庫など温度管理が必要な収納庫のデバイスタイプ",
+    req:["identify","temperature-measurement"], opt:["operational-state"],
+    tags:["家電","温度管理","ワインセラー","保管庫"],
+    notes:null
   },
   { id:"laundry-washer", deviceTypeId:"0x0073", name:"Laundry Washer", nameJa:"洗濯機", category:"appliances", icon:"🫧",
-    description:"洗濯完了通知・モード管理に対応した洗濯機デバイスタイプ。安全機能のDeadFront対応が必須",
+    description:"洗濯完了通知・モード管理に対応した洗濯機デバイスタイプ",
     req:["identify","on-off","laundry-washer-mode","operational-state"], opt:[],
     tags:["家電","洗濯機","洗濯完了通知","モード管理"],
-    notes:"On/OffクラスターのDeadFrontBehavior（運転中はパネルを無効化）が必須仕様。洗濯完了時にOperationCompletionイベントが発生し、スマートフォンへの通知が可能になります。"
+    notes:"洗濯完了時にOperationCompletionイベントが発生し、スマートフォンへの通知が可能になります。"
+  },
+  { id:"dishwasher", deviceTypeId:"0x0075", name:"Dishwasher", nameJa:"食洗機（食器洗い乾燥機）", category:"appliances", icon:"🍽",
+    description:"Matter対応の食器洗い乾燥機。洗浄完了通知・モード管理・アラーム機能に対応",
+    req:["identify","on-off","operational-state"], opt:[],
+    tags:["家電","食洗機","食器洗い","洗浄完了通知"],
+    notes:"深夜の安い電力時間帯に合わせた稼働スケジュールも設定可能。"
+  },
+  { id:"laundry-dryer", deviceTypeId:"0x007C", name:"Laundry Dryer", nameJa:"衣類乾燥機", category:"appliances", icon:"🌀",
+    description:"衣類乾燥機のデバイスタイプ。乾燥完了通知・モード管理に対応",
+    req:["identify","on-off","operational-state"], opt:[],
+    tags:["家電","乾燥機","衣類","乾燥完了通知"],
+    notes:null
+  },
+  { id:"cook-surface", deviceTypeId:"0x0077", name:"Cook Surface", nameJa:"IH・コンロ面（個別バーナー）", category:"appliances", icon:"🔥",
+    description:"IHや電気コンロの個別バーナー面を制御するデバイスタイプ。温度・電力レベルを管理",
+    req:["identify","on-off","temperature-control"], opt:[],
+    tags:["家電","IH","コンロ","調理","電磁調理器"],
+    notes:"クックトップ（Cooktop）の子デバイスとして構成されることが多い。"
+  },
+  { id:"cooktop", deviceTypeId:"0x0078", name:"Cooktop", nameJa:"クックトップ（調理台全体）", category:"appliances", icon:"🍳",
+    description:"複数のバーナーを持つ調理台全体のデバイスタイプ。Cook Surfaceの親デバイス",
+    req:["identify","on-off"], opt:["operational-state"],
+    tags:["家電","クックトップ","IH","コンロ","調理台"],
+    notes:"複数のCook Surface（バーナー面）を子エンドポイントとして持つ構成。"
+  },
+  { id:"microwave-oven", deviceTypeId:"0x0079", name:"Microwave Oven", nameJa:"電子レンジ", category:"appliances", icon:"📡",
+    description:"Matter対応の電子レンジ。調理時間・出力設定・モード管理をスマートホームから制御",
+    req:["identify","on-off","microwave-oven-control"], opt:["operational-state"],
+    tags:["家電","電子レンジ","調理","出力設定"],
+    notes:"Microwave Oven Controlクラスターで調理時間・出力（W）を設定して調理を開始できます。"
+  },
+  { id:"extractor-hood", deviceTypeId:"0x007A", name:"Extractor Hood", nameJa:"レンジフード（換気扇）", category:"appliances", icon:"💨",
+    description:"キッチンの換気扇・レンジフードのデバイスタイプ。風量・照明をコントロール",
+    req:["identify","fan-control"], opt:["on-off","level-control"],
+    tags:["家電","レンジフード","換気扇","キッチン","換気"],
+    notes:"コンロの使用を検知して自動でレンジフードを動かすオートメーションが便利。"
+  },
+  { id:"oven", deviceTypeId:"0x007B", name:"Oven", nameJa:"オーブン", category:"appliances", icon:"🫕",
+    description:"Matter対応のオーブン。庫内温度管理・モード設定・動作状態の監視に対応",
+    req:["identify","on-off"], opt:["operational-state","temperature-measurement"],
+    tags:["家電","オーブン","調理","焼き菓子","調理家電"],
+    notes:"予熱完了通知をスマートフォンで受け取れます。"
   },
 
-  // ===== ロボット =====
+  // ===== 🤖 ロボット =====
   { id:"robotic-vacuum", deviceTypeId:"0x0074", name:"Robotic Vacuum Cleaner", nameJa:"ロボット掃除機", category:"robot", icon:"🤖",
     description:"Matter対応ロボット掃除機。複数エコシステムから統一して制御・状態監視が可能に",
     req:["identify","rvc-operational-state"], opt:["operational-state"],
     tags:["ロボット掃除機","自動掃除","帰宅前掃除"],
-    notes:"RVC Operational Stateクラスターで掃除機特有の状態を管理。「外出中に掃除して帰宅前にドックに戻る」オートメーションが作れます。"
+    notes:"「外出中に掃除して帰宅前にドックに戻る」オートメーションが作れます。"
   },
 
-  // ===== エネルギー =====
+  // ===== ⚡ エネルギー管理 =====
   { id:"evse", deviceTypeId:"0x050C", name:"EVSE", nameJa:"EV充電器", category:"energy", icon:"🔋",
     description:"電気自動車（EV）の充電器デバイスタイプ。太陽光余剰電力でのスマートチャージに対応",
     req:["identify","energy-evse"], opt:["device-energy-management"],
     tags:["EV","電気自動車","充電器","太陽光","スマートチャージ","省エネ"],
-    notes:"Device Energy Managementとの連携で「太陽光発電の余剰電力でEVを充電する」スマートチャージが実現。"
+    notes:"「太陽光発電の余剰電力でEVを充電する」スマートチャージが実現。"
+  },
+  { id:"water-heater", deviceTypeId:"0x050F", name:"Water Heater", nameJa:"給湯器・温水ヒーター", category:"energy", icon:"🚿",
+    description:"給湯器・電気温水器のデバイスタイプ。エネルギー管理と連携した省エネ沸き上げ制御に対応",
+    req:["identify","on-off"], opt:["device-energy-management","temperature-measurement"],
+    tags:["給湯器","温水","エネルギー","省エネ","深夜電力"],
+    notes:"深夜電力の安い時間帯に沸き上げるスマートスケジュールや、太陽光余剰電力での昼間沸き上げ制御が可能。"
   },
   { id:"solar-power", deviceTypeId:"0x0017", name:"Solar Power", nameJa:"太陽光発電", category:"energy", icon:"☀️",
-    description:"家庭の太陽光発電システムをMatter上で管理するデバイスタイプ。発電量・売電量の計測に対応",
+    description:"家庭の太陽光発電システムをMatter上で管理するデバイスタイプ",
     req:["identify"], opt:["device-energy-management"],
     tags:["太陽光","発電","再生可能エネルギー","売電","省エネ"],
-    notes:"電力計測と組み合わせて発電量・消費量を計測。Device Energy Managementと連携することで発電量に応じて家電の動作タイミングを最適化できます。"
+    notes:"発電量に応じて家電の動作タイミングを最適化できます。"
   },
   { id:"battery-storage", deviceTypeId:"0x0018", name:"Battery Storage", nameJa:"蓄電池", category:"energy", icon:"🪫",
     description:"家庭用蓄電池のデバイスタイプ。太陽光・EVと組み合わせたエネルギーマネジメントに対応",
@@ -208,13 +377,49 @@ var DEVICE_TYPES = [
     tags:["蓄電池","バッテリー","太陽光","エネルギー管理","停電対策"],
     notes:null
   },
+  { id:"heat-pump-energy", deviceTypeId:"0x0309", name:"Heat Pump", nameJa:"ヒートポンプ（エネルギー管理）", category:"energy", icon:"♨️",
+    description:"エネルギー管理視点でのヒートポンプデバイス。スマートエネルギー制御に対応",
+    req:["identify"], opt:["device-energy-management"],
+    tags:["ヒートポンプ","エネルギー","省エネ","給湯"],
+    notes:null
+  },
+  { id:"electrical-sensor", deviceTypeId:"0x0510", name:"Electrical Sensor", nameJa:"電力・エネルギー計測センサー", category:"energy", icon:"⚡",
+    description:"電力・電流・電圧・電力量を計測するセンサー。家全体の電力消費を可視化",
+    req:["identify"], opt:[],
+    tags:["電力計測","電流","電圧","エネルギー","省エネ","見える化"],
+    notes:"分電盤に設置して家全体の電力消費を把握したり、特定回路の消費を個別に計測できます。"
+  },
+  { id:"electrical-meter", deviceTypeId:"0x0514", name:"Electrical Meter", nameJa:"電力計", category:"energy", icon:"🔌",
+    description:"電力使用量を計測するスマートメーター向けデバイスタイプ",
+    req:["identify"], opt:[],
+    tags:["電力計","スマートメーター","電力量","計測"],
+    notes:null
+  },
+  { id:"electrical-utility-meter", deviceTypeId:"0x0511", name:"Electrical Utility Meter", nameJa:"電力会社メーター", category:"energy", icon:"🏭",
+    description:"電力会社側のスマートメーター。家庭の消費電力・売電量を計測・報告",
+    req:["identify"], opt:[],
+    tags:["スマートメーター","電力会社","売電","買電"],
+    notes:null
+  },
+  { id:"meter-reference-point", deviceTypeId:"0x0512", name:"Meter Reference Point", nameJa:"計量基準点", category:"energy", icon:"📊",
+    description:"電力計測の基準点を表すデバイスタイプ。分電盤の特定回路などを基準として定義",
+    req:["identify"], opt:[],
+    tags:["計量","基準点","分電盤","電力管理"],
+    notes:null
+  },
+  { id:"electrical-energy-tariff", deviceTypeId:"0x0513", name:"Electrical Energy Tariff", nameJa:"電力料金タリフ", category:"energy", icon:"💴",
+    description:"時間帯別電力料金情報を提供するデバイスタイプ。スマートチャージの料金最適化に活用",
+    req:["identify"], opt:[],
+    tags:["電力料金","タリフ","深夜電力","時間帯","コスト最適化"],
+    notes:"EV充電器や給湯器と連携して「料金が安い時間帯だけ稼働する」制御の基盤となります。"
+  },
 
-  // ===== カメラ =====
+  // ===== 📷 カメラ・セキュリティ =====
   { id:"camera", deviceTypeId:"0x0142", name:"Camera", nameJa:"スマートカメラ", category:"camera", icon:"📷",
     description:"WebRTCによるリアルタイム映像配信に対応した基本のスマートカメラ。v1.5で正式追加",
     req:["identify","camera-av-stream","webrtc-transport"], opt:["occupancy-sensing"],
     tags:["カメラ","監視","セキュリティ","WebRTC","リアルタイム映像","v1.5新規"],
-    notes:"Matter 1.5でカメラが正式対応。TLS証明書とNTP時刻同期が必須要件。WebRTCによりリアルタイム映像をMatter経由で視聴可能に。"
+    notes:"Matter 1.5でカメラが正式対応。TLS証明書とNTP時刻同期が必須要件。"
   },
   { id:"video-doorbell", deviceTypeId:"0x0143", name:"Video Doorbell", nameJa:"ビデオドアベル", category:"camera", icon:"🔔",
     description:"カメラ付きのスマートドアベル（インターホン）。Cameraのスーパーセット",
@@ -223,18 +428,66 @@ var DEVICE_TYPES = [
     notes:"来客がベルを押すとスマートフォンに通知が届き、映像を確認しながら会話できます。"
   },
   { id:"floodlight-camera", deviceTypeId:"0x0144", name:"Floodlight Camera", nameJa:"フラッドライト付きカメラ", category:"camera", icon:"🔦",
-    description:"強力な照明を内蔵したセキュリティカメラ。Cameraのスーパーセット。人感検知で自動点灯も対応",
+    description:"強力な照明を内蔵したセキュリティカメラ。Cameraのスーパーセット",
     supersetOf:["camera"], req:["identify","camera-av-stream","webrtc-transport","on-off"], opt:["occupancy-sensing","level-control"],
     tags:["カメラ","フラッドライト","セキュリティ","屋外","人感照明","v1.5新規"],
     notes:null
   },
+  { id:"snapshot-camera", deviceTypeId:"0x0145", name:"Snapshot Camera", nameJa:"スナップショットカメラ", category:"camera", icon:"📸",
+    description:"静止画を撮影・提供するカメラ。動体検知時の証拠写真などに活用",
+    req:["identify","camera-av-stream"], opt:["occupancy-sensing"],
+    tags:["カメラ","スナップショット","静止画","セキュリティ","v1.5新規"],
+    notes:null
+  },
+  { id:"camera-controller", deviceTypeId:"0x0147", name:"Camera Controller", nameJa:"カメラコントローラー", category:"camera", icon:"🎮",
+    description:"カメラデバイスを制御する側のコントローラー。カメラアプリやNVRなどが該当",
+    req:["identify"], opt:[],
+    tags:["カメラ","コントローラー","NVR","v1.5新規"],
+    notes:null
+  },
+  { id:"intercom", deviceTypeId:"0x0140", name:"Intercom", nameJa:"インターコム（内線）", category:"camera", icon:"📞",
+    description:"建物内の内線通話システム。各部屋間や受付との音声・映像通話に対応",
+    req:["identify"], opt:[],
+    tags:["インターコム","内線","通話","マンション","v1.5新規"],
+    notes:null
+  },
+  { id:"audio-doorbell", deviceTypeId:"0x0141", name:"Audio Doorbell", nameJa:"音声のみドアベル", category:"camera", icon:"🔊",
+    description:"カメラなしの音声のみのスマートドアベル",
+    req:["identify"], opt:[],
+    tags:["ドアベル","音声","来客通知","v1.5新規"],
+    notes:null
+  },
+  { id:"doorbell", deviceTypeId:"0x0148", name:"Doorbell", nameJa:"ドアベル（汎用）", category:"camera", icon:"🔕",
+    description:"汎用のドアベルデバイスタイプ",
+    req:["identify"], opt:[],
+    tags:["ドアベル","来客通知","v1.5新規"],
+    notes:null
+  },
+  { id:"chime", deviceTypeId:"0x0146", name:"Chime", nameJa:"チャイム", category:"camera", icon:"🔔",
+    description:"ドアベルと連動して音を鳴らすチャイムデバイス",
+    req:["identify","on-off"], opt:[],
+    tags:["チャイム","ドアベル","音","来客通知","v1.5新規"],
+    notes:null
+  },
 
-  // ===== メディア =====
+  // ===== 📺 メディア =====
+  { id:"basic-video-player", deviceTypeId:"0x0028", name:"Basic Video Player", nameJa:"シンプル動画プレーヤー", category:"media", icon:"▶️",
+    description:"キャスト機能を持たないシンプルな動画プレーヤー",
+    req:["identify"], opt:["media-playback"],
+    tags:["動画","メディア","プレーヤー","シンプル"],
+    notes:null
+  },
   { id:"casting-video-player", deviceTypeId:"0x0023", name:"Casting Video Player", nameJa:"キャスト対応動画プレーヤー", category:"media", icon:"📺",
     description:"スマートTV・Apple TV・Chromecast等のキャスト受信対応動画プレーヤー",
     req:["identify","media-playback"], opt:[],
     tags:["スマートTV","Apple TV","Chromecast","動画","メディア","キャスト"],
-    notes:"Apple TV・Google TV・Amazon Fire TVなどがこのタイプ。Matter経由でメディア再生・音量制御などができます。"
+    notes:"Apple TV・Google TV・Amazon Fire TVなどがこのタイプ。"
+  },
+  { id:"casting-video-client", deviceTypeId:"0x0029", name:"Casting Video Client", nameJa:"キャスト送信デバイス", category:"media", icon:"📱",
+    description:"映像をキャストする「送信側」のデバイス。スマートフォンやタブレットなどが該当",
+    req:["identify"], opt:[],
+    tags:["キャスト","送信","スマートフォン","タブレット","メディア"],
+    notes:null
   },
   { id:"speaker", deviceTypeId:"0x0022", name:"Speaker", nameJa:"スマートスピーカー", category:"media", icon:"🔊",
     description:"スマートスピーカーのデバイスタイプ。音声再生・音量制御に対応",
@@ -242,8 +495,26 @@ var DEVICE_TYPES = [
     tags:["スピーカー","音楽","音声","HomePod","Amazon Echo"],
     notes:null
   },
+  { id:"content-app", deviceTypeId:"0x0024", name:"Content App", nameJa:"コンテンツアプリ", category:"media", icon:"🎬",
+    description:"スマートTV上で動作するNetflix・YouTubeなどのコンテンツアプリを表すデバイスタイプ",
+    req:["identify"], opt:[],
+    tags:["コンテンツ","アプリ","Netflix","YouTube","スマートTV"],
+    notes:null
+  },
+  { id:"video-remote-control", deviceTypeId:"0x002A", name:"Video Remote Control", nameJa:"ビデオリモコン", category:"media", icon:"📟",
+    description:"動画プレーヤーやスマートTVを操作するリモコンのデバイスタイプ",
+    req:["identify"], opt:[],
+    tags:["リモコン","TV","動画","メディア","コントローラー"],
+    notes:null
+  },
+  { id:"mode-select", deviceTypeId:"0x0027", name:"Mode Select", nameJa:"モード選択デバイス", category:"media", icon:"🔘",
+    description:"特定のモードを選択するための汎用デバイスタイプ。シーン選択ダイヤルなどに使用",
+    req:["identify"], opt:[],
+    tags:["モード","選択","汎用","シーン"],
+    notes:null
+  },
 
-  // ===== ユーティリティ =====
+  // ===== 🔧 ユーティリティ・インフラ =====
   { id:"bridged-node", deviceTypeId:"0x0013", name:"Bridged Node", nameJa:"ブリッジノード（他規格の橋渡し）", category:"utility", icon:"🔀",
     description:"Zigbee・Z-WaveなどMatter非対応デバイスをMatter Fabricに接続する橋渡し役",
     req:["identify"], opt:[],
@@ -257,9 +528,57 @@ var DEVICE_TYPES = [
     notes:"HomePod・Apple TV・Alexa・Google Nestなどのスマートホームハブがこのタイプに相当します。"
   },
   { id:"thread-border-router", deviceTypeId:"0x0091", name:"Thread Border Router", nameJa:"Threadボーダールーター", category:"utility", icon:"📡",
-    description:"ThreadデバイスとWi-Fiネットワークを繋ぐ橋渡しデバイス。HomePod mini等が担当",
+    description:"ThreadデバイスとWi-Fiネットワークを繋ぐ橋渡しデバイス",
     req:["identify"], opt:[],
     tags:["Thread","ボーダールーター","HomePod","ネットワーク","インフラ"],
-    notes:"Apple製品ではHomePod mini / HomePod / Apple TV 4KがThreadボーダールーターになれます。Threadデバイス（センサー等）を使うためには必要。"
+    notes:"Apple製品ではHomePod mini / HomePod / Apple TV 4KがThreadボーダールーターになれます。"
+  },
+  { id:"network-infrastructure-manager", deviceTypeId:"0x0090", name:"Network Infrastructure Manager", nameJa:"ネットワーク管理デバイス", category:"utility", icon:"🌐",
+    description:"Matter Fabricのネットワークインフラを管理するデバイスタイプ",
+    req:["identify"], opt:[],
+    tags:["ネットワーク","インフラ","管理","Fabric"],
+    notes:null
+  },
+  { id:"root-node", deviceTypeId:"0x0016", name:"Root Node", nameJa:"ルートノード", category:"utility", icon:"🔑",
+    description:"すべてのMatterデバイスが必ず持つ基盤ノード。デバイスの識別・認証・接続管理の核心",
+    req:["identify"], opt:[],
+    tags:["ルートノード","基盤","システム","インフラ"],
+    notes:"エンドユーザーが意識することはないが、すべてのMatterデバイスに内部的に存在する必須ノード。"
+  },
+  { id:"power-source", deviceTypeId:"0x0011", name:"Power Source", nameJa:"電源情報デバイス", category:"utility", icon:"🔋",
+    description:"デバイスの電源情報（バッテリー残量・AC電源・充電状態）を提供するデバイスタイプ",
+    req:["identify"], opt:[],
+    tags:["電源","バッテリー","充電","電力"],
+    notes:"バッテリー駆動のセンサーなどに内包されており、残量をアプリで確認できる機能の基盤となっています。"
+  },
+  { id:"ota-requestor", deviceTypeId:"0x0012", name:"OTA Requestor", nameJa:"OTAリクエスター（更新受信側）", category:"utility", icon:"⬇️",
+    description:"ソフトウェアのOTA（無線）更新を受信・適用するデバイスタイプ",
+    req:["identify"], opt:[],
+    tags:["OTA","ソフトウェア更新","ファームウェア","無線更新"],
+    notes:"Matter対応デバイスがソフトウェアを自動更新する仕組みの受信側。ほぼすべての製品が内包しています。"
+  },
+  { id:"ota-provider", deviceTypeId:"0x0014", name:"OTA Provider", nameJa:"OTAプロバイダー（更新配信側）", category:"utility", icon:"⬆️",
+    description:"ソフトウェアのOTA（無線）更新ファイルを配信するデバイスタイプ",
+    req:["identify"], opt:[],
+    tags:["OTA","ソフトウェア更新","配信","サーバー"],
+    notes:null
+  },
+  { id:"secondary-network-interface", deviceTypeId:"0x0019", name:"Secondary Network Interface", nameJa:"サブネットワークインターフェース", category:"utility", icon:"📶",
+    description:"デバイスが複数のネットワーク接続を持つ場合の2つ目以降の接続を表すデバイスタイプ",
+    req:["identify"], opt:[],
+    tags:["ネットワーク","Wi-Fi","Thread","デュアル接続"],
+    notes:null
+  },
+  { id:"joint-fabric-administrator", deviceTypeId:"0x0130", name:"Joint Fabric Administrator", nameJa:"ジョイントFabric管理者", category:"utility", icon:"🔗",
+    description:"複数のMatter Fabric（異なるエコシステム）を横断して連携管理するデバイスタイプ（v1.4〜）",
+    req:["identify"], opt:[],
+    tags:["Fabric","マルチエコシステム","連携","v1.4新規"],
+    notes:"Apple HomeとGoogle HomeをまたいだMatter Fabricの共同管理を可能にする新しいデバイスタイプ。"
+  },
+  { id:"device-energy-management-dt", deviceTypeId:"0x050D", name:"Device Energy Management", nameJa:"エネルギー管理デバイス", category:"utility", icon:"📊",
+    description:"エネルギー管理機能を提供する仮想的なデバイスタイプ",
+    req:["identify","device-energy-management"], opt:[],
+    tags:["エネルギー管理","仮想デバイス","省エネ"],
+    notes:null
   }
 ];
