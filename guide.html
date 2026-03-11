@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matterってなに？ — Matter 1.5 かんたん解説</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0f14; --surface: #16181f; --surface2: #1e2029;
+  --border: #2a2d38; --accent: #7ee8a2; --accent2: #5bc4f5;
+  --accent3: #f5a623; --accent4: #f07aff;
+  --text: #e8eaf0; --muted: #7a7f94; --dim: #3d4155;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; font-size: 15px; line-height: 1.7; }
+
+/* ===== HEADER ===== */
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 16px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(14,15,20,0.97);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-badge { font-family: 'Space Mono', monospace; font-size: 11px; background: var(--accent); color: #0e0f14; padding: 3px 8px; border-radius: 3px; font-weight: 700; }
+.logo-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.logo-sub { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
+.header-nav { display: flex; gap: 8px; }
+.nav-btn {
+  padding: 7px 14px; border-radius: 7px; font-size: 12px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; text-decoration: none;
+  font-family: 'Noto Sans JP', sans-serif; transition: all 0.15s;
+  display: flex; align-items: center; gap: 5px;
+}
+.nav-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--accent2); }
+.nav-btn.active { background: var(--surface2); color: var(--accent); border-color: var(--accent); }
+
+/* ===== HERO ===== */
+.hero {
+  padding: 64px 28px 48px;
+  text-align: center;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(126,232,162,0.07) 0%, transparent 70%);
+  border-bottom: 1px solid var(--border);
+}
+.hero-badge {
+  display: inline-block; font-family: 'Space Mono', monospace; font-size: 11px;
+  background: rgba(126,232,162,0.12); color: var(--accent);
+  border: 1px solid rgba(126,232,162,0.3); padding: 4px 12px; border-radius: 20px;
+  margin-bottom: 20px; letter-spacing: 0.08em;
+}
+.hero h1 { font-size: clamp(28px, 5vw, 46px); font-weight: 700; margin-bottom: 16px; letter-spacing: -0.02em; }
+.hero h1 span { color: var(--accent); }
+.hero-desc { font-size: 16px; color: var(--muted); max-width: 560px; margin: 0 auto 32px; line-height: 1.8; }
+.hero-toc {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  max-width: 700px; margin: 0 auto;
+}
+.toc-chip {
+  padding: 6px 14px; border-radius: 20px; font-size: 12px;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--muted); text-decoration: none; transition: all 0.15s;
+}
+.toc-chip:hover { border-color: var(--accent2); color: var(--accent2); }
+
+/* ===== CONTENT ===== */
+.content { max-width: 820px; margin: 0 auto; padding: 0 28px 80px; }
+
+.section {
+  padding: 56px 0 0;
+}
+.section-anchor { display: block; height: 80px; margin-top: -80px; }
+
+.section-label {
+  font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+}
+.section h2 {
+  font-size: 26px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.01em;
+}
+.section > p { color: var(--muted); margin-bottom: 28px; font-size: 15px; }
+
+/* ===== カード類 ===== */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px 24px; margin-bottom: 16px;
+}
+.card-title {
+  font-size: 15px; font-weight: 700; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 8px;
+}
+.card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* ===== テーブル ===== */
+.table-wrap { overflow-x: auto; margin-bottom: 20px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th {
+  background: var(--surface2); padding: 10px 14px; text-align: left;
+  font-weight: 700; font-size: 12px; color: var(--muted);
+  border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+td { padding: 10px 14px; border-bottom: 1px solid rgba(42,45,56,0.5); color: var(--muted); vertical-align: top; }
+td:first-child { color: var(--text); font-weight: 500; white-space: nowrap; }
+tr:last-child td { border-bottom: none; }
+
+/* ===== 階層図 ===== */
+.hierarchy {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px; margin-bottom: 20px;
+}
+.hier-row {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 10px 0; border-bottom: 1px solid rgba(42,45,56,0.4);
+  position: relative;
+}
+.hier-row:last-child { border-bottom: none; }
+.hier-icon {
+  width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+  background: var(--surface2);
+}
+.hier-body { flex: 1; }
+.hier-name { font-weight: 700; font-size: 14px; margin-bottom: 3px; }
+.hier-name span { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent2); margin-left: 8px; }
+.hier-desc { font-size: 13px; color: var(--muted); }
+.hier-arrow { color: var(--dim); font-size: 16px; padding: 6px 0 0 17px; }
+
+/* ===== コードブロック風 ===== */
+.code-box {
+  background: #0a0b0f; border: 1px solid var(--border);
+  border-radius: 10px; padding: 18px 20px; margin-bottom: 20px;
+  font-family: 'Space Mono', monospace; font-size: 13px; line-height: 1.8;
+  color: #b0b8d0; overflow-x: auto;
+}
+.code-box .c-green { color: var(--accent); }
+.code-box .c-blue { color: var(--accent2); }
+.code-box .c-yellow { color: var(--accent3); }
+.code-box .c-purple { color: var(--accent4); }
+.code-box .c-dim { color: var(--dim); }
+
+/* ===== スーパーセット図 ===== */
+.superset-chain {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0;
+  margin-bottom: 20px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px 20px; overflow-x: auto;
+}
+.ss-item {
+  display: flex; flex-direction: column; align-items: center;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 14px; text-align: center;
+  min-width: 120px;
+}
+.ss-item.highlight { border-color: var(--accent); background: rgba(126,232,162,0.07); }
+.ss-icon { font-size: 22px; margin-bottom: 4px; }
+.ss-name { font-size: 12px; font-weight: 700; }
+.ss-sub { font-size: 10px; color: var(--muted); font-family: 'Space Mono', monospace; margin-top: 2px; }
+.ss-arrow { color: var(--dim); font-size: 20px; padding: 0 6px; align-self: center; }
+
+/* ===== フィーチャー図 ===== */
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.feature-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px;
+}
+.feature-card .fc-type { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent2); margin-bottom: 5px; }
+.feature-card .fc-name { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.feature-card .fc-desc { font-size: 12px; color: var(--muted); }
+
+/* ===== ポイントボックス ===== */
+.point-box {
+  border-left: 3px solid var(--accent3);
+  background: rgba(245,166,35,0.06);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px; margin-bottom: 20px;
+  font-size: 14px; color: var(--muted); line-height: 1.7;
+}
+.point-box strong { color: var(--text); }
+
+.info-box {
+  border-left: 3px solid var(--accent2);
+  background: rgba(91,196,245,0.06);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px; margin-bottom: 20px;
+  font-size: 14px; color: var(--muted); line-height: 1.7;
+}
+.info-box strong { color: var(--text); }
+
+/* ===== 用語グリッド ===== */
+.glossary-grid { display: grid; gap: 10px; margin-bottom: 20px; }
+.gloss-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px;
+  display: grid; grid-template-columns: 180px 1fr; gap: 14px; align-items: start;
+}
+.gloss-term { font-weight: 700; font-size: 14px; }
+.gloss-term .en { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent2); display: block; margin-top: 2px; }
+.gloss-def { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ===== 区切り ===== */
+.divider { border: none; border-top: 1px solid var(--border); margin: 48px 0 0; }
+
+/* ===== フッターナビ ===== */
+.footer-nav {
+  margin-top: 64px; padding: 28px 0; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+}
+.footer-nav p { font-size: 12px; color: var(--dim); }
+.back-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 20px; border-radius: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--accent); font-size: 14px; text-decoration: none;
+  transition: all 0.15s; font-family: 'Noto Sans JP', sans-serif;
+}
+.back-btn:hover { background: var(--surface2); border-color: var(--accent); }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 680px) {
+  header { padding: 12px 14px; }
+  .hero { padding: 40px 16px 32px; }
+  .content { padding: 0 16px 60px; }
+  .logo-sub { display: none; }
+  .gloss-item { grid-template-columns: 1fr; gap: 6px; }
+  .ss-item { min-width: 90px; padding: 8px 10px; }
+  .nav-btn span { display: none; }
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">
+    <span class="logo-badge">Matter 1.5</span>
+    <div>
+      <div class="logo-title">⚡ Matterデバイス辞書</div>
+      <div class="logo-sub">by ライフテックコーディネーター 織田未来</div>
+    </div>
+  </a>
+  <nav class="header-nav">
+    <a class="nav-btn active" href="guide.html">📖 <span>Matterとは</span></a>
+    <a class="nav-btn" href="index.html">🔍 <span>辞書を使う</span></a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Matter 1.5 かんたん解説</div>
+  <h1>Matterって、<span>なに？</span></h1>
+  <p class="hero-desc">
+    スマートホームの「共通言語」Matterの仕組みを、エンジニアじゃなくても分かるように整理しました。
+    デバイスタイプ・クラスター・アトリビュート…用語の意味から構造まで、ここで全部わかります。
+  </p>
+  <div class="hero-toc">
+    <a class="toc-chip" href="#what-is-matter">🌐 Matterとは</a>
+    <a class="toc-chip" href="#structure">🏗 全体の構造</a>
+    <a class="toc-chip" href="#device-type">📱 デバイスタイプ</a>
+    <a class="toc-chip" href="#cluster">⚙️ クラスター</a>
+    <a class="toc-chip" href="#cluster-elements">🔩 クラスターの中身</a>
+    <a class="toc-chip" href="#superset">🔗 スーパーセット</a>
+    <a class="toc-chip" href="#semantic-tag">🏷 セマンティックタグ</a>
+    <a class="toc-chip" href="#network">📡 通信の仕組み</a>
+    <a class="toc-chip" href="#glossary">📚 用語集</a>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- ===== 1. Matterとは ===== -->
+  <div class="section">
+    <a class="section-anchor" id="what-is-matter"></a>
+    <div class="section-label">Section 01</div>
+    <h2>Matterとは？</h2>
+    <p>スマートホームデバイスが、メーカーを超えて互いにつながるための「共通言語（プロトコル）」です。</p>
+
+    <div class="point-box">
+      <strong>たとえ話：</strong> 日本語しか話せない人と英語しか話せない人は会話できません。
+      でも「共通の言語（英語）」があれば話せます。Matter はスマートホーム機器にとってのその「共通言語」です。
+      AppleのHomePodもGoogleのNest HubもAmazonのEchoも、Matterに対応していれば同じ言葉でデバイスに命令できます。
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>項目</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>正式名称</td><td>Matter（旧称：Project CHIP）</td></tr>
+          <tr><td>運営団体</td><td>Connectivity Standards Alliance（CSA）— Apple・Google・Amazon・Samsungなど600社以上が参加</td></tr>
+          <tr><td>動作ネットワーク</td><td>Wi-Fi・Thread・Ethernet（Bluetooth LEはセットアップ時のみ）</td></tr>
+          <tr><td>現行バージョン</td><td>Matter 1.5（2025年11月リリース）</td></tr>
+          <tr><td>何が嬉しいか</td><td>Apple Home・Google Home・Amazon Alexaのどれからでも同じデバイスを操作できる。囲い込みから解放される。</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box">
+      <strong>Matter 1.5の新機能：</strong>
+      カメラ・ドアベル・ビデオ通話（WebRTC）・新世代クロージャー（窓・扉）が大幅追加。
+      ヒートポンプ・給湯器など家全体のエネルギー管理も強化されました。
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 2. 全体の構造 ===== -->
+  <div class="section">
+    <a class="section-anchor" id="structure"></a>
+    <div class="section-label">Section 02</div>
+    <h2>Matterの全体構造</h2>
+    <p>Matterは「入れ子構造」で成り立っています。大きい概念から小さい概念の順番で理解すると整理しやすいです。</p>
+
+    <div class="hierarchy">
+      <div class="hier-row">
+        <div class="hier-icon">🏠</div>
+        <div class="hier-body">
+          <div class="hier-name">Fabric（ファブリック）<span>= ネットワーク全体</span></div>
+          <div class="hier-desc">「Apple Home」や「Google Home」など、1つのエコシステムが作る信頼の輪。複数のデバイスが所属するグループ。</div>
+        </div>
+      </div>
+      <div class="hier-arrow">↓</div>
+      <div class="hier-row">
+        <div class="hier-icon">💡</div>
+        <div class="hier-body">
+          <div class="hier-name">Node（ノード）<span>= デバイス1台</span></div>
+          <div class="hier-desc">Matter対応の機器1台のこと。スマート電球・スマートロック・センサーなど。</div>
+        </div>
+      </div>
+      <div class="hier-arrow">↓</div>
+      <div class="hier-row">
+        <div class="hier-icon">🔌</div>
+        <div class="hier-body">
+          <div class="hier-name">Endpoint（エンドポイント）<span>= 機能の窓口</span></div>
+          <div class="hier-desc">1台のデバイスが持つ個別の機能単位。スマートプラグが2つのコンセントを持つ場合、それぞれがエンドポイントになる。すべてのデバイスは必ず「エンドポイント0（ルートノード）」を持つ。</div>
+        </div>
+      </div>
+      <div class="hier-arrow">↓</div>
+      <div class="hier-row">
+        <div class="hier-icon">⚙️</div>
+        <div class="hier-body">
+          <div class="hier-name">Cluster（クラスター）<span>= 機能のかたまり</span></div>
+          <div class="hier-desc">OnOff（ON/OFF制御）、Level Control（明るさ調整）など、特定の機能セットの定義。1つのエンドポイントが複数のクラスターを持てる。</div>
+        </div>
+      </div>
+      <div class="hier-arrow">↓</div>
+      <div class="hier-row">
+        <div class="hier-icon">📊</div>
+        <div class="hier-body">
+          <div class="hier-name">Attribute / Command / Event<span>= クラスターの中身</span></div>
+          <div class="hier-desc">クラスターが持つ具体的なデータ（アトリビュート）・命令（コマンド）・通知（イベント）。「現在の明るさ=80%」がアトリビュート、「明るさを60%にしろ」がコマンド。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="point-box">
+      <strong>🏷 Device Type（デバイスタイプ）はどこに入る？</strong><br>
+      デバイスタイプは「このエンドポイントはどんな機器か」を定義する"レッテル"のようなもの。
+      「Dimmable Light（調光ライト）なら On/Off と Level Control クラスターが必須」という資格要件を決めています。
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 3. デバイスタイプ ===== -->
+  <div class="section">
+    <a class="section-anchor" id="device-type"></a>
+    <div class="section-label">Section 03</div>
+    <h2>デバイスタイプとは？</h2>
+    <p>「この機器はMatter的にどんな種類か」を定義するラベルです。デバイスタイプによって「必ず持つべき機能（必須クラスター）」が決まります。</p>
+
+    <div class="code-box">
+<span class="c-dim">// デバイスタイプの例：Dimmable Light（調光対応照明）</span>
+デバイスタイプID: <span class="c-blue">0x0101</span>
+名前: <span class="c-green">Dimmable Light</span>
+
+必須クラスター（M）:
+  ✅ <span class="c-yellow">Identify</span>        <span class="c-dim">← どのデバイスかLEDで識別</span>
+  ✅ <span class="c-yellow">Groups</span>          <span class="c-dim">← グループ操作に対応</span>
+  ✅ <span class="c-yellow">On/Off</span>          <span class="c-dim">← ON/OFF制御</span>
+  ✅ <span class="c-yellow">Level Control</span>   <span class="c-dim">← 明るさ調整（0〜100%）</span>
+
+任意クラスター（O）:
+  ☑️ <span class="c-purple">Scenes Management</span>  <span class="c-dim">← シーン保存（省略OK）</span>
+  ☑️ <span class="c-purple">Ballast Config</span>     <span class="c-dim">← バラスト設定（省略OK）</span>
+    </div>
+
+    <div class="info-box">
+      <strong>M（必須）と O（任意）の違い：</strong>
+      M = このデバイスタイプを名乗るために絶対に実装しなければならない機能。
+      O = あれば便利だけど、なくてもデバイスタイプとして認められる機能。
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>分類</th><th>説明</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td>Simple</td><td>単一機能のシンプルなデバイス</td><td>On/Off Light、開閉センサー</td></tr>
+          <tr><td>Composed</td><td>複数のエンドポイントを持つ複合デバイス</td><td>冷蔵庫（冷蔵室＋冷凍室）、クックトップ（複数バーナー）</td></tr>
+          <tr><td>Utility</td><td>インフラ系・制御用の特殊なデバイス</td><td>ブリッジ、ハブ、OTA配信サーバー</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 4. クラスター ===== -->
+  <div class="section">
+    <a class="section-anchor" id="cluster"></a>
+    <div class="section-label">Section 04</div>
+    <h2>クラスターとは？</h2>
+    <p>デバイスが持つ「機能のかたまり」がクラスターです。スマートホームのあらゆる機能はクラスターとして定義されています。</p>
+
+    <div class="card">
+      <div class="card-title">💡 たとえ話で理解するクラスター</div>
+      <p>
+        スマート電球を「スタッフのいるお店」に例えると——<br><br>
+        <strong style="color:var(--text)">「On/Off クラスター」</strong>は「開店・閉店を管理するスタッフ」<br>
+        <strong style="color:var(--text)">「Level Control クラスター」</strong>は「照明の明るさを調整するスタッフ」<br>
+        <strong style="color:var(--text)">「Color Control クラスター」</strong>は「ライトの色を管理するスタッフ」<br><br>
+        1つの電球がこれら複数の「スタッフ（クラスター）」を持っています。
+      </p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>カテゴリ</th><th>主なクラスター</th><th>何をするか</th></tr></thead>
+        <tbody>
+          <tr><td>汎用</td><td>On/Off、Level Control、Operational State</td><td>ON/OFF・明るさ・動作状態など基本制御</td></tr>
+          <tr><td>計測・センシング</td><td>Temperature Measurement、Occupancy Sensing</td><td>温度・湿度・人感・照度などの計測</td></tr>
+          <tr><td>照明</td><td>Color Control、Ballast Configuration</td><td>色温度・RGB色制御</td></tr>
+          <tr><td>空調（HVAC）</td><td>Thermostat、Fan Control</td><td>温度設定・ファン制御</td></tr>
+          <tr><td>玄関・窓・扉</td><td>Door Lock、Window Covering、Closure Control</td><td>施錠・ブラインド・クロージャー制御</td></tr>
+          <tr><td>家電</td><td>Laundry Washer Mode、Microwave Oven Control</td><td>洗濯機・電子レンジなどの家電制御</td></tr>
+          <tr><td>エネルギー管理</td><td>Device Energy Management、Energy EVSE</td><td>EV充電・給湯器・太陽光連携</td></tr>
+          <tr><td>メディア</td><td>Media Playback、Content Launcher</td><td>動画再生・コンテンツ起動</td></tr>
+          <tr><td>カメラ</td><td>Camera AV Stream Management、WebRTC Transport Provider</td><td>映像配信・WebRTCストリーミング</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box">
+      <strong>クラスターの「Server」と「Client」：</strong><br>
+      同じクラスターでも「提供する側（Server）」と「使う側（Client）」があります。
+      電球はOn/Off Clusterの <strong style="color:var(--text)">Server</strong>（制御される側）で、
+      スマートフォンアプリはOn/Off Clusterの <strong style="color:var(--text)">Client</strong>（制御する側）です。
+      1つのデバイスがServerにもClientにもなれます（例：サーモスタットは温度制御のServerで、センサーのClientでもある）。
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 5. クラスターの中身 ===== -->
+  <div class="section">
+    <a class="section-anchor" id="cluster-elements"></a>
+    <div class="section-label">Section 05</div>
+    <h2>クラスターの中身（4つの要素）</h2>
+    <p>各クラスターは4種類の要素で構成されています。</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="fc-type">ATTRIBUTE</div>
+        <div class="fc-name">📊 アトリビュート</div>
+        <div class="fc-desc">現在の状態・設定値。<br>例:「現在の明るさ = 80%」「現在の温度 = 24℃」</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-type">COMMAND</div>
+        <div class="fc-name">🎯 コマンド</div>
+        <div class="fc-desc">操作の命令。<br>例:「Toggle（ON/OFFを切替）」「MoveToLevel（指定の明るさに）」</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-type">EVENT</div>
+        <div class="fc-name">🔔 イベント</div>
+        <div class="fc-desc">状態変化の通知。<br>例:「温度が閾値を超えた」「ドアが開いた」</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-type">FEATURE</div>
+        <div class="fc-name">🔧 フィーチャー</div>
+        <div class="fc-desc">オプション機能の有無。<br>例:「Lighting機能あり（調光カーブ対応）」</div>
+      </div>
+    </div>
+
+    <div class="code-box">
+<span class="c-dim">// Level Control Cluster の中身（例）</span>
+
+<span class="c-green">Attributes（アトリビュート）:</span>
+  CurrentLevel         <span class="c-dim">= 現在の明るさ（0〜254）</span>
+  MinLevel / MaxLevel  <span class="c-dim">= 最小・最大の明るさ</span>
+  OnLevel              <span class="c-dim">= ONにしたときのデフォルト明るさ</span>
+
+<span class="c-yellow">Commands（コマンド）:</span>
+  MoveToLevel          <span class="c-dim">← 指定の明るさに変更</span>
+  Move                 <span class="c-dim">← 徐々に明るく/暗くしていく</span>
+  Step                 <span class="c-dim">← 一段階ずつ上げ/下げる</span>
+
+<span class="c-blue">Features（フィーチャー）:</span>
+  [OO] OnOff           <span class="c-dim">← On/Off Clusterと連携する機能</span>
+  [LT] Lighting        <span class="c-dim">← 照明用の調光カーブ対応</span>
+    </div>
+
+    <div class="point-box">
+      <strong>フィーチャーって何が嬉しいの？</strong><br>
+      同じクラスターでも、製品によってサポートする機能が異なります。
+      フィーチャーがあることで「この製品はどこまで対応しているか」がアプリ側に正確に伝わり、
+      UIが自動的に最適化されます。例えば「調光カーブ（Lighting フィーチャー）」対応の電球は、
+      Apple Homeの「適応照明」機能が使えるようになります。
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 6. スーパーセット ===== -->
+  <div class="section">
+    <a class="section-anchor" id="superset"></a>
+    <div class="section-label">Section 06</div>
+    <h2>スーパーセット（継承関係）</h2>
+    <p>照明デバイスタイプには「親子関係（スーパーセット）」があります。上位の機器は下位の機器として「も」動作できます。</p>
+
+    <div class="superset-chain">
+      <div class="ss-item">
+        <div class="ss-icon">💡</div>
+        <div class="ss-name">On/Off Light</div>
+        <div class="ss-sub">0x0100</div>
+        <div class="ss-sub" style="color:var(--accent);margin-top:4px">基本</div>
+      </div>
+      <div class="ss-arrow">→</div>
+      <div class="ss-item">
+        <div class="ss-icon">🔆</div>
+        <div class="ss-name">Dimmable Light</div>
+        <div class="ss-sub">0x0101</div>
+        <div class="ss-sub" style="color:var(--accent2);margin-top:4px">+ 調光</div>
+      </div>
+      <div class="ss-arrow">→</div>
+      <div class="ss-item">
+        <div class="ss-icon">🌅</div>
+        <div class="ss-name">Color Temp Light</div>
+        <div class="ss-sub">0x010C</div>
+        <div class="ss-sub" style="color:var(--accent3);margin-top:4px">+ 色温度</div>
+      </div>
+      <div class="ss-arrow">→</div>
+      <div class="ss-item highlight">
+        <div class="ss-icon">🌈</div>
+        <div class="ss-name">Extended Color</div>
+        <div class="ss-sub">0x010D</div>
+        <div class="ss-sub" style="color:var(--accent4);margin-top:4px">+ フルカラー</div>
+      </div>
+    </div>
+
+    <div class="point-box">
+      <strong>具体的に何が嬉しいか：</strong><br>
+      フルカラー電球（Extended Color Light）は、色温度だけ対応のアプリからも「Color Temperature Light」として認識されて動作できます。
+      互換性を最大限保ちながら機能を追加できる、Matter の賢い設計です。
+      <br><br>
+      <strong>Apple Homeの「適応照明」</strong>はColor Temperature Light以上に対応しています。
+      電球を買うときに「色温度対応かどうか」をチェックするのはそのためです。
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 7. セマンティックタグ ===== -->
+  <div class="section">
+    <a class="section-anchor" id="semantic-tag"></a>
+    <div class="section-label">Section 07</div>
+    <h2>セマンティックタグとは？</h2>
+    <p>デバイスのエンドポイントに「意味的なラベル」を貼る仕組みです。アプリがデバイスの「場所」や「種類」を正確に理解できるようになります。</p>
+
+    <div class="card">
+      <div class="card-title">🏷 タグがないと何が困るか</div>
+      <p>
+        タグがないと、スマートホームアプリは照明を「ダウンライト1、ダウンライト2、ダウンライト3…」と番号で並べるしかありません。
+        どれがリビングのどの照明かを自動で判断できないのです。<br><br>
+        セマンティックタグがあれば：<br>
+        「<strong style="color:var(--text)">リビング（LivingRoom）</strong>の<strong style="color:var(--text)">ソファの上（Sofa × Above）</strong>にあるライト」
+        という情報をアプリが自動で読み取り、最適なUIを生成できます。
+      </p>
+    </div>
+
+    <div class="code-box">
+<span class="c-dim">// セマンティックタグの例：リビングの窓の左ブラインド</span>
+タグ1: Common Area     → <span class="c-green">LivingRoom</span>     <span class="c-dim">（場所：リビング）</span>
+タグ2: Common Landmark → <span class="c-blue">Window</span>          <span class="c-dim">（目印：窓）</span>
+タグ3: Common Position → <span class="c-yellow">Left</span>            <span class="c-dim">（位置：左）</span>
+タグ4: Closure Covering→ <span class="c-purple">Blind</span>           <span class="c-dim">（種類：ブラインド）</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ネームスペース</th><th>内容</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td>Common Area</td><td>部屋・場所の種類</td><td>LivingRoom、Bedroom、Kitchen、Bathroom…全50種類以上</td></tr>
+          <tr><td>Common Landmark</td><td>家具・目印</td><td>Bed、Sofa、Desk、Window、Door…</td></tr>
+          <tr><td>Common Position</td><td>上下左右</td><td>Above、Below、Left、Right、Front、Back</td></tr>
+          <tr><td>Closure</td><td>クロージャー（窓・扉）の詳細種別</td><td>Blind、Curtain、Shutter、Door、Gate…</td></tr>
+          <tr><td>Switches</td><td>スイッチボタンの動作</td><td>On、Off、Toggle、DimUp、DimDown…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 8. ネットワーク ===== -->
+  <div class="section">
+    <a class="section-anchor" id="network"></a>
+    <div class="section-label">Section 08</div>
+    <h2>通信の仕組み</h2>
+    <p>Matterは複数の通信方式をサポートしています。それぞれ得意不得意があるので、用途に合わせて使い分けられています。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>通信方式</th><th>特徴</th><th>主な用途</th><th>代表デバイス</th></tr></thead>
+        <tbody>
+          <tr><td>Wi-Fi</td><td>速度が速い・家中に届く・電池消耗が多い</td><td>常時接続の機器</td><td>スマートプラグ、カメラ、スマートTV</td></tr>
+          <tr><td>Thread</td><td>電池長持ち・メッシュ網で届く・低遅延</td><td>センサー・スイッチ類</td><td>センサー、スマートロック、スイッチ</td></tr>
+          <tr><td>Ethernet</td><td>最も安定・有線接続</td><td>固定設置の機器</td><td>ハブ、ルーター内蔵機器</td></tr>
+          <tr><td>Bluetooth LE</td><td>Matter本体には使わない（セットアップ時のみ）</td><td>初期設定時の近距離通信</td><td>（セットアップ専用）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📡 Threadって何が特別なの？</div>
+      <p>
+        ThreadはApple製品（HomePod mini・Apple TV 4K）がボーダールーターとして動作することで、
+        Wi-Fiルーターがなくてもスマートデバイス同士がつながれるメッシュネットワークを作れます。
+        電池駆動のセンサー類に最適で、バッテリーが何年も持ちます。
+        Aqara・Eve・NanoleafなどのThread対応デバイスは、HomePodがあれば安定して動作します。
+      </p>
+    </div>
+
+    <div class="info-box">
+      <strong>Fabric（ファブリック）とマルチ管理者：</strong><br>
+      1つのMatterデバイスを複数のエコシステム（Apple HomeとGoogle Home両方など）に同時登録できます。
+      これを「マルチファブリック」と言います。Matter 1.4からは「Joint Fabric Administrator」という仕組みで、
+      複数のエコシステムがより深く協調できるようになりました。
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 9. 用語集 ===== -->
+  <div class="section">
+    <a class="section-anchor" id="glossary"></a>
+    <div class="section-label">Section 09</div>
+    <h2>よく出てくる用語集</h2>
+    <p>Matterの仕様書や製品情報で頻繁に登場する用語をまとめました。</p>
+
+    <div class="glossary-grid">
+      <div class="gloss-item">
+        <div class="gloss-term">ノード<span class="en">Node</span></div>
+        <div class="gloss-def">Matter対応デバイス1台のこと。スマート電球1つ、スマートロック1つなど。</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">ファブリック<span class="en">Fabric</span></div>
+        <div class="gloss-def">Apple HomeやGoogle Homeなど、1つのエコシステムが管理する信頼の輪。1台のデバイスが複数のFabricに所属できる（マルチファブリック）。</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">エンドポイント<span class="en">Endpoint</span></div>
+        <div class="gloss-def">1つのデバイス（Node）内で、個別にアドレス指定できる機能の単位。コンセントが2口のスマートプラグなら、それぞれの口がエンドポイント。</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">クラスター<span class="en">Cluster</span></div>
+        <div class="gloss-def">機能の仕様単位。On/Off Cluster、Thermostat Clusterなど。デバイスが「何ができるか」を定義する。</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">アトリビュート<span class="en">Attribute</span></div>
+        <div class="gloss-def">クラスターが持つ「現在の状態や設定値」。「現在の明るさ＝80%」「現在の温度＝23℃」など。読み書きができる。</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">コマンド<span class="en">Command</span></div>
+        <div class="gloss-def">クラスターへの「操作命令」。「ToggleコマンドでON/OFFを切り替えろ」「MoveToLevelで明るさを60%にしろ」など。</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">イベント<span class="en">Event</span></div>
+        <div class="gloss-def">デバイスから自発的に送られてくる「状態変化の通知」。「ドアが開いた」「温度が閾値を超えた」「電池残量が少なくなった」など。</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">フィーチャー<span class="en">Feature</span></div>
+        <div class="gloss-def">クラスター内のオプション機能の有無を示すフラグ。「LightingフィーチャーON＝照明用の調光カーブ対応」のように、製品の詳細スペックを表す。</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">コミッショニング<span class="en">Commissioning</span></div>
+        <div class="gloss-def">新しいMatterデバイスをスマートホームに追加する作業のこと。iPhoneでQRコードを読み取ってHomePodと接続する、あの操作がコミッショニング。</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">ICD<span class="en">Intermittently Connected Device</span></div>
+        <div class="gloss-def">間欠接続デバイス。バッテリー駆動のセンサーのように、常時ネットワークにつながらず定期的にデータを送るデバイス。電池持ちを良くするための仕組み。</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">バインディング<span class="en">Binding</span></div>
+        <div class="gloss-def">コントローラー（スイッチ）と制御対象（照明）を直接結びつける設定。ハブなしでスイッチが直接照明を操作できるようにする。</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">スーパーセット<span class="en">Superset</span></div>
+        <div class="gloss-def">デバイスタイプの継承関係。「Extended Color Light」は「Color Temperature Light」のスーパーセットで、下位デバイスとしても動作できる。</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">DAC<span class="en">Device Attestation Certificate</span></div>
+        <div class="gloss-def">デバイスが「正規品であること」を証明する証明書。Matter対応を名乗るには必ずCSAの認証が必要で、このDACがその証明になる。</div>
+      </div>
+      <div class="gloss-item">
+        <div class="gloss-term">Aliro<span class="en">Aliro Digital Key</span></div>
+        <div class="gloss-def">Matter 1.3〜対応の「デジタル鍵」規格。iPhoneのウォレットアプリで玄関ドアを開けられる仕組みの標準規格。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- フッターナビ -->
+  <div class="footer-nav">
+    <p>Matter 1.5 仕様書（CSA）をもとにライフテックコーディネーター 織田未来が整理・編集</p>
+    <a class="back-btn" href="index.html">🔍 デバイス辞書を使う →</a>
+  </div>
+
+</div>
+
+</body>
+</html>
