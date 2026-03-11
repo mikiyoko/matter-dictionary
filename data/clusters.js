@@ -1,143 +1,1256 @@
 // =====================================================
-// clusters.js — Matter 1.5 クラスターデータ
+// clusters.js — Matter 1.5 クラスターデータ（完全版）
 // 更新方法：新しいクラスターをこの配列に追加するだけ
-// 最終更新：Matter 1.5
+// 最終更新：Matter 1.5（全83件）
+//
+// categories フィールドについて：
+//   複数カテゴリを配列で持てます（On/Off等の汎用クラスターは複数カテゴリに属す）
+//   "general"=汎用, "sensor"=計測, "lighting"=照明, "hvac"=空調,
+//   "entry"=玄関扉窓, "appliances"=家電, "robot"=ロボット,
+//   "energy"=エネルギー, "media"=メディア, "camera"=カメラ, "network"=ネットワーク
 // =====================================================
 
 var CLUSTERS = [
-  { id:"on-off", clusterId:"0x0006", name:"On/Off", nameJa:"オン/オフ", description:"デバイスのON・OFFを制御する最も基本のクラスター",
-    features:["Lighting（照明向け点灯効果）","DeadFrontBehavior（運転中パネル無効）","OffOnly（オフのみ受付）"],
-    keyAttributes:[{name:"OnOff",description:"現在のオン/オフ状態"},{name:"StartUpOnOff",description:"再起動時の挙動（Off/On/Toggle/null=前回保持）"}],
-    keyCommands:[{name:"On",description:"オンにする"},{name:"Off",description:"オフにする"},{name:"Toggle",description:"現在の状態を反転"},{name:"OnWithTimedOff",description:"指定時間後に自動でオフ"}]
+
+  // =====================================================
+  // 🔧 Ch1 汎用クラスター（General）
+  // =====================================================
+
+  { id:"identify", clusterId:"0x0003", name:"Identify", nameJa:"識別",
+    categories:["general"],
+    description:"デバイスをLED点滅や音で識別モードにする。どの機器か確認するときに使う",
+    features:["Display（視覚）","Audible（音声）","Haptic（振動）"],
+    keyAttributes:[
+      {name:"IdentifyTime", description:"識別モードの残り時間（秒）"},
+      {name:"IdentifyType", description:"識別方法（視覚・音声・振動など）"}
+    ],
+    keyCommands:[
+      {name:"Identify", description:"指定秒数だけ識別モード開始"},
+      {name:"TriggerEffect", description:"特定エフェクトを一時実行（点滅・呼吸など）"}
+    ],
+    tags:["識別","LED","点滅","セットアップ"]
   },
-  { id:"level-control", clusterId:"0x0008", name:"Level Control", nameJa:"レベルコントロール", description:"明るさ・速度・音量など段階的な値を制御。レベル範囲は1〜254",
-    features:["OnOff連動","Lighting（調光カーブ）"],
-    keyAttributes:[{name:"CurrentLevel",description:"現在のレベル（1〜254）"},{name:"MinLevel/MaxLevel",description:"レベルの上下限"}],
-    keyCommands:[{name:"MoveToLevel",description:"指定レベルに移動"},{name:"Move",description:"連続的に上げ下げ"},{name:"Step",description:"ステップ変化"},{name:"Stop",description:"変化を止める"}]
-  },
-  { id:"color-control", clusterId:"0x0300", name:"Color Control", nameJa:"カラーコントロール", description:"照明の色（HSV・色温度・XY）を制御。サーカディアン照明の核心",
-    features:["HueSaturation（色相・彩度）","ColorTemperature（色温度モード 2700K〜6500K）","XY（CIE1931色空間）"],
-    keyAttributes:[{name:"ColorTemperatureMireds",description:"現在の色温度（ミレッド値。大=暖色、小=寒色）"},{name:"CurrentHue",description:"現在の色相（0〜254）"},{name:"CurrentSaturation",description:"現在の彩度（0〜254）"}],
-    keyCommands:[{name:"MoveToColorTemperature",description:"指定の色温度に移動"},{name:"MoveColorTemperature",description:"色温度を連続変化"},{name:"MoveToHueAndSaturation",description:"色相と彩度を指定"},{name:"ColorLoopSet",description:"カラーループ（自動色変化）"}]
-  },
-  { id:"scenes-management", clusterId:"0x0062", name:"Scenes Management", nameJa:"シーン管理", description:"複数の機器設定をシーンとして保存・呼び出す。映画モード・就寝モードを一発切り替え",
-    features:["SceneNames（シーン名をつける）"],
-    keyAttributes:[{name:"CurrentScene",description:"現在のシーン番号"},{name:"SceneCount",description:"登録済みシーン数"}],
-    keyCommands:[{name:"AddScene",description:"現在の状態をシーンとして保存"},{name:"RecallScene",description:"シーンを呼び出して適用"},{name:"StoreScene",description:"既存シーンを上書き保存"}]
-  },
-  { id:"identify", clusterId:"0x0003", name:"Identify", nameJa:"識別", description:"デバイスをLED点滅や音で識別モードにする。どれがその機器か確認するときに使う",
-    features:[],
-    keyAttributes:[{name:"IdentifyTime",description:"識別モードの残り時間（秒）"},{name:"IdentifyType",description:"識別方法（視覚・音声・振動など）"}],
-    keyCommands:[{name:"Identify",description:"指定秒数だけ識別モード開始"},{name:"TriggerEffect",description:"特定エフェクトを一時実行"}]
-  },
-  { id:"groups", clusterId:"0x0004", name:"Groups", nameJa:"グループ管理", description:"エンドポイントをグループに所属させる。全照明を同時操作などのグループ制御を実現",
+
+  { id:"groups", clusterId:"0x0004", name:"Groups", nameJa:"グループ管理",
+    categories:["general"],
+    description:"エンドポイントをグループに所属させる。全照明を同時操作などのグループ制御を実現",
     features:["GroupNames（グループに名前をつける）"],
-    keyAttributes:[{name:"NameSupport",description:"グループ名のサポート状況"}],
-    keyCommands:[{name:"AddGroup",description:"グループに追加"},{name:"RemoveGroup",description:"グループから削除"},{name:"AddGroupIfIdentifying",description:"識別中のデバイスをグループ追加"}]
+    keyAttributes:[
+      {name:"NameSupport", description:"グループ名のサポート状況"}
+    ],
+    keyCommands:[
+      {name:"AddGroup", description:"グループに追加"},
+      {name:"RemoveGroup", description:"グループから削除"},
+      {name:"AddGroupIfIdentifying", description:"識別中のデバイスをグループ追加"}
+    ],
+    tags:["グループ","一括操作","シーン"]
   },
-  { id:"boolean-state", clusterId:"0x0045", name:"Boolean State", nameJa:"ブール値状態", description:"True/Falseの二値状態を管理する汎用クラスター。開閉センサーなどに使用",
+
+  { id:"scenes-management", clusterId:"0x0062", name:"Scenes Management", nameJa:"シーン管理",
+    categories:["general","lighting"],
+    description:"複数の機器設定をシーンとして保存・呼び出す。映画モード・就寝モードを一発切り替え",
+    features:["SceneNames（シーン名をつける）"],
+    keyAttributes:[
+      {name:"CurrentScene", description:"現在のシーン番号"},
+      {name:"SceneCount", description:"登録済みシーン数"}
+    ],
+    keyCommands:[
+      {name:"AddScene", description:"現在の状態をシーンとして保存"},
+      {name:"RecallScene", description:"シーンを呼び出して適用"},
+      {name:"StoreScene", description:"既存シーンを上書き保存"}
+    ],
+    tags:["シーン","プリセット","一括切替","映画モード","就寝モード"]
+  },
+
+  { id:"on-off", clusterId:"0x0006", name:"On/Off", nameJa:"オン/オフ",
+    categories:["general","lighting","plug","appliances","entry","camera"],
+    description:"デバイスのON・OFFを制御する最も基本のクラスター。あらゆるデバイスに使われる",
+    features:["Lighting（照明向け点灯効果）","DeadFrontBehavior（運転中パネル無効）","OffOnly（オフのみ受付）"],
+    keyAttributes:[
+      {name:"OnOff", description:"現在のオン/オフ状態"},
+      {name:"StartUpOnOff", description:"再起動時の挙動（Off/On/Toggle/null=前回保持）"}
+    ],
+    keyCommands:[
+      {name:"On", description:"オンにする"},
+      {name:"Off", description:"オフにする"},
+      {name:"Toggle", description:"現在の状態を反転"},
+      {name:"OnWithTimedOff", description:"指定時間後に自動でオフ"}
+    ],
+    tags:["オンオフ","基本","スイッチ","電源"]
+  },
+
+  { id:"level-control", clusterId:"0x0008", name:"Level Control", nameJa:"レベルコントロール",
+    categories:["general","lighting","plug","hvac"],
+    description:"明るさ・速度・音量など段階的な値を制御。レベル範囲は1〜254",
+    features:["OnOff連動","Lighting（調光カーブ）"],
+    keyAttributes:[
+      {name:"CurrentLevel", description:"現在のレベル（1〜254）"},
+      {name:"MinLevel/MaxLevel", description:"レベルの上下限"}
+    ],
+    keyCommands:[
+      {name:"MoveToLevel", description:"指定レベルに移動"},
+      {name:"Move", description:"連続的に上げ下げ"},
+      {name:"Step", description:"ステップ変化"},
+      {name:"Stop", description:"変化を止める"}
+    ],
+    tags:["調光","明るさ","速度","音量","レベル"]
+  },
+
+  { id:"boolean-state", clusterId:"0x0045", name:"Boolean State", nameJa:"ブール値状態",
+    categories:["general","sensor"],
+    description:"True/Falseの二値状態を管理する汎用クラスター。開閉センサー・水漏れ検知などに使用",
     features:[],
-    keyAttributes:[{name:"StateValue",description:"現在の状態（true=開/検知あり、false=閉/なし）"}],
-    keyCommands:[]
+    keyAttributes:[
+      {name:"StateValue", description:"現在の状態（true=開/検知あり、false=閉/なし）"}
+    ],
+    keyCommands:[],
+    tags:["二値","開閉","検知","センサー"]
   },
-  { id:"operational-state", clusterId:"0x0060", name:"Operational State", nameJa:"動作状態", description:"家電・ロボットの動作状態（動作中・停止・エラー）を管理する汎用クラスター",
+
+  { id:"boolean-state-configuration", clusterId:"0x0080", name:"Boolean State Configuration", nameJa:"ブール状態設定",
+    categories:["general","sensor"],
+    description:"Boolean Stateクラスターの設定・アラーム構成を管理する補助クラスター",
+    features:["Visual（視覚的アラーム）","Audible（音声アラーム）"],
+    keyAttributes:[
+      {name:"AlarmsActive", description:"現在アクティブなアラームの種類"},
+      {name:"AlarmsSuppressed", description:"抑制中のアラーム"}
+    ],
+    keyCommands:[
+      {name:"SuppressAlarm", description:"アラームを一時抑制"},
+      {name:"EnableDisableAlarm", description:"アラームの有効/無効切替"}
+    ],
+    tags:["アラーム","設定","センサー"]
+  },
+
+  { id:"mode-select", clusterId:"0x0050", name:"Mode Select", nameJa:"モード選択",
+    categories:["general","appliances"],
+    description:"複数のモードから1つを選択する汎用クラスター。家電のモード切替などに使用",
     features:[],
-    keyAttributes:[{name:"CurrentPhase",description:"現在の動作フェーズ（すすぎ中など）"},{name:"CountdownTime",description:"残り時間カウントダウン（秒）"}],
-    keyCommands:[{name:"Pause",description:"一時停止"},{name:"Stop",description:"停止"},{name:"Start",description:"開始/再開"},{name:"Resume",description:"一時停止から再開"}]
+    keyAttributes:[
+      {name:"CurrentMode", description:"現在選択中のモード番号"},
+      {name:"SupportedModes", description:"対応するモードの一覧（ID・名前・セマンティックタグ）"},
+      {name:"StartUpMode", description:"起動時のデフォルトモード"}
+    ],
+    keyCommands:[
+      {name:"ChangeToMode", description:"指定モードに切り替える"}
+    ],
+    tags:["モード","選択","切替","汎用"]
   },
-  { id:"temperature-measurement", clusterId:"0x0402", name:"Temperature Measurement", nameJa:"温度計測", description:"現在の温度を計測して報告。単位は°C×100の整数（25℃=2500）",
+
+  { id:"low-power", clusterId:"0x0508", name:"Low Power", nameJa:"省電力モード",
+    categories:["general","media"],
+    description:"デバイスの省電力モードを管理するクラスター。スリープへの移行を制御",
     features:[],
-    keyAttributes:[{name:"MeasuredValue",description:"現在の温度（°C×100）"},{name:"MinMeasuredValue/MaxMeasuredValue",description:"測定範囲"}],
-    keyCommands:[]
+    keyAttributes:[],
+    keyCommands:[
+      {name:"Sleep", description:"省電力モード（スリープ）に移行"}
+    ],
+    tags:["省電力","スリープ","節電"]
   },
-  { id:"humidity-measurement", clusterId:"0x0405", name:"Relative Humidity Measurement", nameJa:"湿度計測", description:"相対湿度を計測して報告。単位は%×100の整数（50%=5000）",
+
+  { id:"wake-on-lan", clusterId:"0x0503", name:"Wake On LAN", nameJa:"Wake On LAN",
+    categories:["general","media","network"],
+    description:"ネットワーク経由でスリープ中のデバイスを起動するWake On LAN機能",
     features:[],
-    keyAttributes:[{name:"MeasuredValue",description:"現在の相対湿度（%×100）"}],
-    keyCommands:[]
+    keyAttributes:[
+      {name:"MACAddress", description:"デバイスのMACアドレス"},
+      {name:"LinkLocalAddress", description:"リンクローカルIPアドレス"}
+    ],
+    keyCommands:[],
+    tags:["Wake On LAN","起動","ネットワーク","リモート起動"]
   },
-  { id:"occupancy-sensing", clusterId:"0x0406", name:"Occupancy Sensing", nameJa:"在室検知（人感）", description:"人・物体の存在を検知するクラスター。照明の自動ON/OFFや空調の在室制御に活用",
+
+  { id:"switch", clusterId:"0x003B", name:"Switch", nameJa:"スイッチ",
+    categories:["general"],
+    description:"各種スイッチの属性・イベントを管理するクラスター。ボタン押下・長押し・マルチプレスを検知",
+    features:["LatchingSwitch（ラッチ型）","MomentarySwitch（モーメンタリ型）","MSRelease","MSLongPress","MSMultiPress"],
+    keyAttributes:[
+      {name:"NumberOfPositions", description:"スイッチの位置数"},
+      {name:"CurrentPosition", description:"現在の位置"},
+      {name:"MultiPressMax", description:"マルチプレスの最大回数"}
+    ],
+    keyCommands:[],
+    tags:["スイッチ","ボタン","長押し","マルチプレス","イベント"]
+  },
+
+  { id:"operational-state", clusterId:"0x0060", name:"Operational State", nameJa:"動作状態",
+    categories:["general","appliances","robot"],
+    description:"家電・ロボットの動作状態（動作中・停止・エラー）を管理する汎用クラスター",
     features:[],
-    keyAttributes:[{name:"Occupancy",description:"在室状態（在室=1、不在=0）"},{name:"OccupancySensorType",description:"センサー種類（PIR赤外線/超音波/複合型）"},{name:"PIROccupiedToUnoccupiedDelay",description:"在室→不在と判断するまでの遅延時間（秒）"}],
-    keyCommands:[]
+    keyAttributes:[
+      {name:"CurrentPhase", description:"現在の動作フェーズ（すすぎ中など）"},
+      {name:"CountdownTime", description:"残り時間カウントダウン（秒）"},
+      {name:"OperationalState", description:"現在の動作状態（稼働・停止・一時停止・エラー）"},
+      {name:"OperationalError", description:"現在のエラー状態"}
+    ],
+    keyCommands:[
+      {name:"Pause", description:"一時停止"},
+      {name:"Stop", description:"停止"},
+      {name:"Start", description:"開始/再開"},
+      {name:"Resume", description:"一時停止から再開"}
+    ],
+    tags:["動作状態","一時停止","停止","エラー","完了通知"]
   },
-  { id:"illuminance-measurement", clusterId:"0x0400", name:"Illuminance Measurement", nameJa:"照度計測", description:"周囲の明るさを計測。自動調光・カーテン開閉の制御に活用",
+
+  { id:"messages", clusterId:"0x0097", name:"Messages", nameJa:"メッセージ",
+    categories:["general"],
+    description:"デバイスへのメッセージ送受信を管理するクラスター。ユーザーへの通知表示などに活用",
+    features:["ReceivedConfirmation","ConfirmationResponse","ConfirmationReply","ProtectedMessages"],
+    keyAttributes:[
+      {name:"Messages", description:"現在のメッセージキュー"},
+      {name:"ActiveMessageIDs", description:"アクティブなメッセージIDのリスト"}
+    ],
+    keyCommands:[
+      {name:"PresentMessagesRequest", description:"メッセージの表示を要求"},
+      {name:"CancelMessagesRequest", description:"メッセージをキャンセル"}
+    ],
+    tags:["メッセージ","通知","表示"]
+  },
+
+  { id:"service-area", clusterId:"0x0150", name:"Service Area", nameJa:"サービスエリア",
+    categories:["general","robot"],
+    description:"ロボット掃除機などが動作する「エリア（部屋・ゾーン）」を定義・管理するクラスター",
+    features:["SelectWhileRunning（動作中のエリア選択）","ProgressReporting（進捗報告）","Maps（マップ管理）"],
+    keyAttributes:[
+      {name:"SupportedAreas", description:"対応エリアの一覧（名前・マップ位置付き）"},
+      {name:"SelectedAreas", description:"現在選択されているエリア"},
+      {name:"CurrentArea", description:"現在作業中のエリア"}
+    ],
+    keyCommands:[
+      {name:"SelectAreas", description:"作業エリアを選択"},
+      {name:"SkipArea", description:"現在のエリアをスキップして次へ"}
+    ],
+    tags:["エリア","部屋","ゾーン","ロボット掃除機","マップ"]
+  },
+
+  // =====================================================
+  // 📊 Ch2 計測・センシング（Measurement & Sensing）
+  // =====================================================
+
+  { id:"illuminance-measurement", clusterId:"0x0400", name:"Illuminance Measurement", nameJa:"照度計測",
+    categories:["sensor"],
+    description:"周囲の照度（明るさ）を計測。自動調光・カーテン開閉の制御に活用",
     features:[],
-    keyAttributes:[{name:"MeasuredValue",description:"現在の照度"},{name:"LightSensorType",description:"センサーの種類"}],
-    keyCommands:[]
+    keyAttributes:[
+      {name:"MeasuredValue", description:"現在の照度（ルクス換算可）"},
+      {name:"LightSensorType", description:"センサーの種類"}
+    ],
+    keyCommands:[],
+    tags:["照度","明るさ","センサー","日没","自動調光"]
   },
-  { id:"smoke-co-alarm", clusterId:"0x005C", name:"Smoke CO Alarm", nameJa:"煙・CO警報", description:"煙と一酸化炭素（CO）を検知して警報。バッテリー警告・耐用年数通知も含む",
-    features:["SMOKE（煙検知）","CO（CO検知）"],
-    keyAttributes:[{name:"SmokeState",description:"煙の警報状態（Normal/Warning/Critical）"},{name:"COState",description:"COの警報状態"},{name:"BatteryAlert",description:"バッテリー残量警告"},{name:"EndOfServiceAlert",description:"耐用年数終了アラート"}],
-    keyCommands:[{name:"SelfTestRequest",description:"セルフテストを要求"}]
+
+  { id:"temperature-measurement", clusterId:"0x0402", name:"Temperature Measurement", nameJa:"温度計測",
+    categories:["sensor","hvac","appliances"],
+    description:"現在の温度を計測して報告。単位は°C×100の整数（25℃=2500）",
+    features:[],
+    keyAttributes:[
+      {name:"MeasuredValue", description:"現在の温度（°C×100）"},
+      {name:"MinMeasuredValue/MaxMeasuredValue", description:"測定範囲"}
+    ],
+    keyCommands:[],
+    tags:["温度","センサー","熱中症","空調","計測"]
   },
-  { id:"air-quality", clusterId:"0x005B", name:"Air Quality", nameJa:"空気質（総合評価）", description:"室内空気質の総合評価。7段階（Good→ExtremelyPoor）で報告するクラスター",
+
+  { id:"pressure-measurement", clusterId:"0x0403", name:"Pressure Measurement", nameJa:"気圧計測",
+    categories:["sensor"],
+    description:"気圧や液体圧力を計測するクラスター。天気予測・高度計測・流体管理に活用",
+    features:["Extended（拡張精度）"],
+    keyAttributes:[
+      {name:"MeasuredValue", description:"現在の気圧（hPa×10）"},
+      {name:"Scale", description:"測定値のスケール係数"}
+    ],
+    keyCommands:[],
+    tags:["気圧","圧力","センサー","天気"]
+  },
+
+  { id:"humidity-measurement", clusterId:"0x0405", name:"Relative Humidity Measurement", nameJa:"湿度計測",
+    categories:["sensor","hvac"],
+    description:"相対湿度を計測して報告。単位は%×100の整数（50%=5000）",
+    features:[],
+    keyAttributes:[
+      {name:"MeasuredValue", description:"現在の相対湿度（%×100）"}
+    ],
+    keyCommands:[],
+    tags:["湿度","センサー","カビ","乾燥","加湿器"]
+  },
+
+  { id:"occupancy-sensing", clusterId:"0x0406", name:"Occupancy Sensing", nameJa:"在室検知（人感）",
+    categories:["sensor","hvac"],
+    description:"人・物体の存在を検知するクラスター。照明の自動ON/OFFや空調の在室制御に活用",
+    features:[],
+    keyAttributes:[
+      {name:"Occupancy", description:"在室状態（在室=1、不在=0）"},
+      {name:"OccupancySensorType", description:"センサー種類（PIR赤外線/超音波/複合型）"},
+      {name:"PIROccupiedToUnoccupiedDelay", description:"在室→不在と判断するまでの遅延時間（秒）"}
+    ],
+    keyCommands:[],
+    tags:["人感","在室","不在","センサー","自動照明","省エネ"]
+  },
+
+  { id:"carbon-monoxide", clusterId:"0x040C", name:"Carbon Monoxide Concentration", nameJa:"CO濃度計測",
+    categories:["sensor"],
+    description:"一酸化炭素（CO）の濃度を計測するクラスター。Smoke CO Alarmと連携して安全管理に活用",
+    features:["NumericMeasurement","LevelIndication","MediumLevel","CriticalLevel","PeakMeasurement","AverageMeasurement"],
+    keyAttributes:[
+      {name:"MeasuredValue", description:"現在のCO濃度（ppm）"},
+      {name:"LevelValue", description:"危険レベル評価（None/Low/Medium/High/Critical）"}
+    ],
+    keyCommands:[],
+    tags:["CO","一酸化炭素","濃度","安全","センサー"]
+  },
+
+  { id:"carbon-dioxide", clusterId:"0x040D", name:"Carbon Dioxide Concentration", nameJa:"CO₂濃度計測",
+    categories:["sensor"],
+    description:"二酸化炭素（CO₂）の濃度を計測するクラスター。換気・集中力管理に活用",
+    features:["NumericMeasurement","LevelIndication","PeakMeasurement","AverageMeasurement"],
+    keyAttributes:[
+      {name:"MeasuredValue", description:"現在のCO₂濃度（ppm）"},
+      {name:"LevelValue", description:"レベル評価（1000ppm超で換気推奨）"}
+    ],
+    keyCommands:[],
+    tags:["CO2","二酸化炭素","換気","濃度","センサー","空気質"]
+  },
+
+  { id:"pm25-concentration", clusterId:"0x042A", name:"PM2.5 Concentration", nameJa:"PM2.5濃度計測",
+    categories:["sensor"],
+    description:"微小粒子状物質（PM2.5）の濃度を計測するクラスター。大気汚染・健康管理に活用",
+    features:["NumericMeasurement","LevelIndication","PeakMeasurement","AverageMeasurement"],
+    keyAttributes:[
+      {name:"MeasuredValue", description:"現在のPM2.5濃度（μg/m³）"},
+      {name:"LevelValue", description:"危険レベル評価"}
+    ],
+    keyCommands:[],
+    tags:["PM2.5","微粒子","空気質","センサー","健康"]
+  },
+
+  { id:"air-quality", clusterId:"0x005B", name:"Air Quality", nameJa:"空気質（総合評価）",
+    categories:["sensor"],
+    description:"室内空気質の総合評価。7段階（Good→ExtremelyPoor）で報告するクラスター",
     features:["Fair","Moderate","VeryPoor","ExtremelyPoor"],
-    keyAttributes:[{name:"AirQuality",description:"現在の空気質評価（7段階）"}],
-    keyCommands:[]
+    keyAttributes:[
+      {name:"AirQuality", description:"現在の空気質評価（Unknown/Good/Fair/Moderate/Poor/VeryPoor/ExtremelyPoor）"}
+    ],
+    keyCommands:[],
+    tags:["空気質","総合評価","PM2.5","VOC","CO2","センサー"]
   },
-  { id:"thermostat", clusterId:"0x0201", name:"Thermostat", nameJa:"サーモスタット", description:"温度制御の司令塔。エアコン・床暖房・換気の統合制御。在室/不在の温度設定切り替えも対応",
-    features:["Occupancy（在室連動）","Setback（省エネセットバック）","AutoMode（自動モード）"],
-    keyAttributes:[{name:"LocalTemperature",description:"現在の室温（°C×100）"},{name:"OccupiedCoolingSetpoint",description:"在室時の冷房設定温度"},{name:"OccupiedHeatingSetpoint",description:"在室時の暖房設定温度"},{name:"SystemMode",description:"動作モード（オフ・自動・冷房・暖房等）"}],
-    keyCommands:[{name:"SetpointRaiseLower",description:"設定温度を相対的に上げ下げ"}]
+
+  { id:"smoke-co-alarm", clusterId:"0x005C", name:"Smoke CO Alarm", nameJa:"煙・CO警報",
+    categories:["sensor"],
+    description:"煙と一酸化炭素（CO）を検知して警報。バッテリー警告・耐用年数通知も含む",
+    features:["SMOKE（煙検知）","CO（CO検知）"],
+    keyAttributes:[
+      {name:"SmokeState", description:"煙の警報状態（Normal/Warning/Critical）"},
+      {name:"COState", description:"COの警報状態"},
+      {name:"BatteryAlert", description:"バッテリー残量警告"},
+      {name:"EndOfServiceAlert", description:"耐用年数終了アラート"}
+    ],
+    keyCommands:[
+      {name:"SelfTestRequest", description:"セルフテストを要求"}
+    ],
+    tags:["煙","CO","一酸化炭素","警報","火災","安全","センサー"]
   },
-  { id:"fan-control", clusterId:"0x0202", name:"Fan Control", nameJa:"ファンコントロール", description:"ファンの速度・方向・動作モードを制御。シーリングファンや空気清浄機のファンに使用",
+
+  { id:"flow-measurement", clusterId:"0x0404", name:"Flow Measurement", nameJa:"流量計測",
+    categories:["sensor"],
+    description:"液体・気体の流量を計測するクラスター。水道使用量の計測や漏水早期発見に活用",
+    features:[],
+    keyAttributes:[
+      {name:"MeasuredValue", description:"現在の流量"},
+      {name:"MinMeasuredValue/MaxMeasuredValue", description:"計測範囲"}
+    ],
+    keyCommands:[],
+    tags:["流量","水道","センサー","節水","漏水"]
+  },
+
+  { id:"electrical-power-measurement", clusterId:"0x0090", name:"Electrical Power Measurement", nameJa:"電力計測",
+    categories:["sensor","energy"],
+    description:"電力（W）・電流（A）・電圧（V）をリアルタイムに計測するクラスター",
+    features:["DirectCurrent（直流）","AlternatingCurrent（交流）","PolyphasePower（三相電力）"],
+    keyAttributes:[
+      {name:"Voltage", description:"電圧（mV単位）"},
+      {name:"ActiveCurrent", description:"有効電流（mA単位）"},
+      {name:"ActivePower", description:"有効電力（mW単位）"}
+    ],
+    keyCommands:[],
+    tags:["電力","電流","電圧","計測","省エネ","見える化"]
+  },
+
+  { id:"electrical-energy-measurement", clusterId:"0x0091", name:"Electrical Energy Measurement", nameJa:"電力量計測",
+    categories:["sensor","energy"],
+    description:"電力量（kWh）を積算計測するクラスター。月次電力コストの把握などに活用",
+    features:["ImportedEnergy（消費電力量）","ExportedEnergy（売電電力量）","CumulativeEnergy（積算）","PeriodicEnergy（周期計測）"],
+    keyAttributes:[
+      {name:"CumulativeEnergyImported", description:"積算消費電力量（kWh）"},
+      {name:"CumulativeEnergyExported", description:"積算売電電力量（kWh）"}
+    ],
+    keyCommands:[],
+    tags:["電力量","積算","売電","買電","kWh","省エネ"]
+  },
+
+  { id:"power-topology", clusterId:"0x009C", name:"Power Topology", nameJa:"電力トポロジー",
+    categories:["sensor","energy"],
+    description:"電力フローの構成（どの機器がどこから電力を受け取るか）を管理するクラスター",
+    features:["NodeTopology（ノード型）","TreeTopology（ツリー型）","SetTopology（セット型）"],
+    keyAttributes:[
+      {name:"AvailableEndpoints", description:"接続可能なエンドポイント一覧"},
+      {name:"ActiveEndpoints", description:"現在アクティブなエンドポイント"}
+    ],
+    keyCommands:[],
+    tags:["電力フロー","トポロジー","構成管理","エネルギー"]
+  },
+
+  // =====================================================
+  // 💡 Ch3 照明（Lighting）
+  // =====================================================
+
+  { id:"color-control", clusterId:"0x0300", name:"Color Control", nameJa:"カラーコントロール",
+    categories:["lighting"],
+    description:"照明の色（HSV・色温度・XY）を制御。サーカディアン照明の核心クラスター",
+    features:["HueSaturation（色相・彩度）","ColorTemperature（色温度モード 2700K〜6500K）","XY（CIE1931色空間）","ColorLoop（自動色変化）"],
+    keyAttributes:[
+      {name:"ColorTemperatureMireds", description:"現在の色温度（ミレッド値。大=暖色、小=寒色）"},
+      {name:"CurrentHue", description:"現在の色相（0〜254）"},
+      {name:"CurrentSaturation", description:"現在の彩度（0〜254）"},
+      {name:"ColorMode", description:"現在の色制御モード（HSV/XY/CT）"}
+    ],
+    keyCommands:[
+      {name:"MoveToColorTemperature", description:"指定の色温度に移動"},
+      {name:"MoveColorTemperature", description:"色温度を連続変化"},
+      {name:"MoveToHueAndSaturation", description:"色相と彩度を指定"},
+      {name:"ColorLoopSet", description:"カラーループ（自動色変化）設定"}
+    ],
+    tags:["色温度","カラー","RGB","HSV","サーカディアン","照明","適応照明","2700K","6500K"]
+  },
+
+  { id:"ballast-configuration", clusterId:"0x0301", name:"Ballast Configuration", nameJa:"バラスト設定",
+    categories:["lighting"],
+    description:"照明バラスト（安定器）の詳細設定クラスター。調光の最小・最大値を細かく設定",
+    features:[],
+    keyAttributes:[
+      {name:"MinLevel/MaxLevel", description:"バラストが動作するレベルの上下限"},
+      {name:"PowerOnLevel", description:"電源投入時のレベル"},
+      {name:"IntrinsicBallastFactor", description:"バラスト固有係数"}
+    ],
+    keyCommands:[],
+    tags:["バラスト","安定器","調光設定","照明"]
+  },
+
+  // =====================================================
+  // 🌡 Ch4 HVAC（空調系）
+  // =====================================================
+
+  { id:"pump-configuration", clusterId:"0x0200", name:"Pump Configuration and Control", nameJa:"ポンプ設定・制御",
+    categories:["hvac"],
+    description:"ポンプの動作モード・速度・圧力などを設定・制御するクラスター",
+    features:["ConstantPressure（定圧制御）","CompensatedPressure（補償圧力）","ConstantFlow（定流量）","ConstantSpeed（定速）","ConstantTemperature（定温）","Automatic（自動）"],
+    keyAttributes:[
+      {name:"MaxPressure", description:"最大圧力"},
+      {name:"MaxSpeed", description:"最大速度（RPM）"},
+      {name:"OperationMode", description:"動作モード（Normal/Minimum/Maximum/Local）"}
+    ],
+    keyCommands:[],
+    tags:["ポンプ","給水","循環","圧力","流量"]
+  },
+
+  { id:"thermostat", clusterId:"0x0201", name:"Thermostat", nameJa:"サーモスタット",
+    categories:["hvac"],
+    description:"温度制御の司令塔。エアコン・床暖房・換気の統合制御。在室/不在の温度設定切り替えも対応",
+    features:["Occupancy（在室連動）","Setback（省エネセットバック）","AutoMode（自動モード）","HVAC解決"],
+    keyAttributes:[
+      {name:"LocalTemperature", description:"現在の室温（°C×100）"},
+      {name:"OccupiedCoolingSetpoint", description:"在室時の冷房設定温度"},
+      {name:"OccupiedHeatingSetpoint", description:"在室時の暖房設定温度"},
+      {name:"SystemMode", description:"動作モード（オフ・自動・冷房・暖房等）"},
+      {name:"ThermostatRunningMode", description:"現在の実行モード（冷房中/暖房中）"}
+    ],
+    keyCommands:[
+      {name:"SetpointRaiseLower", description:"設定温度を相対的に上げ下げ"}
+    ],
+    tags:["サーモスタット","温度制御","空調","在室","省エネ","エアコン","HVAC"]
+  },
+
+  { id:"fan-control", clusterId:"0x0202", name:"Fan Control", nameJa:"ファンコントロール",
+    categories:["hvac","appliances"],
+    description:"ファンの速度・方向・動作モードを制御。シーリングファンや空気清浄機のファンに使用",
     features:["MultiSpeed（多段階速度）","Auto（自動速度）","Rocking（首振り）","Wind（自然風モード）","AirflowDirection（気流方向）"],
-    keyAttributes:[{name:"FanMode",description:"現在のファンモード（オフ・低・中・高・自動等）"},{name:"PercentSetting",description:"ファン速度の設定値（%）"}],
-    keyCommands:[{name:"Step",description:"ファン速度をステップ変化"}]
+    keyAttributes:[
+      {name:"FanMode", description:"現在のファンモード（オフ・低・中・高・自動等）"},
+      {name:"PercentSetting", description:"ファン速度の設定値（%）"},
+      {name:"WindSetting", description:"自然風モードの設定"}
+    ],
+    keyCommands:[
+      {name:"Step", description:"ファン速度をステップ変化"}
+    ],
+    tags:["ファン","扇風機","首振り","速度","シーリングファン","換気"]
   },
-  { id:"door-lock", clusterId:"0x0101", name:"Door Lock", nameJa:"ドアロック", description:"スマートロックの中核クラスター。PIN・指紋・顔認証・Aliroデジタルキーなどマルチモーダル対応",
-    features:["PIN（暗証番号）","RID（リモート識別）","FGP（指紋認証）","FACE（顔認証）","ALIRO（デジタルキー）","RFID（ICカード）"],
-    keyAttributes:[{name:"LockState",description:"現在の状態（未施錠・施錠済・施錠中・解錠中）"},{name:"AutoRelockTime",description:"自動施錠までの時間（秒）"}],
-    keyCommands:[{name:"LockDoor",description:"施錠する"},{name:"UnlockDoor",description:"解錠する"},{name:"UnlockWithTimeout",description:"指定時間後に自動施錠して解錠"},{name:"SetCredential",description:"PIN等の認証情報を登録"}]
+
+  { id:"thermostat-ui-configuration", clusterId:"0x0204", name:"Thermostat User Interface Configuration", nameJa:"サーモスタットUI設定",
+    categories:["hvac"],
+    description:"サーモスタットの表示設定（摂氏/華氏・キーパッドロック）を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"TemperatureDisplayMode", description:"表示温度単位（摂氏/華氏）"},
+      {name:"KeypadLockout", description:"キーパッドのロック状態（0=無効、1〜5=段階的ロック）"}
+    ],
+    keyCommands:[],
+    tags:["サーモスタット","UI","表示設定","キーパッドロック"]
   },
-  { id:"window-covering", clusterId:"0x0102", name:"Window Covering", nameJa:"電動ブラインド制御", description:"電動ブラインド・ロールスクリーン・電動カーテンを制御。上下移動とチルト角度に対応",
+
+  // =====================================================
+  // 🔐 Ch5 アクセス制御（Access Control）
+  // =====================================================
+
+  { id:"door-lock", clusterId:"0x0101", name:"Door Lock", nameJa:"ドアロック",
+    categories:["entry"],
+    description:"スマートロックの中核クラスター。PIN・指紋・顔認証・Aliroデジタルキーなどマルチモーダル対応",
+    features:["PIN（暗証番号）","RID（リモート識別）","FGP（指紋認証）","FACE（顔認証）","ALIRO（デジタルキー）","RFID（ICカード）","USR（ユーザー管理）"],
+    keyAttributes:[
+      {name:"LockState", description:"現在の状態（未施錠・施錠済・施錠中・解錠中）"},
+      {name:"AutoRelockTime", description:"自動施錠までの時間（秒）"},
+      {name:"NumberOfPINUsersSupported", description:"登録可能なPINユーザー数"}
+    ],
+    keyCommands:[
+      {name:"LockDoor", description:"施錠する"},
+      {name:"UnlockDoor", description:"解錠する"},
+      {name:"UnlockWithTimeout", description:"指定時間後に自動施錠して解錠"},
+      {name:"SetCredential", description:"PIN等の認証情報を登録"},
+      {name:"ClearCredential", description:"認証情報を削除"}
+    ],
+    tags:["ロック","施錠","解錠","PIN","指紋","Aliro","デジタルキー","玄関","セキュリティ"]
+  },
+
+  { id:"window-covering", clusterId:"0x0102", name:"Window Covering", nameJa:"電動ブラインド制御",
+    categories:["entry"],
+    description:"電動ブラインド・ロールスクリーン・電動カーテンを制御。上下移動とチルト角度に対応",
     features:["Lift（上下移動）","Tilt（角度調整）","PositionAwareLift（位置把握）","AbsolutePosition（絶対位置制御）"],
-    keyAttributes:[{name:"CurrentPositionLiftPercentage",description:"現在の開閉率（%）"},{name:"CurrentPositionTilt",description:"現在のチルト角"}],
-    keyCommands:[{name:"UpOrOpen",description:"完全に開く"},{name:"DownOrClose",description:"完全に閉じる"},{name:"Stop",description:"動作を止める"},{name:"GoToLiftPercentage",description:"指定の開閉率に移動"}]
+    keyAttributes:[
+      {name:"CurrentPositionLiftPercentage", description:"現在の開閉率（%）"},
+      {name:"CurrentPositionTilt", description:"現在のチルト角"}
+    ],
+    keyCommands:[
+      {name:"UpOrOpen", description:"完全に開く"},
+      {name:"DownOrClose", description:"完全に閉じる"},
+      {name:"Stop", description:"動作を止める"},
+      {name:"GoToLiftPercentage", description:"指定の開閉率に移動"}
+    ],
+    tags:["ブラインド","カーテン","電動","日射","採光","遮光"]
   },
-  { id:"closure-control", clusterId:"0x0105", name:"Closure Control", nameJa:"クロージャー制御（新世代）", description:"v1.5新規。窓・ドア・ゲート・キャビネットなど複雑な開閉機構に対応した次世代クラスター",
-    features:["Positioning（位置精度制御）","Latching（ラッチ機構）","SpeedControl（速度制御）","VentilationMode（換気モード）"],
-    keyAttributes:[{name:"MainState",description:"メインの開閉状態（開・閉・動作中・一時停止等）"},{name:"CountdownTime",description:"自動閉鎖までのカウントダウン"}],
-    keyCommands:[{name:"Stop",description:"動作を止める"},{name:"MoveTo",description:"指定位置に移動"},{name:"Calibrate",description:"キャリブレーションを実行"}]
+
+  { id:"closure-control", clusterId:"0x0105", name:"Closure Control", nameJa:"クロージャー制御",
+    categories:["entry"],
+    description:"v1.5新規。窓・ドア・ゲート・キャビネットなど複雑な開閉機構に対応した次世代クラスター",
+    features:["Positioning（位置精度制御）","Latching（ラッチ機構）","SpeedControl（速度制御）","VentilationMode（換気モード）","Pedestrian（歩行者モード）"],
+    keyAttributes:[
+      {name:"MainState", description:"メインの開閉状態（開・閉・動作中・一時停止等）"},
+      {name:"CountdownTime", description:"自動閉鎖までのカウントダウン"}
+    ],
+    keyCommands:[
+      {name:"Stop", description:"動作を止める"},
+      {name:"MoveTo", description:"指定位置に移動"},
+      {name:"Calibrate", description:"キャリブレーションを実行"}
+    ],
+    tags:["クロージャー","窓","ドア","ガレージ","ゲート","v1.5"]
   },
-  { id:"device-energy-management", clusterId:"0x0098", name:"Device Energy Management", nameJa:"デバイスエネルギー管理", description:"スマートホームのエネルギー最適化の要。太陽光の余剰電力で家電を動かすスマート制御を実現",
-    features:["PowerAdjustment（電力調整）","StartTimeAdjustment（開始時刻調整）","Pausable（一時停止）","ConstraintBasedAdjustment（制約ベース調整）"],
-    keyAttributes:[{name:"ESAType",description:"エネルギー管理の種類（EV充電器・給湯器・家電等）"},{name:"AbsMinPower/AbsMaxPower",description:"電力の絶対最小・最大値"}],
-    keyCommands:[{name:"PowerAdjustRequest",description:"電力消費量を調整する要求"},{name:"StartTimeAdjustRequest",description:"動作開始時刻を変更する要求"}]
-  },
-  { id:"energy-evse", clusterId:"0x0099", name:"Energy EVSE", nameJa:"EV充電器制御", description:"EV充電器の制御クラスター。スマートチャージ（太陽光余剰電力での充電等）に対応",
-    features:["ChargingPreferences（充電設定）","SoCReporting（バッテリー残量報告）","PlugAndCharge（自動認証充電）"],
-    keyAttributes:[{name:"State",description:"充電器の状態（未接続・接続・充電中・充電完了等）"},{name:"MinimumChargeCurrent/MaximumChargeCurrent",description:"充電電流の範囲設定"}],
-    keyCommands:[{name:"EnableCharging",description:"充電を許可"},{name:"DisableCharging",description:"充電を停止する"}]
-  },
-  { id:"camera-av-stream", clusterId:"0x0551", name:"Camera AV Stream Management", nameJa:"カメラ映像・音声管理", description:"カメラの映像・音声・スナップショットのストリーム管理。解像度・暗視設定などを制御",
-    features:["PrivacyMode（プライバシーモード）","NightVision（暗視）","WatermarkImage（透かし）"],
-    keyAttributes:[{name:"MaxConcurrentVideoEncoders",description:"同時エンコード可能なストリーム数"},{name:"NightVisionUsesInfrared",description:"赤外線暗視カメラかどうか"}],
-    keyCommands:[{name:"AllocateVideoStream",description:"映像ストリームを確保"},{name:"AllocateAudioStream",description:"音声ストリームを確保"}]
-  },
-  { id:"webrtc-transport", clusterId:"0x0553", name:"WebRTC Transport Provider", nameJa:"WebRTC映像配信", description:"カメラ側のWebRTC通信を管理するクラスター。リアルタイム映像配信の確立を担当",
+
+  { id:"closure-dimension", clusterId:"0x0106", name:"Closure Dimension", nameJa:"クロージャー寸法",
+    categories:["entry"],
+    description:"クロージャーデバイスの物理的サイズ・動作範囲を定義するクラスター",
     features:[],
-    keyAttributes:[{name:"CurrentSessions",description:"現在アクティブなWebRTCセッションのリスト"}],
-    keyCommands:[{name:"SolicitOffer",description:"WebRTCセッションのオファーを要求"},{name:"EndSession",description:"セッションを終了する"}]
+    keyAttributes:[
+      {name:"OverallDimension", description:"クロージャー全体の寸法"},
+      {name:"TranslationalRange", description:"移動可能な範囲"}
+    ],
+    keyCommands:[],
+    tags:["クロージャー","寸法","物理サイズ","v1.5"]
   },
-  { id:"media-playback", clusterId:"0x0509", name:"Media Playback", nameJa:"メディア再生", description:"動画・音楽の再生・停止・早送りなどを制御するクラスター",
-    features:["AdvancedSeek（高精度シーク）","VariableSpeed（可変速度再生）"],
-    keyAttributes:[{name:"CurrentState",description:"再生状態（再生中・停止・一時停止等）"},{name:"PlaybackSpeed",description:"再生速度（1.0=標準）"}],
-    keyCommands:[{name:"Play/Pause/Stop",description:"基本の再生コントロール"},{name:"FastForward/Rewind",description:"早送り・巻き戻し"},{name:"Seek",description:"指定位置へジャンプ"}]
+
+  // =====================================================
+  // 📺 Ch6 メディア（Media）
+  // =====================================================
+
+  { id:"media-playback", clusterId:"0x0509", name:"Media Playback", nameJa:"メディア再生",
+    categories:["media"],
+    description:"動画・音楽の再生・停止・早送りなどを制御するクラスター",
+    features:["AdvancedSeek（高精度シーク）","VariableSpeed（可変速度再生）","TextTracks（テキストトラック）","AudioTracks（音声トラック）"],
+    keyAttributes:[
+      {name:"CurrentState", description:"再生状態（再生中・停止・一時停止等）"},
+      {name:"PlaybackSpeed", description:"再生速度（1.0=標準）"},
+      {name:"SeekRangeEnd", description:"シーク可能範囲の終端"}
+    ],
+    keyCommands:[
+      {name:"Play/Pause/Stop", description:"基本の再生コントロール"},
+      {name:"FastForward/Rewind", description:"早送り・巻き戻し"},
+      {name:"Seek", description:"指定位置へジャンプ"}
+    ],
+    tags:["再生","停止","早送り","動画","音楽","メディア"]
   },
-  { id:"rvc-operational-state", clusterId:"0x0061", name:"RVC Operational State", nameJa:"ロボット掃除機動作状態", description:"ロボット掃除機専用の動作状態クラスター。充電・ドッキングなど掃除機特有の状態を管理",
+
+  { id:"channel", clusterId:"0x0504", name:"Channel", nameJa:"チャンネル管理",
+    categories:["media"],
+    description:"テレビチャンネルの一覧・切替・検索を管理するクラスター",
+    features:["ChannelPaging（ページング）","RecordProgram（録画）","LineupInfo（チャンネルラインナップ）"],
+    keyAttributes:[
+      {name:"ChannelList", description:"利用可能なチャンネル一覧"},
+      {name:"CurrentChannel", description:"現在のチャンネル情報"}
+    ],
+    keyCommands:[
+      {name:"ChangeChannel", description:"チャンネルを切り替える"},
+      {name:"ChangeChannelByNumber", description:"チャンネル番号で直接切替"},
+      {name:"SkipChannel", description:"チャンネルを上下にスキップ"}
+    ],
+    tags:["チャンネル","TV","テレビ","メディア"]
+  },
+
+  { id:"target-navigator", clusterId:"0x0505", name:"Target Navigator", nameJa:"ターゲットナビゲーター",
+    categories:["media"],
+    description:"スマートTV上のUIナビゲーション（ホーム画面・設定への遷移）を管理するクラスター",
     features:[],
-    keyAttributes:[{name:"OperationalState",description:"現在の状態（SeekingCharger・Charging・Docked等）"},{name:"OperationalError",description:"現在のエラー状態"}],
-    keyCommands:[{name:"Pause/Resume",description:"一時停止・再開"},{name:"GoHome",description:"充電ドックに戻る"}]
+    keyAttributes:[
+      {name:"TargetList", description:"ナビゲーション可能なターゲット一覧"},
+      {name:"CurrentTarget", description:"現在のターゲット"}
+    ],
+    keyCommands:[
+      {name:"NavigateTarget", description:"指定ターゲットに遷移"}
+    ],
+    tags:["ナビゲーション","TV","UI","メディア"]
   },
-  { id:"laundry-washer-mode", clusterId:"0x0051", name:"Laundry Washer Mode", nameJa:"洗濯機モード", description:"洗濯機の動作モードを管理するクラスター。洗濯機専用モードを定義",
-    features:[],
-    keyAttributes:[{name:"SupportedModes",description:"対応する洗濯モード一覧"},{name:"CurrentMode",description:"現在選択されているモード"}],
-    keyCommands:[{name:"ChangeToMode",description:"指定モードに変更"}]
+
+  { id:"media-input", clusterId:"0x0506", name:"Media Input", nameJa:"メディア入力",
+    categories:["media"],
+    description:"HDMI・AV等のメディア入力ソースの一覧・切替を管理するクラスター",
+    features:["NameUpdates（入力名の変更）"],
+    keyAttributes:[
+      {name:"InputList", description:"利用可能な入力ソース一覧（HDMI1・HDMI2等）"},
+      {name:"CurrentInput", description:"現在の入力ソース"}
+    ],
+    keyCommands:[
+      {name:"SelectInput", description:"入力ソースを切り替える"},
+      {name:"ShowInputStatus", description:"入力状態を表示"},
+      {name:"HideInputStatus", description:"入力状態を非表示"}
+    ],
+    tags:["HDMI","入力","切替","TV","メディア"]
   },
-  { id:"ballast-configuration", clusterId:"0x0301", name:"Ballast Configuration", nameJa:"バラスト設定", description:"照明バラスト（安定器）の詳細設定クラスター。調光の最小・最大値を細かく設定",
+
+  { id:"keypad-input", clusterId:"0x051C", name:"Keypad Input", nameJa:"キーパッド入力",
+    categories:["media"],
+    description:"リモコンのキーコードを送信するクラスター。CEC対応TVのリモコン制御などに使用",
+    features:["NavigationKeyCodes","LocationKeys","NumberInputKeys"],
+    keyAttributes:[],
+    keyCommands:[
+      {name:"SendKey", description:"キーコードを送信（上下左右・決定・数字等）"}
+    ],
+    tags:["リモコン","キーパッド","CEC","TV","入力"]
+  },
+
+  { id:"account-login", clusterId:"0x050A", name:"Account Login", nameJa:"アカウントログイン",
+    categories:["media"],
+    description:"ストリーミングサービス（Netflix等）へのログイン状態を管理するクラスター",
     features:[],
-    keyAttributes:[{name:"MinLevel/MaxLevel",description:"バラストが動作するレベルの上下限"},{name:"PowerOnLevel",description:"電源投入時のレベル"}],
-    keyCommands:[]
+    keyAttributes:[],
+    keyCommands:[
+      {name:"GetSetupPIN", description:"セットアップPINを取得"},
+      {name:"Login", description:"アカウントにログイン"},
+      {name:"Logout", description:"ログアウト"}
+    ],
+    tags:["ログイン","アカウント","ストリーミング","Netflix","メディア"]
+  },
+
+  { id:"content-control", clusterId:"0x050B", name:"Content Control", nameJa:"コンテンツ制御",
+    categories:["media"],
+    description:"ペアレンタルコントロール・視聴制限を管理するクラスター",
+    features:["ScreenTime（視聴時間管理）","PINManagement","BlockUnrated","OnDemandRatings","ScheduledContentRatings"],
+    keyAttributes:[
+      {name:"Enabled", description:"コンテンツ制御の有効/無効"},
+      {name:"OnDemandRatings", description:"オンデマンドコンテンツのレーティング設定"}
+    ],
+    keyCommands:[
+      {name:"UpdatePIN", description:"PINを更新"},
+      {name:"SetScreenDailyTime", description:"1日の視聴時間制限を設定"}
+    ],
+    tags:["ペアレンタルコントロール","視聴制限","子ども","メディア"]
+  },
+
+  { id:"content-launcher", clusterId:"0x050C", name:"Content Launcher", nameJa:"コンテンツランチャー",
+    categories:["media"],
+    description:"コンテンツ（動画・音楽・アプリ）の起動・再生を開始するクラスター",
+    features:["ContentSearch（コンテンツ検索）","URLPlayback（URL直接再生）"],
+    keyAttributes:[
+      {name:"AcceptHeader", description:"対応コンテンツタイプ"},
+      {name:"SupportedStreamingProtocols", description:"対応ストリーミングプロトコル"}
+    ],
+    keyCommands:[
+      {name:"LaunchContent", description:"コンテンツを検索して起動"},
+      {name:"LaunchURL", description:"指定URLのコンテンツを再生"}
+    ],
+    tags:["コンテンツ","起動","再生","ストリーミング","メディア"]
+  },
+
+  { id:"audio-output", clusterId:"0x050D", name:"Audio Output", nameJa:"音声出力",
+    categories:["media"],
+    description:"音声出力先（スピーカー・HDMI ARC・Bluetooth等）の切替を管理するクラスター",
+    features:["NameUpdates（出力名の変更）"],
+    keyAttributes:[
+      {name:"OutputList", description:"利用可能な音声出力先一覧"},
+      {name:"CurrentOutput", description:"現在の音声出力先"}
+    ],
+    keyCommands:[
+      {name:"SelectOutput", description:"音声出力先を切り替える"},
+      {name:"RenameOutput", description:"出力先の名前を変更"}
+    ],
+    tags:["音声出力","スピーカー","HDMI","ARC","メディア"]
+  },
+
+  { id:"application-launcher", clusterId:"0x050E", name:"Application Launcher", nameJa:"アプリランチャー",
+    categories:["media"],
+    description:"スマートTV上のアプリ（Netflix・YouTube等）の起動・終了を管理するクラスター",
+    features:["ApplicationPlatform（プラットフォーム管理）"],
+    keyAttributes:[
+      {name:"CatalogList", description:"インストール済みアプリカタログのリスト"}
+    ],
+    keyCommands:[
+      {name:"LaunchApp", description:"指定アプリを起動"},
+      {name:"StopApp", description:"アプリを停止"},
+      {name:"HideApp", description:"アプリをバックグラウンドに"},
+      {name:"GetAppStatus", description:"アプリの状態を取得"}
+    ],
+    tags:["アプリ","起動","Netflix","YouTube","スマートTV","メディア"]
+  },
+
+  { id:"application-basic", clusterId:"0x050F", name:"Application Basic", nameJa:"アプリ基本情報",
+    categories:["media"],
+    description:"TV上で動作するアプリの基本情報（名前・バージョン・状態）を提供するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"VendorName", description:"アプリの提供元（例：Netflix）"},
+      {name:"ApplicationVersion", description:"アプリのバージョン"},
+      {name:"ApplicationStatus", description:"アプリの状態（Stopped/ActiveVisibleFocus等）"}
+    ],
+    keyCommands:[],
+    tags:["アプリ","基本情報","バージョン","状態","メディア"]
+  },
+
+  // =====================================================
+  // 🤖 Ch7 ロボット（Robots）
+  // =====================================================
+
+  { id:"rvc-run-mode", clusterId:"0x0055", name:"RVC Run Mode", nameJa:"ロボット掃除機動作モード",
+    categories:["robot"],
+    description:"ロボット掃除機の動作モード（掃除・マッピング・充電待機等）を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"SupportedModes", description:"対応モード一覧（Idle/Cleaning/Mapping等）"},
+      {name:"CurrentMode", description:"現在の動作モード"}
+    ],
+    keyCommands:[
+      {name:"ChangeToMode", description:"指定モードに切り替える"}
+    ],
+    tags:["ロボット掃除機","モード","掃除","マッピング"]
+  },
+
+  { id:"rvc-clean-mode", clusterId:"0x0054", name:"RVC Clean Mode", nameJa:"ロボット掃除機清掃モード",
+    categories:["robot"],
+    description:"ロボット掃除機の清掃モード（吸引力レベル・水拭き等）を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"SupportedModes", description:"対応清掃モード（Vacuum/Mop/VacuumAndMop等）"},
+      {name:"CurrentMode", description:"現在の清掃モード"}
+    ],
+    keyCommands:[
+      {name:"ChangeToMode", description:"清掃モードを切り替える"}
+    ],
+    tags:["ロボット掃除機","清掃","吸引力","水拭き","モード"]
+  },
+
+  { id:"rvc-operational-state", clusterId:"0x0061", name:"RVC Operational State", nameJa:"ロボット掃除機動作状態",
+    categories:["robot"],
+    description:"ロボット掃除機専用の動作状態クラスター。充電・ドッキングなど掃除機特有の状態を管理",
+    features:[],
+    keyAttributes:[
+      {name:"OperationalState", description:"現在の状態（SeekingCharger・Charging・Docked・Cleaning等）"},
+      {name:"OperationalError", description:"現在のエラー状態（Stuck・DustBinFull等）"}
+    ],
+    keyCommands:[
+      {name:"Pause/Resume", description:"一時停止・再開"},
+      {name:"GoHome", description:"充電ドックに戻る"}
+    ],
+    tags:["ロボット掃除機","充電","ドッキング","動作状態","エラー"]
+  },
+
+  // =====================================================
+  // 🍳 Ch8 家電（Appliances）
+  // =====================================================
+
+  { id:"laundry-washer-mode", clusterId:"0x0051", name:"Laundry Washer Mode", nameJa:"洗濯機モード",
+    categories:["appliances"],
+    description:"洗濯機の動作モードを管理するクラスター。洗濯機専用モード（標準・デリケート・スピン等）を定義",
+    features:[],
+    keyAttributes:[
+      {name:"SupportedModes", description:"対応する洗濯モード一覧"},
+      {name:"CurrentMode", description:"現在選択されているモード"}
+    ],
+    keyCommands:[
+      {name:"ChangeToMode", description:"指定モードに変更"}
+    ],
+    tags:["洗濯機","モード","洗濯","家電"]
+  },
+
+  { id:"laundry-washer-controls", clusterId:"0x005A", name:"Laundry Washer Controls", nameJa:"洗濯機制御",
+    categories:["appliances"],
+    description:"洗濯機の詳細設定（水温・回転数・すすぎ回数・脱水レベル）を制御するクラスター",
+    features:["Spin（脱水制御）","Rinse（すすぎ制御）"],
+    keyAttributes:[
+      {name:"SpinSpeeds", description:"対応する脱水速度一覧"},
+      {name:"SpinSpeedCurrent", description:"現在の脱水速度設定"},
+      {name:"WashTemperature", description:"洗濯温度設定"}
+    ],
+    keyCommands:[],
+    tags:["洗濯機","水温","回転数","すすぎ","脱水","家電"]
+  },
+
+  { id:"dishwasher-mode", clusterId:"0x0059", name:"Dishwasher Mode", nameJa:"食洗機モード",
+    categories:["appliances"],
+    description:"食洗機の動作モード（標準・エコ・強力・スピード等）を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"SupportedModes", description:"対応する洗浄モード一覧"},
+      {name:"CurrentMode", description:"現在選択されているモード"}
+    ],
+    keyCommands:[
+      {name:"ChangeToMode", description:"指定モードに変更"}
+    ],
+    tags:["食洗機","モード","洗浄","家電"]
+  },
+
+  { id:"dishwasher-alarm", clusterId:"0x005D", name:"Dishwasher Alarm", nameJa:"食洗機アラーム",
+    categories:["appliances"],
+    description:"食洗機のアラーム（扉開放・給水切れ・排水エラー等）を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"Latch", description:"ラッチされているアラーム"},
+      {name:"State", description:"現在アクティブなアラーム"},
+      {name:"Mask", description:"有効化されているアラームのマスク"}
+    ],
+    keyCommands:[
+      {name:"Reset", description:"アラームをリセット"},
+      {name:"ModifyEnabledAlarms", description:"有効/無効なアラームを変更"}
+    ],
+    tags:["食洗機","アラーム","エラー","通知","家電"]
+  },
+
+  { id:"laundry-dryer-controls", clusterId:"0x0052", name:"Laundry Dryer Controls", nameJa:"乾燥機制御",
+    categories:["appliances"],
+    description:"衣類乾燥機の乾燥レベル・温度設定を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"SupportedDrynessLevels", description:"対応する乾燥度レベル一覧"},
+      {name:"SelectedDrynessLevel", description:"現在選択されている乾燥度"}
+    ],
+    keyCommands:[],
+    tags:["乾燥機","乾燥","温度","家電"]
+  },
+
+  { id:"oven-cavity-operational-state", clusterId:"0x0048", name:"Oven Cavity Operational State", nameJa:"オーブン庫内動作状態",
+    categories:["appliances"],
+    description:"オーブン庫内の動作状態（予熱中・調理中・冷却中等）を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"OperationalState", description:"現在の状態（Preheating・Cooking・CoolingDown等）"}
+    ],
+    keyCommands:[
+      {name:"Pause/Stop/Start/Resume", description:"動作の一時停止・停止・開始・再開"}
+    ],
+    tags:["オーブン","予熱","調理","動作状態","家電"]
+  },
+
+  { id:"oven-mode", clusterId:"0x0049", name:"Oven Mode", nameJa:"オーブンモード",
+    categories:["appliances"],
+    description:"オーブンの調理モード（グリル・ベーク・コンベクション等）を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"SupportedModes", description:"対応する調理モード一覧"},
+      {name:"CurrentMode", description:"現在の調理モード"}
+    ],
+    keyCommands:[
+      {name:"ChangeToMode", description:"調理モードを変更"}
+    ],
+    tags:["オーブン","モード","グリル","ベーク","調理","家電"]
+  },
+
+  { id:"microwave-oven-mode", clusterId:"0x004A", name:"Microwave Oven Mode", nameJa:"電子レンジモード",
+    categories:["appliances"],
+    description:"電子レンジの動作モード（温め・解凍・グリル等）を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"SupportedModes", description:"対応するモード一覧"},
+      {name:"CurrentMode", description:"現在のモード"}
+    ],
+    keyCommands:[
+      {name:"ChangeToMode", description:"モードを変更"}
+    ],
+    tags:["電子レンジ","モード","温め","解凍","家電"]
+  },
+
+  { id:"microwave-oven-control", clusterId:"0x004B", name:"Microwave Oven Control", nameJa:"電子レンジ制御",
+    categories:["appliances"],
+    description:"電子レンジの調理時間・出力設定を制御するクラスター",
+    features:["PowerAsNumber（数値で出力指定）","PowerInWatts（W指定）","PowerNumberLimits"],
+    keyAttributes:[
+      {name:"CookTime", description:"調理時間（秒）"},
+      {name:"MaxCookTime", description:"最大調理時間（秒）"},
+      {name:"PowerSetting", description:"出力設定（W）"},
+      {name:"MinPower/MaxPower", description:"出力範囲"}
+    ],
+    keyCommands:[
+      {name:"SetCookingParameters", description:"調理パラメーターを一括設定して調理開始"},
+      {name:"AddMoreTime", description:"調理時間を追加"}
+    ],
+    tags:["電子レンジ","調理時間","出力","W","制御","家電"]
+  },
+
+  { id:"refrigerator-tcc-mode", clusterId:"0x0056", name:"Refrigerator And TCC Mode", nameJa:"冷蔵庫・温度管理庫モード",
+    categories:["appliances"],
+    description:"冷蔵庫・温度管理庫の動作モード（急冷・節電・休暇モード等）を管理するクラスター",
+    features:["OnMode（オンモード制御）"],
+    keyAttributes:[
+      {name:"SupportedModes", description:"対応モード一覧（Rapid Cooling・Energy Saving等）"},
+      {name:"CurrentMode", description:"現在のモード"}
+    ],
+    keyCommands:[
+      {name:"ChangeToMode", description:"モードを変更"}
+    ],
+    tags:["冷蔵庫","温度管理","モード","急冷","節電","家電"]
+  },
+
+  { id:"temperature-control", clusterId:"0x0057", name:"Temperature Control", nameJa:"温度制御（家電用）",
+    categories:["appliances","hvac"],
+    description:"家電（冷蔵庫・オーブン等）の温度設定を制御する汎用クラスター",
+    features:["TempNumber（数値温度指定）","TempLevel（レベル指定）","TempStep（ステップ変化）"],
+    keyAttributes:[
+      {name:"TemperatureSetpoint", description:"設定温度（°C×100）"},
+      {name:"MinTemperature/MaxTemperature", description:"設定可能な温度範囲"},
+      {name:"SelectedTemperatureLevel", description:"選択中の温度レベル"}
+    ],
+    keyCommands:[
+      {name:"SetTemperature", description:"温度を設定する"}
+    ],
+    tags:["温度制御","設定温度","家電","冷蔵庫","オーブン"]
+  },
+
+  { id:"thermostat-appliances", clusterId:"0x0040", name:"Thermostat（Appliances）", nameJa:"サーモスタット（家電用）",
+    categories:["appliances"],
+    description:"冷蔵庫等の家電内部温度制御に使われる家電専用サーモスタット。HVACのサーモスタット(0x0201)とは別",
+    features:[],
+    keyAttributes:[
+      {name:"LocalTemperature", description:"現在の庫内温度"},
+      {name:"OccupiedCoolingSetpoint", description:"冷却設定温度"}
+    ],
+    keyCommands:[],
+    tags:["サーモスタット","家電","冷蔵庫","温度制御"]
+  },
+
+  // =====================================================
+  // ⚡ Ch9 エネルギー管理（Energy Management）
+  // =====================================================
+
+  { id:"device-energy-management", clusterId:"0x0098", name:"Device Energy Management", nameJa:"デバイスエネルギー管理",
+    categories:["energy"],
+    description:"スマートホームのエネルギー最適化の要。太陽光の余剰電力で家電を動かすスマート制御を実現",
+    features:["PowerAdjustment（電力調整）","StartTimeAdjustment（開始時刻調整）","Pausable（一時停止）","ConstraintBasedAdjustment（制約ベース調整）","ForecastReporting（予測レポート）"],
+    keyAttributes:[
+      {name:"ESAType", description:"エネルギー管理の種類（EV充電器・給湯器・家電等）"},
+      {name:"ESAState", description:"現在の状態（Online・Offline・UserOptOut等）"},
+      {name:"AbsMinPower/AbsMaxPower", description:"電力の絶対最小・最大値"}
+    ],
+    keyCommands:[
+      {name:"PowerAdjustRequest", description:"電力消費量を調整する要求"},
+      {name:"StartTimeAdjustRequest", description:"動作開始時刻を変更する要求"},
+      {name:"PauseRequest", description:"動作を一時停止する要求"}
+    ],
+    tags:["エネルギー管理","太陽光","余剰電力","スマートチャージ","省エネ","需給調整"]
+  },
+
+  { id:"energy-evse", clusterId:"0x0099", name:"Energy EVSE", nameJa:"EV充電器制御",
+    categories:["energy"],
+    description:"EV充電器の制御クラスター。スマートチャージ（太陽光余剰電力での充電等）に対応",
+    features:["ChargingPreferences（充電設定）","SoCReporting（バッテリー残量報告）","PlugAndCharge（自動認証充電）","RFID","V2X（V2G・V2H対応）"],
+    keyAttributes:[
+      {name:"State", description:"充電器の状態（未接続・接続・充電中・充電完了等）"},
+      {name:"MinimumChargeCurrent/MaximumChargeCurrent", description:"充電電流の範囲設定"},
+      {name:"NextChargeTargetTime", description:"次の充電目標時刻"}
+    ],
+    keyCommands:[
+      {name:"EnableCharging", description:"充電を許可"},
+      {name:"DisableCharging", description:"充電を停止する"}
+    ],
+    tags:["EV","電気自動車","充電","スマートチャージ","太陽光","V2G","V2H"]
+  },
+
+  { id:"energy-evse-mode", clusterId:"0x009D", name:"Energy EVSE Mode", nameJa:"EV充電器モード",
+    categories:["energy"],
+    description:"EV充電器の動作モード（手動・スケジュール・スマートチャージ等）を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"SupportedModes", description:"対応する充電モード一覧"},
+      {name:"CurrentMode", description:"現在の充電モード"}
+    ],
+    keyCommands:[
+      {name:"ChangeToMode", description:"充電モードを変更"}
+    ],
+    tags:["EV","充電器","モード","スケジュール","スマートチャージ"]
+  },
+
+  { id:"energy-preference", clusterId:"0x009E", name:"Energy Preference", nameJa:"エネルギー優先設定",
+    categories:["energy"],
+    description:"省エネ優先・快適優先など、ユーザーのエネルギー利用方針を設定するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"EnergyBalances", description:"エネルギーバランスの設定候補（省エネ度×快適度のトレードオフ）"},
+      {name:"CurrentEnergyBalance", description:"現在選択しているバランス設定"},
+      {name:"LowPowerModeSensitivity", description:"省電力モードへの移行感度"}
+    ],
+    keyCommands:[
+      {name:"UpdateEnergyPreferences", description:"エネルギー優先設定を更新"}
+    ],
+    tags:["省エネ","快適","優先設定","エネルギー","バランス"]
+  },
+
+  { id:"water-heater-management", clusterId:"0x0094", name:"Water Heater Management", nameJa:"給湯器管理",
+    categories:["energy"],
+    description:"給湯器・電気温水器の湯沸かし制御。太陽光余剰電力での昼間沸き上げ・深夜電力活用に対応",
+    features:["EnergyManagement（エネルギー管理連携）","TP（タンクパーセンテージ）"],
+    keyAttributes:[
+      {name:"HeaterTypes", description:"対応するヒーターの種類"},
+      {name:"HeatDemand", description:"現在の加熱需要"},
+      {name:"TankPercentage", description:"タンクの湯量（%）"},
+      {name:"BoostState", description:"ブースト（強制沸き上げ）の状態"}
+    ],
+    keyCommands:[
+      {name:"Boost", description:"強制的に沸き上げを開始"},
+      {name:"CancelBoost", description:"強制沸き上げをキャンセル"}
+    ],
+    tags:["給湯器","温水","沸き上げ","深夜電力","太陽光","省エネ","エコ"]
+  },
+
+  { id:"water-heater-mode", clusterId:"0x009A", name:"Water Heater Mode", nameJa:"給湯器モード",
+    categories:["energy"],
+    description:"給湯器の動作モード（通常・省エネ・休暇・スマート等）を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"SupportedModes", description:"対応モード一覧"},
+      {name:"CurrentMode", description:"現在の動作モード"}
+    ],
+    keyCommands:[
+      {name:"ChangeToMode", description:"モードを変更"}
+    ],
+    tags:["給湯器","モード","省エネ","休暇","スマート"]
+  },
+
+  { id:"heat-pump-mode", clusterId:"0x009B", name:"Heat Pump Mode", nameJa:"ヒートポンプモード",
+    categories:["energy","hvac"],
+    description:"ヒートポンプの動作モード（暖房・給湯・冷房・自動等）を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"SupportedModes", description:"対応モード一覧"},
+      {name:"CurrentMode", description:"現在の動作モード"}
+    ],
+    keyCommands:[
+      {name:"ChangeToMode", description:"モードを変更"}
+    ],
+    tags:["ヒートポンプ","モード","給湯","暖房","エネルギー"]
+  },
+
+  { id:"electrical-grid-conditions", clusterId:"0x00A0", name:"Electrical Grid Conditions", nameJa:"電力グリッド状態",
+    categories:["energy"],
+    description:"電力グリッドのCO₂排出強度・需給状況情報を提供するクラスター。グリーン電力優先制御に活用",
+    features:[],
+    keyAttributes:[
+      {name:"LocalGenerationAvailable", description:"ローカル発電（太陽光等）の利用可能状況"},
+      {name:"CurrentConditions", description:"現在のグリッド状態（CO₂強度・価格等）"}
+    ],
+    keyCommands:[],
+    tags:["電力グリッド","CO2","グリーン電力","再生可能エネルギー","カーボン"]
+  },
+
+  { id:"commodity-metering", clusterId:"0x0772", name:"Commodity Metering", nameJa:"計量メタリング",
+    categories:["energy"],
+    description:"電力・ガス・水道などの使用量を計量・報告するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"MeteringPointID", description:"計量ポイントの識別子"},
+      {name:"CommodityType", description:"計量対象の種類（電力・ガス・水道等）"}
+    ],
+    keyCommands:[],
+    tags:["計量","電力","ガス","水道","スマートメーター","使用量"]
+  },
+
+  // =====================================================
+  // 🌐 Ch10 ネットワークインフラ
+  // =====================================================
+
+  { id:"network-infrastructure-manager", clusterId:"0x0550", name:"Network Infrastructure Manager", nameJa:"ネットワークインフラ管理",
+    categories:["network"],
+    description:"Matter Fabricのネットワークインフラを設定・管理するクラスター",
+    features:["WiFiNetworkManagement","ThreadBorderRouterManagement"],
+    keyAttributes:[
+      {name:"IPv4Enabled", description:"IPv4の有効/無効"},
+      {name:"IPv6Enabled", description:"IPv6の有効/無効"}
+    ],
+    keyCommands:[
+      {name:"AddOrUpdateWiFiNetwork", description:"Wi-Fiネットワークを追加・更新"},
+      {name:"RemoveNetwork", description:"ネットワークを削除"}
+    ],
+    tags:["ネットワーク","Wi-Fi","Thread","インフラ","Fabric管理"]
+  },
+
+  { id:"thread-border-router-management", clusterId:"0x0558", name:"Thread Border Router Management", nameJa:"Threadボーダールーター管理",
+    categories:["network"],
+    description:"ThreadボーダールーターのThread Fabricへの参加・離脱を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"BorderRouterName", description:"ボーダールーターの名前"},
+      {name:"ThreadVersion", description:"対応するThreadのバージョン"}
+    ],
+    keyCommands:[
+      {name:"GetActiveDatasetRequest", description:"アクティブなThreadデータセットを取得"},
+      {name:"SetActiveDatasetRequest", description:"ThreadデータセットとFabricに参加"}
+    ],
+    tags:["Thread","ボーダールーター","HomePod","ネットワーク"]
+  },
+
+  { id:"thread-network-directory", clusterId:"0x0559", name:"Thread Network Directory", nameJa:"Threadネットワーク一覧",
+    categories:["network"],
+    description:"Fabric内のThreadネットワーク一覧を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"PreferredExtendedPanID", description:"優先するThreadネットワークのPAN ID"},
+      {name:"ThreadNetworks", description:"登録済みThreadネットワーク一覧"}
+    ],
+    keyCommands:[
+      {name:"AddNetwork", description:"Threadネットワークを追加"},
+      {name:"RemoveNetwork", description:"Threadネットワークを削除"}
+    ],
+    tags:["Thread","ネットワーク","PAN","インフラ"]
+  },
+
+  // =====================================================
+  // 📷 Ch11 カメラ（Cameras）
+  // =====================================================
+
+  { id:"camera-av-stream", clusterId:"0x0551", name:"Camera AV Stream Management", nameJa:"カメラ映像・音声管理",
+    categories:["camera"],
+    description:"カメラの映像・音声・スナップショットのストリーム管理。解像度・暗視設定などを制御",
+    features:["PrivacyMode（プライバシーモード）","NightVision（暗視）","WatermarkImage（透かし）","OnScreenDisplay"],
+    keyAttributes:[
+      {name:"MaxConcurrentVideoEncoders", description:"同時エンコード可能なストリーム数"},
+      {name:"NightVisionUsesInfrared", description:"赤外線暗視カメラかどうか"},
+      {name:"HDRModeEnabled", description:"HDRモードの有効/無効"}
+    ],
+    keyCommands:[
+      {name:"AllocateVideoStream", description:"映像ストリームを確保"},
+      {name:"AllocateAudioStream", description:"音声ストリームを確保"},
+      {name:"AllocateSnapshotStream", description:"スナップショットストリームを確保"},
+      {name:"DeallocateStream", description:"ストリームを解放"}
+    ],
+    tags:["カメラ","映像","音声","スナップショット","暗視","プライバシー"]
+  },
+
+  { id:"camera-av-settings", clusterId:"0x0552", name:"Camera AV Settings User-Level Management", nameJa:"カメラユーザー設定",
+    categories:["camera"],
+    description:"カメラのユーザーレベル設定（マイク音量・スピーカー音量・撮影品質）を管理するクラスター",
+    features:["Microphone（マイク設定）","Speaker（スピーカー設定）","ImageControl（画像設定）"],
+    keyAttributes:[
+      {name:"MicrophoneAGCEnabled", description:"マイクの自動ゲイン制御"},
+      {name:"SpeakerMuted", description:"スピーカーのミュート状態"},
+      {name:"ImageFlipHorizontal/Vertical", description:"映像の水平・垂直反転"}
+    ],
+    keyCommands:[
+      {name:"SetMicrophoneVolume", description:"マイク音量を設定"},
+      {name:"SetSpeakerVolume", description:"スピーカー音量を設定"}
+    ],
+    tags:["カメラ","マイク","スピーカー","画質","ユーザー設定"]
+  },
+
+  { id:"webrtc-transport", clusterId:"0x0553", name:"WebRTC Transport Provider", nameJa:"WebRTC映像配信（カメラ側）",
+    categories:["camera"],
+    description:"カメラ側のWebRTC通信を管理するクラスター。リアルタイム映像配信の確立を担当",
+    features:[],
+    keyAttributes:[
+      {name:"CurrentSessions", description:"現在アクティブなWebRTCセッションのリスト"}
+    ],
+    keyCommands:[
+      {name:"SolicitOffer", description:"WebRTCセッションのオファーを要求"},
+      {name:"EndSession", description:"セッションを終了する"}
+    ],
+    tags:["WebRTC","リアルタイム","映像配信","カメラ","ストリーミング"]
+  },
+
+  { id:"webrtc-transport-requestor", clusterId:"0x0554", name:"WebRTC Transport Requestor", nameJa:"WebRTC映像受信（視聴側）",
+    categories:["camera"],
+    description:"WebRTC映像を受信・視聴する側のクラスター。スマートフォンやハブが担当",
+    features:[],
+    keyAttributes:[
+      {name:"CurrentSessions", description:"現在アクティブなセッション一覧"}
+    ],
+    keyCommands:[
+      {name:"Offer", description:"WebRTCオファーを送信してセッション確立"},
+      {name:"End", description:"セッションを終了"}
+    ],
+    tags:["WebRTC","映像受信","視聴","カメラ","クライアント"]
+  },
+
+  { id:"push-av-stream-transport", clusterId:"0x0555", name:"Push AV Stream Transport", nameJa:"プッシュ型映像配信",
+    categories:["camera"],
+    description:"カメラからNVR・クラウドへのプッシュ型映像配信を管理するクラスター",
+    features:["SupportsPeriodicNotifications"],
+    keyAttributes:[
+      {name:"SupportedFormats", description:"対応する映像フォーマット一覧"},
+      {name:"CurrentConnections", description:"現在のプッシュ配信接続一覧"}
+    ],
+    keyCommands:[
+      {name:"AllocatePushTransport", description:"プッシュ配信チャンネルを確保"},
+      {name:"DeallocatePushTransport", description:"プッシュ配信チャンネルを解放"}
+    ],
+    tags:["カメラ","プッシュ配信","NVR","クラウド","映像録画"]
+  },
+
+  { id:"chime-cluster", clusterId:"0x0556", name:"Chime", nameJa:"チャイム",
+    categories:["camera"],
+    description:"チャイム音の選択・再生を管理するクラスター。ドアベルのチャイム音を制御",
+    features:[],
+    keyAttributes:[
+      {name:"InstalledChimeSounds", description:"登録済みのチャイム音一覧"},
+      {name:"ActiveChimeID", description:"現在設定されているチャイム音のID"},
+      {name:"Enabled", description:"チャイム機能の有効/無効"}
+    ],
+    keyCommands:[
+      {name:"PlayChimeSound", description:"指定チャイム音を再生"}
+    ],
+    tags:["チャイム","ドアベル","音","来客通知","カメラ"]
+  },
+
+  // ===== 追加: 0x0507 Low Power (Media) =====
+  { id:"low-power-media", clusterId:"0x0507", name:"Low Power (Media)", nameJa:"省電力モード（メディア）",
+    categories:["media"],
+    description:"メディアデバイス（スマートTV・スピーカー等）専用の省電力クラスター。スリープ移行を制御",
+    features:[],
+    keyAttributes:[],
+    keyCommands:[
+      {name:"Sleep", description:"メディアデバイスを省電力モードに移行"}
+    ],
+    tags:["省電力","スリープ","メディア","スマートTV","スピーカー"]
+  },
+
+  // ===== 追加: 0x009F Power Topology (Energy) =====
+  { id:"power-topology-energy", clusterId:"0x009F", name:"Power Topology", nameJa:"電力フロー構成（エネルギー管理）",
+    categories:["energy"],
+    description:"エネルギー管理システム内の電力フロー構成を定義するクラスター。太陽光・蓄電池・EVなどの電力の流れを管理",
+    features:[],
+    keyAttributes:[
+      {name:"AvailableEndpoints", description:"電力フローに関与するエンドポイント一覧"},
+      {name:"ActiveEndpoints", description:"現在アクティブなエンドポイント一覧"}
+    ],
+    keyCommands:[],
+    tags:["電力","フロー","エネルギー管理","太陽光","蓄電池","EV","トポロジー"]
   }
+
 ];
