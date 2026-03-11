@@ -300,19 +300,21 @@ header {
 // アプリ本体
 // ===================================================
 var CATEGORIES = [
-  {id:"all",    label:"すべて",         icon:"🏠"},
-  {id:"lighting",  label:"照明",         icon:"💡"},
-  {id:"plug",    label:"スマートプラグ",   icon:"🔌"},
-  {id:"switch",   label:"スイッチ",       icon:"🎚"},
-  {id:"sensor",   label:"センサー",       icon:"📡"},
-  {id:"entry",   label:"玄関・扉・窓",    icon:"🚪"},
-  {id:"hvac",    label:"HVAC（空調）",   icon:"🌡"},
-  {id:"appliances",label:"家電",         icon:"🍳"},
-  {id:"energy",   label:"エネルギー",     icon:"⚡"},
-  {id:"camera",   label:"カメラ・セキュリティ",icon:"📷"},
-  {id:"media",   label:"メディア",       icon:"📺"},
-  {id:"robot",   label:"ロボット",       icon:"🤖"},
-  {id:"utility",  label:"ユーティリティ",  icon:"🔧"}
+  {id:"all",      label:"すべて",             icon:"🏠"},
+  {id:"lighting",  label:"照明",               icon:"💡"},
+  {id:"plug",     label:"スマートプラグ",       icon:"🔌"},
+  {id:"switch",   label:"スイッチ",            icon:"🎚"},
+  {id:"sensor",   label:"センサー",            icon:"📡"},
+  {id:"entry",    label:"玄関・扉・窓",         icon:"🚪"},
+  {id:"hvac",     label:"HVAC（空調）",         icon:"🌡"},
+  {id:"appliances",label:"家電",              icon:"🍳"},
+  {id:"energy",   label:"エネルギー",           icon:"⚡"},
+  {id:"camera",   label:"カメラ・セキュリティ",  icon:"📷"},
+  {id:"media",    label:"メディア",            icon:"📺"},
+  {id:"robot",    label:"ロボット",            icon:"🤖"},
+  {id:"utility",  label:"ユーティリティ",       icon:"🔧"},
+  {id:"general",  label:"汎用（共通）",         icon:"🔧"},
+  {id:"network",  label:"ネットワーク",         icon:"🌐"}
 ];
 
 // ===================================================
@@ -331,12 +333,31 @@ document.getElementById("statClusters").textContent = CLUSTERS.length;
 
 // Build sidebar
 var sidebar = document.getElementById("sidebar");
+
+function getCatCount(catId) {
+  if (currentView === "clusters") {
+    return catId === "all" ? CLUSTERS.length : CLUSTERS.filter(function(c){ return (c.categories||[]).indexOf(catId) >= 0; }).length;
+  } else {
+    return catId === "all" ? DEVICE_TYPES.length : DEVICE_TYPES.filter(function(d){ return d.category === catId; }).length;
+  }
+}
+
+function updateSidebarCounts() {
+  document.querySelectorAll(".cat-btn").forEach(function(btn) {
+    var catId = btn.getAttribute("data-cat");
+    var cnt = btn.querySelector(".cnt");
+    if (cnt) cnt.textContent = getCatCount(catId);
+    // クラスター表示時に0件カテゴリをグレーアウト
+    var count = getCatCount(catId);
+    btn.style.opacity = (count === 0 && catId !== "all") ? "0.35" : "1";
+  });
+}
+
 CATEGORIES.forEach(function(cat) {
-  var count = cat.id === "all" ? DEVICE_TYPES.length : DEVICE_TYPES.filter(function(d){ return d.category === cat.id; }).length;
   var btn = document.createElement("button");
   btn.className = "cat-btn" + (cat.id === "all" ? " active" : "");
   btn.setAttribute("data-cat", cat.id);
-  btn.innerHTML = '<span class="cat-icon">' + cat.icon + '</span><span class="cat-label">' + cat.label + '</span><span class="cnt">' + count + '</span>';
+  btn.innerHTML = '<span class="cat-icon">' + cat.icon + '</span><span class="cat-label">' + cat.label + '</span><span class="cnt">' + getCatCount(cat.id) + '</span>';
   btn.addEventListener("click", function() { selectCategory(cat.id); });
   sidebar.appendChild(btn);
 });
@@ -429,7 +450,9 @@ function selectCategory(catId) {
     camera:"📷 カメラ・セキュリティ", media:"📺 メディア", robot:"🤖 ロボット", utility:"🔧 ユーティリティ"
   };
   document.getElementById("secTitle").textContent = titles[catId] || catId;
-  renderDevices();
+  updateSidebarCounts();
+  if (currentView === "clusters") renderClusters();
+  else renderDevices();
 }
 
 function switchView(view) {
@@ -438,6 +461,20 @@ function switchView(view) {
   document.getElementById("clustersView").style.display = view === "clusters" ? "" : "none";
   document.getElementById("tabDevices").classList.toggle("active", view === "devices");
   document.getElementById("tabClusters").classList.toggle("active", view === "clusters");
+  // クラスタービュー切替時：general/networkも有効なカテゴリとして表示
+  // デバイスタイプにないカテゴリ（general/network）をデバイスタイプ表示時は非表示
+  document.querySelectorAll(".cat-btn").forEach(function(btn) {
+    var catId = btn.getAttribute("data-cat");
+    var isClusterOnly = ["general","network"].indexOf(catId) >= 0;
+    btn.style.display = (view === "devices" && isClusterOnly) ? "none" : "";
+  });
+  updateSidebarCounts();
+  // クラスタービューに切替時は絞り込みをリセット
+  if (view === "clusters" && !["all","general","network","sensor","lighting","hvac","entry","appliances","robot","energy","media","camera","utility"].includes(currentCat)) {
+    currentCat = "all";
+  }
+  if (view === "clusters") renderClusters();
+  else renderDevices();
 }
 
 function getFilteredDevices() {
@@ -501,8 +538,15 @@ function renderDevices() {
 function renderClusters() {
   var q = searchQuery;
   var clusters = CLUSTERS.filter(function(c) {
+    // カテゴリ絞り込み
+    var catOk = currentCat === "all" || (c.categories||[]).indexOf(currentCat) >= 0;
+    if (!catOk) return false;
+    // 検索
     if (!q) return true;
-    return c.nameJa.toLowerCase().indexOf(q) >= 0 || c.name.toLowerCase().indexOf(q) >= 0 || c.description.toLowerCase().indexOf(q) >= 0;
+    var inName = c.nameJa.toLowerCase().indexOf(q) >= 0 || c.name.toLowerCase().indexOf(q) >= 0;
+    var inDesc = c.description.toLowerCase().indexOf(q) >= 0;
+    var inTags = (c.tags||[]).some(function(t){ return t.toLowerCase().indexOf(q) >= 0; });
+    return inName || inDesc || inTags;
   });
   document.getElementById("clusterCount").textContent = clusters.length + " 件";
 
