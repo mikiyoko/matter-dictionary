@@ -1,7 +1,7 @@
 // =====================================================
 // clusters.js — Matter 1.5 クラスターデータ（完全版）
 // 更新方法：新しいクラスターをこの配列に追加するだけ
-// 最終更新：Matter 1.5（全83件）
+// 最終更新：Matter 1.5（全96件・PDF照合済み）
 //
 // categories フィールドについて：
 //   複数カテゴリを配列で持てます（On/Off等の汎用クラスターは複数カテゴリに属す）
@@ -421,13 +421,6 @@ var CLUSTERS = [
     ],
     tags:["色温度","カラー","RGB","HSV","サーカディアン","照明","適応照明","2700K","6500K"]
   },
-
-  { id:"ballast-configuration", clusterId:"0x0301", name:"Ballast Configuration", nameJa:"バラスト設定",
-    categories:["lighting"],
-    description:"照明バラスト（安定器）の詳細設定クラスター。調光の最小・最大値を細かく設定",
-    features:[],
-    keyAttributes:[
-      {name:"MinLevel/MaxLevel", description:"バラストが動作するレベルの上下限"},
       {name:"PowerOnLevel", description:"電源投入時のレベル"},
       {name:"IntrinsicBallastFactor", description:"バラスト固有係数"}
     ],
@@ -536,7 +529,7 @@ var CLUSTERS = [
     tags:["ブラインド","カーテン","電動","日射","採光","遮光"]
   },
 
-  { id:"closure-control", clusterId:"0x0105", name:"Closure Control", nameJa:"クロージャー制御",
+  { id:"closure-control", clusterId:"0x0104", name:"Closure Control", nameJa:"クロージャー制御",
     categories:["entry"],
     description:"v1.5新規。窓・ドア・ゲート・キャビネットなど複雑な開閉機構に対応した次世代クラスター",
     features:["Positioning（位置精度制御）","Latching（ラッチ機構）","SpeedControl（速度制御）","VentilationMode（換気モード）","Pedestrian（歩行者モード）"],
@@ -552,7 +545,7 @@ var CLUSTERS = [
     tags:["クロージャー","窓","ドア","ガレージ","ゲート","v1.5"]
   },
 
-  { id:"closure-dimension", clusterId:"0x0106", name:"Closure Dimension", nameJa:"クロージャー寸法",
+  { id:"closure-dimension", clusterId:"0x0105", name:"Closure Dimension", nameJa:"クロージャー寸法",
     categories:["entry"],
     description:"クロージャーデバイスの物理的サイズ・動作範囲を定義するクラスター",
     features:[],
@@ -568,7 +561,7 @@ var CLUSTERS = [
   // 📺 Ch6 メディア（Media）
   // =====================================================
 
-  { id:"media-playback", clusterId:"0x0509", name:"Media Playback", nameJa:"メディア再生",
+  { id:"media-playback", clusterId:"0x0506", name:"Media Playback", nameJa:"メディア再生",
     categories:["media"],
     description:"動画・音楽の再生・停止・早送りなどを制御するクラスター",
     features:["AdvancedSeek（高精度シーク）","VariableSpeed（可変速度再生）","TextTracks（テキストトラック）","AudioTracks（音声トラック）"],
@@ -615,7 +608,7 @@ var CLUSTERS = [
     tags:["ナビゲーション","TV","UI","メディア"]
   },
 
-  { id:"media-input", clusterId:"0x0506", name:"Media Input", nameJa:"メディア入力",
+  { id:"media-input", clusterId:"0x0507", name:"Media Input", nameJa:"メディア入力",
     categories:["media"],
     description:"HDMI・AV等のメディア入力ソースの一覧・切替を管理するクラスター",
     features:["NameUpdates（入力名の変更）"],
@@ -631,7 +624,7 @@ var CLUSTERS = [
     tags:["HDMI","入力","切替","TV","メディア"]
   },
 
-  { id:"keypad-input", clusterId:"0x051C", name:"Keypad Input", nameJa:"キーパッド入力",
+  { id:"keypad-input", clusterId:"0x0509", name:"Keypad Input", nameJa:"キーパッド入力",
     categories:["media"],
     description:"リモコンのキーコードを送信するクラスター。CEC対応TVのリモコン制御などに使用",
     features:["NavigationKeyCodes","LocationKeys","NumberInputKeys"],
@@ -642,7 +635,7 @@ var CLUSTERS = [
     tags:["リモコン","キーパッド","CEC","TV","入力"]
   },
 
-  { id:"account-login", clusterId:"0x050A", name:"Account Login", nameJa:"アカウントログイン",
+  { id:"account-login", clusterId:"0x050E", name:"Account Login", nameJa:"アカウントログイン",
     categories:["media"],
     description:"ストリーミングサービス（Netflix等）へのログイン状態を管理するクラスター",
     features:[],
@@ -655,7 +648,7 @@ var CLUSTERS = [
     tags:["ログイン","アカウント","ストリーミング","Netflix","メディア"]
   },
 
-  { id:"content-control", clusterId:"0x050B", name:"Content Control", nameJa:"コンテンツ制御",
+  { id:"content-control", clusterId:"0x050F", name:"Content Control", nameJa:"コンテンツ制御",
     categories:["media"],
     description:"ペアレンタルコントロール・視聴制限を管理するクラスター",
     features:["ScreenTime（視聴時間管理）","PINManagement","BlockUnrated","OnDemandRatings","ScheduledContentRatings"],
@@ -670,7 +663,7 @@ var CLUSTERS = [
     tags:["ペアレンタルコントロール","視聴制限","子ども","メディア"]
   },
 
-  { id:"content-launcher", clusterId:"0x050C", name:"Content Launcher", nameJa:"コンテンツランチャー",
+  { id:"content-launcher", clusterId:"0x050A", name:"Content Launcher", nameJa:"コンテンツランチャー",
     categories:["media"],
     description:"コンテンツ（動画・音楽・アプリ）の起動・再生を開始するクラスター",
     features:["ContentSearch（コンテンツ検索）","URLPlayback（URL直接再生）"],
@@ -685,7 +678,7 @@ var CLUSTERS = [
     tags:["コンテンツ","起動","再生","ストリーミング","メディア"]
   },
 
-  { id:"audio-output", clusterId:"0x050D", name:"Audio Output", nameJa:"音声出力",
+  { id:"audio-output", clusterId:"0x050B", name:"Audio Output", nameJa:"音声出力",
     categories:["media"],
     description:"音声出力先（スピーカー・HDMI ARC・Bluetooth等）の切替を管理するクラスター",
     features:["NameUpdates（出力名の変更）"],
@@ -700,7 +693,7 @@ var CLUSTERS = [
     tags:["音声出力","スピーカー","HDMI","ARC","メディア"]
   },
 
-  { id:"application-launcher", clusterId:"0x050E", name:"Application Launcher", nameJa:"アプリランチャー",
+  { id:"application-launcher", clusterId:"0x050C", name:"Application Launcher", nameJa:"アプリランチャー",
     categories:["media"],
     description:"スマートTV上のアプリ（Netflix・YouTube等）の起動・終了を管理するクラスター",
     features:["ApplicationPlatform（プラットフォーム管理）"],
@@ -716,7 +709,7 @@ var CLUSTERS = [
     tags:["アプリ","起動","Netflix","YouTube","スマートTV","メディア"]
   },
 
-  { id:"application-basic", clusterId:"0x050F", name:"Application Basic", nameJa:"アプリ基本情報",
+  { id:"application-basic", clusterId:"0x050D", name:"Application Basic", nameJa:"アプリ基本情報",
     categories:["media"],
     description:"TV上で動作するアプリの基本情報（名前・バージョン・状態）を提供するクラスター",
     features:[],
@@ -733,7 +726,7 @@ var CLUSTERS = [
   // 🤖 Ch7 ロボット（Robots）
   // =====================================================
 
-  { id:"rvc-run-mode", clusterId:"0x0055", name:"RVC Run Mode", nameJa:"ロボット掃除機動作モード",
+  { id:"rvc-run-mode", clusterId:"0x0054", name:"RVC Run Mode", nameJa:"ロボット掃除機動作モード",
     categories:["robot"],
     description:"ロボット掃除機の動作モード（掃除・マッピング・充電待機等）を管理するクラスター",
     features:[],
@@ -747,7 +740,7 @@ var CLUSTERS = [
     tags:["ロボット掃除機","モード","掃除","マッピング"]
   },
 
-  { id:"rvc-clean-mode", clusterId:"0x0054", name:"RVC Clean Mode", nameJa:"ロボット掃除機清掃モード",
+  { id:"rvc-clean-mode", clusterId:"0x0055", name:"RVC Clean Mode", nameJa:"ロボット掃除機清掃モード",
     categories:["robot"],
     description:"ロボット掃除機の清掃モード（吸引力レベル・水拭き等）を管理するクラスター",
     features:[],
@@ -794,7 +787,7 @@ var CLUSTERS = [
     tags:["洗濯機","モード","洗濯","家電"]
   },
 
-  { id:"laundry-washer-controls", clusterId:"0x005A", name:"Laundry Washer Controls", nameJa:"洗濯機制御",
+  { id:"laundry-washer-controls", clusterId:"0x0053", name:"Laundry Washer Controls", nameJa:"洗濯機制御",
     categories:["appliances"],
     description:"洗濯機の詳細設定（水温・回転数・すすぎ回数・脱水レベル）を制御するクラスター",
     features:["Spin（脱水制御）","Rinse（すすぎ制御）"],
@@ -837,7 +830,7 @@ var CLUSTERS = [
     tags:["食洗機","アラーム","エラー","通知","家電"]
   },
 
-  { id:"laundry-dryer-controls", clusterId:"0x0052", name:"Laundry Dryer Controls", nameJa:"乾燥機制御",
+  { id:"laundry-dryer-controls", clusterId:"0x004A", name:"Laundry Dryer Controls", nameJa:"乾燥機制御",
     categories:["appliances"],
     description:"衣類乾燥機の乾燥レベル・温度設定を管理するクラスター",
     features:[],
@@ -876,7 +869,7 @@ var CLUSTERS = [
     tags:["オーブン","モード","グリル","ベーク","調理","家電"]
   },
 
-  { id:"microwave-oven-mode", clusterId:"0x004A", name:"Microwave Oven Mode", nameJa:"電子レンジモード",
+  { id:"microwave-oven-mode", clusterId:"0x005E", name:"Microwave Oven Mode", nameJa:"電子レンジモード",
     categories:["appliances"],
     description:"電子レンジの動作モード（温め・解凍・グリル等）を管理するクラスター",
     features:[],
@@ -890,7 +883,7 @@ var CLUSTERS = [
     tags:["電子レンジ","モード","温め","解凍","家電"]
   },
 
-  { id:"microwave-oven-control", clusterId:"0x004B", name:"Microwave Oven Control", nameJa:"電子レンジ制御",
+  { id:"microwave-oven-control", clusterId:"0x005F", name:"Microwave Oven Control", nameJa:"電子レンジ制御",
     categories:["appliances"],
     description:"電子レンジの調理時間・出力設定を制御するクラスター",
     features:["PowerAsNumber（数値で出力指定）","PowerInWatts（W指定）","PowerNumberLimits"],
@@ -907,7 +900,7 @@ var CLUSTERS = [
     tags:["電子レンジ","調理時間","出力","W","制御","家電"]
   },
 
-  { id:"refrigerator-tcc-mode", clusterId:"0x0056", name:"Refrigerator And TCC Mode", nameJa:"冷蔵庫・温度管理庫モード",
+  { id:"refrigerator-tcc-mode", clusterId:"0x0052", name:"Refrigerator And TCC Mode", nameJa:"冷蔵庫・温度管理庫モード",
     categories:["appliances"],
     description:"冷蔵庫・温度管理庫の動作モード（急冷・節電・休暇モード等）を管理するクラスター",
     features:["OnMode（オンモード制御）"],
@@ -921,7 +914,7 @@ var CLUSTERS = [
     tags:["冷蔵庫","温度管理","モード","急冷","節電","家電"]
   },
 
-  { id:"temperature-control", clusterId:"0x0057", name:"Temperature Control", nameJa:"温度制御（家電用）",
+  { id:"temperature-control", clusterId:"0x0056", name:"Temperature Control", nameJa:"温度制御（家電用）",
     categories:["appliances","hvac"],
     description:"家電（冷蔵庫・オーブン等）の温度設定を制御する汎用クラスター",
     features:["TempNumber（数値温度指定）","TempLevel（レベル指定）","TempStep（ステップ変化）"],
@@ -935,13 +928,6 @@ var CLUSTERS = [
     ],
     tags:["温度制御","設定温度","家電","冷蔵庫","オーブン"]
   },
-
-  { id:"thermostat-appliances", clusterId:"0x0040", name:"Thermostat（Appliances）", nameJa:"サーモスタット（家電用）",
-    categories:["appliances"],
-    description:"冷蔵庫等の家電内部温度制御に使われる家電専用サーモスタット。HVACのサーモスタット(0x0201)とは別",
-    features:[],
-    keyAttributes:[
-      {name:"LocalTemperature", description:"現在の庫内温度"},
       {name:"OccupiedCoolingSetpoint", description:"冷却設定温度"}
     ],
     keyCommands:[],
@@ -999,7 +985,7 @@ var CLUSTERS = [
     tags:["EV","充電器","モード","スケジュール","スマートチャージ"]
   },
 
-  { id:"energy-preference", clusterId:"0x009E", name:"Energy Preference", nameJa:"エネルギー優先設定",
+  { id:"energy-preference", clusterId:"0x009B", name:"Energy Preference", nameJa:"エネルギー優先設定",
     categories:["energy"],
     description:"省エネ優先・快適優先など、ユーザーのエネルギー利用方針を設定するクラスター",
     features:[],
@@ -1031,7 +1017,7 @@ var CLUSTERS = [
     tags:["給湯器","温水","沸き上げ","深夜電力","太陽光","省エネ","エコ"]
   },
 
-  { id:"water-heater-mode", clusterId:"0x009A", name:"Water Heater Mode", nameJa:"給湯器モード",
+  { id:"water-heater-mode", clusterId:"0x009E", name:"Water Heater Mode", nameJa:"給湯器モード",
     categories:["energy"],
     description:"給湯器の動作モード（通常・省エネ・休暇・スマート等）を管理するクラスター",
     features:[],
@@ -1044,13 +1030,6 @@ var CLUSTERS = [
     ],
     tags:["給湯器","モード","省エネ","休暇","スマート"]
   },
-
-  { id:"heat-pump-mode", clusterId:"0x009B", name:"Heat Pump Mode", nameJa:"ヒートポンプモード",
-    categories:["energy","hvac"],
-    description:"ヒートポンプの動作モード（暖房・給湯・冷房・自動等）を管理するクラスター",
-    features:[],
-    keyAttributes:[
-      {name:"SupportedModes", description:"対応モード一覧"},
       {name:"CurrentMode", description:"現在の動作モード"}
     ],
     keyCommands:[
@@ -1071,7 +1050,7 @@ var CLUSTERS = [
     tags:["電力グリッド","CO2","グリーン電力","再生可能エネルギー","カーボン"]
   },
 
-  { id:"commodity-metering", clusterId:"0x0772", name:"Commodity Metering", nameJa:"計量メタリング",
+  { id:"commodity-metering", clusterId:"0x0B07", name:"Commodity Metering", nameJa:"計量メタリング",
     categories:["energy"],
     description:"電力・ガス・水道などの使用量を計量・報告するクラスター",
     features:[],
@@ -1087,7 +1066,7 @@ var CLUSTERS = [
   // 🌐 Ch10 ネットワークインフラ
   // =====================================================
 
-  { id:"network-infrastructure-manager", clusterId:"0x0550", name:"Network Infrastructure Manager", nameJa:"ネットワークインフラ管理",
+  { id:"network-infrastructure-manager", clusterId:"0x0550", name:"Zone Management", nameJa:"ゾーン管理（カメラ検知エリア）",
     categories:["network"],
     description:"Matter Fabricのネットワークインフラを設定・管理するクラスター",
     features:["WiFiNetworkManagement","ThreadBorderRouterManagement"],
@@ -1102,7 +1081,7 @@ var CLUSTERS = [
     tags:["ネットワーク","Wi-Fi","Thread","インフラ","Fabric管理"]
   },
 
-  { id:"thread-border-router-management", clusterId:"0x0558", name:"Thread Border Router Management", nameJa:"Threadボーダールーター管理",
+  { id:"thread-border-router-management", clusterId:"0x0452", name:"Thread Border Router Management", nameJa:"Threadボーダールーター管理",
     categories:["network"],
     description:"ThreadボーダールーターのThread Fabricへの参加・離脱を管理するクラスター",
     features:[],
@@ -1117,7 +1096,7 @@ var CLUSTERS = [
     tags:["Thread","ボーダールーター","HomePod","ネットワーク"]
   },
 
-  { id:"thread-network-directory", clusterId:"0x0559", name:"Thread Network Directory", nameJa:"Threadネットワーク一覧",
+  { id:"thread-network-directory", clusterId:"0x0453", name:"Thread Network Directory", nameJa:"Threadネットワーク一覧",
     categories:["network"],
     description:"Fabric内のThreadネットワーク一覧を管理するクラスター",
     features:[],
@@ -1229,28 +1208,297 @@ var CLUSTERS = [
   },
 
   // ===== 追加: 0x0507 Low Power (Media) =====
-  { id:"low-power-media", clusterId:"0x0507", name:"Low Power (Media)", nameJa:"省電力モード（メディア）",
-    categories:["media"],
-    description:"メディアデバイス（スマートTV・スピーカー等）専用の省電力クラスター。スリープ移行を制御",
-    features:[],
-    keyAttributes:[],
-    keyCommands:[
-      {name:"Sleep", description:"メディアデバイスを省電力モードに移行"}
-    ],
-    tags:["省電力","スリープ","メディア","スマートTV","スピーカー"]
-  },
-
   // ===== 追加: 0x009F Power Topology (Energy) =====
-  { id:"power-topology-energy", clusterId:"0x009F", name:"Power Topology", nameJa:"電力フロー構成（エネルギー管理）",
-    categories:["energy"],
-    description:"エネルギー管理システム内の電力フロー構成を定義するクラスター。太陽光・蓄電池・EVなどの電力の流れを管理",
-    features:[],
-    keyAttributes:[
-      {name:"AvailableEndpoints", description:"電力フローに関与するエンドポイント一覧"},
+
       {name:"ActiveEndpoints", description:"現在アクティブなエンドポイント一覧"}
     ],
     keyCommands:[],
     tags:["電力","フロー","エネルギー管理","太陽光","蓄電池","EV","トポロジー"]
   }
+
+
+
+  // =====================================================
+  // 🔧 新規追加クラスター（PDF照合・Notion補完）
+  // =====================================================
+
+  // --- Valve Configuration and Control（HVAC）---
+  { id:"valve-configuration", clusterId:"0x0081", name:"Valve Configuration and Control", nameJa:"バルブ設定・制御",
+    categories:["hvac"],
+    description:"バルブの開閉・流量調整を制御するクラスター。スマート水栓や自動給水システムに使用",
+    features:["TimeSync（時刻連動）","Level（流量調整）"],
+    keyAttributes:[
+      {name:"CurrentState", description:"現在のバルブ状態（開/閉）"},
+      {name:"TargetState", description:"目標状態"},
+      {name:"CurrentLevel", description:"現在の開度（0〜100%）"}
+    ],
+    keyCommands:[
+      {name:"Open", description:"バルブを開く"},
+      {name:"Close", description:"バルブを閉じる"}
+    ],
+    tags:["バルブ","給水","流量","自動水栓","スマート水栓"]
+  },
+
+  // --- Closure Control（玄関扉窓）---      {name:"TargetState", description:"目標状態"}
+    ],
+    keyCommands:[
+      {name:"Stop", description:"動作を停止"},
+      {name:"MoveTo", description:"指定位置へ移動"}
+    ],
+    tags:["クロージャー","ドア","シャッター","ブラインド","開閉"]
+  },
+
+  // --- Content App Observer（メディア）---
+  { id:"content-app-observer", clusterId:"0x0510", name:"Content App Observer", nameJa:"コンテンツアプリ監視",
+    categories:["media"],
+    description:"メディアアプリの状態変化を監視・通知するクラスター",
+    features:[],
+    keyAttributes:[],
+    keyCommands:[
+      {name:"NavigateTarget", description:"特定コンテンツへナビゲート"}
+    ],
+    tags:["メディア","アプリ監視","コンテンツ"]
+  },
+
+  // --- Laundry Washer Controls（家電）---      {name:"NumberOfRinses", description:"すすぎ回数"}
+    ],
+    keyCommands:[],
+    tags:["洗濯機","脱水","すすぎ","洗濯"]
+  },
+
+  // --- Microwave Oven Mode（家電）---      {name:"SupportedModes", description:"対応する調理モード一覧"}
+    ],
+    keyCommands:[
+      {name:"ChangeToMode", description:"調理モードを変更"}
+    ],
+    tags:["電子レンジ","調理モード","温め","解凍","レンジ"]
+  },
+
+  // --- Microwave Oven Control（家電）---      {name:"MaxCookTime", description:"最大調理時間"},
+      {name:"PowerSetting", description:"出力レベル"}
+    ],
+    keyCommands:[
+      {name:"SetCookingParameters", description:"調理パラメーターを設定"},
+      {name:"AddMoreTime", description:"追加加熱時間を設定"}
+    ],
+    tags:["電子レンジ","出力","タイマー","加熱","レンジ"]
+  },
+
+  // --- HEPA Filter Monitoring（家電）---
+  { id:"hepa-filter-monitoring", clusterId:"0x0071", name:"HEPA Filter Monitoring", nameJa:"HEPAフィルター監視",
+    categories:["appliances","sensor"],
+    description:"空気清浄機などのHEPAフィルターの状態・交換時期を監視するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"Condition", description:"フィルター状態（0〜100%）"},
+      {name:"ChangeIndication", description:"交換推奨レベル（OK/警告/緊急）"}
+    ],
+    keyCommands:[
+      {name:"ResetCondition", description:"フィルター交換後にリセット"}
+    ],
+    tags:["フィルター","HEPA","空気清浄","交換時期","PM2.5"]
+  },
+
+  // --- Activated Carbon Filter Monitoring（家電）---
+  { id:"activated-carbon-filter-monitoring", clusterId:"0x0072", name:"Activated Carbon Filter Monitoring", nameJa:"活性炭フィルター監視",
+    categories:["appliances","sensor"],
+    description:"活性炭フィルターの状態・交換時期を監視するクラスター。脱臭・VOC除去フィルター向け",
+    features:[],
+    keyAttributes:[
+      {name:"Condition", description:"フィルター状態（0〜100%）"},
+      {name:"ChangeIndication", description:"交換推奨レベル"}
+    ],
+    keyCommands:[
+      {name:"ResetCondition", description:"フィルター交換後にリセット"}
+    ],
+    tags:["フィルター","活性炭","脱臭","VOC","空気清浄"]
+  },
+
+  // --- Soil Measurement（センサー）---
+  { id:"soil-measurement", clusterId:"0x0430", name:"Soil Measurement", nameJa:"土壌計測",
+    categories:["sensor"],
+    description:"土壌の水分・温度・pH等を計測するクラスター。スマート農業・ガーデニング向け",
+    features:[],
+    keyAttributes:[
+      {name:"SoilMoisture", description:"土壌水分値"},
+      {name:"SoilTemperature", description:"土壌温度"}
+    ],
+    keyCommands:[],
+    tags:["土壌","水分","農業","ガーデニング","センサー","植物"]
+  },
+
+  // --- Nitrogen Dioxide Concentration（センサー）---
+  { id:"no2-concentration", clusterId:"0x0413", name:"Nitrogen Dioxide Concentration Measurement", nameJa:"二酸化窒素濃度計測",
+    categories:["sensor"],
+    description:"NO₂（二酸化窒素）濃度を計測するクラスター。排気ガス・燃焼系の空気質監視に使用",
+    features:[],
+    keyAttributes:[
+      {name:"MeasuredValue", description:"計測値（μg/m³ or ppm）"},
+      {name:"LevelValue", description:"レベル評価（良好〜危険）"}
+    ],
+    keyCommands:[],
+    tags:["NO2","二酸化窒素","空気質","排気ガス","大気汚染"]
+  },
+
+  // --- Ozone Concentration（センサー）---
+  { id:"ozone-concentration", clusterId:"0x0415", name:"Ozone Concentration Measurement", nameJa:"オゾン濃度計測",
+    categories:["sensor"],
+    description:"O₃（オゾン）濃度を計測するクラスター。室内空気質・光化学スモッグ監視に使用",
+    features:[],
+    keyAttributes:[
+      {name:"MeasuredValue", description:"計測値"},
+      {name:"LevelValue", description:"レベル評価"}
+    ],
+    keyCommands:[],
+    tags:["オゾン","O3","空気質","光化学スモッグ","大気"]
+  },
+
+  // --- Formaldehyde Concentration（センサー）---
+  { id:"formaldehyde-concentration", clusterId:"0x042B", name:"Formaldehyde Concentration Measurement", nameJa:"ホルムアルデヒド濃度計測",
+    categories:["sensor"],
+    description:"HCHO（ホルムアルデヒド）濃度を計測するクラスター。シックハウス症候群対策・建材ガス検知に使用",
+    features:[],
+    keyAttributes:[
+      {name:"MeasuredValue", description:"計測値（μg/m³）"},
+      {name:"LevelValue", description:"レベル評価（良好〜危険）"}
+    ],
+    keyCommands:[],
+    tags:["ホルムアルデヒド","HCHO","シックハウス","VOC","建材","空気質"]
+  },
+
+  // --- PM1 Concentration（センサー）---
+  { id:"pm1-concentration", clusterId:"0x042C", name:"PM1 Concentration Measurement", nameJa:"PM1濃度計測",
+    categories:["sensor"],
+    description:"直径1μm以下の超微細粒子濃度を計測するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"MeasuredValue", description:"計測値（μg/m³）"},
+      {name:"LevelValue", description:"レベル評価"}
+    ],
+    keyCommands:[],
+    tags:["PM1","微粒子","超微細","空気質","粒子状物質"]
+  },
+
+  // --- PM10 Concentration（センサー）---
+  { id:"pm10-concentration", clusterId:"0x042D", name:"PM10 Concentration Measurement", nameJa:"PM10濃度計測",
+    categories:["sensor"],
+    description:"直径10μm以下の粗大粒子濃度を計測するクラスター。花粉・砂埃の監視に使用",
+    features:[],
+    keyAttributes:[
+      {name:"MeasuredValue", description:"計測値（μg/m³）"},
+      {name:"LevelValue", description:"レベル評価"}
+    ],
+    keyCommands:[],
+    tags:["PM10","花粉","砂埃","粒子状物質","空気質"]
+  },
+
+  // --- TVOC Concentration（センサー）---
+  { id:"tvoc-concentration", clusterId:"0x042E", name:"Total Volatile Organic Compounds Concentration Measurement", nameJa:"総VOC濃度計測",
+    categories:["sensor"],
+    description:"総揮発性有機化合物（TVOC）濃度を計測するクラスター。シックハウス・内装材ガス全般の監視",
+    features:[],
+    keyAttributes:[
+      {name:"MeasuredValue", description:"計測値（μg/m³ or ppb）"},
+      {name:"LevelValue", description:"レベル評価（良好〜危険）"}
+    ],
+    keyCommands:[],
+    tags:["VOC","TVOC","揮発性有機化合物","シックハウス","空気質","内装"]
+  },
+
+  // --- Radon Concentration（センサー）---
+  { id:"radon-concentration", clusterId:"0x042F", name:"Radon Concentration Measurement", nameJa:"ラドン濃度計測",
+    categories:["sensor"],
+    description:"ラドンガス濃度を計測するクラスター。地下・コンクリート建築での放射性ガス監視に使用",
+    features:[],
+    keyAttributes:[
+      {name:"MeasuredValue", description:"計測値（Bq/m³）"},
+      {name:"LevelValue", description:"レベル評価"}
+    ],
+    keyCommands:[],
+    tags:["ラドン","放射性ガス","地下","コンクリート","空気質"]
+  },
+
+  // --- Wi-Fi Network Management（ネットワーク）---
+  { id:"wifi-network-management", clusterId:"0x0451", name:"Wi-Fi Network Management", nameJa:"Wi-Fiネットワーク管理",
+    categories:["network"],
+    description:"Wi-Fiネットワークの設定・接続状態を管理するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"SSID", description:"接続中のSSID"},
+      {name:"PassphraseSurrogate", description:"パスフレーズ（マスク表示）"}
+    ],
+    keyCommands:[
+      {name:"QueryIdentity", description:"ネットワーク識別情報を照会"}
+    ],
+    tags:["Wi-Fi","ネットワーク","SSID","無線LAN","接続"]
+  },
+
+  // --- Commodity Price（エネルギー）---
+  { id:"commodity-price", clusterId:"0x0095", name:"Commodity Price", nameJa:"コモディティ価格情報",
+    categories:["energy"],
+    description:"電気・ガス・水道などのエネルギー価格情報をデバイスに提供するクラスター。安い時間帯に自動動作する省エネ制御に活用",
+    features:[],
+    keyAttributes:[
+      {name:"TariffUnit", description:"価格単位（kWh等）"},
+      {name:"Currency", description:"通貨単位"},
+      {name:"CurrentPrice", description:"現在の単価"}
+    ],
+    keyCommands:[],
+    tags:["電気代","料金","価格","スマートメーター","省エネ","ピーク","オフピーク"]
+  },
+
+  // --- Commodity Tariff（エネルギー）---
+  { id:"commodity-tariff", clusterId:"0x0700", name:"Commodity Tariff", nameJa:"エネルギー料金体系",
+    categories:["energy"],
+    description:"時間帯別・季節別の複雑な料金体系を管理するクラスター。ダイナミックプライシング対応",
+    features:[],
+    keyAttributes:[
+      {name:"TariffInfo", description:"料金体系情報"},
+      {name:"TariffPeriods", description:"料金適用期間のリスト"}
+    ],
+    keyCommands:[],
+    tags:["料金体系","時間帯別料金","ダイナミックプライシング","電気代","ガス代","スマートメーター"]
+  },
+
+  // --- Meter Identification（エネルギー）---
+  { id:"meter-identification", clusterId:"0x0B06", name:"Meter Identification", nameJa:"メーター識別情報",
+    categories:["energy"],
+    description:"スマートメーターのシリアル番号・供給地点番号・メーター種別などの識別情報を提供するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"MeterSerialNumber", description:"メーターシリアル番号"},
+      {name:"PointOfDelivery", description:"供給地点特定番号"},
+      {name:"MeterType", description:"メーター種別"}
+    ],
+    keyCommands:[],
+    tags:["スマートメーター","シリアル番号","供給地点","検針","電力メーター"]
+  },
+
+  // --- Commodity Metering（エネルギー）---      {name:"CurrentSummationReceived", description:"累積消費量（送電側）"}
+    ],
+    keyCommands:[],
+    tags:["スマートメーター","消費量","計量","電力量","ガス","水道"]
+  },
+
+  // --- Camera AV Settings User Level Management（カメラ）---      {name:"NightVision", description:"ナイトビジョン設定"}
+    ],
+    keyCommands:[],
+    tags:["カメラ","映像設定","明るさ","ナイトビジョン","ユーザー設定"]
+  },
+
+  // --- Device Energy Management Mode 修正版（エネルギー）---
+  { id:"device-energy-management-mode", clusterId:"0x009F", name:"Device Energy Management Mode", nameJa:"デバイスエネルギー管理モード",
+    categories:["energy"],
+    description:"デバイスのエネルギー管理動作モード（最適化なし/自律最適化/ローカルEMS/グリッド連動）を設定するクラスター",
+    features:[],
+    keyAttributes:[
+      {name:"CurrentMode", description:"現在のエネルギー管理モード"},
+      {name:"SupportedModes", description:"対応モード一覧"}
+    ],
+    keyCommands:[
+      {name:"ChangeToMode", description:"エネルギー管理モードを変更"}
+    ],
+    tags:["エネルギー管理","EMS","グリッド連動","最適化","省エネ","スマートグリッド"]
+  },
 
 ];
