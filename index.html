@@ -209,6 +209,7 @@ header {
 .row-badge.O { background: rgba(91,196,245,0.15); color: var(--accent2); border: 1px solid rgba(91,196,245,0.3); }
 .row-name { font-weight: 700; font-size: 13px; }
 .row-cid { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--dim); margin-left: 6px; }
+.row-en-name { font-size: 10px; color: var(--dim); font-style: italic; margin-left: 4px; }
 .row-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .row-expand { color: var(--dim); font-size: 11px; flex-shrink: 0; transition: transform 0.2s; }
 .row-expand.open { transform: rotate(180deg); }
@@ -629,6 +630,7 @@ function openDeviceModal(deviceId) {
       '<div style="flex:1">' +
         '<div style="display:flex;align-items:center;gap:6px">' +
           '<span class="row-name">' + cl.nameJa + '</span>' +
+          '<span class="row-en-name">' + cl.name + '</span>' +
           '<span class="row-cid">' + cl.clusterId + '</span>' +
         '</div>' +
         '<div class="row-desc">' + cl.description + '</div>' +
