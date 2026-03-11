@@ -26,6 +26,16 @@ header {
 .logo-title { font-size: 16px; font-weight: 700; }
 .logo-sub { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
 .header-stat { font-size: 11px; color: var(--muted); text-align: right; font-family: 'Space Mono', monospace; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.guide-btn {
+  padding: 6px 13px; border-radius: 7px; font-size: 12px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; text-decoration: none;
+  font-family: 'Noto Sans JP', sans-serif; transition: all 0.15s;
+  display: flex; align-items: center; gap: 5px; white-space: nowrap;
+}
+.guide-btn:hover { background: var(--surface2); color: var(--accent); border-color: var(--accent); }
+@media (max-width: 480px) { .guide-btn span { display: none; } }
 
 .search-bar {
   padding: 16px 28px; border-bottom: 1px solid var(--border);
@@ -233,8 +243,11 @@ header {
       <div class="logo-sub">by ライフテックコーディネーター 織田未来</div>
     </div>
   </div>
-  <div class="header-stat">
-    <span id="statDevices">—</span> デバイスタイプ &nbsp;|&nbsp; <span id="statClusters">—</span> クラスター
+  <div class="header-right">
+    <a class="guide-btn" href="guide.html">📖 <span>Matterとは？</span></a>
+    <div class="header-stat">
+      <span id="statDevices">—</span> デバイスタイプ &nbsp;|&nbsp; <span id="statClusters">—</span> クラスター
+    </div>
   </div>
 </header>
 
