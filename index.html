@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matter 1.5 デバイス辞書</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0f14; --surface: #16181f; --surface2: #1e2029;
+  --border: #2a2d38; --accent: #7ee8a2; --accent2: #5bc4f5;
+  --accent3: #f5a623; --text: #e8eaf0; --muted: #7a7f94; --dim: #3d4155;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; font-size: 14px; min-height: 100vh; }
+
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 16px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(14,15,20,0.97);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-badge { font-family: 'Space Mono', monospace; font-size: 11px; background: var(--accent); color: #0e0f14; padding: 3px 8px; border-radius: 3px; font-weight: 700; }
+.logo-title { font-size: 16px; font-weight: 700; }
+.logo-sub { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
+.header-stat { font-size: 11px; color: var(--muted); text-align: right; font-family: 'Space Mono', monospace; }
+
+.search-bar {
+  padding: 16px 28px; border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  display: flex; gap: 10px; align-items: center;
+}
+.search-wrap { flex: 1; position: relative; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+.search-input {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 7px; padding: 9px 12px 9px 36px;
+  color: var(--text); font-size: 14px; font-family: 'Noto Sans JP', sans-serif; outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--muted); }
+.view-tabs { display: flex; gap: 3px; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 3px; }
+.vtab { padding: 6px 14px; border-radius: 5px; font-size: 12px; cursor: pointer; border: none; background: transparent; color: var(--muted); font-family: 'Noto Sans JP', sans-serif; transition: all 0.15s; }
+.vtab.active { background: var(--surface2); color: var(--text); }
+
+.layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 113px); }
+
+.sidebar { border-right: 1px solid var(--border); padding: 12px 0; overflow-y: auto; }
+.sidebar-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); padding: 8px 18px 4px; font-family: 'Space Mono', monospace; }
+.cat-btn {
+  display: flex; align-items: center; gap: 9px;
+  width: 100%; padding: 8px 18px; border: none; background: transparent;
+  color: var(--muted); cursor: pointer; text-align: left; font-size: 13px;
+  font-family: 'Noto Sans JP', sans-serif; border-left: 2px solid transparent; transition: all 0.15s;
+}
+.cat-btn:hover { background: var(--surface2); color: var(--text); }
+.cat-btn.active { background: var(--surface2); color: var(--accent); border-left-color: var(--accent); }
+.cat-btn .cnt { margin-left: auto; font-size: 10px; font-family: 'Space Mono', monospace; background: var(--surface); padding: 1px 6px; border-radius: 3px; color: var(--dim); }
+
+.main { padding: 22px 28px; overflow-y: auto; }
+.sec-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px; }
+.sec-title { font-size: 18px; font-weight: 700; }
+.sec-count { font-size: 12px; color: var(--muted); font-family: 'Space Mono', monospace; }
+.legend { display: flex; gap: 14px; font-size: 11px; color: var(--muted); padding: 10px 14px; background: var(--surface); border-radius: 7px; margin-bottom: 16px; }
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.ldot { width: 8px; height: 8px; border-radius: 2px; }
+.ldot.M { background: var(--accent); }
+.ldot.O { background: var(--accent2); }
+
+.device-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
+.device-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 16px; cursor: pointer; transition: all 0.18s;
+}
+.device-card:hover { border-color: var(--accent2); background: var(--surface2); transform: translateY(-1px); }
+.card-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.card-icon { font-size: 26px; flex-shrink: 0; line-height: 1; }
+.card-name { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
+.card-id { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--dim); }
+.card-desc { font-size: 12px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+.cluster-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip { font-size: 10px; padding: 2px 7px; border-radius: 3px; font-family: 'Space Mono', monospace; border: 1px solid; }
+.chip.M { background: rgba(126,232,162,0.08); border-color: rgba(126,232,162,0.3); color: var(--accent); }
+.chip.O { background: rgba(91,196,245,0.08); border-color: rgba(91,196,245,0.3); color: var(--accent2); }
+.superset-note { font-size: 10px; color: var(--accent3); margin-bottom: 6px; font-family: 'Space Mono', monospace; }
+
+.cluster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 12px; }
+.cluster-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 15px; cursor: pointer; transition: all 0.18s;
+}
+.cluster-card:hover { border-color: var(--accent2); background: var(--surface2); transform: translateY(-1px); }
+.cluster-card-id { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent2); margin-bottom: 4px; }
+.cluster-card-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.cluster-card-desc { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.used-in-list { display: flex; flex-wrap: wrap; gap: 5px; }
+.used-badge { font-size: 10px; padding: 2px 7px; border-radius: 3px; background: var(--surface2); border: 1px solid var(--border); color: var(--dim); }
+
+.empty { text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }
+.empty .big { font-size: 40px; margin-bottom: 10px; }
+
+/* MODAL */
+.overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.72); z-index: 200;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.overlay.open { display: flex; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  width: 100%; max-width: 700px; max-height: 88vh; overflow-y: auto;
+  animation: slideUp 0.22s ease;
+}
+@keyframes slideUp { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform: translateY(0); } }
+.modal-close-row { display: flex; justify-content: flex-end; padding: 14px 18px 0; position: sticky; top: 0; background: var(--surface); z-index: 1; }
+.close-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); width: 30px; height: 30px; border-radius: 6px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.close-btn:hover { color: var(--text); }
+.modal-body { padding: 6px 26px 26px; }
+.modal-icon { font-size: 44px; margin-bottom: 6px; }
+.modal-title { font-size: 21px; font-weight: 700; margin-bottom: 3px; }
+.modal-id { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--dim); margin-bottom: 6px; }
+.modal-desc { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+.modal-section { margin-bottom: 18px; }
+.modal-section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-family: 'Space Mono', monospace; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px solid var(--border); }
+.chain { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; padding: 10px; background: var(--surface2); border-radius: 7px; }
+.chain-item { padding: 4px 10px; border-radius: 5px; background: var(--bg); border: 1px solid var(--border); cursor: pointer; font-size: 12px; transition: border-color 0.15s; }
+.chain-item:hover { border-color: var(--accent3); }
+.chain-item.cur { border-color: var(--accent3); color: var(--accent3); }
+.chain-arrow { color: var(--dim); }
+.cluster-rows { display: flex; flex-direction: column; gap: 7px; }
+.cluster-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 11px; background: var(--surface2); border-radius: 7px;
+  border: 1px solid var(--border); cursor: pointer; transition: border-color 0.15s;
+}
+.cluster-row:hover { border-color: var(--accent2); }
+.row-badge { font-size: 9px; font-family: 'Space Mono', monospace; padding: 2px 5px; border-radius: 3px; flex-shrink: 0; margin-top: 2px; }
+.row-badge.M { background: rgba(126,232,162,0.15); color: var(--accent); border: 1px solid rgba(126,232,162,0.3); }
+.row-badge.O { background: rgba(91,196,245,0.15); color: var(--accent2); border: 1px solid rgba(91,196,245,0.3); }
+.row-name { font-weight: 700; font-size: 13px; }
+.row-cid { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--dim); margin-left: 6px; }
+.row-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.row-expand { color: var(--dim); font-size: 11px; flex-shrink: 0; transition: transform 0.2s; }
+.row-expand.open { transform: rotate(180deg); }
+.cluster-detail { display: none; margin-top: 8px; padding: 12px; background: var(--bg); border-radius: 6px; border-left: 2px solid var(--accent2); }
+.cluster-detail.open { display: block; }
+.detail-section-head { font-size: 10px; color: var(--dim); font-family: 'Space Mono', monospace; margin-bottom: 5px; margin-top: 10px; }
+.detail-section-head:first-child { margin-top: 0; }
+.feature-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.feature-chip { font-size: 10px; padding: 2px 7px; border-radius: 3px; background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.25); color: var(--accent3); font-family: 'Space Mono', monospace; }
+.attr-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.attr-table th { text-align: left; padding: 3px 7px; color: var(--dim); font-weight: 400; font-family: 'Space Mono', monospace; font-size: 10px; border-bottom: 1px solid var(--border); }
+.attr-table td { padding: 5px 7px; color: var(--muted); }
+.attr-table tr:not(:last-child) td { border-bottom: 1px solid rgba(42,45,56,0.5); }
+.attr-name { color: var(--text); font-family: 'Space Mono', monospace; font-size: 11px; }
+.notes-box { font-size: 13px; color: var(--muted); padding: 12px; background: var(--surface2); border-radius: 7px; border-left: 2px solid var(--accent3); line-height: 1.6; }
+.device-refs { display: flex; flex-wrap: wrap; gap: 7px; }
+.dev-ref { display: flex; align-items: center; gap: 5px; padding: 5px 10px; background: var(--surface2); border-radius: 6px; border: 1px solid var(--border); cursor: pointer; font-size: 12px; transition: border-color 0.15s; }
+.dev-ref:hover { border-color: var(--accent); }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-badge">Matter 1.5</span>
+    <div>
+      <div class="logo-title">⚡ Matterデバイス辞書</div>
+      <div class="logo-sub">by ライフテックコーディネーター 織田未来</div>
+    </div>
+  </div>
+  <div class="header-stat">
+    <span id="statDevices">—</span> デバイスタイプ &nbsp;|&nbsp; <span id="statClusters">—</span> クラスター
+  </div>
+</header>
+
+<div class="search-bar">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" class="search-input" id="searchInput" placeholder="デバイス・クラスター・機能で検索… 例：色温度、人感、サーカディアン">
+  </div>
+  <div class="view-tabs">
+    <button class="vtab active" id="tabDevices">デバイスタイプ</button>
+    <button class="vtab" id="tabClusters">クラスター</button>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-label">カテゴリ</div>
+  </nav>
+  <main class="main" id="main">
+    <div id="devicesView">
+      <div class="sec-header">
+        <span class="sec-title" id="secTitle">すべてのデバイスタイプ</span>
+        <span class="sec-count" id="secCount"></span>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="ldot M"></div> 必須クラスター (M)</div>
+        <div class="legend-item"><div class="ldot O"></div> 任意クラスター (O)</div>
+      </div>
+      <div class="device-grid" id="deviceGrid"></div>
+    </div>
+    <div id="clustersView" style="display:none">
+      <div class="sec-header">
+        <span class="sec-title">クラスター一覧</span>
+        <span class="sec-count" id="clusterCount"></span>
+      </div>
+      <div class="cluster-grid" id="clusterGrid"></div>
+    </div>
+  </main>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal">
+    <div class="modal-close-row">
+      <button class="close-btn" id="closeBtn">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+</script>
+
+<!-- ★ データファイル読み込み（更新するときはこの3ファイルを編集） -->
+<script src="data/clusters.js"></script>
+<script src="data/deviceTypes.js"></script>
+<script src="data/products.js"></script>
+
+<script>
+// ===================================================
+// アプリ本体
+// ===================================================
+var CATEGORIES = [
+  {id:"all",    label:"すべて",         icon:"🏠"},
+  {id:"lighting",  label:"照明",         icon:"💡"},
+  {id:"plug",    label:"スマートプラグ",   icon:"🔌"},
+  {id:"switch",   label:"スイッチ",       icon:"🎚"},
+  {id:"sensor",   label:"センサー",       icon:"📡"},
+  {id:"entry",   label:"玄関・扉・窓",    icon:"🚪"},
+  {id:"hvac",    label:"HVAC（空調）",   icon:"🌡"},
+  {id:"appliances",label:"家電",         icon:"🍳"},
+  {id:"energy",   label:"エネルギー",     icon:"⚡"},
+  {id:"camera",   label:"カメラ・セキュリティ",icon:"📷"},
+  {id:"media",   label:"メディア",       icon:"📺"},
+  {id:"robot",   label:"ロボット",       icon:"🤖"},
+  {id:"utility",  label:"ユーティリティ",  icon:"🔧"}
+];
+
+// ===================================================
+// APP STATE
+// ===================================================
+var currentCat = "all";
+var currentView = "devices";
+var searchQuery = "";
+var openClusterRowId = null;
+
+// ===================================================
+// INIT
+// ===================================================
+document.getElementById("statDevices").textContent = DEVICE_TYPES.length;
+document.getElementById("statClusters").textContent = CLUSTERS.length;
+
+// Build sidebar
+var sidebar = document.getElementById("sidebar");
+CATEGORIES.forEach(function(cat) {
+  var count = cat.id === "all" ? DEVICE_TYPES.length : DEVICE_TYPES.filter(function(d){ return d.category === cat.id; }).length;
+  var btn = document.createElement("button");
+  btn.className = "cat-btn" + (cat.id === "all" ? " active" : "");
+  btn.setAttribute("data-cat", cat.id);
+  btn.innerHTML = '<span>' + cat.icon + '</span><span>' + cat.label + '</span><span class="cnt">' + count + '</span>';
+  btn.addEventListener("click", function() { selectCategory(cat.id); });
+  sidebar.appendChild(btn);
+});
+
+// Tab events
+document.getElementById("tabDevices").addEventListener("click", function() { switchView("devices"); });
+document.getElementById("tabClusters").addEventListener("click", function() { switchView("clusters"); });
+
+// Search
+document.getElementById("searchInput").addEventListener("input", function(e) {
+  searchQuery = e.target.value.toLowerCase();
+  if (currentView === "devices") renderDevices();
+  else renderClusters();
+});
+
+// Close modal
+document.getElementById("closeBtn").addEventListener("click", closeModal);
+document.getElementById("overlay").addEventListener("click", function(e) {
+  if (e.target === document.getElementById("overlay")) closeModal();
+});
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") closeModal();
+});
+
+// Initial render
+renderDevices();
+renderClusters();
+
+// ===================================================
+// FUNCTIONS
+// ===================================================
+function selectCategory(catId) {
+  currentCat = catId;
+  document.querySelectorAll(".cat-btn").forEach(function(b) {
+    b.classList.toggle("active", b.getAttribute("data-cat") === catId);
+  });
+  var titles = {
+    all:"すべてのデバイスタイプ", lighting:"💡 照明", plug:"🔌 スマートプラグ",
+    switch:"🎚 スイッチ・コントローラー", sensor:"📡 センサー", entry:"🚪 玄関・扉・窓",
+    hvac:"🌡 HVAC（空調）", appliances:"🍳 家電", energy:"⚡ エネルギー管理",
+    camera:"📷 カメラ・セキュリティ", media:"📺 メディア", robot:"🤖 ロボット", utility:"🔧 ユーティリティ"
+  };
+  document.getElementById("secTitle").textContent = titles[catId] || catId;
+  renderDevices();
+}
+
+function switchView(view) {
+  currentView = view;
+  document.getElementById("devicesView").style.display = view === "devices" ? "" : "none";
+  document.getElementById("clustersView").style.display = view === "clusters" ? "" : "none";
+  document.getElementById("tabDevices").classList.toggle("active", view === "devices");
+  document.getElementById("tabClusters").classList.toggle("active", view === "clusters");
+}
+
+function getFilteredDevices() {
+  return DEVICE_TYPES.filter(function(d) {
+    var catOk = currentCat === "all" || d.category === currentCat;
+    if (!catOk) return false;
+    if (!searchQuery) return true;
+    var q = searchQuery;
+    var inName = d.nameJa.toLowerCase().indexOf(q) >= 0 || d.name.toLowerCase().indexOf(q) >= 0;
+    var inDesc = d.description.toLowerCase().indexOf(q) >= 0;
+    var inTags = d.tags.some(function(t){ return t.toLowerCase().indexOf(q) >= 0; });
+    var inClusters = (d.req || []).concat(d.opt || []).some(function(cid) {
+      var cl = CLUSTERS.find(function(c){ return c.id === cid; });
+      return cl && (cl.nameJa.toLowerCase().indexOf(q) >= 0 || cl.name.toLowerCase().indexOf(q) >= 0);
+    });
+    return inName || inDesc || inTags || inClusters;
+  });
+}
+
+function renderDevices() {
+  var devices = getFilteredDevices();
+  var grid = document.getElementById("deviceGrid");
+  document.getElementById("secCount").textContent = devices.length + " 件";
+
+  if (devices.length === 0) {
+    grid.innerHTML = '<div class="empty"><div class="big">🔍</div><div>該当するデバイスがありません</div></div>';
+    return;
+  }
+
+  grid.innerHTML = devices.map(function(d) {
+    var reqChips = (d.req || []).slice(0,3).map(function(cid) {
+      var cl = CLUSTERS.find(function(c){ return c.id === cid; });
+      return cl ? '<span class="chip M">' + cl.nameJa + '</span>' : '';
+    }).join('');
+    var optChips = (d.opt || []).slice(0,2).map(function(cid) {
+      var cl = CLUSTERS.find(function(c){ return c.id === cid; });
+      return cl ? '<span class="chip O">' + cl.nameJa + '</span>' : '';
+    }).join('');
+    var moreReq = (d.req || []).length > 3 ? '<span class="chip M">+' + ((d.req||[]).length - 3) + '</span>' : '';
+    var superNote = d.supersetOf ? '<div class="superset-note">↑ ' + d.supersetOf.map(function(pid){
+      var p = DEVICE_TYPES.find(function(x){ return x.id === pid; });
+      return p ? p.nameJa : pid;
+    }).join(', ') + ' の上位互換</div>' : '';
+    return '<div class="device-card" data-id="' + d.id + '">' +
+      '<div class="card-head"><div class="card-icon">' + d.icon + '</div><div>' +
+      '<div class="card-name">' + d.nameJa + '</div>' +
+      '<div class="card-id">' + d.name + ' · ' + d.deviceTypeId + '</div></div></div>' +
+      superNote +
+      '<div class="card-desc">' + d.description + '</div>' +
+      '<div class="cluster-chips">' + reqChips + optChips + moreReq + '</div>' +
+      '</div>';
+  }).join('');
+
+  grid.querySelectorAll('.device-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      openDeviceModal(card.getAttribute('data-id'));
+    });
+  });
+}
+
+function renderClusters() {
+  var q = searchQuery;
+  var clusters = CLUSTERS.filter(function(c) {
+    if (!q) return true;
+    return c.nameJa.toLowerCase().indexOf(q) >= 0 || c.name.toLowerCase().indexOf(q) >= 0 || c.description.toLowerCase().indexOf(q) >= 0;
+  });
+  document.getElementById("clusterCount").textContent = clusters.length + " 件";
+
+  var grid = document.getElementById("clusterGrid");
+  if (clusters.length === 0) {
+    grid.innerHTML = '<div class="empty"><div class="big">🔍</div><div>該当するクラスターがありません</div></div>';
+    return;
+  }
+
+  grid.innerHTML = clusters.map(function(c) {
+    var usedIn = DEVICE_TYPES.filter(function(d) {
+      return (d.req||[]).indexOf(c.id) >= 0 || (d.opt||[]).indexOf(c.id) >= 0;
+    }).slice(0,3);
+    return '<div class="cluster-card" data-id="' + c.id + '">' +
+      '<div class="cluster-card-id">' + c.clusterId + '</div>' +
+      '<div class="cluster-card-name">' + c.nameJa + '</div>' +
+      '<div class="cluster-card-desc">' + c.description + '</div>' +
+      '<div class="used-in-list">' + usedIn.map(function(d){ return '<span class="used-badge">' + d.icon + ' ' + d.nameJa + '</span>'; }).join('') + '</div>' +
+      '</div>';
+  }).join('');
+
+  grid.querySelectorAll('.cluster-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      openClusterModal(card.getAttribute('data-id'));
+    });
+  });
+}
+
+function buildChain(device) {
+  var chain = [device];
+  var cur = device;
+  for (var i = 0; i < 10; i++) {
+    if (!cur.supersetOf || !cur.supersetOf.length) break;
+    var parent = DEVICE_TYPES.find(function(d){ return d.id === cur.supersetOf[0]; });
+    if (!parent) break;
+    chain.unshift(parent);
+    cur = parent;
+  }
+  return chain;
+}
+
+function openDeviceModal(deviceId) {
+  var d = DEVICE_TYPES.find(function(x){ return x.id === deviceId; });
+  if (!d) return;
+  openClusterRowId = null;
+
+  var chain = buildChain(d);
+  var chainHtml = '';
+  if (chain.length > 1) {
+    chainHtml = '<div class="modal-section"><div class="modal-section-title">デバイスタイプの継承関係（スーパーセット）</div>' +
+      '<div class="chain">' +
+      chain.map(function(item, i) {
+        return '<span class="chain-item' + (item.id === d.id ? ' cur' : '') + '" data-devid="' + item.id + '">' + item.icon + ' ' + item.nameJa + '</span>' +
+          (i < chain.length - 1 ? '<span class="chain-arrow">→</span>' : '');
+      }).join('') +
+      '</div><div style="font-size:11px;color:var(--muted);margin-top:7px;padding:0 4px">右に行くほど機能が多い。右のデバイスは左のデバイスとしても動作できます。</div></div>';
+  }
+
+  var allClusters = (d.req||[]).map(function(id){ return {id:id,type:'M'}; })
+    .concat((d.opt||[]).map(function(id){ return {id:id,type:'O'}; }));
+
+  var clusterRowsHtml = allClusters.map(function(item) {
+    var cl = CLUSTERS.find(function(c){ return c.id === item.id; });
+    if (!cl) return '';
+    return '<div class="cluster-row" data-clid="' + cl.id + '">' +
+      '<span class="row-badge ' + item.type + '">' + item.type + '</span>' +
+      '<div style="flex:1">' +
+        '<div style="display:flex;align-items:center;gap:6px">' +
+          '<span class="row-name">' + cl.nameJa + '</span>' +
+          '<span class="row-cid">' + cl.clusterId + '</span>' +
+        '</div>' +
+        '<div class="row-desc">' + cl.description + '</div>' +
+        '<div class="cluster-detail" id="cd-' + cl.id + '">' + buildClusterDetailHtml(cl) + '</div>' +
+      '</div>' +
+      '<span class="row-expand" id="exp-' + cl.id + '">▼</span>' +
+      '</div>';
+  }).join('');
+
+  var notesHtml = d.notes ? '<div class="modal-section"><div class="modal-section-title">💡 ライフテックメモ</div><div class="notes-box">' + d.notes + '</div></div>' : '';
+
+  document.getElementById("modalBody").innerHTML =
+    '<div class="modal-icon">' + d.icon + '</div>' +
+    '<div class="modal-title">' + d.nameJa + '</div>' +
+    '<div class="modal-id">' + d.name + ' · Device Type ID: ' + d.deviceTypeId + '</div>' +
+    '<div class="modal-desc">' + d.description + '</div>' +
+    chainHtml +
+    '<div class="modal-section"><div class="modal-section-title">クラスター要件（クリックで詳細展開）</div>' +
+    '<div class="cluster-rows">' + clusterRowsHtml + '</div></div>' +
+    notesHtml;
+
+  // Attach cluster row events
+  document.querySelectorAll('.cluster-row').forEach(function(row) {
+    row.addEventListener('click', function() {
+      var clid = row.getAttribute('data-clid');
+      var detail = document.getElementById('cd-' + clid);
+      var exp = document.getElementById('exp-' + clid);
+      var isOpen = detail.classList.contains('open');
+      document.querySelectorAll('.cluster-detail').forEach(function(el){ el.classList.remove('open'); });
+      document.querySelectorAll('.row-expand').forEach(function(el){ el.classList.remove('open'); });
+      if (!isOpen) {
+        detail.classList.add('open');
+        exp.classList.add('open');
+      }
+    });
+  });
+
+  // Chain item clicks
+  document.querySelectorAll('.chain-item').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var did = el.getAttribute('data-devid');
+      if (did && did !== deviceId) openDeviceModal(did);
+    });
+  });
+
+  document.getElementById("overlay").classList.add("open");
+}
+
+function openClusterModal(clusterId) {
+  var cl = CLUSTERS.find(function(c){ return c.id === clusterId; });
+  if (!cl) return;
+
+  var usedIn = DEVICE_TYPES.filter(function(d) {
+    return (d.req||[]).indexOf(cl.id) >= 0 || (d.opt||[]).indexOf(cl.id) >= 0;
+  });
+
+  var devRefsHtml = usedIn.map(function(d) {
+    var isReq = (d.req||[]).indexOf(cl.id) >= 0;
+    return '<div class="dev-ref" data-devid="' + d.id + '">' + d.icon + ' ' + d.nameJa + ' <span class="row-badge ' + (isReq?'M':'O') + '">' + (isReq?'M':'O') + '</span></div>';
+  }).join('');
+
+  document.getElementById("modalBody").innerHTML =
+    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">' +
+      '<span style="font-size:38px">🔧</span>' +
+      '<div><div class="modal-title">' + cl.nameJa + '</div>' +
+      '<div class="modal-id">' + cl.name + ' · Cluster ID: ' + cl.clusterId + '</div></div>' +
+    '</div>' +
+    '<div class="modal-desc">' + cl.description + '</div>' +
+    buildClusterDetailHtml(cl) +
+    (usedIn.length > 0 ? '<div class="modal-section"><div class="modal-section-title">このクラスターを使うデバイスタイプ</div><div class="device-refs">' + devRefsHtml + '</div></div>' : '');
+
+  document.querySelectorAll('.dev-ref').forEach(function(el) {
+    el.addEventListener('click', function() {
+      openDeviceModal(el.getAttribute('data-devid'));
+    });
+  });
+
+  document.getElementById("overlay").classList.add("open");
+}
+
+function buildClusterDetailHtml(cl) {
+  var html = '';
+  if (cl.features && cl.features.length) {
+    html += '<div class="modal-section"><div class="modal-section-title">フィーチャー（オプション機能）</div>' +
+      '<div class="feature-chips">' + cl.features.map(function(f){ return '<span class="feature-chip">' + f + '</span>'; }).join('') + '</div></div>';
+  }
+  if (cl.keyAttributes && cl.keyAttributes.length) {
+    html += '<div class="modal-section"><div class="modal-section-title">主な Attributes（状態・設定値）</div>' +
+      '<table class="attr-table"><tr><th>属性名</th><th>説明</th></tr>' +
+      cl.keyAttributes.map(function(a){ return '<tr><td class="attr-name">' + a.name + '</td><td>' + a.description + '</td></tr>'; }).join('') +
+      '</table></div>';
+  }
+  if (cl.keyCommands && cl.keyCommands.length) {
+    html += '<div class="modal-section"><div class="modal-section-title">主な Commands（操作命令）</div>' +
+      '<table class="attr-table"><tr><th>コマンド名</th><th>動作</th></tr>' +
+      cl.keyCommands.map(function(c){ return '<tr><td class="attr-name">' + c.name + '</td><td>' + c.description + '</td></tr>'; }).join('') +
+      '</table></div>';
+  }
+  return html || '<div style="color:var(--dim);font-size:12px;padding:8px">詳細情報なし</div>';
+}
+
+function closeModal() {
+  document.getElementById("overlay").classList.remove("open");
+}
+</script>
+</body>
+</html>
