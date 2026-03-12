@@ -421,12 +421,6 @@ var CLUSTERS = [
     ],
     tags:["色温度","カラー","RGB","HSV","サーカディアン","照明","適応照明","2700K","6500K"]
   },
-      {name:"PowerOnLevel", description:"電源投入時のレベル"},
-      {name:"IntrinsicBallastFactor", description:"バラスト固有係数"}
-    ],
-    keyCommands:[],
-    tags:["バラスト","安定器","調光設定","照明"]
-  },
 
   // =====================================================
   // 🌡 Ch4 HVAC（空調系）
@@ -928,11 +922,6 @@ var CLUSTERS = [
     ],
     tags:["温度制御","設定温度","家電","冷蔵庫","オーブン"]
   },
-      {name:"OccupiedCoolingSetpoint", description:"冷却設定温度"}
-    ],
-    keyCommands:[],
-    tags:["サーモスタット","家電","冷蔵庫","温度制御"]
-  },
 
   // =====================================================
   // ⚡ Ch9 エネルギー管理（Energy Management）
@@ -1029,13 +1018,6 @@ var CLUSTERS = [
       {name:"ChangeToMode", description:"モードを変更"}
     ],
     tags:["給湯器","モード","省エネ","休暇","スマート"]
-  },
-      {name:"CurrentMode", description:"現在の動作モード"}
-    ],
-    keyCommands:[
-      {name:"ChangeToMode", description:"モードを変更"}
-    ],
-    tags:["ヒートポンプ","モード","給湯","暖房","エネルギー"]
   },
 
   { id:"electrical-grid-conditions", clusterId:"0x00A0", name:"Electrical Grid Conditions", nameJa:"電力グリッド状態",
@@ -1210,11 +1192,6 @@ var CLUSTERS = [
   // ===== 追加: 0x0507 Low Power (Media) =====
   // ===== 追加: 0x009F Power Topology (Energy) =====
 
-      {name:"ActiveEndpoints", description:"現在アクティブなエンドポイント一覧"}
-    ],
-    keyCommands:[],
-    tags:["電力","フロー","エネルギー管理","太陽光","蓄電池","EV","トポロジー"]
-  }
 
 
 
@@ -1239,14 +1216,7 @@ var CLUSTERS = [
     tags:["バルブ","給水","流量","自動水栓","スマート水栓"]
   },
 
-  // --- Closure Control（玄関扉窓）---      {name:"TargetState", description:"目標状態"}
-    ],
-    keyCommands:[
-      {name:"Stop", description:"動作を停止"},
-      {name:"MoveTo", description:"指定位置へ移動"}
-    ],
-    tags:["クロージャー","ドア","シャッター","ブラインド","開閉"]
-  },
+  // --- Closure Control（玄関扉窓）---
 
   // --- Content App Observer（メディア）---
   { id:"content-app-observer", clusterId:"0x0510", name:"Content App Observer", nameJa:"コンテンツアプリ監視",
@@ -1260,29 +1230,11 @@ var CLUSTERS = [
     tags:["メディア","アプリ監視","コンテンツ"]
   },
 
-  // --- Laundry Washer Controls（家電）---      {name:"NumberOfRinses", description:"すすぎ回数"}
-    ],
-    keyCommands:[],
-    tags:["洗濯機","脱水","すすぎ","洗濯"]
-  },
+  // --- Laundry Washer Controls（家電）---
 
-  // --- Microwave Oven Mode（家電）---      {name:"SupportedModes", description:"対応する調理モード一覧"}
-    ],
-    keyCommands:[
-      {name:"ChangeToMode", description:"調理モードを変更"}
-    ],
-    tags:["電子レンジ","調理モード","温め","解凍","レンジ"]
-  },
+  // --- Microwave Oven Mode（家電）---
 
-  // --- Microwave Oven Control（家電）---      {name:"MaxCookTime", description:"最大調理時間"},
-      {name:"PowerSetting", description:"出力レベル"}
-    ],
-    keyCommands:[
-      {name:"SetCookingParameters", description:"調理パラメーターを設定"},
-      {name:"AddMoreTime", description:"追加加熱時間を設定"}
-    ],
-    tags:["電子レンジ","出力","タイマー","加熱","レンジ"]
-  },
+  // --- Microwave Oven Control（家電）---
 
   // --- HEPA Filter Monitoring（家電）---
   { id:"hepa-filter-monitoring", clusterId:"0x0071", name:"HEPA Filter Monitoring", nameJa:"HEPAフィルター監視",
@@ -1474,17 +1426,9 @@ var CLUSTERS = [
     tags:["スマートメーター","シリアル番号","供給地点","検針","電力メーター"]
   },
 
-  // --- Commodity Metering（エネルギー）---      {name:"CurrentSummationReceived", description:"累積消費量（送電側）"}
-    ],
-    keyCommands:[],
-    tags:["スマートメーター","消費量","計量","電力量","ガス","水道"]
-  },
+  // --- Commodity Metering（エネルギー）---
 
-  // --- Camera AV Settings User Level Management（カメラ）---      {name:"NightVision", description:"ナイトビジョン設定"}
-    ],
-    keyCommands:[],
-    tags:["カメラ","映像設定","明るさ","ナイトビジョン","ユーザー設定"]
-  },
+  // --- Camera AV Settings User Level Management（カメラ）---
 
   // --- Device Energy Management Mode 修正版（エネルギー）---
   { id:"device-energy-management-mode", clusterId:"0x009F", name:"Device Energy Management Mode", nameJa:"デバイスエネルギー管理モード",
