@@ -50,10 +50,14 @@ header {
   background: var(--surface2); color: var(--accent); border-color: var(--accent);
 }
 .learn-dropdown {
-  display: none; position: absolute; top: calc(100% + 8px); right: 0;
+  display: none; position: absolute; top: 100%; right: 0;
+  padding-top: 8px;
+  background: transparent; z-index: 200; min-width: 180px;
+}
+.learn-dropdown-inner {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; overflow: hidden; min-width: 180px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 200;
+  border-radius: 10px; overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 .learn-menu:hover .learn-dropdown { display: block; }
 .learn-dropdown a {
@@ -293,6 +297,7 @@ header {
     <div class="learn-menu">
       <div class="learn-btn">🎓 <span>学ぶ</span> ▾</div>
       <div class="learn-dropdown">
+        <div class="learn-dropdown-inner">
         <a href="guide.html">
           <span class="drop-icon">📡</span>
           <span><span class="drop-label">Matterとは？</span><span class="drop-sub">スマートホーム規格の解説</span></span>
@@ -301,6 +306,7 @@ header {
           <span class="drop-icon">🔑</span>
           <span><span class="drop-label">Aliroとは？</span><span class="drop-sub">スマートロック規格の解説</span></span>
         </a>
+        </div>
       </div>
     </div>
     <div class="header-stat">
@@ -424,6 +430,22 @@ function setLang(lang) {
     }
   });
   // secTitleも再セット（selectCatを再実行して更新）
+  var titlesJa = {
+    all:"すべてのデバイスタイプ", lighting:"💡 照明", plug:"🔌 スマートプラグ",
+    switch:"🎚 スイッチ・コントローラー", sensor:"📡 センサー", entry:"🚪 玄関・扉・窓",
+    hvac:"🌡 HVAC（空調）", appliances:"🍳 家電", energy:"⚡ エネルギー管理",
+    camera:"📷 カメラ・セキュリティ", media:"📺 メディア", robot:"🤖 ロボット", utility:"🔧 ユーティリティ"
+  };
+  var titlesEn2 = {
+    all:"All Device Types", lighting:"💡 Lighting", plug:"🔌 Smart Plugs",
+    switch:"🎚 Switches", sensor:"📡 Sensors", entry:"🚪 Doors & Windows",
+    hvac:"🌡 HVAC", appliances:"🍳 Appliances", energy:"⚡ Energy",
+    camera:"📷 Cameras", media:"📺 Media", robot:"🤖 Robots", utility:"🔧 Utility"
+  };
+  var secTitleEl = document.getElementById("secTitle");
+  if (secTitleEl) {
+    secTitleEl.textContent = (lang === "en" ? titlesEn2[currentCat] : titlesJa[currentCat]) || currentCat;
+  }
   if (typeof window.renderDevices === "function") {
     window.renderDevices();
     window.renderClusters();
