@@ -65,6 +65,11 @@
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
     @media (max-width: 600px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) {
+      .header-inner { padding: 0 14px; height: auto; min-height: 52px; flex-wrap: wrap; gap: 6px; padding-top: 8px; padding-bottom: 8px; }
+      .site-logo .logo-text { font-size: 13px; }
+      .header-nav a { font-size: 11px; padding: 5px 8px; }
+    }
     @media (max-width: 768px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
 
     .point-box { display: flex; gap: 14px; padding: 16px 18px; border-radius: 10px; align-items: flex-start; margin-top: 14px; }
@@ -162,7 +167,7 @@
   <div class="header-inner">
     <a class="site-logo" href="index.html">
       <div class="logo-icon">M</div>
-      <span class="logo-text">Matter 1.5 辞書</span>
+      <span class="logo-text">Matter辞書</span>
     </a>
     <nav class="header-nav">
       <a class="nav-link" href="index.html">🏠 辞書トップ</a>
