@@ -259,13 +259,13 @@ header {
     </div>
   </div>
   <div class="header-right">
-    <div class="lang-toggle">
-      <button id="btnJa" class="active" onclick="setLang('ja')">JA</button>
-      <button id="btnEn" onclick="setLang('en')">EN</button>
-    </div>
     <a class="guide-btn" href="guide.html">📖 <span>Matterとは？</span></a>
     <div class="header-stat">
       <span id="statDevices">—</span> <span id="statLabelDevices">デバイスタイプ</span> &nbsp;|&nbsp; <span id="statClusters">—</span> <span id="statLabelClusters">クラスター</span>
+    </div>
+    <div class="lang-toggle">
+      <button id="btnJa" class="active" onclick="setLang('ja')">JA</button>
+      <button id="btnEn" onclick="setLang('en')">EN</button>
     </div>
   </div>
 </header>
@@ -374,6 +374,15 @@ function setLang(lang) {
   if (tBtn && tBtn.textContent.indexOf("▼") >= 0) {
     tBtn.textContent = lang === "en" ? "▼ Filter by category" : "▼ カテゴリで絞り込む";
   }
+  // サイドバーカテゴリラベルを更新
+  document.querySelectorAll(".cat-btn").forEach(function(btn) {
+    var catId = btn.getAttribute("data-cat");
+    var cat = CATEGORIES.find(function(c){ return c.id === catId; });
+    if (cat) {
+      var labelEl = btn.querySelector(".cat-label");
+      if (labelEl) labelEl.textContent = (lang === "en" && cat.labelEn) ? cat.labelEn : cat.label;
+    }
+  });
   // secTitleも再セット（selectCatを再実行して更新）
   if (typeof window.renderDevices === "function") window.renderDevices();
   if (typeof window.renderClusters === "function") window.renderClusters();
@@ -445,7 +454,7 @@ CATEGORIES.forEach(function(cat) {
   var btn = document.createElement("button");
   btn.className = "cat-btn" + (cat.id === "all" ? " active" : "");
   btn.setAttribute("data-cat", cat.id);
-  btn.innerHTML = '<span class="cat-icon">' + cat.icon + '</span><span class="cat-label">' + cat.label + '</span><span class="cnt">' + getCatCount(cat.id) + '</span>';
+  btn.innerHTML = '<span class="cat-icon">' + cat.icon + '</span><span class="cat-label">' + (currentLang === 'en' && cat.labelEn ? cat.labelEn : cat.label) + '</span><span class="cnt">' + getCatCount(cat.id) + '</span>';
   btn.addEventListener("click", function() { selectCategory(cat.id); });
   sidebar.appendChild(btn);
 });
