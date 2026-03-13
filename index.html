@@ -368,9 +368,6 @@ header {
   </div>
 </div>
 
-<script>
-</script>
-
 <!-- ★ データファイル読み込み（更新するときはこの3ファイルを編集） -->
 <script>
 // JSONファイルを非同期で読み込んでからアプリを起動
@@ -446,9 +443,9 @@ function setLang(lang) {
   if (secTitleEl) {
     secTitleEl.textContent = (lang === "en" ? titlesEn2[currentCat] : titlesJa[currentCat]) || currentCat;
   }
-  if (typeof window.renderDevices === "function") {
-    window.renderDevices();
-    window.renderClusters();
+  if (window._appReady) {
+    renderDevicesGlobal();
+    renderClustersGlobal();
   }
 }
 
@@ -891,8 +888,9 @@ function closeModal() {
 }
 
 // setLang（グローバル）から呼べるようにwindowに登録
-window.renderDevices = renderDevices;
-window.renderClusters = renderClusters;
+window.renderDevicesGlobal = renderDevices;
+window.renderClustersGlobal = renderClusters;
+window._appReady = true;
 
 } // end initApp
 </script>
