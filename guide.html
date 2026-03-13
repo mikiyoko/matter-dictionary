@@ -112,11 +112,12 @@
 
     .elements-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 18px 0; }
     @media (max-width: 768px) { .elements-grid { grid-template-columns: 1fr 1fr; } }
-    .elem-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 12px 10px; text-align: center; box-shadow: var(--shadow); }
-    .elem-type { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 7px; font-family: 'Inter', sans-serif; }
-    .elem-icon { font-size: 20px; margin-bottom: 5px; }
-    .elem-name { font-size: 13px; font-weight: 700; color: var(--gray-800); margin-bottom: 4px; }
-    .elem-desc { font-size: 12px; color: var(--gray-600); line-height: 1.6; }
+    .elem-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 12px; box-shadow: var(--shadow); }
+    .elem-type { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 8px; font-family: 'Inter', sans-serif; }
+    .elem-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .elem-icon { font-size: 18px; flex-shrink: 0; }
+    .elem-name { font-size: 13px; font-weight: 700; color: var(--gray-800); }
+    .elem-desc { font-size: 12px; color: var(--gray-600); line-height: 1.65; }
 
     .toc { background: var(--gray-50); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 40px; }
     .toc-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-light); margin-bottom: 10px; }
@@ -212,7 +213,7 @@
       <strong>💡 ポイント：</strong>Matterが登場する前は「このスマート電球はApple Homeでしか使えない」という問題が多発していました。Matterはその壁を壊す規格です。
     </div>
     <div class="grid-3" style="margin-top:18px;">
-      <div class="point-box green" style="flex-direction:column;gap:10px;">
+      <div class="point-box orange" style="flex-direction:column;gap:10px;">
         <div class="point-icon">🌍</div>
         <div><div class="point-title">メーカー横断の互換性</div><div class="point-desc">Apple / Google / Amazon / Samsungなど主要エコシステムが全対応。どのメーカーの機器でもMatter対応なら一緒に使えます。</div></div>
       </div>
@@ -324,10 +325,10 @@
     <h2>クラスターの中身（4つの要素）</h2>
     <p>各クラスターは4種類の要素で構成されています。</p>
     <div class="elements-grid">
-      <div class="elem-card"><div class="elem-type">Attribute</div><div class="elem-icon">📊</div><div class="elem-name">アトリビュート</div><div class="elem-desc">現在の状態・設定値。<br>例:「現在の明るさ = 80%」<br>「現在の温度 = 24℃」</div></div>
-      <div class="elem-card"><div class="elem-type">Command</div><div class="elem-icon">🎯</div><div class="elem-name">コマンド</div><div class="elem-desc">操作の命令。<br>例:「Toggle（ON/OFFを切替）」<br>「MoveToLevel（指定の明るさに）」</div></div>
-      <div class="elem-card"><div class="elem-type">Event</div><div class="elem-icon">🔔</div><div class="elem-name">イベント</div><div class="elem-desc">状態変化の通知。<br>例:「温度が閾値を超えた」<br>「ドアが開いた」</div></div>
-      <div class="elem-card"><div class="elem-type">Feature</div><div class="elem-icon">🔧</div><div class="elem-name">フィーチャー</div><div class="elem-desc">オプション機能の有無。<br>例:「Lighting機能あり<br>（調光カーブ対応）」</div></div>
+      <div class="elem-card"><div class="elem-type">Attribute</div><div class="elem-head"><div class="elem-icon">📊</div><div class="elem-name">アトリビュート</div></div><div class="elem-desc">現在の状態・設定値。<br>例:「現在の明るさ = 80%」<br>「現在の温度 = 24℃」</div></div>
+      <div class="elem-card"><div class="elem-type">Command</div><div class="elem-head"><div class="elem-icon">🎯</div><div class="elem-name">コマンド</div></div><div class="elem-desc">操作の命令。<br>例:「Toggle（ON/OFFを切替）」<br>「MoveToLevel（指定の明るさに）」</div></div>
+      <div class="elem-card"><div class="elem-type">Event</div><div class="elem-head"><div class="elem-icon">🔔</div><div class="elem-name">イベント</div></div><div class="elem-desc">状態変化の通知。<br>例:「温度が閾値を超えた」<br>「ドアが開いた」</div></div>
+      <div class="elem-card"><div class="elem-type">Feature</div><div class="elem-head"><div class="elem-icon">🔧</div><div class="elem-name">フィーチャー</div></div><div class="elem-desc">オプション機能の有無。<br>例:「Lighting機能あり<br>（調光カーブ対応）」</div></div>
     </div>
     <div class="code-box">
 <span class="c-dim">// Level Control Cluster の中身（例）</span>
