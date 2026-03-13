@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aliroとは？ | Matter辞書</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a56db;
+      --primary-light: #e8f0fe;
+      --primary-dark: #1240a8;
+      --accent: #0ea5e9;
+      --accent-light: #e0f2fe;
+      --green: #059669;
+      --green-light: #d1fae5;
+      --purple: #7c3aed;
+      --purple-light: #ede9fe;
+      --orange: #d97706;
+      --orange-light: #fef3c7;
+      --red: #dc2626;
+      --red-light: #fee2e2;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --text: #1f2937;
+      --text-light: #6b7280;
+      --border: #e5e7eb;
+      --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      color: var(--text);
+      background: #f8fafc;
+      line-height: 1.7;
+    }
+
+    /* ─── ヘッダー ─── */
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .site-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text);
+    }
+    .site-logo .logo-icon {
+      width: 32px; height: 32px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 16px; font-weight: 700;
+      font-family: 'Inter', sans-serif;
+    }
+    .site-logo .logo-text { font-size: 14px; font-weight: 700; }
+    .header-nav { display: flex; gap: 4px; }
+    .nav-link {
+      padding: 6px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--gray-600);
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .nav-link:hover { background: var(--gray-100); color: var(--text); }
+    .nav-link.active { background: var(--primary-light); color: var(--primary); }
+
+    /* ─── ヒーロー ─── */
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #1a56db 100%);
+      color: #fff;
+      padding: 64px 24px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px; font-weight: 500;
+      margin-bottom: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 700;
+      font-family: 'Inter', 'Noto Sans JP', sans-serif;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: #60a5fa; }
+    .hero p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.8);
+      max-width: 560px;
+      margin: 0 auto 28px;
+    }
+    .hero-tags {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+    }
+    .hero-tag {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.9);
+    }
+
+    /* ─── メインコンテンツ ─── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ─── セクション共通 ─── */
+    section { margin-bottom: 56px; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--primary);
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 26px; font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 20px;
+      line-height: 1.3;
+    }
+    h3 {
+      font-size: 18px; font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    p { font-size: 15px; color: var(--gray-700); margin-bottom: 16px; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ─── カード ─── */
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+    .card + .card { margin-top: 16px; }
+
+    /* ─── ハイライトボックス ─── */
+    .highlight {
+      background: var(--primary-light);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 15px;
+      color: var(--primary-dark);
+    }
+    .highlight strong { font-weight: 700; }
+
+    /* ─── グリッド ─── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 600px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .grid-3 { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ─── 図解：登場人物 ─── */
+    .actors-diagram {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      box-shadow: var(--shadow-md);
+      margin: 24px 0;
+    }
+    /* 上段：横3列をきれいに並べる */
+    .actors-top-row {
+      display: grid;
+      grid-template-columns: 1fr 40px 1fr 40px 1fr;
+      align-items: center;
+      gap: 0;
+    }
+    .actor-box {
+      text-align: center;
+      padding: 16px 12px;
+    }
+    .actor-icon {
+      width: 64px; height: 64px;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 10px;
+    }
+    .actor-icon.blue { background: var(--primary-light); }
+    .actor-icon.green { background: var(--green-light); }
+    .actor-icon.purple { background: var(--purple-light); }
+    .actor-icon.orange { background: var(--orange-light); }
+    .actor-name {
+      font-size: 13px; font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 4px;
+    }
+    .actor-en {
+      font-size: 10px; color: var(--text-light);
+      font-family: 'Inter', sans-serif;
+      margin-bottom: 6px;
+    }
+    .actor-desc { font-size: 11px; color: var(--gray-600); line-height: 1.5; }
+    .actor-arrow-cell {
+      text-align: center;
+      font-size: 22px;
+      color: var(--gray-300);
+      padding-bottom: 32px; /* アイコンの下端に矢印を揃える視覚補正 */
+    }
+    /* 下段：クレデンシャル発行者 */
+    .actors-bottom-row {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .actors-down-arrow {
+      font-size: 13px;
+      color: var(--text-light);
+      letter-spacing: 0.02em;
+    }
+
+    /* ─── 図解：通信方式 ─── */
+    .transport-diagram {
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin: 24px 0;
+    }
+    .transport-title {
+      text-align: center;
+      font-size: 13px; font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+    }
+    .transport-row {
+      display: grid;
+      grid-template-columns: 1fr 130px 1fr;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      max-width: 580px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .transport-row:last-child { margin-bottom: 0; }
+    .transport-device {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .transport-device .icon { font-size: 24px; margin-bottom: 6px; }
+    .transport-device .label { font-size: 12px; font-weight: 700; color: var(--gray-700); }
+    .transport-device .sublabel { font-size: 11px; color: var(--text-light); }
+    .transport-wave {
+      text-align: center;
+    }
+    .transport-wave .wave-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--primary);
+      background: var(--primary-light);
+      border-radius: 20px;
+      padding: 5px 10px;
+      white-space: nowrap;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .transport-wave .wave-sub { font-size: 10px; color: var(--text-light); margin-top: 4px; text-align: center; }
+
+    /* ─── 等高カードグリッド ─── */
+    .grid-2-equal {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+    .grid-2-equal .card {
+      display: flex;
+      flex-direction: column;
+    }
+    .grid-2-equal .card p { flex: 1; }
+    @media (max-width: 600px) { .grid-2-equal { grid-template-columns: 1fr; } }
+
+    /* ─── 等高カードグリッド3列 ─── */
+    .grid-3-equal {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+    .grid-3-equal .card {
+      display: flex;
+      flex-direction: column;
+    }
+    .grid-3-equal .card p { flex: 1; }
+    @media (max-width: 768px) { .grid-3-equal { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 500px) { .grid-3-equal { grid-template-columns: 1fr; } }
+
+    /* ─── フローチャート ─── */
+    .flow-diagram {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      margin: 24px 0;
+    }
+    .flow-title {
+      text-align: center;
+      font-size: 13px; font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+    }
+    .flow-columns {
+      display: grid;
+      grid-template-columns: 1fr 80px 1fr;
+      gap: 0;
+    }
+    .flow-col-label {
+      text-align: center;
+      font-size: 12px; font-weight: 700;
+      padding: 8px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+    .flow-col-label.user { background: var(--primary-light); color: var(--primary); }
+    .flow-col-label.reader { background: var(--green-light); color: var(--green); }
+    .flow-col-center { text-align: center; }
+    .flow-step {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .flow-step.user-step { background: var(--primary-light); color: var(--primary-dark); border: 1px solid #bfdbfe; }
+    .flow-step.reader-step { background: var(--green-light); color: #065f46; border: 1px solid #a7f3d0; }
+    .flow-arrow-vertical {
+      text-align: center;
+      color: var(--gray-300);
+      font-size: 20px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .flow-arrow-h {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--text-light);
+      gap: 4px;
+      min-height: 44px;
+    }
+    .flow-arrow-h .arrow-line {
+      flex: 1;
+      height: 1px;
+      background: var(--gray-300);
+      position: relative;
+    }
+    .flow-arrow-h .arrow-text {
+      font-size: 10px;
+      background: var(--gray-100);
+      padding: 2px 6px;
+      border-radius: 10px;
+      color: var(--gray-600);
+      white-space: nowrap;
+    }
+    .phase-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 10px; font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .phase-badge.expedited { background: #fef3c7; color: #92400e; }
+    .phase-badge.stepup { background: var(--purple-light); color: var(--purple); }
+
+    /* ─── MatterとAliroの比較 ─── */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+    .compare-table th {
+      background: var(--gray-100);
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 700;
+      border-bottom: 2px solid var(--border);
+      color: var(--gray-700);
+    }
+    .compare-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: var(--gray-50); }
+    .badge-matter {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1e40af;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px; font-weight: 700;
+    }
+    .badge-aliro {
+      display: inline-block;
+      background: var(--green-light);
+      color: #065f46;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px; font-weight: 700;
+    }
+
+    /* ─── Q&A ─── */
+    .qa-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .qa-question {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 18px 20px;
+      cursor: pointer;
+      background: #fff;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+    }
+    .qa-question:hover { background: var(--gray-50); }
+    .qa-q-icon {
+      width: 24px; height: 24px; min-width: 24px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      font-family: 'Inter', sans-serif;
+    }
+    .qa-q-text {
+      font-size: 14px; font-weight: 700;
+      color: var(--gray-800);
+      flex: 1;
+      line-height: 1.5;
+    }
+    .qa-toggle {
+      color: var(--text-light);
+      font-size: 18px;
+      transition: transform 0.2s;
+    }
+    .qa-answer {
+      padding: 0 20px 18px 56px;
+      font-size: 14px;
+      color: var(--gray-700);
+      line-height: 1.7;
+    }
+    .qa-a-icon {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      margin-bottom: 6px;
+    }
+
+    /* ─── UWBセクション ─── */
+    .uwb-visual {
+      background: linear-gradient(135deg, #0f172a, #1e3a5f);
+      border-radius: var(--radius);
+      padding: 32px;
+      color: #fff;
+      text-align: center;
+      margin: 24px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .uwb-rings {
+      position: relative;
+      width: 180px; height: 180px;
+      margin: 0 auto 24px;
+    }
+    .uwb-center {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 32px;
+      z-index: 10;
+    }
+    .uwb-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 2px solid;
+      opacity: 0.4;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulse-ring 2s ease-out infinite;
+    }
+    .uwb-ring:nth-child(1) { width: 60px; height: 60px; border-color: #60a5fa; animation-delay: 0s; opacity: 0.8; }
+    .uwb-ring:nth-child(2) { width: 100px; height: 100px; border-color: #60a5fa; animation-delay: 0.4s; opacity: 0.6; }
+    .uwb-ring:nth-child(3) { width: 140px; height: 140px; border-color: #60a5fa; animation-delay: 0.8s; opacity: 0.4; }
+    .uwb-ring:nth-child(4) { width: 180px; height: 180px; border-color: #60a5fa; animation-delay: 1.2s; opacity: 0.2; }
+    @keyframes pulse-ring {
+      0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
+      50% { opacity: 0.3; }
+      100% { transform: translate(-50%, -50%) scale(1.0); opacity: 0; }
+    }
+    .uwb-specs {
+      display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
+    }
+    .uwb-spec { text-align: center; }
+    .uwb-spec .num { font-size: 24px; font-weight: 700; color: #60a5fa; font-family: 'Inter', sans-serif; }
+    .uwb-spec .unit { font-size: 10px; color: rgba(255,255,255,0.6); }
+
+    /* ─── チップリスト ─── */
+    .chip-list {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin: 12px 0;
+    }
+    .chip {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px; font-weight: 500;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .chip.primary { background: var(--primary-light); color: var(--primary); }
+    .chip.green { background: var(--green-light); color: var(--green); }
+    .chip.purple { background: var(--purple-light); color: var(--purple); }
+    .chip.orange { background: var(--orange-light); color: var(--orange); }
+    .chip.gray { background: var(--gray-100); color: var(--gray-600); }
+
+    /* ─── ポイントボックス ─── */
+    .point-box {
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex; gap: 16px;
+      align-items: flex-start;
+    }
+    .point-box.blue { background: var(--primary-light); border: 1px solid #bfdbfe; }
+    .point-box.green { background: var(--green-light); border: 1px solid #a7f3d0; }
+    .point-box.orange { background: var(--orange-light); border: 1px solid #fcd34d; }
+    .point-box.purple { background: var(--purple-light); border: 1px solid #c4b5fd; }
+    .point-box .point-icon { font-size: 24px; flex-shrink: 0; }
+    .point-box .point-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .point-box .point-desc { font-size: 13px; line-height: 1.6; }
+    .point-box.blue .point-title { color: var(--primary-dark); }
+    .point-box.green .point-title { color: #065f46; }
+    .point-box.orange .point-title { color: #92400e; }
+    .point-box.purple .point-title { color: var(--purple); }
+
+    /* ─── まとめ ─── */
+    .summary-box {
+      background: linear-gradient(135deg, var(--primary), #0ea5e9);
+      border-radius: var(--radius);
+      padding: 36px;
+      color: #fff;
+      text-align: center;
+    }
+    .summary-box h3 { color: #fff; font-size: 20px; margin-bottom: 12px; }
+    .summary-box p { color: rgba(255,255,255,0.9); font-size: 15px; max-width: 600px; margin: 0 auto; }
+
+    /* ─── フッター ─── */
+    footer {
+      background: var(--gray-800);
+      color: var(--gray-300);
+      text-align: center;
+      padding: 28px 24px;
+      font-size: 13px;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ─── スクロールアニメーション ─── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── 目次 ─── */
+    .toc {
+      background: var(--gray-50);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 40px;
+    }
+    .toc-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-light); margin-bottom: 12px; }
+    .toc ol { padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { font-size: 14px; color: var(--primary); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header>
+  <div class="header-inner">
+    <a class="site-logo" href="index.html">
+      <div class="logo-icon">M</div>
+      <span class="logo-text">Matter 1.5 辞書</span>
+    </a>
+    <nav class="header-nav">
+      <a class="nav-link" href="index.html">🏠 辞書トップ</a>
+      <a class="nav-link" href="guide.html">📖 Matterとは</a>
+      <a class="nav-link active" href="#">🔑 Aliroとは</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ヒーロー -->
+<div class="hero">
+  <div class="hero-badge">✨ Connectivity Standards Alliance 公式仕様 v1.0</div>
+  <h1><span>Aliro</span> とは？</h1>
+  <p>スマホが「デジタルの鍵」になる——<br>MatterのCSAが策定した、次世代アクセス規格のすべて</p>
+  <div class="hero-tags">
+    <span class="hero-tag">🔑 デジタル鍵</span>
+    <span class="hero-tag">📱 NFC / Bluetooth / UWB</span>
+    <span class="hero-tag">🏠 ホーム・ホテル・オフィス</span>
+    <span class="hero-tag">🔒 高セキュリティ</span>
+  </div>
+</div>
+
+<!-- メイン -->
+<main>
+
+  <!-- 目次 -->
+  <div class="toc fade-in">
+    <div class="toc-title">📋 このページの内容</div>
+    <ol>
+      <li><a href="#what">Aliroって何？　一言で言うと</a></li>
+      <li><a href="#players">登場人物（エコシステムの構成）</a></li>
+      <li><a href="#how">スマホをかざしたとき、何が起きているの？</a></li>
+      <li><a href="#transport">通信手段は3つある</a></li>
+      <li><a href="#uwb">UWBとは？　ハンズフリーを安全に実現する技術</a></li>
+      <li><a href="#vs-matter">MatterとAliroの関係</a></li>
+      <li><a href="#qa">よくある疑問にお答えします</a></li>
+      <li><a href="#summary">まとめ</a></li>
+    </ol>
+  </div>
+
+  <!-- ① Aliroって何？ -->
+  <section id="what" class="fade-in">
+    <div class="section-label">🔑 01 — OVERVIEW</div>
+    <h2>Aliroって何？　一言で言うと</h2>
+
+    <div class="card">
+      <p><strong>Aliro（アリロ）</strong>は、<strong>スマートフォンや時計を「デジタルの鍵」として使うための国際標準規格</strong>です。</p>
+      <p>Matterと同じく<strong>CSA（Connectivity Standards Alliance）</strong>が策定しており、2026年2月にバージョン1.0が正式リリースされました。</p>
+      <p>自宅の玄関・ホテルの部屋・会社のオフィス——どこでも同じ仕組みで、スマホをかざすだけで扉が開く世界を目指しています。</p>
+    </div>
+
+    <div class="highlight">
+      <strong>💡 ポイント：</strong>「Apple WalletやGoogle Walletに鍵を入れる」のに使われる技術がAliroです。メーカーが違っても同じドアロックで使える互換性が最大の特徴です。
+    </div>
+
+    <div class="grid-3" style="margin-top: 20px;">
+      <div class="point-box blue">
+        <div class="point-icon">🌍</div>
+        <div>
+          <div class="point-title">どんなメーカーでも使える</div>
+          <div class="point-desc">Apple / Google / Samsung、そしてドアロックのメーカーが違っても、Aliro対応であれば相互に動作します。</div>
+        </div>
+      </div>
+      <div class="point-box green">
+        <div class="point-icon">🔐</div>
+        <div>
+          <div class="point-title">高いセキュリティ</div>
+          <div class="point-desc">暗号化と電子署名でなりすましを防止。物理カードよりも安全に設計されています。</div>
+        </div>
+      </div>
+      <div class="point-box purple">
+        <div class="point-icon">⚡</div>
+        <div>
+          <div class="point-title">素早い認証</div>
+          <div class="point-desc">「Expedited Phase（迅速フェーズ）」により、NFCなら一瞬で認証完了。快適な通過体験を実現します。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② 登場人物 -->
+  <section id="players" class="fade-in">
+    <div class="section-label">👥 02 — PLAYERS</div>
+    <h2>登場人物（エコシステムの構成）</h2>
+
+    <p>Aliroには4つの役割が登場します。それぞれの関係を理解すると、仕組み全体がスッキリします。</p>
+
+    <div class="actors-diagram">
+      <!-- 上段：3役割を横並び -->
+      <div class="actors-top-row">
+        <div class="actor-box">
+          <div class="actor-icon blue">📱</div>
+          <div class="actor-name">ユーザーデバイス</div>
+          <div class="actor-en">User Device</div>
+          <div class="actor-desc">スマホ・スマートウォッチなど。鍵（アクセス資格情報）を保持する端末</div>
+        </div>
+        <div class="actor-arrow-cell">⇄</div>
+        <div class="actor-box">
+          <div class="actor-icon green">🚪</div>
+          <div class="actor-name">リーダー</div>
+          <div class="actor-en">Reader</div>
+          <div class="actor-desc">ドアに設置されたスキャナー。スマホの情報を読み取り、開錠を判断する</div>
+        </div>
+        <div class="actor-arrow-cell">→</div>
+        <div class="actor-box">
+          <div class="actor-icon purple">🛡️</div>
+          <div class="actor-name">アクセスマネージャー</div>
+          <div class="actor-en">Access Manager</div>
+          <div class="actor-desc">「この人は入っていいか」を判断するシステム。リーダーに内蔵されることも</div>
+        </div>
+      </div>
+      <!-- 下段：クレデンシャル発行者 -->
+      <div class="actors-bottom-row">
+        <div class="actors-down-arrow">▲ スマホに「鍵のデータ」を発行・署名する</div>
+        <div class="actor-box" style="width: 200px;">
+          <div class="actor-icon orange">🏢</div>
+          <div class="actor-name">クレデンシャル発行者</div>
+          <div class="actor-en">Credential Issuer</div>
+          <div class="actor-desc">Apple / Google / Samsungなど</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>🔍 わかりやすく言うと：</strong>「クレデンシャル発行者（Apple等）」がスマホに鍵データを書き込み、「リーダー（ドアのスキャナー）」がその鍵を読んで、「アクセスマネージャー（許可リスト）」が開錠を決める、という流れです。
+    </div>
+  </section>
+
+  <!-- ③ 認証の仕組み -->
+  <section id="how" class="fade-in">
+    <div class="section-label">⚙️ 03 — MECHANISM</div>
+    <h2>スマホをかざしたとき、何が起きているの？</h2>
+
+    <p>鍵を「出す」というより、<strong>「自分のIDを証明する」</strong>イメージです。マイナンバーカードに近い仕組みで、スマホはドアに自分の身元を証明し、ドア側が「許可リスト」と照合して開錠を決めます。</p>
+
+    <div class="flow-diagram">
+      <div class="flow-title">🔄 認証フローの概要（NFCの場合）</div>
+
+      <div class="flow-columns">
+        <div>
+          <div class="flow-col-label user">📱 スマホ（ユーザーデバイス）</div>
+        </div>
+        <div class="flow-col-center">
+          <div class="flow-col-label" style="background: var(--gray-100); color: var(--gray-600);">通信</div>
+        </div>
+        <div>
+          <div class="flow-col-label reader">🚪 ドアのリーダー</div>
+        </div>
+
+        <!-- Expedited Phase -->
+        <div>
+          <div class="phase-badge expedited">⚡ Expedited Phase（迅速フェーズ）</div>
+          <div class="flow-step user-step">「どのドアへのアクセスか」を確認</div>
+          <div class="flow-arrow-vertical">↓</div>
+          <div class="flow-step user-step">暗号の証明（cryptogram）を送信</div>
+          <div class="flow-arrow-vertical">↓</div>
+          <div class="flow-step user-step">✅ 認証完了 or 次フェーズへ</div>
+        </div>
+
+        <div>
+          <div class="flow-arrow-h" style="margin-top: 36px;">
+            <div class="arrow-line"></div>
+            <div class="arrow-text">← リーダーID送信</div>
+            <div class="arrow-line"></div>
+          </div>
+          <div style="height:20px;"></div>
+          <div class="flow-arrow-h">
+            <div class="arrow-line"></div>
+            <div class="arrow-text">認証データ →</div>
+            <div class="arrow-line"></div>
+          </div>
+          <div style="height:20px;"></div>
+          <div class="flow-arrow-h">
+            <div class="arrow-line"></div>
+            <div class="arrow-text">← 結果通知</div>
+            <div class="arrow-line"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="phase-badge expedited">⚡ Expedited Phase（迅速フェーズ）</div>
+          <div class="flow-step reader-step">reader_identifier（ID）を提示</div>
+          <div class="flow-arrow-vertical">↓</div>
+          <div class="flow-step reader-step">暗号証明を検証</div>
+          <div class="flow-arrow-vertical">↓</div>
+          <div class="flow-step reader-step">✅ 開錠 or Step-upへ</div>
+        </div>
+
+        <!-- Step-up phase（オプション） -->
+        <div style="margin-top: 16px;">
+          <div class="phase-badge stepup">🔍 Step-up Phase（詳細確認・初回のみ等）</div>
+          <div class="flow-step user-step">アクセスドキュメントを送信<br><small>（有効期限・権限情報など）</small></div>
+        </div>
+        <div style="margin-top: 50px;">
+          <div class="flow-arrow-h">
+            <div class="arrow-line"></div>
+            <div class="arrow-text">文書送信 →</div>
+            <div class="arrow-line"></div>
+          </div>
+        </div>
+        <div style="margin-top: 16px;">
+          <div class="phase-badge stepup">🔍 Step-up Phase（詳細確認・初回のみ等）</div>
+          <div class="flow-step reader-step">内容を検証して<br>最終的な開錠判断</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top: 8px;">
+      <div class="point-box blue">
+        <div class="point-icon">💡</div>
+        <div>
+          <div class="point-title">複数の鍵をどう出し分ける？</div>
+          <div class="point-desc">スマホ側は「1つの固有ID」を持ち、<strong>ドアのリーダーが自分のIDを先に提示</strong>します。スマホはそのリーダーIDを見て「このドアには見せていいID」を選んで提示します。複数の鍵を「出し分ける」というより、リーダーに応じて自動で対応する仕組みです。</div>
+        </div>
+      </div>
+      <div class="point-box green">
+        <div class="point-icon">🔑</div>
+        <div>
+          <div class="point-title">「鍵を持ち歩く」→「IDを証明する」</div>
+          <div class="point-desc">従来：「A家の鍵・B社の鍵という"物"が入っている」<br>Aliro：「自分のIDをリーダーに提示 → リーダー側の許可リストで照合」<br>マイナンバーカードや免許証に近い概念です。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ 通信手段 -->
+  <section id="transport" class="fade-in">
+    <div class="section-label">📡 04 — TRANSPORT</div>
+    <h2>通信手段は3つある</h2>
+
+    <p>Aliroは場面に応じて3つの通信方式をサポートしています。それぞれに得意なことがあります。</p>
+
+    <div class="transport-diagram">
+      <div class="transport-title">通信方式の比較</div>
+      <!-- NFC -->
+      <div class="transport-row">
+        <div class="transport-device">
+          <div class="icon">📱</div>
+          <div class="label">スマホ</div>
+          <div class="sublabel">User Device</div>
+        </div>
+        <div class="transport-wave">
+          <div class="wave-label">📶 NFC</div>
+          <div class="wave-sub">かざす（10cm以内）</div>
+        </div>
+        <div class="transport-device">
+          <div class="icon">🚪</div>
+          <div class="label">NFCリーダー</div>
+          <div class="sublabel">Reader</div>
+        </div>
+      </div>
+      <!-- BLE -->
+      <div class="transport-row">
+        <div class="transport-device">
+          <div class="icon">📱</div>
+          <div class="label">スマホ</div>
+          <div class="sublabel">User Device</div>
+        </div>
+        <div class="transport-wave">
+          <div class="wave-label">🔵 Bluetooth LE</div>
+          <div class="wave-sub">数メートル以内に近づく</div>
+        </div>
+        <div class="transport-device">
+          <div class="icon">🚪</div>
+          <div class="label">BLEリーダー</div>
+          <div class="sublabel">Reader</div>
+        </div>
+      </div>
+      <!-- BLE + UWB -->
+      <div class="transport-row">
+        <div class="transport-device">
+          <div class="icon">📱</div>
+          <div class="label">スマホ</div>
+          <div class="sublabel">User Device</div>
+        </div>
+        <div class="transport-wave">
+          <div class="wave-label">🔵+📍 BLE + UWB</div>
+          <div class="wave-sub">ハンズフリー（近づくだけ）</div>
+        </div>
+        <div class="transport-device">
+          <div class="icon">🚪</div>
+          <div class="label">UWB対応リーダー</div>
+          <div class="sublabel">Reader</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-3-equal">
+      <div class="card">
+        <div class="chip-list"><span class="chip primary">📶 NFC</span></div>
+        <h3>かざす方式</h3>
+        <p style="font-size:13px;">スマホを10cm以内にかざして認証。最も普及していてシンプル。エクスプレスモード（スリープのままかざせる）と組み合わせて快適に使える。</p>
+      </div>
+      <div class="card">
+        <div class="chip-list"><span class="chip" style="background:#dbeafe;color:#1e40af;">🔵 Bluetooth LE</span></div>
+        <h3>近づく方式</h3>
+        <p style="font-size:13px;">数メートル以内に近づくと認証が始まる。かざさなくてOKだが、UWBなしでは位置精度が低く、セキュリティ面でBLE単体は限定的。</p>
+      </div>
+      <div class="card">
+        <div class="chip-list"><span class="chip purple">📍 BLE + UWB</span></div>
+        <h3>ハンズフリー方式</h3>
+        <p style="font-size:13px;">BLEで通信しながら、UWBでセンチ単位の位置測定。「ドア正面1m以内」を正確に判定し、スマホをポケットに入れたままドアが開く本当のハンズフリー。</p>
+      </div>
+    </div>
+
+    <div class="highlight" style="margin-top: 20px;">
+      <strong>📱 Apple WalletのエクスプレスモードとAliroの関係：</strong> Aliro仕様書のExpedited Phase（迅速フェーズ）が、Apple等のエクスプレスモードと組み合わさることで、スリープ画面のままかざすだけで解錠できるUXを実現しています。
+    </div>
+  </section>
+
+  <!-- ⑤ UWB -->
+  <section id="uwb" class="fade-in">
+    <div class="section-label">📍 05 — UWB</div>
+    <h2>UWBとは？　ハンズフリーを安全に実現する技術</h2>
+
+    <div class="uwb-visual">
+      <div class="uwb-rings">
+        <div class="uwb-center">📱</div>
+        <div class="uwb-ring"></div>
+        <div class="uwb-ring"></div>
+        <div class="uwb-ring"></div>
+        <div class="uwb-ring"></div>
+      </div>
+      <div class="uwb-specs">
+        <div class="uwb-spec">
+          <div class="num">cm</div>
+          <div class="unit">単位の位置精度</div>
+        </div>
+        <div class="uwb-spec">
+          <div class="num">360°</div>
+          <div class="unit">方向も検知</div>
+        </div>
+        <div class="uwb-spec">
+          <div class="num">∞</div>
+          <div class="unit">なりすまし困難</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2-equal">
+      <div class="card">
+        <h3>💡 なぜUWBが必要？</h3>
+        <p style="font-size:13px;">Bluetoothだけでは<strong>距離の測定が不正確</strong>です。「家の中にスマホがあるのに、外の車の鍵が開いてしまう」などのリレーアタック（中継攻撃）が起きる可能性があります。</p>
+        <p style="font-size:13px;">UWBはパルス波の飛行時間を計測し、<strong>センチメートル単位で「正面1m以内にいる」を正確に判定</strong>できます。</p>
+      </div>
+      <div class="card">
+        <h3>🛡️ リレーアタックって何？</h3>
+        <p style="font-size:13px;">悪意ある人が電波を中継する装置を使い、「実際には遠くにあるスマホの信号」を「すぐそこにあるように偽装」する攻撃です。</p>
+        <p style="font-size:13px;">UWBは電波の飛行時間を正確に測るため、<strong>距離の偽装が非常に困難</strong>。これがハンズフリー解錠を安全に実現できる理由です。</p>
+      </div>
+    </div>
+
+    <div class="chip-list" style="margin-top: 16px;">
+      <span class="chip primary">🍎 iPhone（11以降）</span>
+      <span class="chip gray">📱 Samsung Galaxy（上位機種）</span>
+      <span class="chip gray">🚗 対応カーキー（BMW等）</span>
+      <span class="chip orange">※ UWBチップ搭載端末が必要</span>
+    </div>
+  </section>
+
+  <!-- ⑥ MatterとAliro -->
+  <section id="vs-matter" class="fade-in">
+    <div class="section-label">🔗 06 — MATTER × ALIRO</div>
+    <h2>MatterとAliroの関係</h2>
+
+    <p>どちらもCSAが策定したスマートホーム規格ですが、<strong>「何と何をつなぐか」の役割が異なります</strong>。</p>
+
+    <!-- 図解：役割の違い -->
+    <div style="background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow-md); margin:20px 0;">
+      <div style="text-align:center; font-size:12px; font-weight:700; color:var(--text-light); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:24px;">🔗 役割の違いを図で見る</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+
+        <!-- Aliro側 -->
+        <div style="background:var(--green-light); border:1px solid #a7f3d0; border-radius:10px; padding:20px;">
+          <div style="text-align:center; margin-bottom:16px;">
+            <span style="background:#059669; color:#fff; font-size:11px; font-weight:700; padding:3px 12px; border-radius:12px;">Aliro の役割</span>
+          </div>
+          <!-- 人→スマホ→ドア -->
+          <div style="display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;">
+            <div style="text-align:center;">
+              <div style="font-size:28px;">🧑</div>
+              <div style="font-size:10px; color:#065f46; font-weight:600;">ユーザー</div>
+            </div>
+            <div style="font-size:18px; color:#059669;">→</div>
+            <div style="text-align:center;">
+              <div style="font-size:28px;">📱</div>
+              <div style="font-size:10px; color:#065f46; font-weight:600;">スマホ</div>
+            </div>
+            <div style="font-size:18px; color:#059669;">📡</div>
+            <div style="text-align:center;">
+              <div style="font-size:28px;">🚪</div>
+              <div style="font-size:10px; color:#065f46; font-weight:600;">ドアのリーダー</div>
+            </div>
+          </div>
+          <div style="margin-top:14px; font-size:12px; color:#065f46; text-align:center; line-height:1.6;">
+            NFC / BLE / UWBで<strong>直接通信</strong><br>
+            スマホをかざす・近づくだけで<br><strong>物理的に鍵を開閉する</strong>
+          </div>
+        </div>
+
+        <!-- Matter側 -->
+        <div style="background:var(--primary-light); border:1px solid #bfdbfe; border-radius:10px; padding:20px;">
+          <div style="text-align:center; margin-bottom:16px;">
+            <span style="background:var(--primary); color:#fff; font-size:11px; font-weight:700; padding:3px 12px; border-radius:12px;">Matter の役割</span>
+          </div>
+          <!-- スマホ→ハブ→ドア -->
+          <div style="display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;">
+            <div style="text-align:center;">
+              <div style="font-size:28px;">📱</div>
+              <div style="font-size:10px; color:var(--primary-dark); font-weight:600;">スマホ/音声</div>
+            </div>
+            <div style="font-size:18px; color:var(--primary);">→</div>
+            <div style="text-align:center;">
+              <div style="font-size:28px;">🌐</div>
+              <div style="font-size:10px; color:var(--primary-dark); font-weight:600;">ネット/ハブ経由</div>
+            </div>
+            <div style="font-size:18px; color:var(--primary);">→</div>
+            <div style="text-align:center;">
+              <div style="font-size:28px;">🔒</div>
+              <div style="font-size:10px; color:var(--primary-dark); font-weight:600;">スマートロック</div>
+            </div>
+          </div>
+          <div style="margin-top:14px; font-size:12px; color:var(--primary-dark); text-align:center; line-height:1.6;">
+            Wi-Fi / Threadを経由した<strong>ネットワーク通信</strong><br>
+            遠隔操作・状態確認・自動化など<br><strong>IoT機器としての制御</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th><span class="badge-matter">Matter</span></th>
+            <th><span class="badge-aliro">Aliro</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>何をつなぐ？</strong></td>
+            <td>スマートスピーカー/ハブ ⇄ 家電・鍵</td>
+            <td>スマホ ⇄ ドアのリーダー（鍵）</td>
+          </tr>
+          <tr>
+            <td><strong>主なシーン</strong></td>
+            <td>遠隔操作・状態確認・自動化</td>
+            <td>スマホをかざして／近づいて解錠</td>
+          </tr>
+          <tr>
+            <td><strong>ネットワーク</strong></td>
+            <td>Wi-Fi / Thread（ハブ経由）</td>
+            <td>NFC / Bluetooth LE / UWB（直接通信）</td>
+          </tr>
+          <tr>
+            <td><strong>鍵の役割</strong></td>
+            <td>IoT機器として管理・状態共有・遠隔操作</td>
+            <td>近接でリーダーと認証して物理開錠</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="point-box blue" style="margin-top: 20px;">
+      <div class="point-icon">🏠</div>
+      <div>
+        <div class="point-title">実際の使い分けイメージ（例：スマートロック）</div>
+        <div class="point-desc">
+          <strong>🔑 Aliro：</strong>子どもが外からスマホをかざして自分で帰宅・解錠。スマホ1台で鍵いらず。<br>
+          <strong>📱 Matter：</strong>その開閉の状態が家族のスマホに通知され、「子どもが帰ってきた」と確認できる。また、親戚が来たときはアプリからリモートで開錠することも可能。<br>
+          <br>
+          <span style="font-size:12px; color:var(--primary-dark);">💡 ポイント：Aliroはあくまでスマホとドアのリーダーが<strong>直接・近接で</strong>やり取りする仕組みです。離れた場所からの開け閉めはMatterの役割です。両方に対応したスマートロックなら、このすべてが1台で実現できます。</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑦ Q&A -->
+  <section id="qa" class="fade-in">
+    <div class="section-label">💬 07 — Q&A</div>
+    <h2>よくある疑問にお答えします</h2>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        <div class="qa-q-icon">Q</div>
+        <div class="qa-q-text">AndroidでGoogle WalletとSamsung Walletを両方使っている場合、どちらが使われる？</div>
+        <div class="qa-toggle">＋</div>
+      </div>
+      <div class="qa-answer" style="display:none;">
+        <div class="qa-a-icon">A</div>
+        Android OSの<strong>「デフォルトNFCアプリ」設定</strong>に従います。設定アプリから「デフォルトの支払いアプリ」を選択した方が優先されます。リーダーが提示するAID（アプリケーション識別子）にもとづき、OSがどのウォレットアプリを呼び出すかをシステムレベルで決定する仕組みです。
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        <div class="qa-q-icon">Q</div>
+        <div class="qa-q-text">Apple Walletの「エクスプレスモード」（スリープのままかざせる機能）はAliroに対応している？</div>
+        <div class="qa-toggle">＋</div>
+      </div>
+      <div class="qa-answer" style="display:none;">
+        <div class="qa-a-icon">A</div>
+        <strong>対応しています。</strong> Aliro規格自体に「エクスプレスモード」という名称はありませんが、仕様書のExpedited Phase（迅速フェーズ）が数往復の通信だけで認証を完了させる設計になっており、Apple等のエクスプレスモードと組み合わさることで、スリープ画面のままかざすだけで解錠できるUXを実現します。
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        <div class="qa-q-icon">Q</div>
+        <div class="qa-q-text">スマホをかざしたとき、交通系ICと鍵が混同して変なことにならない？</div>
+        <div class="qa-toggle">＋</div>
+      </div>
+      <div class="qa-answer" style="display:none;">
+        <div class="qa-a-icon">A</div>
+        <strong>自動的に正しく識別されます。</strong> 決済端末はFeliCaやEMVなど決済専用のプロトコルで通信を開始し、AliroリーダーはAliro専用のNFC AIDを使用して通信を開始します。スマホはリーダーが「どの種類の通信か」を宣言するのを受けて、対応するアプリ（決済 or 鍵）が応答するため、ユーザーが手動で切り替える必要はありません。
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        <div class="qa-q-icon">Q</div>
+        <div class="qa-q-text">自宅と職場、ホテルなど複数の鍵をどう出し分けるの？</div>
+        <div class="qa-toggle">＋</div>
+      </div>
+      <div class="qa-answer" style="display:none;">
+        <div class="qa-a-icon">A</div>
+        <strong>「鍵を出し分ける」ではなく「リーダーが相手を見て判断する」</strong>仕組みです。<br><br>
+        まずドアのリーダーが自分のreader_identifier（固有ID）をスマホに提示します。スマホはそのIDを見て「このリーダーには自分のIDを見せていい」と判断し、自分の認証情報を返します。その後、リーダー側（またはアクセスマネージャー）が「このスマホのIDは許可リストにある？」を確認して開錠を決めます。<br><br>
+        スマホには最低16個のreader_group_identifierを紐づけられるため、自宅・職場・ホテルなど複数のドアを1台のスマホで管理できます。
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        <div class="qa-q-icon">Q</div>
+        <div class="qa-q-text">鍵を紛失（スマホを盗まれた・紛失した）したらどうなる？</div>
+        <div class="qa-toggle">＋</div>
+      </div>
+      <div class="qa-answer" style="display:none;">
+        <div class="qa-a-icon">A</div>
+        Aliroには<strong>失効（Revocation）の仕組み</strong>があります。クレデンシャル発行者（Apple / Google等）から「このIDは無効」という失効情報（Revocation Document）をリーダーに伝えることで、不正使用を防ぎます。また、スマホ本体の生体認証ロックと組み合わせることで、仮に端末を取得されても認証自体をブロックできます。物理カードより遥かに素早く無効化できる点が大きなメリットです。
+      </div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-question" onclick="toggleQA(this)">
+        <div class="qa-q-icon">Q</div>
+        <div class="qa-q-text">Aliroに対応しているスマートロックは日本でも買える？</div>
+        <div class="qa-toggle">＋</div>
+      </div>
+      <div class="qa-answer" style="display:none;">
+        <div class="qa-a-icon">A</div>
+        Aliro仕様書v1.0は2026年2月にリリースされたばかりです。対応製品は現時点では海外（主に米国・欧州）から順次展開されており、日本市場への本格普及はこれからです。ただし、Apple WalletのホームキーやGoogle Walletのデジタルキーは先行して展開されており、Aliro準拠の互換性が今後の製品に標準搭載されていく見込みです。
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑧ まとめ -->
+  <section id="summary" class="fade-in">
+    <div class="section-label">✨ 08 — SUMMARY</div>
+    <h2>まとめ</h2>
+
+    <div class="summary-box">
+      <h3>🔑 Aliroが描く未来のアクセス体験</h3>
+      <p>「どのカードを出そうか」と悩む必要はなくなります。<br>
+      <strong>「自分のスマホ（または自分自身というアイデンティティ）を持ち歩くだけで、許可されている場所ならどこでも、かざすか近づくだけで自動的に扉が開く」</strong>——それがAliroが目指す世界です。</p>
+    </div>
+
+    <div class="grid-2" style="margin-top: 20px;">
+      <div class="point-box blue">
+        <div class="point-icon">✅</div>
+        <div>
+          <div class="point-title">Aliroでできること・できつつあること</div>
+          <div class="point-desc">
+            ・自宅の玄関をスマホで解錠（NFC / UWB）<br>
+            ・ホテルのチェックインキーをApple Walletに<br>
+            ・会社のセキュリティドアを近づくだけで通過<br>
+            ・鍵の有効期限・時間帯制限をデジタルで管理<br>
+            ・紛失時はアプリからリモートで即時無効化
+          </div>
+        </div>
+      </div>
+      <div class="point-box orange">
+        <div class="point-icon">📋</div>
+        <div>
+          <div class="point-title">Aliroのここが画期的</div>
+          <div class="point-desc">
+            ・<strong>メーカー横断の互換性</strong>（Apple・Google・Samsung対応の鍵が同じドアで使える）<br>
+            ・<strong>物理カードより安全</strong>（暗号署名・失効機能・生体認証連携）<br>
+            ・<strong>UWBによる完全ハンズフリー</strong>（リレーアタック耐性）<br>
+            ・<strong>CSA（Matterと同じ団体）</strong>が策定した公式規格
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--border);">
+      <p style="font-size: 13px; color: var(--text-light); margin-bottom: 16px;">
+        📄 参照仕様書：Aliro Specification v1.0（26-42802-001）<br>
+        Connectivity Standards Alliance・2026年2月18日発行<br>
+        解説ページ作成：<a href="index.html" style="color: var(--primary); text-decoration: none;">Matter 1.5 辞書</a> by ライフテックコーディネーター 織田未来
+      </p>
+      <a href="index.html" style="display: inline-block; background: var(--primary); color: #fff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 600;">← Matter辞書トップへ戻る</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Matter 1.5 デバイス辞書 | by ライフテックコーディネーター 織田未来 | <a href="https://github.com/mikiyoko/matter-dictionary">GitHub</a></p>
+  <p style="margin-top: 6px; font-size: 11px; color: #9ca3af;">本ページはAliro Specification v1.0（CSA, 2026）を参考に、一般ユーザー向けに解説したものです。</p>
+</footer>
+
+<script>
+  // Q&A トグル
+  function toggleQA(btn) {
+    const answer = btn.nextElementSibling;
+    const toggle = btn.querySelector('.qa-toggle');
+    const isOpen = answer.style.display !== 'none';
+    answer.style.display = isOpen ? 'none' : 'block';
+    toggle.textContent = isOpen ? '＋' : '－';
+  }
+
+  // スクロールアニメーション
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
