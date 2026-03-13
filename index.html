@@ -716,7 +716,7 @@ function renderClusters() {
 
   var grid = document.getElementById("clusterGrid");
   if (clusters.length === 0) {
-    grid.innerHTML = '<div class="empty"><div class="big">🔍</div><div>" + (currentLang === "en" ? "No clusters found" : "該当するクラスターがありません") + "</div></div>';
+    grid.innerHTML = '<div class="empty"><div class="big">🔍</div><div>' + (currentLang === 'en' ? 'No clusters found' : '該当するクラスターがありません') + '</div></div>';
     return;
   }
 
@@ -760,7 +760,7 @@ function openDeviceModal(deviceId) {
   var chain = buildChain(d);
   var chainHtml = '';
   if (chain.length > 1) {
-    chainHtml = '<div class="modal-section"><div class="modal-section-title">" + (currentLang === "en" ? "Device Type Inheritance (Superset)" : "デバイスタイプの継承関係（スーパーセット）") + "</div>' +
+    chainHtml = '<div class="modal-section"><div class="modal-section-title">' + (currentLang === 'en' ? 'Device Type Inheritance (Superset)' : 'デバイスタイプの継承関係（スーパーセット）') + '</div>' +
       '<div class="chain">' +
       chain.map(function(item, i) {
         return '<span class="chain-item' + (item.id === d.id ? ' cur' : '') + '" data-devid="' + item.id + '">' + item.icon + ' ' + t(item) + '</span>' +
@@ -798,7 +798,7 @@ function openDeviceModal(deviceId) {
     '<div class="modal-id">' + d.name + ' · Device Type ID: ' + d.deviceTypeId + '</div>' +
     '<div class="modal-desc">' + d.description + '</div>' +
     chainHtml +
-    '<div class="modal-section"><div class="modal-section-title">" + (currentLang === "en" ? "Cluster Requirements (click to expand)" : "クラスター要件（クリックで詳細展開）") + "</div>' +
+    '<div class="modal-section"><div class="modal-section-title">' + (currentLang === 'en' ? 'Cluster Requirements (click to expand)' : 'クラスター要件（クリックで詳細展開）') + '</div>' +
     '<div class="cluster-rows">' + clusterRowsHtml + '</div></div>' +
     notesHtml;
 
@@ -850,7 +850,7 @@ function openClusterModal(clusterId) {
     '</div>' +
     '<div class="modal-desc">' + cl.description + '</div>' +
     buildClusterDetailHtml(cl) +
-    (usedIn.length > 0 ? '<div class="modal-section"><div class="modal-section-title">" + (currentLang === "en" ? "Used by Device Types" : "このクラスターを使うデバイスタイプ") + "</div><div class="device-refs">' + devRefsHtml + '</div></div>' : '');
+    (usedIn.length > 0 ? '<div class="modal-section"><div class="modal-section-title">' + (currentLang === 'en' ? 'Used by Device Types' : 'このクラスターを使うデバイスタイプ') + '</div><div class="device-refs">' + devRefsHtml + '</div></div>' : '');
 
   document.querySelectorAll('.dev-ref').forEach(function(el) {
     el.addEventListener('click', function() {
