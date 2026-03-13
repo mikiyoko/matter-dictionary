@@ -265,7 +265,7 @@ header {
     </div>
     <a class="guide-btn" href="guide.html">📖 <span>Matterとは？</span></a>
     <div class="header-stat">
-      <span id="statDevices">—</span> デバイスタイプ &nbsp;|&nbsp; <span id="statClusters">—</span> クラスター
+      <span id="statDevices">—</span> <span id="statLabelDevices">デバイスタイプ</span> &nbsp;|&nbsp; <span id="statClusters">—</span> <span id="statLabelClusters">クラスター</span>
     </div>
   </div>
 </header>
@@ -295,14 +295,14 @@ header {
         <span class="sec-count" id="secCount"></span>
       </div>
       <div class="legend">
-        <div class="legend-item"><div class="ldot M"></div> 必須クラスター (M)</div>
-        <div class="legend-item"><div class="ldot O"></div> 任意クラスター (O)</div>
+        <div class="legend-item"><div class="ldot M"></div> <span id="legendM">必須クラスター (M)</span></div>
+        <div class="legend-item"><div class="ldot O"></div> <span id="legendO">任意クラスター (O)</span></div>
       </div>
       <div class="device-grid" id="deviceGrid"></div>
     </div>
     <div id="clustersView" style="display:none">
       <div class="sec-header">
-        <span class="sec-title">クラスター一覧</span>
+        <span class="sec-title" id="clusterSectionTitle">クラスター一覧</span>
         <span class="sec-count" id="clusterCount"></span>
       </div>
       <div class="cluster-grid" id="clusterGrid"></div>
@@ -350,6 +350,31 @@ function setLang(lang) {
   document.getElementById("searchInput").placeholder = lang === "ja"
     ? "デバイス・クラスター・機能で検索… 例：色温度、人感、サーカディアン"
     : "Search devices, clusters… e.g. color temperature, occupancy";
+  // タブボタン
+  document.getElementById("tabDevices").textContent = lang === "en" ? "Device Types" : "デバイスタイプ";
+  document.getElementById("tabClusters").textContent = lang === "en" ? "Clusters" : "クラスター";
+  // 凡例
+  var lm = document.getElementById("legendM");
+  var lo = document.getElementById("legendO");
+  if (lm) lm.textContent = lang === "en" ? "Required (M)" : "必須クラスター (M)";
+  if (lo) lo.textContent = lang === "en" ? "Optional (O)" : "任意クラスター (O)";
+  // ヘッダー統計ラベル
+  var sld = document.getElementById("statLabelDevices");
+  var slc = document.getElementById("statLabelClusters");
+  if (sld) sld.textContent = lang === "en" ? "Device Types" : "デバイスタイプ";
+  if (slc) slc.textContent = lang === "en" ? "Clusters" : "クラスター";
+  // クラスターセクションタイトル
+  var cst = document.getElementById("clusterSectionTitle");
+  if (cst) cst.textContent = lang === "en" ? "Cluster List" : "クラスター一覧";
+  // Matterとは？ボタン
+  var gb = document.querySelector(".guide-btn span");
+  if (gb) gb.textContent = lang === "en" ? "What is Matter?" : "Matterとは？";
+  // モバイルトグルボタン（表示中の場合のみ）
+  var tBtn = document.getElementById("toggleBtn");
+  if (tBtn && tBtn.textContent.indexOf("▼") >= 0) {
+    tBtn.textContent = lang === "en" ? "▼ Filter by category" : "▼ カテゴリで絞り込む";
+  }
+  // secTitleも再セット（selectCatを再実行して更新）
   if (typeof window.renderDevices === "function") window.renderDevices();
   if (typeof window.renderClusters === "function") window.renderClusters();
 }
@@ -363,21 +388,21 @@ function t(item) {
 // ===================================================
 function initApp() {
 var CATEGORIES = [
-  {id:"all",      label:"すべて",             icon:"🏠"},
-  {id:"lighting",  label:"照明",               icon:"💡"},
-  {id:"plug",     label:"スマートプラグ",       icon:"🔌"},
-  {id:"switch",   label:"スイッチ",            icon:"🎚"},
-  {id:"sensor",   label:"センサー",            icon:"📡"},
-  {id:"entry",    label:"玄関・扉・窓",         icon:"🚪"},
-  {id:"hvac",     label:"HVAC（空調）",         icon:"🌡"},
-  {id:"appliances",label:"家電",              icon:"🍳"},
-  {id:"energy",   label:"エネルギー",           icon:"⚡"},
-  {id:"camera",   label:"カメラ・セキュリティ",  icon:"📷"},
-  {id:"media",    label:"メディア",            icon:"📺"},
-  {id:"robot",    label:"ロボット",            icon:"🤖"},
-  {id:"utility",  label:"ユーティリティ",       icon:"🔧"},
-  {id:"general",  label:"汎用（共通）",         icon:"🔧"},
-  {id:"network",  label:"ネットワーク",         icon:"🌐"}
+  {id:"all",       label:"すべて",             labelEn:"All",              icon:"🏠"},
+  {id:"lighting",  label:"照明",               labelEn:"Lighting",          icon:"💡"},
+  {id:"plug",      label:"スマートプラグ",       labelEn:"Smart Plugs",       icon:"🔌"},
+  {id:"switch",    label:"スイッチ",            labelEn:"Switches",          icon:"🎚"},
+  {id:"sensor",    label:"センサー",            labelEn:"Sensors",           icon:"📡"},
+  {id:"entry",     label:"玄関・扉・窓",         labelEn:"Doors & Windows",   icon:"🚪"},
+  {id:"hvac",      label:"HVAC（空調）",         labelEn:"HVAC",              icon:"🌡"},
+  {id:"appliances",label:"家電",               labelEn:"Appliances",        icon:"🍳"},
+  {id:"energy",    label:"エネルギー",           labelEn:"Energy",            icon:"⚡"},
+  {id:"camera",    label:"カメラ・セキュリティ",  labelEn:"Cameras",           icon:"📷"},
+  {id:"media",     label:"メディア",            labelEn:"Media",             icon:"📺"},
+  {id:"robot",     label:"ロボット",            labelEn:"Robots",            icon:"🤖"},
+  {id:"utility",   label:"ユーティリティ",       labelEn:"Utility",           icon:"🔧"},
+  {id:"general",   label:"汎用（共通）",         labelEn:"General",           icon:"🔧"},
+  {id:"network",   label:"ネットワーク",         labelEn:"Network",           icon:"🌐"}
 ];
 
 // ===================================================
@@ -467,7 +492,7 @@ toggleBtn.addEventListener("click", function() {
     var collapsed = sidebarEl.classList.toggle("collapsed");
     layoutEl.classList.toggle("sidebar-collapsed", collapsed);
     toggleBtn.textContent = collapsed ? "▶" : "◀";
-    toggleBtn.title = collapsed ? "サイドバーを開く" : "サイドバーを折りたたむ";
+    toggleBtn.title = collapsed ? (currentLang === "en" ? "Open sidebar" : "サイドバーを開く") : (currentLang === "en" ? "Collapse sidebar" : "サイドバーを折りたたむ");
   }
 });
 
@@ -477,13 +502,13 @@ selectCategory = function(catId) {
   origSelectCategory(catId);
   if (isMobile() && sidebarEl.classList.contains("mobile-open")) {
     sidebarEl.classList.remove("mobile-open");
-    toggleBtn.textContent = "▼ カテゴリで絞り込む";
+    toggleBtn.textContent = currentLang === "en" ? "▼ Filter by category" : "▼ カテゴリで絞り込む";
   }
 };
 
 // 初期表示：スマホはボタンテキストを変更
 if (isMobile()) {
-  toggleBtn.textContent = "▼ カテゴリで絞り込む";
+  toggleBtn.textContent = currentLang === "en" ? "▼ Filter by category" : "▼ カテゴリで絞り込む";
   toggleBtn.style.cssText = "width:auto;padding:0 12px;font-size:12px;";
 }
 window.addEventListener("resize", function() {
@@ -512,7 +537,13 @@ function selectCategory(catId) {
     hvac:"🌡 HVAC（空調）", appliances:"🍳 家電", energy:"⚡ エネルギー管理",
     camera:"📷 カメラ・セキュリティ", media:"📺 メディア", robot:"🤖 ロボット", utility:"🔧 ユーティリティ"
   };
-  document.getElementById("secTitle").textContent = titles[catId] || catId;
+  var titlesEn = {
+    all:"All Device Types", lighting:"💡 Lighting", plug:"🔌 Smart Plugs",
+    switch:"🎚 Switches", sensor:"📡 Sensors", entry:"🚪 Doors & Windows",
+    hvac:"🌡 HVAC", appliances:"🍳 Appliances", energy:"⚡ Energy",
+    camera:"📷 Cameras", media:"📺 Media", robot:"🤖 Robots", utility:"🔧 Utility"
+  };
+  document.getElementById("secTitle").textContent = (currentLang === "en" ? titlesEn[catId] : titles[catId]) || catId;
   updateSidebarCounts();
   if (currentView === "clusters") renderClusters();
   else renderDevices();
@@ -560,7 +591,7 @@ function getFilteredDevices() {
 function renderDevices() {
   var devices = getFilteredDevices();
   var grid = document.getElementById("deviceGrid");
-  document.getElementById("secCount").textContent = devices.length + " 件";
+  document.getElementById("secCount").textContent = devices.length + (currentLang === "en" ? " items" : " 件");
 
   if (devices.length === 0) {
     grid.innerHTML = '<div class="empty"><div class="big">🔍</div><div>該当するデバイスがありません</div></div>';
@@ -611,11 +642,11 @@ function renderClusters() {
     var inTags = (c.tags||[]).some(function(t){ return t.toLowerCase().indexOf(q) >= 0; });
     return inName || inDesc || inTags;
   });
-  document.getElementById("clusterCount").textContent = clusters.length + " 件";
+  document.getElementById("clusterCount").textContent = clusters.length + (currentLang === "en" ? " items" : " 件");
 
   var grid = document.getElementById("clusterGrid");
   if (clusters.length === 0) {
-    grid.innerHTML = '<div class="empty"><div class="big">🔍</div><div>該当するクラスターがありません</div></div>';
+    grid.innerHTML = '<div class="empty"><div class="big">🔍</div><div>" + (currentLang === "en" ? "No clusters found" : "該当するクラスターがありません") + "</div></div>';
     return;
   }
 
@@ -659,7 +690,7 @@ function openDeviceModal(deviceId) {
   var chain = buildChain(d);
   var chainHtml = '';
   if (chain.length > 1) {
-    chainHtml = '<div class="modal-section"><div class="modal-section-title">デバイスタイプの継承関係（スーパーセット）</div>' +
+    chainHtml = '<div class="modal-section"><div class="modal-section-title">" + (currentLang === "en" ? "Device Type Inheritance (Superset)" : "デバイスタイプの継承関係（スーパーセット）") + "</div>' +
       '<div class="chain">' +
       chain.map(function(item, i) {
         return '<span class="chain-item' + (item.id === d.id ? ' cur' : '') + '" data-devid="' + item.id + '">' + item.icon + ' ' + t(item) + '</span>' +
@@ -697,7 +728,7 @@ function openDeviceModal(deviceId) {
     '<div class="modal-id">' + d.name + ' · Device Type ID: ' + d.deviceTypeId + '</div>' +
     '<div class="modal-desc">' + d.description + '</div>' +
     chainHtml +
-    '<div class="modal-section"><div class="modal-section-title">クラスター要件（クリックで詳細展開）</div>' +
+    '<div class="modal-section"><div class="modal-section-title">" + (currentLang === "en" ? "Cluster Requirements (click to expand)" : "クラスター要件（クリックで詳細展開）") + "</div>' +
     '<div class="cluster-rows">' + clusterRowsHtml + '</div></div>' +
     notesHtml;
 
@@ -749,7 +780,7 @@ function openClusterModal(clusterId) {
     '</div>' +
     '<div class="modal-desc">' + cl.description + '</div>' +
     buildClusterDetailHtml(cl) +
-    (usedIn.length > 0 ? '<div class="modal-section"><div class="modal-section-title">このクラスターを使うデバイスタイプ</div><div class="device-refs">' + devRefsHtml + '</div></div>' : '');
+    (usedIn.length > 0 ? '<div class="modal-section"><div class="modal-section-title">" + (currentLang === "en" ? "Used by Device Types" : "このクラスターを使うデバイスタイプ") + "</div><div class="device-refs">' + devRefsHtml + '</div></div>' : '');
 
   document.querySelectorAll('.dev-ref').forEach(function(el) {
     el.addEventListener('click', function() {
