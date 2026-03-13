@@ -37,6 +37,20 @@ header {
 .guide-btn:hover { background: var(--surface2); color: var(--accent); border-color: var(--accent); }
 @media (max-width: 480px) { .guide-btn span { display: none; } }
 
+.lang-toggle {
+  display: flex; align-items: center;
+  border: 1px solid var(--border); border-radius: 7px; overflow: hidden;
+  font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+}
+.lang-toggle button {
+  padding: 5px 10px; border: none; cursor: pointer;
+  background: transparent; color: var(--muted); transition: all 0.15s;
+}
+.lang-toggle button.active {
+  background: var(--accent); color: #0e0f14;
+}
+.lang-toggle button:hover:not(.active) { color: var(--text); }
+
 .search-bar {
   padding: 16px 28px; border-bottom: 1px solid var(--border);
   background: var(--surface);
@@ -245,6 +259,10 @@ header {
     </div>
   </div>
   <div class="header-right">
+    <div class="lang-toggle">
+      <button id="btnJa" class="active" onclick="setLang('ja')">JA</button>
+      <button id="btnEn" onclick="setLang('en')">EN</button>
+    </div>
     <a class="guide-btn" href="guide.html">📖 <span>Matterとは？</span></a>
     <div class="header-stat">
       <span id="statDevices">—</span> デバイスタイプ &nbsp;|&nbsp; <span id="statClusters">—</span> クラスター
@@ -349,6 +367,26 @@ var currentCat = "all";
 var currentView = "devices";
 var searchQuery = "";
 var openClusterRowId = null;
+var currentLang = "ja";
+
+// ===================================================
+// LANG SWITCH
+// ===================================================
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById("btnJa").classList.toggle("active", lang === "ja");
+  document.getElementById("btnEn").classList.toggle("active", lang === "en");
+  // 検索プレースホルダー切り替え
+  document.getElementById("searchInput").placeholder = lang === "ja"
+    ? "デバイス・クラスター・機能で検索… 例：色温度、人感、サーカディアン"
+    : "Search devices, clusters… e.g. color temperature, occupancy";
+  render();
+}
+
+// 名称を言語に応じて返すヘルパー
+function t(item) {
+  return (currentLang === "en" && item.name) ? item.name : (item.nameJa || item.name || "");
+}
 
 // ===================================================
 // INIT
@@ -532,20 +570,20 @@ function renderDevices() {
   grid.innerHTML = devices.map(function(d) {
     var reqChips = (d.req || []).slice(0,3).map(function(cid) {
       var cl = CLUSTERS.find(function(c){ return c.id === cid; });
-      return cl ? '<span class="chip M">' + cl.nameJa + '</span>' : '';
+      return cl ? '<span class="chip M">' + t(cl) + '</span>' : '';
     }).join('');
     var optChips = (d.opt || []).slice(0,2).map(function(cid) {
       var cl = CLUSTERS.find(function(c){ return c.id === cid; });
-      return cl ? '<span class="chip O">' + cl.nameJa + '</span>' : '';
+      return cl ? '<span class="chip O">' + t(cl) + '</span>' : '';
     }).join('');
     var moreReq = (d.req || []).length > 3 ? '<span class="chip M">+' + ((d.req||[]).length - 3) + '</span>' : '';
     var superNote = d.supersetOf ? '<div class="superset-note">↑ ' + d.supersetOf.map(function(pid){
       var p = DEVICE_TYPES.find(function(x){ return x.id === pid; });
-      return p ? p.nameJa : pid;
-    }).join(', ') + ' の上位互換</div>' : '';
+      return p ? t(p) : pid;
+    }).join(', ') + (currentLang === 'en' ? ' superset</div>' : ' の上位互換</div>') : '';
     return '<div class="device-card" data-id="' + d.id + '">' +
       '<div class="card-head"><div class="card-icon">' + d.icon + '</div><div>' +
-      '<div class="card-name">' + d.nameJa + '</div>' +
+      '<div class="card-name">' + t(d) + '</div>' +
       '<div class="card-id">' + d.name + ' · ' + d.deviceTypeId + '</div></div></div>' +
       superNote +
       '<div class="card-desc">' + d.description + '</div>' +
@@ -587,9 +625,9 @@ function renderClusters() {
     }).slice(0,3);
     return '<div class="cluster-card" data-id="' + c.id + '">' +
       '<div class="cluster-card-id">' + c.clusterId + '</div>' +
-      '<div class="cluster-card-name">' + c.nameJa + '</div>' +
+      '<div class="cluster-card-name">' + t(c) + '</div>' +
       '<div class="cluster-card-desc">' + c.description + '</div>' +
-      '<div class="used-in-list">' + usedIn.map(function(d){ return '<span class="used-badge">' + d.icon + ' ' + d.nameJa + '</span>'; }).join('') + '</div>' +
+      '<div class="used-in-list">' + usedIn.map(function(d){ return '<span class="used-badge">' + d.icon + ' ' + t(d) + '</span>'; }).join('') + '</div>' +
       '</div>';
   }).join('');
 
@@ -624,7 +662,7 @@ function openDeviceModal(deviceId) {
     chainHtml = '<div class="modal-section"><div class="modal-section-title">デバイスタイプの継承関係（スーパーセット）</div>' +
       '<div class="chain">' +
       chain.map(function(item, i) {
-        return '<span class="chain-item' + (item.id === d.id ? ' cur' : '') + '" data-devid="' + item.id + '">' + item.icon + ' ' + item.nameJa + '</span>' +
+        return '<span class="chain-item' + (item.id === d.id ? ' cur' : '') + '" data-devid="' + item.id + '">' + item.icon + ' ' + t(item) + '</span>' +
           (i < chain.length - 1 ? '<span class="chain-arrow">→</span>' : '');
       }).join('') +
       '</div><div style="font-size:11px;color:var(--muted);margin-top:7px;padding:0 4px">右に行くほど機能が多い。右のデバイスは左のデバイスとしても動作できます。</div></div>';
@@ -640,8 +678,8 @@ function openDeviceModal(deviceId) {
       '<span class="row-badge ' + item.type + '">' + item.type + '</span>' +
       '<div style="flex:1">' +
         '<div style="display:flex;align-items:center;gap:6px">' +
-          '<span class="row-name">' + cl.nameJa + '</span>' +
-          '<span class="row-en-name">' + cl.name + '</span>' +
+          '<span class="row-name">' + t(cl) + '</span>' +
+          (currentLang === 'ja' ? '<span class="row-en-name">' + cl.name + '</span>' : '') +
           '<span class="row-cid">' + cl.clusterId + '</span>' +
         '</div>' +
         '<div class="row-desc">' + cl.description + '</div>' +
@@ -655,7 +693,7 @@ function openDeviceModal(deviceId) {
 
   document.getElementById("modalBody").innerHTML =
     '<div class="modal-icon">' + d.icon + '</div>' +
-    '<div class="modal-title">' + d.nameJa + '</div>' +
+    '<div class="modal-title">' + t(d) + '</div>' +
     '<div class="modal-id">' + d.name + ' · Device Type ID: ' + d.deviceTypeId + '</div>' +
     '<div class="modal-desc">' + d.description + '</div>' +
     chainHtml +
@@ -700,13 +738,13 @@ function openClusterModal(clusterId) {
 
   var devRefsHtml = usedIn.map(function(d) {
     var isReq = (d.req||[]).indexOf(cl.id) >= 0;
-    return '<div class="dev-ref" data-devid="' + d.id + '">' + d.icon + ' ' + d.nameJa + ' <span class="row-badge ' + (isReq?'M':'O') + '">' + (isReq?'M':'O') + '</span></div>';
+    return '<div class="dev-ref" data-devid="' + d.id + '">' + d.icon + ' ' + t(d) + ' <span class="row-badge ' + (isReq?'M':'O') + '">' + (isReq?'M':'O') + '</span></div>';
   }).join('');
 
   document.getElementById("modalBody").innerHTML =
     '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">' +
       '<span style="font-size:38px">🔧</span>' +
-      '<div><div class="modal-title">' + cl.nameJa + '</div>' +
+      '<div><div class="modal-title">' + t(cl) + '</div>' +
       '<div class="modal-id">' + cl.name + ' · Cluster ID: ' + cl.clusterId + '</div></div>' +
     '</div>' +
     '<div class="modal-desc">' + cl.description + '</div>' +
