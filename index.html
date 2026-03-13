@@ -339,6 +339,25 @@ Promise.all([
 
 <script>
 // ===================================================
+// グローバル：言語切り替え（initApp外に置く必要あり）
+// ===================================================
+var currentLang = "ja";
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById("btnJa").classList.toggle("active", lang === "ja");
+  document.getElementById("btnEn").classList.toggle("active", lang === "en");
+  document.getElementById("searchInput").placeholder = lang === "ja"
+    ? "デバイス・クラスター・機能で検索… 例：色温度、人感、サーカディアン"
+    : "Search devices, clusters… e.g. color temperature, occupancy";
+  if (typeof render === "function") render();
+}
+
+function t(item) {
+  return (currentLang === "en" && item.name) ? item.name : (item.nameJa || item.name || "");
+}
+
+// ===================================================
 // アプリ本体
 // ===================================================
 function initApp() {
@@ -367,26 +386,6 @@ var currentCat = "all";
 var currentView = "devices";
 var searchQuery = "";
 var openClusterRowId = null;
-var currentLang = "ja";
-
-// ===================================================
-// LANG SWITCH
-// ===================================================
-function setLang(lang) {
-  currentLang = lang;
-  document.getElementById("btnJa").classList.toggle("active", lang === "ja");
-  document.getElementById("btnEn").classList.toggle("active", lang === "en");
-  // 検索プレースホルダー切り替え
-  document.getElementById("searchInput").placeholder = lang === "ja"
-    ? "デバイス・クラスター・機能で検索… 例：色温度、人感、サーカディアン"
-    : "Search devices, clusters… e.g. color temperature, occupancy";
-  render();
-}
-
-// 名称を言語に応じて返すヘルパー
-function t(item) {
-  return (currentLang === "en" && item.name) ? item.name : (item.nameJa || item.name || "");
-}
 
 // ===================================================
 // INIT
