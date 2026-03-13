@@ -37,6 +37,37 @@ header {
 .guide-btn:hover { background: var(--surface2); color: var(--accent); border-color: var(--accent); }
 @media (max-width: 480px) { .guide-btn span { display: none; } }
 
+/* 学ぶドロップダウン */
+.learn-menu { position: relative; }
+.learn-btn {
+  padding: 6px 13px; border-radius: 7px; font-size: 12px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; text-decoration: none;
+  font-family: 'Noto Sans JP', sans-serif; transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+.learn-btn:hover, .learn-menu:hover .learn-btn {
+  background: var(--surface2); color: var(--accent); border-color: var(--accent);
+}
+.learn-dropdown {
+  display: none; position: absolute; top: calc(100% + 8px); right: 0;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; min-width: 180px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 200;
+}
+.learn-menu:hover .learn-dropdown { display: block; }
+.learn-dropdown a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 16px; text-decoration: none; color: var(--text);
+  font-size: 13px; transition: background 0.12s;
+  border-bottom: 1px solid var(--border);
+}
+.learn-dropdown a:last-child { border-bottom: none; }
+.learn-dropdown a:hover { background: var(--surface2); color: var(--accent); }
+.learn-dropdown a .drop-icon { font-size: 16px; }
+.learn-dropdown a .drop-label { font-weight: 500; }
+.learn-dropdown a .drop-sub { font-size: 11px; color: var(--muted); display: block; margin-top: 1px; }
+
 .lang-toggle {
   display: flex; align-items: center;
   border: 1px solid var(--border); border-radius: 7px; overflow: hidden;
@@ -259,7 +290,19 @@ header {
     </div>
   </div>
   <div class="header-right">
-    <a class="guide-btn" href="guide.html">📖 <span>Matterとは？</span></a>
+    <div class="learn-menu">
+      <div class="learn-btn">🎓 <span>学ぶ</span> ▾</div>
+      <div class="learn-dropdown">
+        <a href="guide.html">
+          <span class="drop-icon">📡</span>
+          <span><span class="drop-label">Matterとは？</span><span class="drop-sub">スマートホーム規格の解説</span></span>
+        </a>
+        <a href="aliro.html">
+          <span class="drop-icon">🔑</span>
+          <span><span class="drop-label">Aliroとは？</span><span class="drop-sub">スマートロック規格の解説</span></span>
+        </a>
+      </div>
+    </div>
     <div class="header-stat">
       <span id="statDevices">—</span> <span id="statLabelDevices">デバイスタイプ</span> &nbsp;|&nbsp; <span id="statClusters">—</span> <span id="statLabelClusters">クラスター</span>
     </div>
@@ -366,9 +409,6 @@ function setLang(lang) {
   // クラスターセクションタイトル
   var cst = document.getElementById("clusterSectionTitle");
   if (cst) cst.textContent = lang === "en" ? "Cluster List" : "クラスター一覧";
-  // Matterとは？ボタン
-  var gb = document.querySelector(".guide-btn span");
-  if (gb) gb.textContent = lang === "en" ? "What is Matter?" : "Matterとは？";
   // モバイルトグルボタン（表示中の場合のみ）
   var tBtn = document.getElementById("toggleBtn");
   if (tBtn && tBtn.textContent.indexOf("▼") >= 0) {
@@ -384,8 +424,10 @@ function setLang(lang) {
     }
   });
   // secTitleも再セット（selectCatを再実行して更新）
-  if (typeof window.renderDevices === "function") window.renderDevices();
-  if (typeof window.renderClusters === "function") window.renderClusters();
+  if (typeof window.renderDevices === "function") {
+    window.renderDevices();
+    window.renderClusters();
+  }
 }
 
 function t(item) {
@@ -395,7 +437,6 @@ function t(item) {
 // ===================================================
 // アプリ本体
 // ===================================================
-function initApp() {
 var CATEGORIES = [
   {id:"all",       label:"すべて",             labelEn:"All",              icon:"🏠"},
   {id:"lighting",  label:"照明",               labelEn:"Lighting",          icon:"💡"},
@@ -413,6 +454,8 @@ var CATEGORIES = [
   {id:"general",   label:"汎用（共通）",         labelEn:"General",           icon:"🔧"},
   {id:"network",   label:"ネットワーク",         labelEn:"Network",           icon:"🌐"}
 ];
+
+function initApp() {
 
 // ===================================================
 // APP STATE
