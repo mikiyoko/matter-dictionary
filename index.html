@@ -59,7 +59,7 @@ header {
   border-radius: 10px; overflow: hidden;
   box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
-.learn-menu:hover .learn-dropdown { display: block; }
+.learn-menu:hover .learn-dropdown, .learn-dropdown.open { display: block; }
 .learn-dropdown a {
   display: flex; align-items: center; gap: 10px;
   padding: 11px 16px; text-decoration: none; color: var(--text);
@@ -159,6 +159,20 @@ header {
 
 /* スマホ（768px以下） */
 @media (max-width: 768px) {
+  header {
+    padding: 10px 14px;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+  .logo { gap: 8px; flex-shrink: 1; min-width: 0; }
+  .logo-badge { font-size: 9px; padding: 2px 5px; white-space: nowrap; flex-shrink: 0; }
+  .logo-title { font-size: 13px; white-space: nowrap; }
+  .logo-sub { display: none; }
+  .header-right { gap: 8px; flex-shrink: 0; }
+  .header-stat { display: none; }
+  .learn-btn { padding: 5px 9px; font-size: 11px; }
+  .learn-btn span { display: inline; }
+  .lang-toggle button { padding: 4px 8px; font-size: 10px; }
   .layout { grid-template-columns: 1fr; }
   .sidebar {
     border-right: none; border-bottom: 1px solid var(--border);
@@ -295,8 +309,8 @@ header {
   </div>
   <div class="header-right">
     <div class="learn-menu">
-      <div class="learn-btn">🎓 <span>学ぶ</span> ▾</div>
-      <div class="learn-dropdown">
+      <button class="learn-btn" onclick="toggleLearnMenu(event)">🎓 <span>学ぶ</span> ▾</button>
+      <div class="learn-dropdown" id="learnDropdown">
         <div class="learn-dropdown-inner">
         <a href="guide.html">
           <span class="drop-icon">📡</span>
@@ -392,6 +406,17 @@ var currentCat = "all";
 var currentView = "devices";
 var searchQuery = "";
 var openClusterRowId = null;
+
+function toggleLearnMenu(e) {
+  e.stopPropagation();
+  var dd = document.getElementById('learnDropdown');
+  if (dd) dd.classList.toggle('open');
+}
+// 外クリックで閉じる
+document.addEventListener('click', function() {
+  var dd = document.getElementById('learnDropdown');
+  if (dd) dd.classList.remove('open');
+});
 
 function setLang(lang) {
   currentLang = lang;
