@@ -350,7 +350,8 @@ function setLang(lang) {
   document.getElementById("searchInput").placeholder = lang === "ja"
     ? "デバイス・クラスター・機能で検索… 例：色温度、人感、サーカディアン"
     : "Search devices, clusters… e.g. color temperature, occupancy";
-  if (typeof render === "function") render();
+  if (typeof window.renderDevices === "function") window.renderDevices();
+  if (typeof window.renderClusters === "function") window.renderClusters();
 }
 
 function t(item) {
@@ -783,6 +784,10 @@ function buildClusterDetailHtml(cl) {
 function closeModal() {
   document.getElementById("overlay").classList.remove("open");
 }
+
+// setLang（グローバル）から呼べるようにwindowに登録
+window.renderDevices = renderDevices;
+window.renderClusters = renderClusters;
 
 } // end initApp
 </script>
