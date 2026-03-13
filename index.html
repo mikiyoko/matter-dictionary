@@ -41,8 +41,8 @@ header {
 .learn-menu { position: relative; }
 .learn-btn {
   padding: 6px 13px; border-radius: 7px; font-size: 12px;
-  border: 1px solid var(--border); background: transparent;
-  color: var(--muted); cursor: pointer; text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.08);
+  color: #fff; font-weight: 700; cursor: pointer; text-decoration: none;
   font-family: 'Noto Sans JP', sans-serif; transition: all 0.15s;
   display: flex; align-items: center; gap: 6px; white-space: nowrap;
 }
@@ -691,7 +691,7 @@ function renderDevices() {
       '<div class="card-name">' + t(d) + '</div>' +
       '<div class="card-id">' + d.name + ' · ' + d.deviceTypeId + '</div></div></div>' +
       superNote +
-      '<div class="card-desc">' + d.description + '</div>' +
+      (currentLang === 'ja' ? '<div class="card-desc">' + d.description + '</div>' : '') +
       '<div class="cluster-chips">' + reqChips + optChips + moreReq + '</div>' +
       '</div>';
   }).join('');
