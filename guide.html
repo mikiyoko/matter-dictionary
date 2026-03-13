@@ -95,10 +95,10 @@
     .hier-desc { font-size: 13px; color: var(--gray-600); line-height: 1.6; }
     .hier-arrow { text-align: center; font-size: 18px; color: var(--primary); padding: 2px 0; }
 
-    .code-box { background: var(--gray-900); border-radius: var(--radius); padding: 22px 24px; font-family: 'Inter', monospace; font-size: 13px; line-height: 1.85; margin: 18px 0; overflow-x: auto; }
+    .code-box { background: var(--gray-900); border-radius: var(--radius); padding: 22px 24px; font-family: 'Inter', monospace; font-size: 13px; line-height: 1.85; margin: 18px 0; overflow-x: auto; white-space: pre; }
     .c-green { color: #6ee7b7; } .c-blue { color: #93c5fd; } .c-yellow { color: #fde68a; } .c-purple { color: #c4b5fd; } .c-dim { color: #6b7280; }
 
-    .superset-chain { display: flex; align-items: center; flex-wrap: wrap; gap: 0; margin: 20px 0; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 16px; box-shadow: var(--shadow); }
+    .superset-chain { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0; margin: 20px 0; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 16px; box-shadow: var(--shadow); }
     .ss-item { text-align: center; padding: 8px 14px; }
     .ss-icon { font-size: 26px; margin-bottom: 5px; }
     .ss-name { font-size: 12px; font-weight: 700; color: var(--gray-800); }
@@ -112,10 +112,10 @@
 
     .elements-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 18px 0; }
     @media (max-width: 768px) { .elements-grid { grid-template-columns: 1fr 1fr; } }
-    .elem-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; box-shadow: var(--shadow); }
+    .elem-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 12px 10px; text-align: center; box-shadow: var(--shadow); }
     .elem-type { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 7px; font-family: 'Inter', sans-serif; }
-    .elem-icon { font-size: 26px; margin-bottom: 7px; }
-    .elem-name { font-size: 13px; font-weight: 700; color: var(--gray-800); margin-bottom: 5px; }
+    .elem-icon { font-size: 20px; margin-bottom: 5px; }
+    .elem-name { font-size: 13px; font-weight: 700; color: var(--gray-800); margin-bottom: 4px; }
     .elem-desc { font-size: 12px; color: var(--gray-600); line-height: 1.6; }
 
     .toc { background: var(--gray-50); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 40px; }
@@ -125,11 +125,12 @@
     .toc a { font-size: 14px; color: var(--primary); text-decoration: none; }
     .toc a:hover { text-decoration: underline; }
 
-    .glossary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
-    @media (max-width: 600px) { .glossary-grid { grid-template-columns: 1fr; } }
-    .gloss-item { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; box-shadow: var(--shadow); }
-    .gloss-term { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 5px; }
-    .gloss-term .en { font-size: 11px; color: var(--text-light); font-family: 'Inter', sans-serif; font-weight: 400; margin-left: 6px; }
+    .glossary-grid { display: flex; flex-direction: column; gap: 0; margin-top: 18px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: #fff; box-shadow: var(--shadow); }
+    .gloss-item { display: grid; grid-template-columns: 160px 1fr; align-items: baseline; gap: 16px; padding: 12px 18px; border-bottom: 1px solid var(--border); }
+    .gloss-item:last-child { border-bottom: none; }
+    .gloss-item:hover { background: var(--gray-50); }
+    .gloss-term { font-size: 14px; font-weight: 700; color: var(--gray-900); }
+    .gloss-term .en { font-size: 11px; color: var(--text-light); font-family: 'Inter', sans-serif; font-weight: 400; display: block; margin-top: 2px; }
     .gloss-def { font-size: 13px; color: var(--gray-600); line-height: 1.6; }
 
     .transport-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 18px 0; }
@@ -142,6 +143,7 @@
     .chip.gray { background: var(--gray-100); color: var(--gray-700); }
 
     .summary-box { background: linear-gradient(135deg, var(--primary), #10b981); border-radius: var(--radius); padding: 36px; color: #fff; text-align: center; }
+    .info-box { background: var(--blue-light); border-left: 4px solid var(--blue); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: #1e3a8a; }
     .summary-box h3 { color: #fff; font-size: 20px; margin-bottom: 12px; }
     .summary-box p { color: rgba(255,255,255,0.9); font-size: 15px; max-width: 600px; margin: 0 auto; }
 
@@ -203,8 +205,8 @@
     <h2>Matterって何？　一言で言うと</h2>
     <div class="card">
       <p><strong>Matter（マター）</strong>は、<strong>スマートホームデバイスがメーカーを超えて互いにつながるための「共通言語（プロトコル）」</strong>です。</p>
-      <p>Aliroと同じく<strong>CSA（Connectivity Standards Alliance）</strong>が策定しており、2022年に初版がリリース。2024年末にはバージョン1.5が公開されました。</p>
-      <p>Apple Home・Google Home・Amazon Alexa・Samsung SmartThings——どのエコシステムの機器も、Matter対応であれば同じアプリで一元管理できます。</p>
+      <p>日本語しか話せない人と英語しか話せない人は会話できません。でも「共通の言語」があれば話せます。<strong>Matterはスマートホームデバイスにとっての「共通言語」</strong>です。AppleのHomePodも、GoogleのNest HubもAmazonのEchoも、Matter対応であれば同じ言葉でデバイスに命令できます。</p>
+      <p><strong>CSA（Connectivity Standards Alliance）— Apple・Google・Amazon・Samsungなど600社以上が参加</strong>する標準化団体が策定しており、2022年に初版がリリース。2024年末にはバージョン1.5が公開されました。</p>
     </div>
     <div class="highlight">
       <strong>💡 ポイント：</strong>Matterが登場する前は「このスマート電球はApple Homeでしか使えない」という問題が多発していました。Matterはその壁を壊す規格です。
@@ -223,7 +225,7 @@
         <div><div class="point-title">高いセキュリティ</div><div class="point-desc">すべてのデバイスにCSA認証（DAC）が必要。なりすましや不正接続を防ぐ暗号化が標準で組み込まれています。</div></div>
       </div>
     </div>
-    <div class="highlight" style="margin-top:18px;">
+    <div class="info-box" style="margin-top:18px;">
       <strong>🆕 Matter 1.5の新機能：</strong>カメラ・ドアベル・ビデオ通話（WebRTC）・新世代クロージャー（窓・扉）が大幅追加。ヒートポンプ・給湯器など家全体のエネルギー管理も強化されました。
     </div>
   </section>
@@ -243,9 +245,9 @@
       <div class="hier-arrow">↓</div>
       <div class="hier-row"><div class="hier-icon">📊</div><div><div class="hier-name">Attribute / Command / Event<span>= クラスターの中身</span></div><div class="hier-desc">クラスターが持つ具体的なデータ（アトリビュート）・命令（コマンド）・通知（イベント）。「現在の明るさ=80%」がアトリビュート、「明るさを60%にしろ」がコマンド。</div></div></div>
     </div>
-    <div class="point-box green">
-      <div class="point-icon">🏷</div>
-      <div><div class="point-title">Device Type（デバイスタイプ）はどこに入る？</div><div class="point-desc">デバイスタイプは「このエンドポイントはどんな機器か」を定義する"レッテル"のようなもの。「Dimmable Light（調光ライト）なら On/Off と Level Control クラスターが必須」という資格要件を決めています。</div></div>
+    <div class="highlight">
+      <strong>🏷 Device Type（デバイスタイプ）はどこに入る？</strong><br>
+      デバイスタイプは「このエンドポイントはどんな機器か」を定義する"レッテル"のようなもの。「Dimmable Light（調光ライト）なら On/Off と Level Control クラスターが必須」という資格要件を決めています。
     </div>
   </section>
 
@@ -322,10 +324,10 @@
     <h2>クラスターの中身（4つの要素）</h2>
     <p>各クラスターは4種類の要素で構成されています。</p>
     <div class="elements-grid">
-      <div class="elem-card"><div class="elem-type">Attribute</div><div class="elem-icon">📊</div><div class="elem-name">アトリビュート</div><div class="elem-desc">現在の状態・設定値。例:「現在の明るさ = 80%」「現在の温度 = 24℃」</div></div>
-      <div class="elem-card"><div class="elem-type">Command</div><div class="elem-icon">🎯</div><div class="elem-name">コマンド</div><div class="elem-desc">操作の命令。例:「Toggle（ON/OFFを切替）」「MoveToLevel（指定の明るさに）」</div></div>
-      <div class="elem-card"><div class="elem-type">Event</div><div class="elem-icon">🔔</div><div class="elem-name">イベント</div><div class="elem-desc">状態変化の通知。例:「温度が閾値を超えた」「ドアが開いた」</div></div>
-      <div class="elem-card"><div class="elem-type">Feature</div><div class="elem-icon">🔧</div><div class="elem-name">フィーチャー</div><div class="elem-desc">オプション機能の有無。例:「Lighting機能あり（調光カーブ対応）」</div></div>
+      <div class="elem-card"><div class="elem-type">Attribute</div><div class="elem-icon">📊</div><div class="elem-name">アトリビュート</div><div class="elem-desc">現在の状態・設定値。<br>例:「現在の明るさ = 80%」<br>「現在の温度 = 24℃」</div></div>
+      <div class="elem-card"><div class="elem-type">Command</div><div class="elem-icon">🎯</div><div class="elem-name">コマンド</div><div class="elem-desc">操作の命令。<br>例:「Toggle（ON/OFFを切替）」<br>「MoveToLevel（指定の明るさに）」</div></div>
+      <div class="elem-card"><div class="elem-type">Event</div><div class="elem-icon">🔔</div><div class="elem-name">イベント</div><div class="elem-desc">状態変化の通知。<br>例:「温度が閾値を超えた」<br>「ドアが開いた」</div></div>
+      <div class="elem-card"><div class="elem-type">Feature</div><div class="elem-icon">🔧</div><div class="elem-name">フィーチャー</div><div class="elem-desc">オプション機能の有無。<br>例:「Lighting機能あり<br>（調光カーブ対応）」</div></div>
     </div>
     <div class="code-box">
 <span class="c-dim">// Level Control Cluster の中身（例）</span>
@@ -344,9 +346,9 @@
   [OO] OnOff           <span class="c-dim">← On/Off Clusterと連携する機能</span>
   [LT] Lighting        <span class="c-dim">← 照明用の調光カーブ対応</span>
     </div>
-    <div class="point-box orange">
-      <div class="point-icon">💡</div>
-      <div><div class="point-title">フィーチャーって何が嬉しいの？</div><div class="point-desc">同じクラスターでも製品によってサポートする機能が異なります。フィーチャーがあることで「この製品はどこまで対応しているか」がアプリ側に正確に伝わり、UIが自動的に最適化されます。例えば「調光カーブ（Lighting フィーチャー）」対応の電球は、Apple Homeの「適応照明」機能が使えるようになります。</div></div>
+    <div class="highlight-blue">
+      <strong>💡 フィーチャーって何が嬉しいの？</strong><br>
+      同じクラスターでも製品によってサポートする機能が異なります。フィーチャーがあることで「この製品はどこまで対応しているか」がアプリ側に正確に伝わり、UIが自動的に最適化されます。例えば「調光カーブ（Lighting フィーチャー）」対応の電球は、Apple Homeの「適応照明」機能が使えるようになります。
     </div>
   </section>
 
@@ -363,15 +365,9 @@
       <div class="ss-arrow">→</div>
       <div class="ss-item"><div class="ss-icon">🌈</div><div class="ss-name">Extended Color</div><div class="ss-sub">0x010D</div><span class="ss-badge top">+ フルカラー</span></div>
     </div>
-    <div class="grid-2" style="margin-top:14px;">
-      <div class="point-box green">
-        <div class="point-icon">✅</div>
-        <div><div class="point-title">具体的に何が嬉しいか</div><div class="point-desc">フルカラー電球（Extended Color Light）は、色温度だけ対応のアプリからも「Color Temperature Light」として認識されて動作できます。互換性を最大限保ちながら機能を追加できる、Matterの賢い設計です。</div></div>
-      </div>
-      <div class="point-box blue">
-        <div class="point-icon">🍎</div>
-        <div><div class="point-title">Apple Homeの「適応照明」</div><div class="point-desc">Color Temperature Light以上に対応しています。電球を買うときに「色温度対応かどうか」をチェックするのはそのためです。</div></div>
-      </div>
+    <div class="highlight">
+      <strong>✅ 具体的に何が嬉しいか：</strong>フルカラー電球（Extended Color Light）は、色温度だけ対応のアプリからも「Color Temperature Light」として認識されて動作できます。互換性を最大限保ちながら機能を追加できる、Matterの賢い設計です。<br><br>
+      <strong>🍎 Apple Homeの「適応照明」：</strong>Color Temperature Light以上に対応しています。電球を買うときに「色温度対応かどうか」をチェックするのはそのためです。
     </div>
   </section>
 
@@ -416,10 +412,10 @@
     </div>
     <div class="card" style="margin-top:14px;">
       <h3>📡 Threadって何が特別なの？</h3>
-      <p>ThreadはApple製品（HomePod mini・Apple TV 4K）がボーダールーターとして動作することで、Wi-Fiルーターがなくてもスマートデバイス同士がつながれるメッシュネットワークを作れます。電池駆動のセンサー類に最適で、バッテリーが何年も持ちます。Aqara・Eve・NanoleafなどのThread対応デバイスは、HomePodがあれば安定して動作します。</p>
+      <p>ThreadはWi-FiルーターとThreadネットワークをつなぐ「ボーダールーター」を介して、スマートデバイス同士がつながれるメッシュネットワークを形成します。電池駆動のセンサー類に最適で、バッテリーが何年も持ちます。Aqara・IKEA・NanoleafなどのThread対応デバイスが増えており、Thread対応のボーダールーターがあれば安定して動作します。</p>
     </div>
     <div class="highlight-blue" style="margin-top:14px;">
-      <strong>Fabric（ファブリック）とマルチ管理者：</strong>1つのMatterデバイスを複数のエコシステム（Apple HomeとGoogle Home両方など）に同時登録できます。これを「マルチファブリック」と言います。Matter 1.4からは「Joint Fabric Administrator」という仕組みで、複数のエコシステムがより深く協調できるようになりました。
+      <strong>Fabric（ファブリック）とマルチアドミン：</strong>1つのMatterデバイスを複数のエコシステム（Apple HomeとGoogle Home両方など）に同時登録できます。これを<strong>「マルチアドミン（Multi-Admin）」</strong>と言います（同じ機能を「マルチファブリック」とも呼びます）。Matter 1.4からは「Joint Fabric Administrator」という仕組みで、複数のエコシステムがより深く協調できるようになりました。
     </div>
   </section>
 
