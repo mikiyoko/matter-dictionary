@@ -305,14 +305,25 @@ header {
 </script>
 
 <!-- ★ データファイル読み込み（更新するときはこの3ファイルを編集） -->
-<script src="data/clusters.js"></script>
-<script src="data/deviceTypes.js"></script>
-<script src="data/products.js"></script>
+<script>
+// JSONファイルを非同期で読み込んでからアプリを起動
+Promise.all([
+  fetch('data/clusters.json').then(function(r){ return r.json(); }),
+  fetch('data/deviceTypes.json').then(function(r){ return r.json(); })
+]).then(function(results) {
+  window.CLUSTERS = results[0];
+  window.DEVICE_TYPES = results[1];
+  initApp();
+}).catch(function(e) {
+  console.error('データ読み込みエラー:', e);
+});
+</script>
 
 <script>
 // ===================================================
 // アプリ本体
 // ===================================================
+function initApp() {
 var CATEGORIES = [
   {id:"all",      label:"すべて",             icon:"🏠"},
   {id:"lighting",  label:"照明",               icon:"💡"},
@@ -735,6 +746,8 @@ function buildClusterDetailHtml(cl) {
 function closeModal() {
   document.getElementById("overlay").classList.remove("open");
 }
+
+} // end initApp
 </script>
 </body>
 </html>
