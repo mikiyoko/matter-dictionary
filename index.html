@@ -388,6 +388,10 @@ Promise.all([
 // グローバル：言語切り替え（initApp外に置く必要あり）
 // ===================================================
 var currentLang = "ja";
+var currentCat = "all";
+var currentView = "devices";
+var searchQuery = "";
+var openClusterRowId = null;
 
 function setLang(lang) {
   currentLang = lang;
@@ -443,9 +447,9 @@ function setLang(lang) {
   if (secTitleEl) {
     secTitleEl.textContent = (lang === "en" ? titlesEn2[currentCat] : titlesJa[currentCat]) || currentCat;
   }
-  if (window._appReady) {
-    renderDevicesGlobal();
-    renderClustersGlobal();
+  // selectCategoryを再実行: secTitle更新＋renderDevices/Clusters両方を呼ぶ
+  if (typeof window.doSelectCategory === "function") {
+    window.doSelectCategory(currentCat);
   }
 }
 
@@ -479,11 +483,6 @@ function initApp() {
 // ===================================================
 // APP STATE
 // ===================================================
-var currentCat = "all";
-var currentView = "devices";
-var searchQuery = "";
-var openClusterRowId = null;
-
 // ===================================================
 // INIT
 // ===================================================
@@ -890,6 +889,7 @@ function closeModal() {
 // setLang（グローバル）から呼べるようにwindowに登録
 window.renderDevicesGlobal = renderDevices;
 window.renderClustersGlobal = renderClusters;
+window.doSelectCategory = selectCategory;
 window._appReady = true;
 
 } // end initApp
