@@ -703,6 +703,7 @@ function renderDevices() {
       return cl ? '<span class="chip O">' + t(cl) + '</span>' : '';
     }).join('');
     var moreReq = (d.req || []).length > 3 ? '<span class="chip M">+' + ((d.req||[]).length - 3) + '</span>' : '';
+    var moreOpt = (d.opt || []).length > 2 ? '<span class="chip O">+' + ((d.opt||[]).length - 2) + '</span>' : '';
     var superNote = d.supersetOf ? '<div class="superset-note">↑ ' + d.supersetOf.map(function(pid){
       var p = DEVICE_TYPES.find(function(x){ return x.id === pid; });
       return p ? t(p) : pid;
@@ -713,7 +714,7 @@ function renderDevices() {
       '<div class="card-id">' + d.name + ' · ' + d.deviceTypeId + '</div></div></div>' +
       superNote +
       (currentLang === 'ja' ? '<div class="card-desc">' + d.description + '</div>' : '') +
-      '<div class="cluster-chips">' + reqChips + optChips + moreReq + '</div>' +
+      '<div class="cluster-chips">' + reqChips + moreReq + optChips + moreOpt + '</div>' +
       '</div>';
   }).join('');
 
