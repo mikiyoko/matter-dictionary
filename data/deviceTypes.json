@@ -102,9 +102,14 @@
     "req": [
       "identify",
       "groups",
-      "on-off"
+      "on-off",
+      "level-control",
+      "scenes-management",
+      "color-control"
     ],
-    "opt": [],
+    "opt": [
+      "occupancy-sensing"
+    ],
     "tags": [
       "照明",
       "フルカラー",
@@ -131,7 +136,8 @@
     ],
     "opt": [
       "scenes-management",
-      "level-control"
+      "level-control",
+      "occupancy-sensing"
     ],
     "tags": [
       "プラグ",
@@ -159,7 +165,8 @@
       "level-control"
     ],
     "opt": [
-      "scenes-management"
+      "scenes-management",
+      "occupancy-sensing"
     ],
     "tags": [
       "プラグ",
@@ -178,11 +185,13 @@
     "description": "壁に固定設置するタイプのスマートスイッチ（Matter 1.4〜）。既存の壁スイッチを置き換える",
     "req": [
       "identify",
-      "on-off"
+      "on-off",
+      "groups"
     ],
     "opt": [
       "scenes-management",
-      "level-control"
+      "level-control",
+      "occupancy-sensing"
     ],
     "tags": [
       "壁スイッチ",
@@ -205,10 +214,12 @@
     "req": [
       "identify",
       "on-off",
-      "level-control"
+      "level-control",
+      "groups"
     ],
     "opt": [
-      "scenes-management"
+      "scenes-management",
+      "occupancy-sensing"
     ],
     "tags": [
       "壁スイッチ",
@@ -304,7 +315,9 @@
     "description": "照明のON/OFFを操作するスイッチ。「制御する側」のデバイスタイプ",
     "req": [
       "identify",
-      "on-off"
+      "on-off",
+      "level-control",
+      "color-control"
     ],
     "opt": [
       "groups",
@@ -331,11 +344,14 @@
     "req": [
       "identify",
       "on-off",
-      "level-control"
+      "level-control",
+      "color-control"
     ],
     "opt": [
       "groups",
-      "scenes-management"
+      "scenes-management",
+      "illuminance-measurement",
+      "occupancy-sensing"
     ],
     "tags": [
       "スイッチ",
@@ -356,9 +372,25 @@
       "dimmer-switch"
     ],
     "req": [
-      "identify"
+      "identify",
+      "on-off",
+      "level-control",
+      "color-control",
+      "groups",
+      "scenes-management",
+      "pump-configuration",
+      "switch",
+      "boolean-state",
+      "illuminance-measurement",
+      "occupancy-sensing",
+      "temperature-measurement"
     ],
-    "opt": [],
+    "opt": [
+      "pressure-measurement",
+      "flow-measurement",
+      "boolean-state-configuration",
+      "thermostat-ui-configuration"
+    ],
     "tags": [
       "スイッチ",
       "調光",
@@ -807,7 +839,9 @@
     "icon": "🗝",
     "description": "スマートロックを制御する側のデバイス。スマートフォンアプリやリモートパネルなど",
     "req": [
-      "door-lock"
+      "door-lock",
+      "identify",
+      "window-covering"
     ],
     "opt": [
       "groups",
@@ -853,7 +887,8 @@
     "icon": "🕹",
     "description": "電動ブラインド・カーテンを操作する側のコントローラーデバイス",
     "req": [
-      "window-covering"
+      "window-covering",
+      "closure-control"
     ],
     "opt": [
       "identify"
@@ -963,12 +998,23 @@
     "icon": "🕹",
     "description": "サーモスタットを操作する側のコントローラーデバイス",
     "req": [
-      "thermostat"
+      "thermostat",
+      "on-off",
+      "media-playback",
+      "keypad-input",
+      "content-launcher"
     ],
     "opt": [
       "identify",
       "groups",
-      "scenes-management"
+      "scenes-management",
+      "messages",
+      "wake-on-lan",
+      "channel",
+      "target-navigator",
+      "low-power",
+      "audio-output",
+      "account-login"
     ],
     "tags": [
       "サーモスタット",
@@ -1038,12 +1084,14 @@
     "description": "Matter対応のルームエアコン。温度設定・モード切替・風量制御をスマートホームから操作可能",
     "req": [
       "identify",
-      "on-off"
+      "on-off",
+      "temperature-control"
     ],
     "opt": [
       "groups",
       "scenes-management",
-      "hepa-filter-monitoring"
+      "hepa-filter-monitoring",
+      "temperature-measurement"
     ],
     "tags": [
       "エアコン",
@@ -1468,7 +1516,8 @@
     "description": "電力使用量を計測するスマートメーター向けデバイスタイプ",
     "req": [
       "electrical-power-measurement",
-      "electrical-energy-measurement"
+      "electrical-energy-measurement",
+      "meter-identification"
     ],
     "opt": [],
     "tags": [
@@ -1488,7 +1537,10 @@
     "icon": "🏭",
     "description": "電力会社側のスマートメーター。家庭の消費電力・売電量を計測・報告",
     "req": [
-      "meter-identification"
+      "meter-identification",
+      "wifi-network-management",
+      "thread-border-router-management",
+      "thread-network-directory"
     ],
     "opt": [],
     "tags": [
@@ -1510,7 +1562,9 @@
     "req": [
       "identify"
     ],
-    "opt": [],
+    "opt": [
+      "electrical-grid-conditions"
+    ],
     "tags": [
       "計量",
       "基準点",
@@ -1821,14 +1875,17 @@
     "req": [
       "on-off",
       "media-playback",
-      "keypad-input"
+      "keypad-input",
+      "content-launcher"
     ],
     "opt": [
       "messages",
       "wake-on-lan",
       "channel",
       "target-navigator",
-      "low-power"
+      "low-power",
+      "audio-output",
+      "account-login"
     ],
     "tags": [
       "スマートTV",
@@ -1851,7 +1908,9 @@
     "req": [
       "on-off",
       "keypad-input",
-      "content-launcher"
+      "content-launcher",
+      "application-basic",
+      "mode-select"
     ],
     "opt": [
       "level-control",
@@ -1862,7 +1921,10 @@
       "media-playback",
       "media-input",
       "low-power",
-      "audio-output"
+      "audio-output",
+      "application-launcher",
+      "account-login",
+      "content-app-observer"
     ],
     "tags": [
       "キャスト",
@@ -1934,11 +1996,27 @@
     "icon": "📟",
     "description": "動画プレーヤーやスマートTVを操作するリモコンのデバイスタイプ",
     "req": [
-      "on-off"
+      "on-off",
+      "media-playback",
+      "keypad-input",
+      "mode-select",
+      "identify",
+      "rvc-run-mode",
+      "rvc-operational-state"
     ],
     "opt": [
       "level-control",
-      "wake-on-lan"
+      "wake-on-lan",
+      "channel",
+      "target-navigator",
+      "media-input",
+      "low-power",
+      "content-launcher",
+      "audio-output",
+      "application-launcher",
+      "account-login",
+      "rvc-clean-mode",
+      "service-area"
     ],
     "tags": [
       "リモコン",
@@ -2016,10 +2094,16 @@
     "icon": "📡",
     "description": "ThreadデバイスとWi-Fiネットワークを繋ぐ橋渡しデバイス",
     "req": [
-      "thread-border-router-management"
+      "thread-border-router-management",
+      "camera-av-stream",
+      "webrtc-transport",
+      "webrtc-transport-requestor"
     ],
     "opt": [
-      "thread-network-directory"
+      "thread-network-directory",
+      "push-av-stream-transport",
+      "camera-av-settings",
+      "identify"
     ],
     "tags": [
       "Thread",
