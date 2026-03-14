@@ -342,12 +342,11 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
-      align-items: stretch;
     }
     .grid-2-equal .card {
       display: flex;
       flex-direction: column;
-      height: 100%;
+      box-sizing: border-box;
     }
     .grid-2-equal .card p { flex: 1; }
     @media (max-width: 600px) { .grid-2-equal { grid-template-columns: 1fr; } }
@@ -357,11 +356,11 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 16px;
-      align-items: stretch;
     }
     .grid-3-equal .card {
       display: flex;
       flex-direction: column;
+      box-sizing: border-box;
     }
     .grid-3-equal .card p { flex: 1; }
     @media (max-width: 768px) { .grid-3-equal { grid-template-columns: 1fr 1fr; } }
