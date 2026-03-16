@@ -705,6 +705,7 @@
     <span class="hero-tag">📱 NFC / Bluetooth / UWB</span>
     <span class="hero-tag">🏠 ホーム・ホテル・オフィス</span>
     <span class="hero-tag">🔒 高セキュリティ</span>
+    <span class="hero-tag">🚗 自動車はスコープ外（CCC担当）</span>
   </div>
 </div>
 
@@ -721,7 +722,9 @@
       <li><a href="#transport">通信手段は3つある</a></li>
       <li><a href="#uwb">UWBとは？　ハンズフリーを安全に実現する技術</a></li>
       <li><a href="#vs-matter">MatterとAliroの関係</a></li>
+      <li><a href="#scope">Aliroの対象範囲と自動車（CCC）との棲み分け</a></li>
       <li><a href="#qa">よくある疑問にお答えします</a></li>
+      <li><a href="#summary">まとめ</a></li>
       <li><a href="#summary">まとめ</a></li>
     </ol>
   </div>
@@ -1038,11 +1041,8 @@
       </div>
     </div>
 
-    <div class="chip-list" style="margin-top: 16px;">
-      <span class="chip primary">🍎 iPhone（11以降）</span>
-      <span class="chip gray">📱 Samsung Galaxy（上位機種）</span>
-      <span class="chip gray">🚗 対応カーキー（BMW等）</span>
-      <span class="chip orange">※ UWBチップ搭載端末が必要</span>
+    <div class="highlight" style="margin-top: 16px;">
+      <strong>⚠️ ハンズフリー解錠にはUWBチップ搭載端末が必要です。</strong>iPhoneはiPhone 11以降の主要モデルに搭載されています。Androidは各メーカー・機種によって異なり、今後対応端末が増えていく見込みです。NFC／Bluetoothでの「かざす・近づく」解錠はUWB非搭載端末でも利用できます。
     </div>
   </section>
 
@@ -1164,9 +1164,46 @@
     </div>
   </section>
 
-  <!-- ⑦ Q&A -->
+  <!-- ⑦ 対象範囲・自動車との棲み分け -->
+  <section id="scope" class="fade-in">
+    <div class="section-label">🌐 07 — SCOPE</div>
+    <h2>Aliroの対象範囲と自動車（CCC）との棲み分け</h2>
+
+    <p>Aliroはスマートホームだけを対象にしているわけではありません。また、「デジタルキー＝自動車の鍵」とイメージする方もいるかもしれませんが、<strong>自動車はAliroのスコープ外</strong>です。</p>
+
+    <div class="grid-2-equal" style="margin: 20px 0;">
+      <div class="card" style="border-top: 4px solid var(--green);">
+        <div class="chip-list"><span class="chip green">✅ Aliroの対象</span></div>
+        <h3>🏢 建物のアクセス管理</h3>
+        <p style="font-size:13px;">Aliroが担うのは、<strong>住宅・オフィス・ホテル・大学キャンパス・医療施設・ジム</strong>など「建物への入退室管理」です。</p>
+        <p style="font-size:13px;">B2C（個人向け）だけでなく、B2B（法人向け）の商業施設まで対象範囲に含めた設計になっています。カードリーダー式のシステムも置き換えを想定しています。</p>
+      </div>
+      <div class="card" style="border-top: 4px solid var(--orange);">
+        <div class="chip-list"><span class="chip orange">🚗 自動車は別規格</span></div>
+        <h3>🚗 自動車：CCC Digital Key</h3>
+        <p style="font-size:13px;">自動車のデジタルキーは、<strong>Car Connectivity Consortium（CCC）</strong>が「Digital Key」仕様として別途策定しています。</p>
+        <p style="font-size:13px;">BMW・General Motors・Honda・Hyundai・Volkswagenなどの自動車メーカーと、Apple・Google・Samsungも参画しています。</p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>🗺️ 棲み分けのイメージ：</strong>建物の入退室管理は <strong>Aliro（CSA）</strong>、自動車のアクセス管理は <strong>CCC Digital Key</strong>。両者が普及すれば、スマホ1台で自宅・オフィス・ホテル・そして車まで、あらゆる「鍵」をまとめて管理できる未来が現実味を帯びてきます。
+    </div>
+
+    <div class="point-box purple" style="margin-top: 20px;">
+      <div class="point-icon">🔮</div>
+      <div>
+        <div class="point-title">「鍵を持たない近未来」へ</div>
+        <div class="point-desc">
+          AliroとCCC Digital Keyの両方が普及すれば、財布の中の鍵束・カードキー・社員証・ホテルカード・車の鍵——これらすべてがスマホに集約されます。紛失しても遠隔で即時無効化でき、時限キーの発行や入退室ログの管理もデジタルで完結。アクセスが「生活インフラ」になる日は近づいています。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑧ Q&A -->
   <section id="qa" class="fade-in">
-    <div class="section-label">💬 07 — Q&A</div>
+    <div class="section-label">💬 08 — Q&A</div>
     <h2>よくある疑問にお答えします</h2>
 
     <div class="qa-item">
@@ -1244,9 +1281,9 @@
     </div>
   </section>
 
-  <!-- ⑧ まとめ -->
+  <!-- ⑨ まとめ -->
   <section id="summary" class="fade-in">
-    <div class="section-label">✨ 08 — SUMMARY</div>
+    <div class="section-label">✨ 09 — SUMMARY</div>
     <h2>まとめ</h2>
 
     <div class="summary-box">
@@ -1265,7 +1302,8 @@
             ・ホテルのチェックインキーをApple Walletに<br>
             ・会社のセキュリティドアを近づくだけで通過<br>
             ・鍵の有効期限・時間帯制限をデジタルで管理<br>
-            ・紛失時はアプリからリモートで即時無効化
+            ・紛失時はアプリからリモートで即時無効化<br>
+            <span style="font-size:11px; opacity:0.8;">※ 自動車のデジタルキーはCCC Digital Keyが担当</span>
           </div>
         </div>
       </div>
