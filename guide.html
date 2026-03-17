@@ -58,6 +58,7 @@
 
     .card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; box-shadow: var(--shadow); }
     .card + .card { margin-top: 14px; }
+    .grid-2 .card + .card, .grid-3 .card + .card { margin-top: 0; }
 
     .highlight { background: var(--primary-light); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: var(--primary-dark); }
     .highlight-blue { background: var(--blue-light); border-left: 4px solid var(--blue); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: #1e3a8a; }
@@ -202,6 +203,9 @@
       <li><a href="#superset">スーパーセット（継承関係）</a></li>
       <li><a href="#semantic-tag">セマンティックタグとは？</a></li>
       <li><a href="#network">通信の仕組み</a></li>
+      <li><a href="#roles">3つの役割：コントローラー・ブリッジ・ボーダールーター</a></li>
+      <li><a href="#multi-admin">マルチアドミン</a></li>
+      <li><a href="#faq">よくある質問</a></li>
       <li><a href="#glossary">よく出てくる用語集</a></li>
     </ol>
   </div>
@@ -416,17 +420,256 @@
       <div class="transport-card"><div class="chip-list"><span class="chip green">🕸 Thread</span></div><h3>電池持ちに優れたメッシュ網</h3><p style="font-size:13px;">電池が何年も持つ低消費電力設計。デバイス同士がメッシュを形成するため、Wi-Fiルーター不要でつながる。センサー・スイッチ・スマートロックに最適。</p></div>
       <div class="transport-card"><div class="chip-list"><span class="chip gray">🔌 Ethernet</span></div><h3>最も安定した有線接続</h3><p style="font-size:13px;">有線なので最も安定。固定設置のハブやルーター内蔵機器に使われる。無線の不安定さがゼロ。</p></div>
     </div>
+
     <div class="highlight-blue" style="margin-top:18px;">
       <strong>📡 Threadって何が特別なの？</strong><br>
-      ThreadはWi-FiルーターとThreadネットワークをつなぐ「ボーダールーター」を介して、スマートデバイス同士がつながれるメッシュネットワークを形成します。電池駆動のセンサー類に最適で、バッテリーが何年も持ちます。Aqara・IKEA・NanoleafなどのThread対応デバイスが増えており、Thread対応のボーダールーターがあれば安定して動作します。
+      ThreadはIPv6ベースのメッシュ型無線通信規格です。デバイス同士が助け合って通信をリレーし、どれかが壊れても別ルートで自己修復します。省電力設計なのでバッテリーが何年も持ち、センサー・スイッチ・スマートロックに最適。Aqara・IKEA・NanoleafなどのThread対応デバイスが増えています。
     </div>
-    <div class="highlight-blue" style="margin-top:14px;">
-      <strong>Fabric（ファブリック）とマルチアドミン：</strong>1つのMatterデバイスを複数のエコシステム（Apple HomeとGoogle Home両方など）に同時登録できます。これを<strong>「マルチアドミン（Multi-Admin）」</strong>と言います（同じ機能を「マルチファブリック」とも呼びます）。Matter 1.4からは「Joint Fabric Administrator」という仕組みで、複数のエコシステムがより深く協調できるようになりました。
+
+    <div class="card" style="margin-top:18px;">
+      <h3 style="font-size:15px; margin-bottom:12px;">📊 通信方式の比較</h3>
+      <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:13px;">
+          <thead>
+            <tr style="background:var(--gray-50); border-bottom:2px solid var(--border);">
+              <th style="padding:8px 12px; text-align:left;">方式</th>
+              <th style="padding:8px 12px; text-align:center;">速度</th>
+              <th style="padding:8px 12px; text-align:center;">省電力</th>
+              <th style="padding:8px 12px; text-align:center;">メッシュ</th>
+              <th style="padding:8px 12px; text-align:left;">主な用途</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:8px 12px; font-weight:700;">📶 Wi-Fi</td>
+              <td style="padding:8px 12px; text-align:center;">◎</td>
+              <td style="padding:8px 12px; text-align:center;">△</td>
+              <td style="padding:8px 12px; text-align:center;">—</td>
+              <td style="padding:8px 12px;">スマートプラグ・カメラ・TV</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border); background:var(--gray-50);">
+              <td style="padding:8px 12px; font-weight:700;">🕸 Thread</td>
+              <td style="padding:8px 12px; text-align:center;">○</td>
+              <td style="padding:8px 12px; text-align:center;">◎</td>
+              <td style="padding:8px 12px; text-align:center;">◎</td>
+              <td style="padding:8px 12px;">センサー・スイッチ・ロック</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 12px; font-weight:700;">🔌 Ethernet</td>
+              <td style="padding:8px 12px; text-align:center;">◎</td>
+              <td style="padding:8px 12px; text-align:center;">○</td>
+              <td style="padding:8px 12px; text-align:center;">—</td>
+              <td style="padding:8px 12px;">ハブ・ルーター・固定設置</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="highlight" style="margin-top:14px;">
+      <strong>💡 なぜMatterがThreadを採用したか：</strong>オープン規格・IPv6ベース・省電力・メッシュ対応という4つの条件を満たしているから。特に電池駆動のセンサー類では、Wi-FiやBluetoothより圧倒的に有利です。<br><br><strong>🏠 HRAP（Home Router &amp; Access Point）構想：</strong>Matter 1.4から、家庭用Wi-FiルーターにThread ボーダールーター機能を標準搭載する規格が追加されました。通信事業者からレンタルするルーターにこの機能が組み込まれれば、ユーザーが意識しなくても「ネット回線を引いた時点でThreadが使える家」になります。AmazonのeeroなどはすでにThread搭載済みで、この動きが広がると専用ハブ不要でThreadデバイスが使えるようになります。
+    </div>
+  </section>
+
+  <section id="roles" class="fade-in">
+    <div class="section-label">🎭 09 — ROLES</div>
+    <h2>3つの役割：コントローラー・ブリッジ・ボーダールーター</h2>
+    <p>「ハブ」「ゲートウェイ」という言葉はMatterの世界には存在しません。代わりに<strong>3つの明確な役割</strong>があります。これを理解すると、「なぜHomePod miniが必要なのか」がすっきり分かります。</p>
+
+    <div class="highlight" style="margin-top:18px; margin-bottom:4px;">
+      💡 <strong>ポイント：</strong>コントローラーは「役割（Role）」であり、デバイスタイプではありません。1台の機器が複数の役割を兼ねることもあります。
+    </div>
+
+    <div class="grid-3" style="margin-top:18px;">
+      <div class="point-box orange" style="flex-direction:column;gap:10px;">
+        <div class="point-icon">🎮</div>
+        <div>
+          <div class="point-title">コントローラー</div>
+          <div class="point-desc">Matterデバイスの<strong>司令塔</strong>。セットアップ・操作・管理を行う。コントローラーがいないとMatterデバイスは使えない。<br><br>例：Apple Homeアプリ・HomePod、Google Homeアプリ・Nest Hub、Alexa・Echo</div>
+        </div>
+      </div>
+      <div class="point-box blue" style="flex-direction:column;gap:10px;">
+        <div class="point-icon">🌉</div>
+        <div>
+          <div class="point-title">ブリッジ</div>
+          <div class="point-desc">非MatterデバイスをMatterとして見せる<strong>翻訳者</strong>。Zigbee・Z-Wave・Bluetoothなど他規格の機器をMatterネットワークに載せる。<br><br>例：SwitchBotハブ2、Philips Hue ブリッジ</div>
+        </div>
+      </div>
+      <div class="point-box purple" style="flex-direction:column;gap:10px;">
+        <div class="point-icon">🔀</div>
+        <div>
+          <div class="point-title">ボーダールーター</div>
+          <div class="point-desc">ThreadネットワークとWi-Fi/インターネットをつなぐ<strong>通訳</strong>。Threadデバイスを操作したいとき、コントローラーの代わりにThread語を話してくれる。<br><br>例：HomePod mini、Apple TV 4K、Nest Hub 2nd Gen、IKEA DIRIGERA</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <h3 style="font-size:15px; margin-bottom:14px;">🔍 実機で見る役割の兼務</h3>
+      <div style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
+        <div style="display:grid; grid-template-columns:1fr 2fr; gap:12px; padding:12px; background:var(--gray-50); border-radius:8px; align-items:center;">
+          <div style="font-weight:700;">🏠 HomePod mini</div>
+          <div><span style="background:#d1fae5; color:#065f46; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700; margin-right:6px;">コントローラー</span><span style="background:#ede9fe; color:#5b21b6; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700;">ボーダールーター</span><span style="display:block; margin-top:6px; color:var(--text-light);">Apple Homeの司令塔 ＋ Threadの橋渡しを同時に担う</span></div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 2fr; gap:12px; padding:12px; background:var(--gray-50); border-radius:8px; align-items:center;">
+          <div style="font-weight:700;">📱 iPhone / Androidアプリ</div>
+          <div><span style="background:#d1fae5; color:#065f46; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700; margin-right:6px;">コントローラー</span><span style="display:block; margin-top:6px; color:var(--text-light);">持ち歩くので「常駐する司令塔」にはなれない。外出先からの操作にはホームハブ（Apple Home→HomePod、Google Home→Nest Hub等）が必要。<br>※ iPhone 15 Pro/Pro Max以降はThreadチップ搭載のため、その場にいる間はボーダールーターとしても機能する</span></div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 2fr; gap:12px; padding:12px; background:var(--gray-50); border-radius:8px; align-items:center;">
+          <div style="font-weight:700;">🤖 SwitchBotハブ2</div>
+          <div><span style="background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700; margin-right:6px;">ブリッジ</span><span style="display:block; margin-top:6px; color:var(--text-light);">SwitchBot独自デバイスをMatterに見せることはできる。ただしMatterデバイスを管理するコントローラーにはなれない</span></div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 2fr; gap:12px; padding:12px; background:var(--gray-50); border-radius:8px; align-items:center;">
+          <div style="font-weight:700;">📡 Google Nest Hub 2</div>
+          <div><span style="background:#d1fae5; color:#065f46; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700; margin-right:6px;">コントローラー</span><span style="background:#ede9fe; color:#5b21b6; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700;">ボーダールーター</span><span style="display:block; margin-top:6px; color:var(--text-light);">Google Homeの常駐拠点 ＋ Thread対応</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="multi-admin" class="fade-in">
+    <div class="section-label">🔑 10 — MULTI-ADMIN</div>
+    <h2>マルチアドミン：1台を複数アプリで使う仕組み</h2>
+    <p>Matterのいちばん革命的な機能。<strong>同じデバイスをApple HomeでもGoogle Homeでも同時に使える</strong>のはなぜか？</p>
+
+    <div class="grid-2" style="margin-top:18px;">
+      <div class="card">
+        <h3 style="font-size:14px; color:var(--text-light); margin-bottom:8px;">😓 Matter以前</h3>
+        <p style="font-size:13px;">メーカーはApple・Google・Amazonそれぞれに個別開発・個別認証が必要。ユーザーはプラットフォームごとに別アカウント・別設定が必要で、微妙な機能差に悩まされていた。</p>
+      </div>
+      <div class="card">
+        <h3 style="font-size:14px; color:var(--primary); margin-bottom:8px;">✨ Matter以後</h3>
+        <p style="font-size:13px;">1回の開発で全主要プラットフォームに対応。ユーザーは好きなアプリで同じデバイスを操作でき、家族が別アプリを使っても問題ない。</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+      <h3 style="font-size:15px; margin-bottom:12px;">Fabric（ファブリック）とは？</h3>
+      <p style="font-size:13px;">Matterでは「誰が・どのデバイスを・どのコントローラーで管理するか」という信頼グループを<strong>Fabric（ファブリック）</strong>と呼びます。Apple HomeもGoogle Homeもそれぞれ独立したFabricです。</p>
+      <div class="highlight" style="margin-top:12px;">
+        🗝️ <strong>鍵の例え：</strong>デバイスが複数の鍵穴を持ち、それぞれのプラットフォームが自分の鍵で自由に出入りできるイメージ。鍵穴の数だけ異なるエコシステムに同時登録できます。
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-top:18px;">
+      <div class="point-box orange" style="flex-direction:column;gap:8px;">
+        <div class="point-icon">👨‍👩‍👧</div>
+        <div>
+          <div class="point-title">家族全員が好きなアプリで</div>
+          <div class="point-desc">パパはAlexa、ママはApple Home、子どもはGoogle Homeで同じスマートロックを操作できる。</div>
+        </div>
+      </div>
+      <div class="point-box blue" style="flex-direction:column;gap:8px;">
+        <div class="point-icon">🏭</div>
+        <div>
+          <div class="point-title">メーカーの開発コスト激減</div>
+          <div class="point-desc">Matter準拠で作れば複数プラットフォームに一気に対応。独自クラウド・独自アプリが不要になる。</div>
+        </div>
+      </div>
+      <div class="point-box purple" style="flex-direction:column;gap:8px;">
+        <div class="point-icon">🔒</div>
+        <div>
+          <div class="point-title">ローカルで安全に</div>
+          <div class="point-desc">各FabricはACL（アクセス制御リスト）で厳密に管理。他のFabricからデバイスを勝手に操作することはできない。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-top:14px;">
+      <strong>🆕 マルチアドミンとマルチファブリックの違い：</strong>ほぼ同じ機能を指す言葉です。「マルチアドミン」は「複数の管理者に開放する」操作視点、「マルチファブリック」は「複数のFabricに登録できる」構造視点の呼び分けです。Matter 1.4からは「Joint Fabric Administrator」という仕組みで複数エコシステムがより深く協調できるようになりました。
+    </div>
+  </section>
+
+  <section id="faq" class="fade-in">
+    <div class="section-label">❓ 11 — FAQ</div>
+    <h2>よくある質問</h2>
+    <p>Matterを実際に使い始めるときに出やすい疑問をまとめました。</p>
+
+    <div class="card" style="margin-top:18px; padding:0; overflow:hidden;">
+
+      <div style="padding:20px 24px; border-bottom:1px solid var(--border);">
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <div style="flex-shrink:0; width:32px; height:32px; background:var(--primary-light); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--primary); font-size:14px;">Q</div>
+          <div>
+            <div style="font-weight:700; font-size:15px; margin-bottom:8px;">iPhoneだけでMatterデバイスは使えるの？ハブが必要なの？</div>
+            <div style="font-size:13px; line-height:1.7;">
+              <strong style="color:var(--primary);">→ デバイスの通信方式によって答えが変わります。</strong><br><br>
+              <strong>Wi-Fi対応デバイス（スマートプラグ・カメラなど）：</strong>iPhoneのApple Homeアプリだけで登録・操作できます。ハブは不要。<br><br>
+              <strong>Thread対応デバイス（センサー・スイッチ・スマートロックなど）：</strong>スマートフォンはWi-Fi通信のため、ThreadとWi-Fiをつなぐ「ボーダールーター」が別途必要です。Appleユーザー→HomePod mini・Apple TV 4K、Androidユーザー→Google Nest Hub 2nd Gen・IKEA DIRIGERAなど。なお<strong>iPhone 15 Pro/Pro Max以降はThreadチップ搭載</strong>なので、その場にいる間は臨時ボーダールーターになれますが、外出してしまうと機能しません。<br><br>
+              <strong>外出先からも操作したい場合：</strong>iPhoneは持ち歩くので「常に家にいる司令塔」になれません。HomePod miniなどの常設機器（ホームハブ）があると、外出中でもApple Homeから操作できます。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:20px 24px; border-bottom:1px solid var(--border); background:var(--gray-50);">
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <div style="flex-shrink:0; width:32px; height:32px; background:var(--primary-light); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--primary); font-size:14px;">Q</div>
+          <div>
+            <div style="font-weight:700; font-size:15px; margin-bottom:8px;">ホームハブ（HomePod miniやNest Hub）は何をしてくれるの？なぜ必要なの？</div>
+            <div style="font-size:13px; line-height:1.7;">
+              <strong style="color:var(--primary);">→ 2つの役割を同時に担っているから必要です。</strong><br><br>
+              <strong>① ホームハブ（常駐コントローラー）：</strong>外出中でもスマホアプリからの操作を可能にする常駐の司令塔。Apple Home→HomePod mini・Apple TV 4K、Google Home→Nest Hub・Chromecast with Google TVなどが担います。家にいない間も、オートメーションを実行し続けてくれます。<br><br>
+              <strong>② Threadボーダールーター：</strong>Thread対応デバイス（センサー・スイッチ等）とWi-Fiをつなぐ橋渡し役。HomePod mini・Nest Hub 2nd Gen・IKEA DIRIGERAなどが対応しています。<br><br>
+              スマホを家に置いていけば代わりになる？　→ なりません。スマホはホームハブ機能を持たず、通常はボーダールーターにもなりません。ただし<strong>iPhone 15 Pro/Pro Max以降はThreadチップを搭載</strong>しているため、その場にいる間はボーダールーターとして機能します（外出すると機能しなくなります）。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:20px 24px; border-bottom:1px solid var(--border);">
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <div style="flex-shrink:0; width:32px; height:32px; background:var(--primary-light); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--primary); font-size:14px;">Q</div>
+          <div>
+            <div style="font-weight:700; font-size:15px; margin-bottom:8px;">ThreadデバイスとWi-Fiデバイス、どっちを買えばいい？</div>
+            <div style="font-size:13px; line-height:1.7;">
+              <strong style="color:var(--primary);">→ 用途と電源環境で選ぶのが正解です。</strong><br><br>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px;">
+                <div style="background:#f0fdf4; border:1px solid #a7f3d0; border-radius:8px; padding:12px;">
+                  <div style="font-weight:700; color:#065f46; margin-bottom:6px;">🕸 Threadを選ぶとき</div>
+                  <div style="color:#047857;">電池駆動の機器<br>センサー・スイッチ<br>スマートロック<br>バッテリーが何年も持つ</div>
+                </div>
+                <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:12px;">
+                  <div style="font-weight:700; color:#1e40af; margin-bottom:6px;">📶 Wi-Fiを選ぶとき</div>
+                  <div style="color:#1d4ed8;">常時電源あり機器<br>スマートプラグ・カメラ<br>スマートTV<br>ボーダールーター不要でシンプル</div>
+                </div>
+              </div>
+              <div style="margin-top:10px;">⚠️ Threadデバイスを買うならボーダールーター（HomePod mini・Nest Hub 2nd Gen・IKEA DIRIGERAなど）が手元にあるか先に確認しましょう。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:20px 24px; background:var(--gray-50);">
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <div style="flex-shrink:0; width:32px; height:32px; background:var(--primary-light); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--primary); font-size:14px;">Q</div>
+          <div>
+            <div style="font-weight:700; font-size:15px; margin-bottom:8px;">「Matter対応」と書いてあるのに登録できなかった…</div>
+            <div style="font-size:13px; line-height:1.7;">
+              <strong style="color:var(--primary);">→ 考えられる原因を順番に確認してみてください。</strong><br><br>
+              <strong>① コントローラーアプリが最新か？</strong>　Matterの実装はアプリのアップデートで改善されることが多い。Apple Home・Google Homeを最新版に更新してから試す。<br><br>
+              <strong>② Thread対応デバイスの場合→ボーダールーターはあるか？</strong>　Thread対応デバイスはボーダールーターがないと登録自体が完了しないことがある。<br><br>
+              <strong>③ デバイスのファームウェアは最新か？</strong>　Matter対応は製品出荷後のアップデートで追加される場合がある。メーカーアプリでファームウェアを先に更新。<br><br>
+              <strong>④ QRコードの読み取り環境</strong>　暗い場所・斜め・遠すぎると読めない。明るい場所で正面から読む。<br><br>
+              <strong>⑤ 別のアプリ（Fabric）にも追加したい → ファクトリーリセットは不要！</strong><br>
+              マルチアドミン機能で、すでに登録済みのアプリから「共有」または「追加登録」の操作ができます。具体的には、<em>既存のコントローラーアプリ</em>がデバイスの「コミッショニングウィンドウ」を一時的に開き、そこに新しいアプリが参加する仕組みです（仕様書上は<em>Administrator-Assisted Commissioning</em>と呼ばれます）。<br>
+              <div style="background:var(--gray-50); border-radius:8px; padding:10px 14px; margin-top:8px; font-size:12px;">
+                例：Apple HomeとGoogle Homeの両方で使いたい場合<br>
+                ① まず Apple Homeアプリでデバイスを登録<br>
+                ② Apple Homeアプリの「共有アクセス」→ Google Homeアプリで読み込む<br>
+                ③ ファクトリーリセット不要で両方から操作可能に<br>
+                ⚠️ ファクトリーリセットをすると<strong>全Fabricから削除</strong>されてしまうので注意
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
   <section id="glossary" class="fade-in">
-    <div class="section-label">📚 09 — GLOSSARY</div>
+    <div class="section-label">📚 12 — GLOSSARY</div>
     <h2>よく出てくる用語集</h2>
     <p>Matterの仕様書や製品情報で頻繁に登場する用語をまとめました。</p>
     <div class="glossary-grid">
