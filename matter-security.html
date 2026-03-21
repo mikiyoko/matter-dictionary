@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matterのセキュリティと登録の仕組み | Matter辞書</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #059669;
+      --primary-light: #d1fae5;
+      --primary-dark: #065f46;
+      --blue: #1a56db;
+      --blue-light: #e8f0fe;
+      --purple: #7c3aed;
+      --purple-light: #ede9fe;
+      --orange: #d97706;
+      --orange-light: #fef3c7;
+      --red: #dc2626;
+      --red-light: #fee2e2;
+      --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb;
+      --gray-300: #d1d5db; --gray-600: #4b5563; --gray-700: #374151;
+      --gray-800: #1f2937; --gray-900: #111827;
+      --text: #1f2937; --text-light: #6b7280; --border: #e5e7eb;
+      --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+      --radius: 12px;
+      --green-light: #d1fae5;
+    }
+    body { font-family: 'Noto Sans JP', sans-serif; color: var(--text); background: #f8fafc; line-height: 1.7; }
+    header { background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
+    .header-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+    .site-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+    .site-logo .logo-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; font-weight: 700; font-family: 'Inter', sans-serif; }
+    .site-logo .logo-text { font-size: 14px; font-weight: 700; }
+    .header-nav { display: flex; gap: 4px; }
+    .nav-link { padding: 6px 14px; border-radius: 8px; text-decoration: none; color: var(--gray-600); font-size: 13px; font-weight: 500; transition: all 0.15s; }
+    .nav-link:hover { background: var(--gray-100); color: var(--text); }
+    .nav-link.active { background: var(--primary-light); color: var(--primary); }
+
+    .hero { background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #059669 100%); color: #fff; padding: 64px 24px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(110,231,183,0.15) 0%, transparent 60%); }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 500; margin-bottom: 20px; backdrop-filter: blur(4px); }
+    .hero h1 { font-size: clamp(26px, 5vw, 44px); font-weight: 700; font-family: 'Inter', 'Noto Sans JP', sans-serif; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .hero h1 .matter-green { color: #6ee7b7; }
+    .hero p { font-size: 16px; color: rgba(255,255,255,0.85); max-width: 560px; margin: 0 auto 28px; }
+    .hero-tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .hero-tag { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: rgba(255,255,255,0.9); }
+
+    main { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
+    .toc { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin-bottom: 48px; box-shadow: var(--shadow); }
+    .toc-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-light); margin-bottom: 12px; }
+    .toc ol { padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--primary); text-decoration: none; font-size: 14px; }
+    .toc a:hover { text-decoration: underline; }
+    section { margin-bottom: 64px; }
+    .section-label { display: inline-flex; align-items: center; gap: 6px; color: var(--primary); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    h2 { font-size: 26px; font-weight: 700; color: var(--gray-900); margin-bottom: 16px; line-height: 1.3; }
+    h3 { font-size: 17px; font-weight: 700; color: var(--gray-800); margin-bottom: 10px; }
+    p { font-size: 15px; color: var(--gray-700); margin-bottom: 16px; line-height: 1.75; }
+    .card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; box-shadow: var(--shadow); }
+    .card + .card { margin-top: 14px; }
+    .highlight { background: var(--primary-light); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: var(--primary-dark); line-height: 1.7; }
+    .highlight-blue { background: var(--blue-light); border-left: 4px solid var(--blue); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: #1e3a8a; line-height: 1.7; }
+    .highlight-orange { background: var(--orange-light); border-left: 4px solid var(--orange); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: #92400e; line-height: 1.7; }
+    .info-box { background: var(--blue-light); border-left: 4px solid var(--blue); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: #1e3a8a; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-2 .card + .card, .grid-3 .card + .card { margin-top: 0; }
+    .point-box { display: flex; gap: 14px; padding: 16px 18px; border-radius: 10px; align-items: flex-start; margin-top: 14px; }
+    .point-box.green { background: var(--green-light); border: 1px solid #a7f3d0; }
+    .point-box.blue { background: var(--blue-light); border: 1px solid #bfdbfe; }
+    .point-box.orange { background: var(--orange-light); border: 1px solid #fcd34d; }
+    .point-box.purple { background: var(--purple-light); border: 1px solid #c4b5fd; }
+    .point-box.red { background: var(--red-light); border: 1px solid #fca5a5; }
+    .point-box .point-icon { font-size: 22px; flex-shrink: 0; }
+    .point-box .point-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+    .point-box .point-desc { font-size: 13px; line-height: 1.65; }
+    .point-box.green .point-title { color: var(--primary-dark); }
+    .point-box.blue .point-title { color: #1e40af; }
+    .point-box.orange .point-title { color: #92400e; }
+    .point-box.purple .point-title { color: var(--purple); }
+    .point-box.red .point-title { color: #991b1b; }
+    .chip { display: inline-block; padding: 2px 9px; border-radius: 6px; font-size: 11px; font-weight: 700; font-family: 'Inter', monospace; }
+    .chip.green { background: var(--green-light); color: var(--primary-dark); border: 1px solid #a7f3d0; }
+    .chip.blue { background: var(--blue-light); color: #1e40af; border: 1px solid #bfdbfe; }
+    .chip.purple { background: var(--purple-light); color: var(--purple); border: 1px solid #c4b5fd; }
+    .chip.orange { background: var(--orange-light); color: #92400e; border: 1px solid #fcd34d; }
+    .chip.gray { background: var(--gray-100); color: var(--gray-600); border: 1px solid var(--gray-300); }
+
+    /* ── コミッショニングフロー図 ── */
+    .comm-flow { display: flex; flex-direction: column; gap: 0; margin: 24px 0; }
+    .comm-step { display: grid; grid-template-columns: 48px 1fr; gap: 0; align-items: stretch; }
+    .comm-step-left { display: flex; flex-direction: column; align-items: center; }
+    .comm-step-num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: 'Inter', sans-serif; font-size: 14px; flex-shrink: 0; z-index: 1; }
+    .comm-step-line { width: 2px; flex: 1; margin: 0 auto; min-height: 16px; }
+    .comm-step-body { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; margin-left: 8px; box-shadow: var(--shadow); }
+    .comm-step-body h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .comm-step-body p { font-size: 13px; color: var(--gray-600); margin: 0; line-height: 1.6; }
+    .comm-step-body .security-note { display: inline-flex; align-items: center; gap: 5px; background: var(--green-light); color: var(--primary-dark); border-radius: 6px; padding: 3px 9px; font-size: 11px; font-weight: 600; margin-top: 8px; }
+
+    /* セキュリティ証明書の階層図 */
+    .cert-chain { display: flex; flex-direction: column; gap: 8px; margin: 18px 0; }
+    .cert-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border); background: #fff; box-shadow: var(--shadow); }
+    .cert-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .cert-title { font-size: 13px; font-weight: 700; }
+    .cert-sub { font-size: 12px; color: var(--text-light); }
+    .cert-arrow { text-align: center; color: var(--text-light); font-size: 18px; margin: -4px 0; }
+
+    /* FAQ */
+    .faq-item { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 12px; }
+    .faq-q { padding: 18px 24px; display: flex; gap: 12px; align-items: flex-start; }
+    .faq-badge { flex-shrink: 0; width: 28px; height: 28px; background: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary); font-size: 13px; }
+    .faq-q-text { font-weight: 700; font-size: 15px; }
+    .faq-a { padding: 0 24px 18px 64px; font-size: 14px; color: var(--gray-600); line-height: 1.75; }
+
+    .summary-box { background: linear-gradient(135deg, #064e3b, #059669); color: #fff; border-radius: var(--radius); padding: 32px 36px; text-align: center; }
+    .summary-box h3 { color: #fff; font-size: 20px; margin-bottom: 12px; }
+    .summary-box p { color: rgba(255,255,255,0.9); font-size: 14px; margin: 0; }
+
+    footer { background: var(--gray-800); color: var(--gray-300); padding: 24px; text-align: center; font-size: 13px; line-height: 1.8; }
+    footer a { color: #6ee7b7; text-decoration: none; }
+
+    .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 640px) {
+      .header-inner { padding: 0 14px; height: auto; min-height: 52px; flex-wrap: wrap; gap: 6px; padding-top: 8px; padding-bottom: 8px; }
+      .site-logo .logo-text { font-size: 13px; }
+      .header-nav a { font-size: 11px; padding: 5px 8px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .comm-step { grid-template-columns: 36px 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="site-logo" href="index.html">
+      <div class="logo-icon">M</div>
+      <span class="logo-text">Matter辞書</span>
+    </a>
+    <nav class="header-nav">
+      <a class="nav-link" href="index.html">🏠 辞書トップ</a>
+      <a class="nav-link" href="guide.html">📡 Matterとは</a>
+      <a class="nav-link active" href="matter-security.html">🔒 セキュリティ</a>
+      <a class="nav-link" href="aliro.html">🔑 Aliroとは</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">🔒 Matter Security</div>
+  <h1><span class="matter-green">Matter</span> のセキュリティと<br>登録の仕組み</h1>
+  <p>「QRコードを読むだけで勝手に家に入れられない？」そんな疑問への答えと、Matterが採用する多層防御の仕組みを図解で解説します。</p>
+  <div class="hero-tags">
+    <span class="hero-tag">🛂 デバイス認証（DAC）</span>
+    <span class="hero-tag">🔐 通信の暗号化</span>
+    <span class="hero-tag">📋 コミッショニングフロー</span>
+    <span class="hero-tag">🌐 DCL（分散型台帳）</span>
+  </div>
+</div>
+
+<main>
+
+  <div class="toc fade-in">
+    <div class="toc-title">📋 このページの内容</div>
+    <ol>
+      <li><a href="#concern">「QRコードで勝手に登録されない？」という疑問に答える</a></li>
+      <li><a href="#flow">コミッショニングの流れ：登録の7ステップ</a></li>
+      <li><a href="#certs">証明書の仕組み：DAC・PAA・DCLとは</a></li>
+      <li><a href="#encryption">通信は常に暗号化</a></li>
+      <li><a href="#privacy">プライバシーへの配慮</a></li>
+      <li><a href="#faq">よくある不安・質問</a></li>
+    </ol>
+  </div>
+
+  <!-- 01 疑問に答える -->
+  <section id="concern" class="fade-in">
+    <div class="section-label">❓ 01 — SECURITY CONCERN</div>
+    <h2>「QRコードで勝手に登録されない？」</h2>
+    <p>Matterデバイスを登録するとき、箱に書かれたQRコードや11桁の数字コードを読み込むだけで簡単につながります。これを見て「誰かに見られたら勝手に家に入れられない？」と心配する方は少なくありません。</p>
+
+    <div class="highlight">
+      <strong>🔒 結論：QRコードだけでは登録できません。</strong><br>
+      コードは「デバイスとコントローラーが同じ空間で最初に出会うための合言葉」に過ぎません。その後、デバイスが「本物の正規品か」を証明書で確認し、暗号化された通信路を確立するまでいくつもの関門があります。
+    </div>
+
+    <div class="grid-3" style="margin-top:20px;">
+      <div class="point-box green" style="flex-direction:column;gap:8px;">
+        <div class="point-icon">🏠</div>
+        <div>
+          <div class="point-title">物理的な近接が必要</div>
+          <div class="point-desc">未登録デバイスのコミッショニングは物理的なボタン押下・電源操作など「その場での操作」が必要。遠隔から勝手に始めることはできません。</div>
+        </div>
+      </div>
+      <div class="point-box blue" style="flex-direction:column;gap:8px;">
+        <div class="point-icon">🛂</div>
+        <div>
+          <div class="point-title">正規品の証明書チェック</div>
+          <div class="point-desc">登録プロセス中に、デバイスが持つ証明書（DAC）を世界共通の台帳（DCL）で照合。偽造品や粗悪品は弾かれます。</div>
+        </div>
+      </div>
+      <div class="point-box purple" style="flex-direction:column;gap:8px;">
+        <div class="point-icon">⏱️</div>
+        <div>
+          <div class="point-title">コードは一時的なもの</div>
+          <div class="point-desc">QRコード・11桁コードは初回登録の「一時的な合言葉」。登録完了後は使われず、その後の通信は別の証明書（NOC）ベースで行われます。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 コミッショニングフロー -->
+  <section id="flow" class="fade-in">
+    <div class="section-label">📋 02 — COMMISSIONING FLOW</div>
+    <h2>コミッショニングの流れ：登録の7ステップ</h2>
+    <p>Matter対応デバイスをアプリに登録するとき、裏側ではこれだけの確認が行われています。</p>
+
+    <div class="comm-flow">
+
+      <div class="comm-step">
+        <div class="comm-step-left">
+          <div class="comm-step-num" style="background:#d1fae5;color:#065f46;">1</div>
+          <div class="comm-step-line" style="background:#e5e7eb;"></div>
+        </div>
+        <div class="comm-step-body">
+          <h4>📱 QRコード / 11桁コードの読み取り</h4>
+          <p>ユーザーがアプリでデバイスのQRコードまたはマニュアルペアリングコード（11桁）を読み込む。このコードには「デバイスの種別」「初回接続用の短期パスコード」が入っている。</p>
+          <span class="security-note">🔒 コードはこの瞬間だけ有効な使い捨て</span>
+        </div>
+      </div>
+
+      <div class="comm-step">
+        <div class="comm-step-left">
+          <div class="comm-step-num" style="background:#dbeafe;color:#1e40af;">2</div>
+          <div class="comm-step-line" style="background:#e5e7eb;"></div>
+        </div>
+        <div class="comm-step-body">
+          <h4>📡 デバイスの発見（ネットワーク探索）</h4>
+          <p>コントローラーアプリがBluetooth LEまたはWi-Fiを使って、近くにある「登録待ち」のデバイスを探す（DNS-SD）。デバイスは物理操作（電源ON・ボタン押下等）で「受付モード」に入っている必要がある。</p>
+          <span class="security-note">🔒 遠隔からの無断起動は不可</span>
+        </div>
+      </div>
+
+      <div class="comm-step">
+        <div class="comm-step-left">
+          <div class="comm-step-num" style="background:#ede9fe;color:#7c3aed;">3</div>
+          <div class="comm-step-line" style="background:#e5e7eb;"></div>
+        </div>
+        <div class="comm-step-body">
+          <h4>🤝 PASE：初回の安全な接続確立</h4>
+          <p>コントローラーとデバイスがQRコードのパスコードをもとに「PASE（パスワード認証鍵交換）」という暗号プロトコルで安全なチャンネルを確立する。この段階では互いの素性はまだ不明だが、通信路は暗号化される。</p>
+          <span class="security-note">🔒 SPAKE2+アルゴリズムで傍受・ブルートフォース攻撃を防止</span>
+        </div>
+      </div>
+
+      <div class="comm-step">
+        <div class="comm-step-left">
+          <div class="comm-step-num" style="background:#fef3c7;color:#92400e;">4</div>
+          <div class="comm-step-line" style="background:#e5e7eb;"></div>
+        </div>
+        <div class="comm-step-body">
+          <h4>🛂 Device Attestation：本物かを証明書で確認</h4>
+          <p>コントローラーがデバイスの証明書（DAC）を要求し、世界共通のブロックチェーン台帳（DCL）に照合。「このデバイスはCSA認定の正規メーカーが製造した本物か」「認証取得済みか」を確認する。<strong>偽造品・未認定品はここで弾かれる。</strong></p>
+          <span class="security-note">🔒 世界800社超が参加するDCLで不正品を排除</span>
+        </div>
+      </div>
+
+      <div class="comm-step">
+        <div class="comm-step-left">
+          <div class="comm-step-num" style="background:#d1fae5;color:#065f46;">5</div>
+          <div class="comm-step-line" style="background:#e5e7eb;"></div>
+        </div>
+        <div class="comm-step-body">
+          <h4>🔑 NOC発行：デバイスに「家の鍵」を渡す</h4>
+          <p>認証が通ると、コントローラーがデバイスに対して「このFabric（ネットワーク）に属するメンバー証明書（NOC: Node Operational Certificate）」を発行する。以降の通信はこのNOCを使って行われる。</p>
+          <span class="security-note">🔒 Fabricごとに別の鍵→盗まれても他のFabricには無効</span>
+        </div>
+      </div>
+
+      <div class="comm-step">
+        <div class="comm-step-left">
+          <div class="comm-step-num" style="background:#dbeafe;color:#1e40af;">6</div>
+          <div class="comm-step-line" style="background:#e5e7eb;"></div>
+        </div>
+        <div class="comm-step-body">
+          <h4>🔐 CASE：通常運用の安全な接続</h4>
+          <p>NOCをもとに「CASE（証明書認証セッション確立）」という相互認証プロトコルで恒久的な暗号チャンネルを確立。「相手が本当に正しいFabricのメンバーか」をお互いに確認してから通信を始める。</p>
+          <span class="security-note">🔒 なりすまし・中間者攻撃を防止</span>
+        </div>
+      </div>
+
+      <div class="comm-step">
+        <div class="comm-step-left">
+          <div class="comm-step-num" style="background:#d1fae5;color:#065f46;">7</div>
+          <div class="comm-step-line" style="background:transparent;"></div>
+        </div>
+        <div class="comm-step-body">
+          <h4>✅ コミッショニング完了</h4>
+          <p>デバイスがFabricに正式に参加。初回のパスコード・QRコードは消去され、以降はNOCとCASEによる暗号通信のみで操作できる。アプリからデバイスの点灯・施錠などが可能になる。</p>
+          <span class="security-note">🔒 初回コードは完全に廃棄、再利用不可</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="highlight-blue">
+      <strong>💡 まとめ：QRコードは「入口の合言葉」に過ぎない</strong><br>
+      QRコードで扉は開きますが、その中にある本当の「家の鍵（NOC）」は、デバイスが正規品であることを証明してから初めて渡されます。QRコードを写真に撮られても、それだけでは登録も操作もできません。
+    </div>
+  </section>
+
+  <!-- 03 証明書の仕組み -->
+  <section id="certs" class="fade-in">
+    <div class="section-label">🛂 03 — CERTIFICATES</div>
+    <h2>証明書の仕組み：DAC・PAA・DCL</h2>
+    <p>Matterのデバイス認証は、いくつかの証明書と台帳が連携する「信頼の連鎖（Chain of Trust）」によって成り立っています。入国審査のパスポートシステムに例えると分かりやすいです。</p>
+
+    <div class="cert-chain">
+      <div class="cert-item">
+        <div class="cert-icon" style="background:#fef3c7;">🌐</div>
+        <div style="flex:1;">
+          <div class="cert-title">DCL（Distributed Compliance Ledger）― 世界共通の信頼台帳</div>
+          <div class="cert-sub">CSAが管理するブロックチェーンベースの公開台帳。正規メーカーの証明書情報が登録されており、改ざん不可。入国審査のデータベースに相当。</div>
+        </div>
+        <span class="chip blue">改ざん不可</span>
+      </div>
+      <div class="cert-arrow">↓ 参照して照合</div>
+      <div class="cert-item">
+        <div class="cert-icon" style="background:#ede9fe;">🏛️</div>
+        <div style="flex:1;">
+          <div class="cert-title">PAA（Product Attestation Authority）― 認証局</div>
+          <div class="cert-sub">メーカーに「製品証明書を発行する権限」を与える機関。世界に限られた数しかなく、CSAによる厳しい審査が必要。「パスポートを発行する政府機関」に相当。</div>
+        </div>
+        <span class="chip purple">厳格な審査</span>
+      </div>
+      <div class="cert-arrow">↓ 発行</div>
+      <div class="cert-item">
+        <div class="cert-icon" style="background:#d1fae5;">🏭</div>
+        <div style="flex:1;">
+          <div class="cert-title">PAI（Product Attestation Intermediate）― メーカーの中間証明書</div>
+          <div class="cert-sub">メーカー（またはその委託機関）が持つ中間証明書。製品ラインごとにDACを発行するための権限証明書。</div>
+        </div>
+        <span class="chip green">メーカー保有</span>
+      </div>
+      <div class="cert-arrow">↓ 発行</div>
+      <div class="cert-item">
+        <div class="cert-icon" style="background:#fee2e2;">📦</div>
+        <div style="flex:1;">
+          <div class="cert-title">DAC（Device Attestation Certificate）― デバイスのパスポート</div>
+          <div class="cert-sub">個々のデバイスに焼き込まれた証明書。「このデバイスは〇〇社が製造した正規品で、CSA認定済み」を証明する。出荷前にデバイスに書き込まれ、変更不可。</div>
+        </div>
+        <span class="chip orange">デバイスに焼き込み</span>
+      </div>
+      <div class="cert-arrow">↓ コミッショニング時に提示・照合</div>
+      <div class="cert-item">
+        <div class="cert-icon" style="background:#dbeafe;">🔑</div>
+        <div style="flex:1;">
+          <div class="cert-title">NOC（Node Operational Certificate）― 運用証明書</div>
+          <div class="cert-sub">認証通過後にコントローラーから発行される「Fabricメンバー証明書」。以降の全通信はこれを使う。Fabricごとに異なるため、1つ漏れても他のFabricには無効。</div>
+        </div>
+        <span class="chip blue">Fabricごとに発行</span>
+      </div>
+    </div>
+
+    <div class="highlight">
+      📄 <strong>CD（Certification Declaration）</strong>もあります。DACとは別に、製品がMatter認証を取得したことを示す宣言書。CSAの認証試験に合格した製品にのみ発行され、DACとセットで検証されます。
+    </div>
+  </section>
+
+  <!-- 04 暗号化 -->
+  <section id="encryption" class="fade-in">
+    <div class="section-label">🔐 04 — ENCRYPTION</div>
+    <h2>通信は常に暗号化</h2>
+    <p>Matter対応デバイス間の通信は、すべて業界標準の暗号技術で保護されています。</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>🔑 PASE（初回接続）</h3>
+        <p style="font-size:13px;margin-bottom:8px;">Password Authenticated Session Establishment。QRコードのパスコードをもとにSPAKE2+アルゴリズムで鍵を交換。パスコードを傍受されても実際の暗号鍵は導出できない設計。</p>
+        <span class="chip green">初回のみ使用・その後廃棄</span>
+      </div>
+      <div class="card">
+        <h3>🔐 CASE（通常運用）</h3>
+        <p style="font-size:13px;margin-bottom:8px;">Certificate Authenticated Session Establishment。NOC証明書を使った相互認証。TLSに似た仕組みで、通信のたびにセッション鍵を生成。過去の通信が漏れても現在の通信は守られる（前方秘匿性）。</p>
+        <span class="chip blue">通常運用時に使用</span>
+      </div>
+    </div>
+
+    <div class="highlight-orange" style="margin-top:18px;">
+      <strong>⚠️ ただし注意点もあります：</strong>Matter自体の通信は安全ですが、デバイスによってはクラウドとの追加連携機能を持つものもあります。そのクラウド連携部分のプライバシーポリシーは各メーカーが責任を持って開示する必要があります。購入前にメーカーのプライバシーポリシーを確認することをお勧めします。
+    </div>
+  </section>
+
+  <!-- 05 プライバシー -->
+  <section id="privacy" class="fade-in">
+    <div class="section-label">🙈 05 — PRIVACY</div>
+    <h2>プライバシーへの配慮</h2>
+
+    <div class="grid-2" style="margin-top:18px;">
+      <div class="point-box green" style="flex-direction:column;gap:8px;">
+        <div class="point-icon">🙅</div>
+        <div>
+          <div class="point-title">個人情報はMatterに含まれない</div>
+          <div class="point-desc">Matter仕様で扱われる情報は製品IDや認証情報のみ。名前・住所・メールアドレスといった個人を特定できる情報は含まれていません。</div>
+        </div>
+      </div>
+      <div class="point-box blue" style="flex-direction:column;gap:8px;">
+        <div class="point-icon">🚫</div>
+        <div>
+          <div class="point-title">勝手にネット接続できない</div>
+          <div class="point-desc">デバイスはユーザーが明示的にコミッショニングするまでネットワークに参加できません。勝手に通信を始める設計にはなっていません。</div>
+        </div>
+      </div>
+      <div class="point-box orange" style="flex-direction:column;gap:8px;">
+        <div class="point-icon">🔒</div>
+        <div>
+          <div class="point-title">ACLで通信相手を制限</div>
+          <div class="point-desc">ACL（アクセス制御リスト）により「誰が・どのデバイスに・どんな操作ができるか」を細かく制限。許可した相手以外はコマンドを送れません。</div>
+        </div>
+      </div>
+      <div class="point-box purple" style="flex-direction:column;gap:8px;">
+        <div class="point-icon">📲</div>
+        <div>
+          <div class="point-title">ローカル優先の設計</div>
+          <div class="point-desc">Matterはクラウド依存せずローカル通信を優先。インターネットが切れても家の中で動き続け、クラウドへのデータ送信を最小限に抑えられます。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 FAQ -->
+  <section id="faq" class="fade-in">
+    <div class="section-label">❓ 06 — FAQ</div>
+    <h2>よくある不安・質問</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <div class="faq-badge">Q</div>
+        <div class="faq-q-text">箱に書いてあるQRコードを他人に見られたら、家のデバイスを乗っ取られる？</div>
+      </div>
+      <div class="faq-a">
+        <strong>→ 乗っ取りはできません。</strong><br>
+        QRコードは「初回登録のための短期パスコード」であり、これだけでは操作も、登録後の通信も行えません。登録完了後はQRコードのパスコードはデバイスから完全に廃棄されます。また仕様書では、スマートロック等の屋外設置機器はQRコードを外から見えない位置に設置することを推奨しています。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <div class="faq-badge">Q</div>
+        <div class="faq-q-text">中国製など安価な製品は大丈夫？偽物が入り込まない？</div>
+      </div>
+      <div class="faq-a">
+        <strong>→ 「Matter認定済み」であれば一定の保証があります。</strong><br>
+        Matter認定には世界共通の認証試験（CSAによる）が必要で、合格品にのみDAC・CDが発行されます。これらがDCLで照合されるため、偽造品はコミッショニング段階で弾かれます。ただし認定を取得していない「Matter対応をうたった製品」には注意が必要です。購入時はCSAの認定済み製品リストを確認することをお勧めします。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <div class="faq-badge">Q</div>
+        <div class="faq-q-text">スマートロックをMatterで使うのは怖い。物理的に家を開けられたりしない？</div>
+      </div>
+      <div class="faq-a">
+        <strong>→ Matterの通信経路自体は高度に保護されています。</strong><br>
+        Matter通信はCASEによる相互認証と暗号化で保護されており、「正しいFabricメンバーのコントローラー」以外からのコマンドは受け付けません。ただしスマートロックのセキュリティは、Matter通信だけでなく、デバイス自体の物理セキュリティ・アプリのアカウント保護など複合的な要素で決まります。アプリの2段階認証設定も忘れずに。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <div class="faq-badge">Q</div>
+        <div class="faq-q-text">デバイスを廃棄・売却するときはどうすればいい？</div>
+      </div>
+      <div class="faq-a">
+        <strong>→ ファクトリーリセットで全Fabricから切り離せます。</strong><br>
+        ファクトリーリセットを行うと、デバイスに登録されているすべてのFabric情報・NOCが削除されます。リセット後のデバイスは「新品状態」になり、前のFabricからは操作できなくなります。売却・廃棄前は必ずリセットを行ってください。
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <div class="faq-badge">Q</div>
+        <div class="faq-q-text">セキュリティ脆弱性が見つかったとき、どう対応される？</div>
+      </div>
+      <div class="faq-a">
+        <strong>→ OTA（Over-the-Air）アップデートの仕組みが組み込まれています。</strong><br>
+        MatterにはOTAソフトウェアアップデートのクラスターが標準搭載されており、メーカーがファームウェアを更新することで素早くセキュリティ対応できます。スマホのOS更新と同じ仕組みです。対応デバイスは自動またはアプリ経由で最新の状態に保てます。
+      </div>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <div class="summary-box">
+      <h3>🔒 Matterのセキュリティは「多層防御」</h3>
+      <p>物理的な近接要件 → QRコード（一時パスコード）→ デバイス証明書の照合（DAC/DCL）→ 暗号化通信（PASE/CASE）→ ACLによるアクセス制御。一か所を突破しても他の関門で守られる設計です。</p>
+    </div>
+    <div style="text-align:center; margin-top:36px; padding-top:28px; border-top:1px solid var(--border);">
+      <p style="font-size:13px; color:var(--text-light); margin-bottom:16px;">
+        📄 参照仕様書：<a href="https://csa-iot.org/developer-resource/specifications-download-request/" target="_blank" style="color:var(--primary);">Matter Specification v1.5（CSA）</a><br>
+        解説ページ作成：<a href="index.html">Matter辞書</a> by ライフテックコーディネーター 織田未来
+      </p>
+      <a href="guide.html" style="display:inline-block; background:var(--primary); color:#fff; padding:10px 24px; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600; margin-right:12px;">← Matterとは？に戻る</a>
+      <a href="index.html" style="display:inline-block; background:var(--gray-700); color:#fff; padding:10px 24px; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">辞書トップへ</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Matter辞書 | by ライフテックコーディネーター 織田未来 | <a href="https://github.com/mikiyoko/matter-dictionary">GitHub</a></p>
+  <p style="margin-top:6px; font-size:11px; color:#9ca3af;">本ページはMatter Specification v1.5（CSA）を参考に、一般ユーザー向けに解説したものです。</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
