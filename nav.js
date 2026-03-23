@@ -192,26 +192,83 @@
     applyLang(lang);
   }
 
+  // テキストノード置換エンジン
+  // PAGE_TRANSLATIONS オブジェクト（各ページのtranslations-*.jsで定義）を使い
+  // DOMのテキストノードを直接 JA ↔ EN に置き換える
+  var _origTextCache = null; // JA原文キャッシュ（一度だけ取得）
+
+  function buildOrigCache() {
+    if (_origTextCache) return;
+    _origTextCache = [];
+    // script/style/code以外のテキストノードを収集
+    var walker = document.createTreeWalker(
+      document.body,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(node) {
+          var p = node.parentElement;
+          if (!p) return NodeFilter.FILTER_REJECT;
+          var tag = p.tagName;
+          if (tag === 'SCRIPT' || tag === 'STYLE') return NodeFilter.FILTER_REJECT;
+          // code-box内はスキップ
+          if (p.closest && p.closest('.code-box')) return NodeFilter.FILTER_REJECT;
+          return node.textContent.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+        }
+      }
+    );
+    var node;
+    while ((node = walker.nextNode())) {
+      _origTextCache.push({ node: node, orig: node.textContent });
+    }
+  }
+
+  function applyTextTranslations(lang) {
+    var table = window.PAGE_TRANSLATIONS;
+    if (!table) return;
+    buildOrigCache();
+
+    _origTextCache.forEach(function(item) {
+      var text = item.orig;
+      if (lang === 'en') {
+        // 完全一致
+        if (table[text.trim()]) {
+          item.node.textContent = table[text.trim()];
+          return;
+        }
+        // 部分一致（テキストが翻訳キーを含む場合）
+        var replaced = text;
+        Object.keys(table).forEach(function(ja) {
+          if (replaced.indexOf(ja) !== -1) {
+            replaced = replaced.split(ja).join(table[ja]);
+          }
+        });
+        item.node.textContent = replaced;
+      } else {
+        // JAに戻す
+        item.node.textContent = item.orig;
+      }
+    });
+  }
+
   function applyLang(lang) {
     // ナビリンクのテキスト更新
     document.querySelectorAll('.snav-link[data-nav-id]').forEach(function (el) {
-      const id = el.getAttribute('data-nav-id');
-      const item = NAV_ITEMS.find(function (n) { return n.id === id; });
+      var id = el.getAttribute('data-nav-id');
+      var item = NAV_ITEMS.find(function (n) { return n.id === id; });
       if (item) {
         el.querySelector('.nav-text-long').textContent = lang === 'en' ? item.en : item.ja;
-        // shortテキストも更新（絵文字のみ保持）
-        const emoji = (lang === 'en' ? item.en : item.ja).match(/^[\p{Emoji}🏠📡🔒🔑🔧]\s*/u);
+        var emoji = (lang === 'en' ? item.en : item.ja).match(/^[\p{Emoji}🏠📡🔒🔑🔧]\s*/u);
         el.querySelector('.nav-text-short').textContent = emoji ? emoji[0].trim() : '';
       }
     });
 
     // lang切替ボタンの状態
-    const btnJa = document.getElementById('snav-btn-ja');
-    const btnEn = document.getElementById('snav-btn-en');
+    var btnJa = document.getElementById('snav-btn-ja');
+    var btnEn = document.getElementById('snav-btn-en');
     if (btnJa) btnJa.classList.toggle('active', lang === 'ja');
     if (btnEn) btnEn.classList.toggle('active', lang === 'en');
 
-    // ページ内の翻訳対象要素を切替
+    // data-ja/data-en 属性による切替（既存）
     document.querySelectorAll('[data-ja]').forEach(function (el) {
       if (lang === 'en' && el.getAttribute('data-en')) {
         el.innerHTML = el.getAttribute('data-en');
@@ -219,6 +276,9 @@
         el.innerHTML = el.getAttribute('data-ja');
       }
     });
+
+    // テキストノード直接置換（PAGE_TRANSLATIONSがある場合）
+    applyTextTranslations(lang);
 
     // htmlタグのlang属性を更新
     document.documentElement.lang = lang === 'en' ? 'en' : 'ja';
