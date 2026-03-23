@@ -165,8 +165,8 @@
   <!-- 01 疑問に答える -->
   <section id="concern" class="fade-in">
     <div class="section-label">❓ 01 — SECURITY CONCERN</div>
-    <h2>「QRコードで勝手に登録されない？」</h2>
-    <p>Matterデバイスを登録するとき、箱に書かれたQRコードや11桁の数字コードを読み込むだけで簡単につながります。これを見て「誰かに見られたら勝手に家に入れられない？」と心配する方は少なくありません。</p>
+    <h2 data-ja="「QRコードで勝手に登録されない？」" data-en=""Can Someone Register My Device Just by Scanning the QR Code?"">「QRコードで勝手に登録されない？」</h2>
+    <p data-ja="Matterデバイスを登録するとき、箱に書かれたQRコードや11桁の数字コードを読み込むだけで簡単につながります。これを見て「誰かに見られたら勝手に家に入れられない？」と心配する方は少なくありません。" data-en="When commissioning a Matter device, you simply scan the QR code on the box or enter the 11-digit code — and it connects. Naturally, many people wonder: "Could someone break in just by seeing that QR code?"">Matterデバイスを登録するとき、箱に書かれたQRコードや11桁の数字コードを読み込むだけで簡単につながります。これを見て「誰かに見られたら勝手に家に入れられない？」と心配する方は少なくありません。</p>
 
     <div class="highlight">
       <strong>🔒 結論：QRコードだけでは登録できません。</strong><br>
@@ -201,8 +201,8 @@
   <!-- 02 コミッショニングフロー -->
   <section id="flow" class="fade-in">
     <div class="section-label">📋 02 — COMMISSIONING FLOW</div>
-    <h2>コミッショニングの流れ：登録の7ステップ</h2>
-    <p>Matter対応デバイスをアプリに登録するとき、裏側ではこれだけの確認が行われています。</p>
+    <h2 data-ja="コミッショニングの流れ：登録の7ステップ" data-en="Commissioning Flow: 7 Steps to Join a Fabric">コミッショニングの流れ：登録の7ステップ</h2>
+    <p data-ja="Matter対応デバイスをアプリに登録するとき、裏側ではこれだけの確認が行われています。" data-en="When you add a Matter device to an app, this entire verification sequence runs in the background.">Matter対応デバイスをアプリに登録するとき、裏側ではこれだけの確認が行われています。</p>
 
     <div class="comm-flow">
 
@@ -212,8 +212,8 @@
           <div class="comm-step-line" style="background:#e5e7eb;"></div>
         </div>
         <div class="comm-step-body">
-          <h4>📱 QRコード / 11桁コードの読み取り</h4>
-          <p>ユーザーがアプリでデバイスのQRコードまたはマニュアルペアリングコード（11桁）を読み込む。このコードには「デバイスの種別」「初回接続用の短期パスコード」が入っている。</p>
+          <h4 data-ja="📱 QRコード / 11桁コードの読み取り" data-en="📱 Scan QR Code or Enter 11-digit Manual Pairing Code">📱 QRコード / 11桁コードの読み取り</h4>
+          <p data-ja="ユーザーがアプリでデバイスのQRコードまたはマニュアルペアリングコード（11桁）を読み込む。このコードには「デバイスの種別」「初回接続用の短期パスコード」が入っている。" data-en="The user scans the device QR code or enters the 11-digit Manual Pairing Code in the app. This code encodes the device discriminator and a short-lived commissioning passcode.">ユーザーがアプリでデバイスのQRコードまたはマニュアルペアリングコード（11桁）を読み込む。このコードには「デバイスの種別」「初回接続用の短期パスコード」が入っている。</p>
           <span class="security-note">🔒 コードはこの瞬間だけ有効な使い捨て</span>
         </div>
       </div>
@@ -224,8 +224,8 @@
           <div class="comm-step-line" style="background:#e5e7eb;"></div>
         </div>
         <div class="comm-step-body">
-          <h4>📡 デバイスの発見（ネットワーク探索）</h4>
-          <p>コントローラーアプリがBluetooth LEまたはWi-Fiを使って、近くにある「登録待ち」のデバイスを探す（DNS-SD）。デバイスは物理操作（電源ON・ボタン押下等）で「受付モード」に入っている必要がある。</p>
+          <h4 data-ja="📡 デバイスの発見（ネットワーク探索）" data-en="📡 Device Discovery (Network Scan)">📡 デバイスの発見（ネットワーク探索）</h4>
+          <p data-ja="コントローラーアプリがBluetooth LEまたはWi-Fiを使って、近くにある「登録待ち」のデバイスを探す（DNS-SD）。デバイスは物理操作（電源ON・ボタン押下等）で「受付モード」に入っている必要がある。" data-en="The Controller app discovers nearby devices awaiting commissioning via BLE or Wi-Fi (DNS-SD). The device must be placed in commissioning mode by a physical action (power on, button press, etc.).">コントローラーアプリがBluetooth LEまたはWi-Fiを使って、近くにある「登録待ち」のデバイスを探す（DNS-SD）。デバイスは物理操作（電源ON・ボタン押下等）で「受付モード」に入っている必要がある。</p>
           <span class="security-note">🔒 遠隔からの無断起動は不可</span>
         </div>
       </div>
@@ -236,8 +236,8 @@
           <div class="comm-step-line" style="background:#e5e7eb;"></div>
         </div>
         <div class="comm-step-body">
-          <h4>🤝 PASE：初回の安全な接続確立</h4>
-          <p>コントローラーとデバイスがQRコードのパスコードをもとに「PASE（パスワード認証鍵交換）」という暗号プロトコルで安全なチャンネルを確立する。この段階では互いの素性はまだ不明だが、通信路は暗号化される。</p>
+          <h4 data-ja="🤝 PASE：初回の安全な接続確立" data-en="🤝 PASE: Establishing the Initial Secure Channel">🤝 PASE：初回の安全な接続確立</h4>
+          <p data-ja="コントローラーとデバイスがQRコードのパスコードをもとに「PASE（パスワード認証鍵交換）」という暗号プロトコルで安全なチャンネルを確立する。この段階では互いの素性はまだ不明だが、通信路は暗号化される。" data-en="The Controller and device establish a secure channel using PASE (Password Authenticated Session Establishment) based on the QR code passcode. Identities are not yet verified, but the channel is encrypted.">コントローラーとデバイスがQRコードのパスコードをもとに「PASE（パスワード認証鍵交換）」という暗号プロトコルで安全なチャンネルを確立する。この段階では互いの素性はまだ不明だが、通信路は暗号化される。</p>
           <span class="security-note">🔒 SPAKE2+アルゴリズムで傍受・ブルートフォース攻撃を防止</span>
         </div>
       </div>
@@ -248,8 +248,8 @@
           <div class="comm-step-line" style="background:#e5e7eb;"></div>
         </div>
         <div class="comm-step-body">
-          <h4>🛂 Device Attestation：本物かを証明書で確認</h4>
-          <p>コントローラーがデバイスの証明書（DAC）を要求し、世界共通のブロックチェーン台帳（DCL）に照合。「このデバイスはCSA認定の正規メーカーが製造した本物か」「認証取得済みか」を確認する。<strong>偽造品・未認定品はここで弾かれる。</strong></p>
+          <h4 data-ja="🛂 Device Attestation：本物かを証明書で確認" data-en="🛂 Device Attestation: Verifying Authenticity via Certificate">🛂 Device Attestation：本物かを証明書で確認</h4>
+          <p data-ja="コントローラーがデバイスの証明書（DAC）を要求し、世界共通のブロックチェーン台帳（DCL）に照合。「このデバイスはCSA認定の正規メーカーが製造した本物か」「認証取得済みか」を確認する。<strong>偽造品・未認定品はここで弾かれる。</strong>" data-en="The Controller requests the device&#39;s DAC and verifies it against the global DCL blockchain ledger, confirming the device is manufactured by a CSA-certified vendor. <strong>Counterfeit and non-certified devices are rejected here.</strong>">コントローラーがデバイスの証明書（DAC）を要求し、世界共通のブロックチェーン台帳（DCL）に照合。「このデバイスはCSA認定の正規メーカーが製造した本物か」「認証取得済みか」を確認する。<strong>偽造品・未認定品はここで弾かれる。</strong></p>
           <span class="security-note">🔒 世界800社超が参加するDCLで不正品を排除</span>
         </div>
       </div>
@@ -260,8 +260,8 @@
           <div class="comm-step-line" style="background:#e5e7eb;"></div>
         </div>
         <div class="comm-step-body">
-          <h4>🔑 NOC発行：デバイスに「家の鍵」を渡す</h4>
-          <p>認証が通ると、コントローラーがデバイスに対して「このFabric（ネットワーク）に属するメンバー証明書（NOC: Node Operational Certificate）」を発行する。以降の通信はこのNOCを使って行われる。</p>
+          <h4 data-ja="🔑 NOC発行：デバイスに「家の鍵」を渡す" data-en="🔑 NOC Issuance: Delivering the Operational Certificate">🔑 NOC発行：デバイスに「家の鍵」を渡す</h4>
+          <p data-ja="認証が通ると、コントローラーがデバイスに対して「このFabric（ネットワーク）に属するメンバー証明書（NOC: Node Operational Certificate）」を発行する。以降の通信はこのNOCを使って行われる。" data-en="Once attestation passes, the Controller issues the device a Node Operational Certificate (NOC) that establishes membership in this Fabric. All subsequent communication uses this NOC.">認証が通ると、コントローラーがデバイスに対して「このFabric（ネットワーク）に属するメンバー証明書（NOC: Node Operational Certificate）」を発行する。以降の通信はこのNOCを使って行われる。</p>
           <span class="security-note">🔒 Fabricごとに別の鍵→盗まれても他のFabricには無効</span>
         </div>
       </div>
@@ -272,8 +272,8 @@
           <div class="comm-step-line" style="background:#e5e7eb;"></div>
         </div>
         <div class="comm-step-body">
-          <h4>🔐 CASE：通常運用の安全な接続</h4>
-          <p>NOCをもとに「CASE（証明書認証セッション確立）」という相互認証プロトコルで恒久的な暗号チャンネルを確立。「相手が本当に正しいFabricのメンバーか」をお互いに確認してから通信を始める。</p>
+          <h4 data-ja="🔐 CASE：通常運用の安全な接続" data-en="🔐 CASE: Secure Channel for Normal Operation">🔐 CASE：通常運用の安全な接続</h4>
+          <p data-ja="NOCをもとに「CASE（証明書認証セッション確立）」という相互認証プロトコルで恒久的な暗号チャンネルを確立。「相手が本当に正しいFabricのメンバーか」をお互いに確認してから通信を始める。" data-en="Using the NOC, the device and Controller establish a permanent encrypted channel via CASE (Certificate Authenticated Session Establishment), mutually verifying each other&#39;s Fabric membership before communicating.">NOCをもとに「CASE（証明書認証セッション確立）」という相互認証プロトコルで恒久的な暗号チャンネルを確立。「相手が本当に正しいFabricのメンバーか」をお互いに確認してから通信を始める。</p>
           <span class="security-note">🔒 なりすまし・中間者攻撃を防止</span>
         </div>
       </div>
@@ -284,8 +284,8 @@
           <div class="comm-step-line" style="background:transparent;"></div>
         </div>
         <div class="comm-step-body">
-          <h4>✅ コミッショニング完了</h4>
-          <p>デバイスがFabricに正式に参加。初回のパスコード・QRコードは消去され、以降はNOCとCASEによる暗号通信のみで操作できる。アプリからデバイスの点灯・施錠などが可能になる。</p>
+          <h4 data-ja="✅ コミッショニング完了" data-en="✅ Commissioning Complete">✅ コミッショニング完了</h4>
+          <p data-ja="デバイスがFabricに正式に参加。初回のパスコード・QRコードは消去され、以降はNOCとCASEによる暗号通信のみで操作できる。アプリからデバイスの点灯・施錠などが可能になる。" data-en="The device is now a full member of the Fabric. The commissioning passcode and QR code are discarded. The device can be controlled exclusively via NOC-based CASE sessions from the app.">デバイスがFabricに正式に参加。初回のパスコード・QRコードは消去され、以降はNOCとCASEによる暗号通信のみで操作できる。アプリからデバイスの点灯・施錠などが可能になる。</p>
           <span class="security-note">🔒 初回コードは完全に廃棄、再利用不可</span>
         </div>
       </div>
@@ -293,7 +293,7 @@
     </div>
 
     <div class="highlight-blue">
-      <strong>💡 まとめ：QRコードは「入口の合言葉」に過ぎない</strong><br>
+      <strong data-ja="💡 まとめ：QRコードは「入口の合言葉」に過ぎない" data-en="💡 Summary: The QR Code is Just the Entry Passcode">💡 まとめ：QRコードは「入口の合言葉」に過ぎない</strong><br>
       QRコードで扉は開きますが、その中にある本当の「家の鍵（NOC）」は、デバイスが正規品であることを証明してから初めて渡されます。QRコードを写真に撮られても、それだけでは登録も操作もできません。
     </div>
   </section>
@@ -301,15 +301,15 @@
   <!-- 03 証明書の仕組み -->
   <section id="certs" class="fade-in">
     <div class="section-label">🛂 03 — CERTIFICATES</div>
-    <h2>証明書の仕組み：DAC・PAA・DCL</h2>
-    <p>Matterのデバイス認証は、いくつかの証明書と台帳が連携する「信頼の連鎖（Chain of Trust）」によって成り立っています。入国審査のパスポートシステムに例えると分かりやすいです。</p>
+    <h2 data-ja="証明書の仕組み：DAC・PAA・DCL" data-en="Certificate Chain: DAC, PAI, PAA &amp; DCL">証明書の仕組み：DAC・PAA・DCL</h2>
+    <p data-ja="Matterのデバイス認証は、いくつかの証明書と台帳が連携する「信頼の連鎖（Chain of Trust）」によって成り立っています。入国審査のパスポートシステムに例えると分かりやすいです。" data-en="Matter device attestation is built on a Chain of Trust — a system of certificates and a ledger working together. Think of it as a passport system at border control.">Matterのデバイス認証は、いくつかの証明書と台帳が連携する「信頼の連鎖（Chain of Trust）」によって成り立っています。入国審査のパスポートシステムに例えると分かりやすいです。</p>
 
     <div class="cert-chain">
       <div class="cert-item">
         <div class="cert-icon" style="background:#fef3c7;">🌐</div>
         <div style="flex:1;">
-          <div class="cert-title">DCL（Distributed Compliance Ledger）― 世界共通の信頼台帳</div>
-          <div class="cert-sub">CSAが管理するブロックチェーンベースの公開台帳。正規メーカーの証明書情報が登録されており、改ざん不可。入国審査のデータベースに相当。</div>
+          <div class="cert-title" data-ja="DCL（Distributed Compliance Ledger）― 世界共通の信頼台帳" data-en="DCL (Distributed Compliance Ledger) — Global Trust Registry">DCL（Distributed Compliance Ledger）― 世界共通の信頼台帳</div>
+          <div class="cert-sub" data-ja="CSAが管理するブロックチェーンベースの公開台帳。正規メーカーの証明書情報が登録されており、改ざん不可。入国審査のデータベースに相当。" data-en="A blockchain-based public ledger managed by CSA, containing certificate records from certified manufacturers. Tamper-proof — analogous to an immigration authority&#39;s database.">CSAが管理するブロックチェーンベースの公開台帳。正規メーカーの証明書情報が登録されており、改ざん不可。入国審査のデータベースに相当。</div>
         </div>
         <span class="chip blue">改ざん不可</span>
       </div>
@@ -317,7 +317,7 @@
       <div class="cert-item">
         <div class="cert-icon" style="background:#ede9fe;">🏛️</div>
         <div style="flex:1;">
-          <div class="cert-title">PAA（Product Attestation Authority）― 認証局</div>
+          <div class="cert-title" data-ja="PAA（Product Attestation Authority）― 認証局" data-en="PAA (Product Attestation Authority) — Root CA">PAA（Product Attestation Authority）― 認証局</div>
           <div class="cert-sub">メーカーに「製品証明書を発行する権限」を与える機関。世界に限られた数しかなく、CSAによる厳しい審査が必要。「パスポートを発行する政府機関」に相当。</div>
         </div>
         <span class="chip purple">厳格な審査</span>
@@ -356,7 +356,7 @@
     </div>
 
     <h3 style="margin-top:28px; margin-bottom:12px;">🎬 動画で見る：証明書の仕組み（紙芝居）</h3>
-    <p>ここまでの証明書の連鎖を、アニメーション紙芝居で分かりやすく解説しています。</p>
+    <p data-ja="ここまでの証明書の連鎖を、アニメーション紙芝居で分かりやすく解説しています。" data-en="The certificate chain described here is also explained through an animated visual walkthrough.">ここまでの証明書の連鎖を、アニメーション紙芝居で分かりやすく解説しています。</p>
     <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:var(--radius); box-shadow:var(--shadow-md); margin-top:12px;">
       <iframe
         src="https://www.youtube.com/embed/BFZ_FMd1BsU"
@@ -372,17 +372,17 @@
   <!-- 04 暗号化 -->
   <section id="encryption" class="fade-in">
     <div class="section-label">🔐 04 — ENCRYPTION</div>
-    <h2>通信は常に暗号化</h2>
-    <p>Matter対応デバイス間の通信は、すべて業界標準の暗号技術で保護されています。</p>
+    <h2 data-ja="通信は常に暗号化" data-en="All Communication is Encrypted">通信は常に暗号化</h2>
+    <p data-ja="Matter対応デバイス間の通信は、すべて業界標準の暗号技術で保護されています。" data-en="All communication between Matter devices is protected by industry-standard cryptography.">Matter対応デバイス間の通信は、すべて業界標準の暗号技術で保護されています。</p>
 
     <div class="grid-2">
       <div class="card">
-        <h3>🔑 PASE（初回接続）</h3>
+        <h3 data-ja="🔑 PASE（初回接続）" data-en="🔑 PASE (Initial Commissioning)">🔑 PASE（初回接続）</h3>
         <p style="font-size:13px;margin-bottom:8px;">Password Authenticated Session Establishment。QRコードのパスコードをもとにSPAKE2+アルゴリズムで鍵を交換。パスコードを傍受されても実際の暗号鍵は導出できない設計。</p>
         <span class="chip green">初回のみ使用・その後廃棄</span>
       </div>
       <div class="card">
-        <h3>🔐 CASE（通常運用）</h3>
+        <h3 data-ja="🔐 CASE（通常運用）" data-en="🔐 CASE (Normal Operation)">🔐 CASE（通常運用）</h3>
         <p style="font-size:13px;margin-bottom:8px;">Certificate Authenticated Session Establishment。NOC証明書を使った相互認証。TLSに似た仕組みで、通信のたびにセッション鍵を生成。過去の通信が漏れても現在の通信は守られる（前方秘匿性）。</p>
         <span class="chip blue">通常運用時に使用</span>
       </div>
@@ -396,7 +396,7 @@
   <!-- 05 プライバシー -->
   <section id="privacy" class="fade-in">
     <div class="section-label">🙈 05 — PRIVACY</div>
-    <h2>プライバシーへの配慮</h2>
+    <h2 data-ja="プライバシーへの配慮" data-en="Privacy Considerations">プライバシーへの配慮</h2>
 
     <div class="grid-2" style="margin-top:18px;">
       <div class="point-box green" style="flex-direction:column;gap:8px;">
@@ -433,7 +433,7 @@
   <!-- 06 FAQ -->
   <section id="faq" class="fade-in">
     <div class="section-label">❓ 06 — FAQ</div>
-    <h2>よくある不安・質問</h2>
+    <h2 data-ja="よくある不安・質問" data-en="Common Concerns &amp; Questions">よくある不安・質問</h2>
 
     <div class="faq-item">
       <div class="faq-q">
@@ -494,7 +494,7 @@
   <section class="fade-in">
     <div class="summary-box">
       <h3>🔒 Matterのセキュリティは「多層防御」</h3>
-      <p>物理的な近接要件 → QRコード（一時パスコード）→ デバイス証明書の照合（DAC/DCL）→ 暗号化通信（PASE/CASE）→ ACLによるアクセス制御。一か所を突破しても他の関門で守られる設計です。</p>
+      <p data-ja="物理的な近接要件 → QRコード（一時パスコード）→ デバイス証明書の照合（DAC/DCL）→ 暗号化通信（PASE/CASE）→ ACLによるアクセス制御。一か所を突破しても他の関門で守られる設計です。" data-en="Physical proximity → QR code (one-time passcode) → Device Attestation (DAC/DCL) → Encrypted session (PASE/CASE) → Access control (ACL). Breaching any one layer still leaves the others intact — this is defense-in-depth.">物理的な近接要件 → QRコード（一時パスコード）→ デバイス証明書の照合（DAC/DCL）→ 暗号化通信（PASE/CASE）→ ACLによるアクセス制御。一か所を突破しても他の関門で守られる設計です。</p>
     </div>
     <div style="text-align:center; margin-top:36px; padding-top:28px; border-top:1px solid var(--border);">
       <p style="font-size:13px; color:var(--text-light); margin-bottom:16px;">
