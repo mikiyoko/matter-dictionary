@@ -30,18 +30,7 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Noto Sans JP', sans-serif; color: var(--text); background: #f8fafc; line-height: 1.7; }
-
-    header { background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
-    .header-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
-    .site-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
-    .site-logo .logo-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; font-weight: 700; font-family: 'Inter', sans-serif; }
-    .site-logo .logo-text { font-size: 14px; font-weight: 700; }
-    .header-nav { display: flex; gap: 4px; }
-    .nav-link { padding: 6px 14px; border-radius: 8px; text-decoration: none; color: var(--gray-600); font-size: 13px; font-weight: 500; transition: all 0.15s; }
-    .nav-link:hover { background: var(--gray-100); color: var(--text); }
-    .nav-link.active { background: #dbeafe; color: #1e40af; }
     @media (max-width: 640px) {
-      .header-inner { padding: 0 14px; height: auto; min-height: 52px; flex-wrap: wrap; gap: 6px; padding-top: 8px; padding-bottom: 8px; }
       .header-nav a { font-size: 11px; padding: 5px 8px; }
     }
 
@@ -155,29 +144,21 @@
 
     code { font-family: 'Inter', monospace; background: var(--gray-100); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
   </style>
+  <script src="nav.js"></script>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <a class="site-logo" href="index.html">
-      <div class="logo-icon">M</div>
-      <span class="logo-text">Matter辞書</span>
-    </a>
-    <nav class="header-nav">
-      <a class="nav-link" href="index.html">🏠 辞書トップ</a>
-      <a class="nav-link" href="guide.html">📡 Matterとは</a>
-      <a class="nav-link" href="matter-security.html">🔒 セキュリティ</a>
-      <a class="nav-link" href="aliro.html">🔑 Aliroとは</a>
-      <a class="nav-link active" href="#">🔧 困ったときは</a>
-    </nav>
-  </div>
-</header>
+<div id="site-nav"></div>
 
 <div class="hero">
   <div class="hero-badge">🔧 トラブルシューティング</div>
-  <h1>Matterで困ったときは</h1>
-  <p>「登録できない」「つながらない」——原因は意外と多い。<br>順番に確認してわかりやすく解決しましょう。</p>
+  <h1 data-ja="Matterで困ったときは" data-en="Matter Troubleshooting Guide">
+  Matterで困ったときは
+</h1>
+  <p data-ja="「登録できない」「つながらない」——原因は意外と多い。<br>順番に確認してわかりやすく解決しましょう。"
+     data-en="&#34;Can&#39;t add the device&#34; or &#34;won&#39;t connect&#34;? There are more possible causes than you&#39;d think.<br>Work through this checklist to find and fix the issue.">
+    「登録できない」「つながらない」——原因は意外と多い。<br>順番に確認してわかりやすく解決しましょう。
+  </p>
 </div>
 
 <main>
@@ -576,6 +557,7 @@
 </footer>
 
 <script>
+  initNav('troubleshoot');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.08 });
