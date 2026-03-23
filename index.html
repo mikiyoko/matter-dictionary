@@ -314,11 +314,31 @@ header {
         <div class="learn-dropdown-inner">
         <a href="guide.html">
           <span class="drop-icon">📡</span>
-          <span><span class="drop-label">Matterとは？</span><span class="drop-sub">スマートホーム規格の解説</span></span>
+          <span>
+            <span class="drop-label" id="drop-guide">Matterとは？</span>
+            <span class="drop-sub" id="drop-guide-sub">スマートホーム規格の解説</span>
+          </span>
+        </a>
+        <a href="matter-security.html">
+          <span class="drop-icon">🔒</span>
+          <span>
+            <span class="drop-label" id="drop-security">セキュリティ</span>
+            <span class="drop-sub" id="drop-security-sub">コミッショニングと暗号化</span>
+          </span>
         </a>
         <a href="aliro.html">
           <span class="drop-icon">🔑</span>
-          <span><span class="drop-label">Aliroとは？</span><span class="drop-sub">スマートロック規格の解説</span></span>
+          <span>
+            <span class="drop-label" id="drop-aliro">Aliroとは？</span>
+            <span class="drop-sub" id="drop-aliro-sub">スマートロック規格の解説</span>
+          </span>
+        </a>
+        <a href="troubleshoot.html">
+          <span class="drop-icon">🔧</span>
+          <span>
+            <span class="drop-label" id="drop-ts">困ったときは</span>
+            <span class="drop-sub" id="drop-ts-sub">登録できない・つながらないとき</span>
+          </span>
         </a>
         </div>
       </div>
@@ -401,7 +421,7 @@ Promise.all([
 // ===================================================
 // グローバル：言語切り替え（initApp外に置く必要あり）
 // ===================================================
-var currentLang = "ja";
+var currentLang = localStorage.getItem("matter-dict-lang") || "ja";
 var currentCat = "all";
 var currentView = "devices";
 var searchQuery = "";
@@ -446,6 +466,26 @@ function setLang(lang) {
   if (tBtn && tBtn.textContent.indexOf("▼") >= 0) {
     tBtn.textContent = lang === "en" ? "▼ Filter by category" : "▼ カテゴリで絞り込む";
   }
+  // ドロップダウンメニューの言語切替
+  var dropLabels = {
+    'drop-guide':        { ja: 'Matterとは？',     en: 'What is Matter?' },
+    'drop-guide-sub':    { ja: 'スマートホーム規格の解説', en: 'Smart home standard overview' },
+    'drop-security':     { ja: 'セキュリティ',      en: 'Security' },
+    'drop-security-sub': { ja: 'コミッショニングと暗号化', en: 'Commissioning & encryption' },
+    'drop-aliro':        { ja: 'Aliroとは？',       en: 'What is Aliro?' },
+    'drop-aliro-sub':    { ja: 'スマートロック規格の解説', en: 'Smart lock standard overview' },
+    'drop-ts':           { ja: '困ったときは',       en: 'Troubleshooting' },
+    'drop-ts-sub':       { ja: '登録できない・つながらないとき', en: "Can't add or connect a device" },
+  };
+  Object.keys(dropLabels).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = lang === 'en' ? dropLabels[id].en : dropLabels[id].ja;
+  });
+  // 学ぶボタンのラベル
+  var learnBtnSpan = document.querySelector('.learn-btn span');
+  if (learnBtnSpan) learnBtnSpan.textContent = lang === 'en' ? 'Learn' : '学ぶ';
+  // localStorage に保存（読み物ページと共有）
+  localStorage.setItem('matter-dict-lang', lang);
   // サイドバーカテゴリラベルを更新
   document.querySelectorAll(".cat-btn").forEach(function(btn) {
     var catId = btn.getAttribute("data-cat");
@@ -913,6 +953,17 @@ function buildClusterDetailHtml(cl) {
 function closeModal() {
   document.getElementById("overlay").classList.remove("open");
 }
+
+// 初期言語をlocalStorageから復元
+(function() {
+  var savedLang = localStorage.getItem('matter-dict-lang') || 'ja';
+  if (savedLang === 'en') {
+    // DOMロード後に適用
+    document.addEventListener('DOMContentLoaded', function() {
+      setLang('en');
+    });
+  }
+})();
 
 // setLang（グローバル）から呼べるようにwindowに登録
 window.renderDevicesGlobal = renderDevices;
