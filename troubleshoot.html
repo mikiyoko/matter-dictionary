@@ -179,36 +179,36 @@
   <!-- ===== 1. チェックリスト ===== -->
   <section id="checklist" class="fade-in">
     <div class="section-label">🔍 01 — CHECKLIST</div>
-    <h2>「登録できない」原因チェックリスト</h2>
-    <p>Matter対応なのに登録できないとき、原因は複数考えられます。番号順に確認してみてください。</p>
+    <h2 data-ja="「登録できない」原因チェックリスト" data-en=""Can't Add Device" — Cause Checklist">「登録できない」原因チェックリスト</h2>
+    <p data-ja="Matter対応なのに登録できないとき、原因は複数考えられます。番号順に確認してみてください。" data-en="When a Matter device fails to commission despite being Matter-certified, there are several possible causes. Work through them in order.">Matter対応なのに登録できないとき、原因は複数考えられます。番号順に確認してみてください。</p>
 
     <div class="checklist">
       <div class="check-item">
         <div class="check-num">1</div>
         <div class="check-body">
           <div class="check-title">コントローラーアプリは最新か？<span class="check-badge badge-common">よくある</span></div>
-          <div class="check-desc">Apple Home・Google Home・Amazon Alexaアプリを最新版に更新してから再試行。Matterの実装品質はアップデートで大きく改善されることがあります。</div>
+          <div class="check-desc" data-ja="Apple Home・Google Home・Amazon Alexaアプリを最新版に更新してから再試行。Matterの実装品質はアップデートで大きく改善されることがあります。" data-en="Update Apple Home, Google Home, and Amazon Alexa apps to their latest versions before retrying. Matter implementation quality often improves significantly with updates.">Apple Home・Google Home・Amazon Alexaアプリを最新版に更新してから再試行。Matterの実装品質はアップデートで大きく改善されることがあります。</div>
         </div>
       </div>
       <div class="check-item">
         <div class="check-num">2</div>
         <div class="check-body">
-          <div class="check-title">デバイスのファームウェアは最新か？</div>
-          <div class="check-desc">Matter対応は製品出荷後のファームウェアアップデートで追加される場合があります。まずメーカー純正アプリ（SwitchBot・Aqara等）でファームウェアを最新にしてから、Matterコミッショニングを試みてください。</div>
+          <div class="check-title" data-ja="デバイスのファームウェアは最新か？" data-en="Is the Device Firmware Up to Date?">デバイスのファームウェアは最新か？</div>
+          <div class="check-desc" data-ja="Matter対応は製品出荷後のファームウェアアップデートで追加される場合があります。まずメーカー純正アプリ（SwitchBot・Aqara等）でファームウェアを最新にしてから、Matterコミッショニングを試みてください。" data-en="Matter support is sometimes added via post-shipment firmware updates. Update the firmware through the manufacturer's native app (SwitchBot, Aqara, etc.) before attempting Matter commissioning.">Matter対応は製品出荷後のファームウェアアップデートで追加される場合があります。まずメーカー純正アプリ（SwitchBot・Aqara等）でファームウェアを最新にしてから、Matterコミッショニングを試みてください。</div>
         </div>
       </div>
       <div class="check-item">
         <div class="check-num">3</div>
         <div class="check-body">
-          <div class="check-title">コミッショニングモードになっているか？</div>
-          <div class="check-desc">多くのデバイスは「登録受付状態（コミッショニングモード）」に手動で切り替える必要があります。デバイスのボタン長押し、リセットボタン、または純正アプリからの操作が必要なことがあります。マニュアルを確認してください。</div>
+          <div class="check-title" data-ja="コミッショニングモードになっているか？" data-en="Is the Device in Commissioning Mode?">コミッショニングモードになっているか？</div>
+          <div class="check-desc" data-ja="多くのデバイスは「登録受付状態（コミッショニングモード）」に手動で切り替える必要があります。デバイスのボタン長押し、リセットボタン、または純正アプリからの操作が必要なことがあります。マニュアルを確認してください。" data-en="Most devices must be manually placed into commissioning mode — typically via a long button press, reset button, or action within the manufacturer's app. Consult the device manual.">多くのデバイスは「登録受付状態（コミッショニングモード）」に手動で切り替える必要があります。デバイスのボタン長押し、リセットボタン、または純正アプリからの操作が必要なことがあります。マニュアルを確認してください。</div>
         </div>
       </div>
       <div class="check-item">
         <div class="check-num">4</div>
         <div class="check-body">
           <div class="check-title">Bluetooth（BLE）はオンになっているか？<span class="check-badge badge-common">よくある</span></div>
-          <div class="check-desc">Matter初回登録（コミッショニング）はBluetoothを使って行われます。スマートフォンのBluetoothをオンにしてから再試行してください。コミッショニング完了後はWi-FiまたはThreadで通信します。</div>
+          <div class="check-desc" data-ja="Matter初回登録（コミッショニング）はBluetoothを使って行われます。スマートフォンのBluetoothをオンにしてから再試行してください。コミッショニング完了後はWi-FiまたはThreadで通信します。" data-en="Initial Matter commissioning uses Bluetooth (BLE). Enable Bluetooth on your smartphone before retrying. After commissioning is complete, the device communicates over Wi-Fi or Thread.">Matter初回登録（コミッショニング）はBluetoothを使って行われます。スマートフォンのBluetoothをオンにしてから再試行してください。コミッショニング完了後はWi-FiまたはThreadで通信します。</div>
         </div>
       </div>
       <div class="check-item">
@@ -221,8 +221,8 @@
       <div class="check-item">
         <div class="check-num">6</div>
         <div class="check-body">
-          <div class="check-title">Wi-Fiは2.4GHz / 5GHzどちらか？</div>
-          <div class="check-desc">Matter over Wi-Fiのデバイスは2.4GHz帯のみ対応のものが多いです。スマートフォンが5GHzに接続していると登録に失敗することがあります。コミッショニング中は2.4GHzのSSIDに接続し直してみてください。</div>
+          <div class="check-title" data-ja="Wi-Fiは2.4GHz / 5GHzどちらか？" data-en="Wi-Fi Band: Is It 2.4 GHz or 5 GHz?">Wi-Fiは2.4GHz / 5GHzどちらか？</div>
+          <div class="check-desc" data-ja="Matter over Wi-Fiのデバイスは2.4GHz帯のみ対応のものが多いです。スマートフォンが5GHzに接続していると登録に失敗することがあります。コミッショニング中は2.4GHzのSSIDに接続し直してみてください。" data-en="Many Matter over Wi-Fi devices support only the 2.4 GHz band. If your phone is connected to 5 GHz, commissioning may fail. Try switching to the 2.4 GHz SSID during commissioning.">Matter over Wi-Fiのデバイスは2.4GHz帯のみ対応のものが多いです。スマートフォンが5GHzに接続していると登録に失敗することがあります。コミッショニング中は2.4GHzのSSIDに接続し直してみてください。</div>
         </div>
       </div>
       <div class="check-item">
@@ -235,8 +235,8 @@
       <div class="check-item">
         <div class="check-num">8</div>
         <div class="check-body">
-          <div class="check-title">QRコードの読み取り環境を改善する</div>
-          <div class="check-desc">暗い場所・斜め角度・遠すぎる距離だと読み取りが失敗します。明るい場所でスマートフォンを正面から近づけ、カメラをゆっくり動かして試してください。QRコードが読み取れない場合はManual Pairing Code（数字コード）でも登録できます。</div>
+          <div class="check-title" data-ja="QRコードの読み取り環境を改善する" data-en="Improve QR Code Scan Conditions">QRコードの読み取り環境を改善する</div>
+          <div class="check-desc" data-ja="暗い場所・斜め角度・遠すぎる距離だと読み取りが失敗します。明るい場所でスマートフォンを正面から近づけ、カメラをゆっくり動かして試してください。QRコードが読み取れない場合はManual Pairing Code（数字コード）でも登録できます。" data-en="Dim lighting, an angle, or excessive distance can cause scan failures. Hold the phone close and straight-on in a well-lit area, moving it slowly. If the QR code fails, use the 11-digit Manual Pairing Code instead.">暗い場所・斜め角度・遠すぎる距離だと読み取りが失敗します。明るい場所でスマートフォンを正面から近づけ、カメラをゆっくり動かして試してください。QRコードが読み取れない場合はManual Pairing Code（数字コード）でも登録できます。</div>
         </div>
       </div>
     </div>
@@ -249,11 +249,11 @@
   <!-- ===== 2. Fabric上限 ===== -->
   <section id="fabric-limit" class="fade-in">
     <div class="section-label">⚠️ 02 — FABRIC LIMIT</div>
-    <h2>Fabric登録数の上限問題（盲点！）</h2>
-    <p>Matterの「マルチアドミン」は複数のエコシステムに同時登録できる革命的な機能ですが、<strong>各デバイスには登録できるFabric数の上限が設定されています。</strong>これが「登録できない」の意外な原因になることがあります。</p>
+    <h2 data-ja="Fabric登録数の上限問題（盲点！）" data-en="Fabric Registration Limit — The Hidden Gotcha">Fabric登録数の上限問題（盲点！）</h2>
+    <p data-ja="Matterの「マルチアドミン」は複数のエコシステムに同時登録できる革命的な機能ですが、<strong>各デバイスには登録できるFabric数の上限が設定されています。</strong>これが「登録できない」の意外な原因になることがあります。" data-en="Matter's "multi-admin" capability is revolutionary — but <strong>every device has a maximum number of Fabrics it can join (SupportedFabrics).</strong> Hitting this limit is a surprisingly common cause of commissioning failures.">Matterの「マルチアドミン」は複数のエコシステムに同時登録できる革命的な機能ですが、<strong>各デバイスには登録できるFabric数の上限が設定されています。</strong>これが「登録できない」の意外な原因になることがあります。</p>
 
     <div class="card">
-      <h3 style="margin-bottom:10px;">Fabricの上限を定義する2つのアトリビュート</h3>
+      <h3 style="margin-bottom:10px;" data-ja="Fabricの上限を定義する2つのアトリビュート" data-en="Two Attributes That Define the Fabric Limit">Fabricの上限を定義する2つのアトリビュート</h3>
       <table>
         <thead><tr><th>アトリビュート名</th><th>意味</th><th>仕様上の値の範囲</th></tr></thead>
         <tbody>
@@ -296,23 +296,23 @@
     <div class="scenario-grid">
       <div class="scenario-card safe">
         <div class="scenario-label safe">✅ 問題なし</div>
-        <div class="scenario-title">上限5 × Apple Home + Google Home</div>
-        <div class="scenario-desc">Apple 2 + Google 1 = 合計3スロット消費。残り2スロット空き。追加登録も可能。</div>
+        <div class="scenario-title" data-ja="上限5 × Apple Home + Google Home" data-en="Limit 5 × Apple Home + Google Home">上限5 × Apple Home + Google Home</div>
+        <div class="scenario-desc" data-ja="Apple 2 + Google 1 = 合計3スロット消費。残り2スロット空き。追加登録も可能。" data-en="Apple 2 + Google 1 = 3 slots used. 2 slots remaining. Additional registrations possible.">Apple 2 + Google 1 = 合計3スロット消費。残り2スロット空き。追加登録も可能。</div>
       </div>
       <div class="scenario-card danger">
         <div class="scenario-label danger">⛔ 上限オーバー</div>
-        <div class="scenario-title">上限5 × Apple + Google + Alexa + 自社アプリ</div>
-        <div class="scenario-desc">Apple 2 + Google 1 + Alexa 1 + 自社 1 = 合計5スロット消費。満杯。これ以上の登録は不可。</div>
+        <div class="scenario-title" data-ja="上限5 × Apple + Google + Alexa + 自社アプリ" data-en="Limit 5 × Apple + Google + Alexa + Vendor App">上限5 × Apple + Google + Alexa + 自社アプリ</div>
+        <div class="scenario-desc" data-ja="Apple 2 + Google 1 + Alexa 1 + 自社 1 = 合計5スロット消費。満杯。これ以上の登録は不可。" data-en="Apple 2 + Google 1 + Alexa 1 + Vendor 1 = 5 slots used. Full — no further commissioning possible.">Apple 2 + Google 1 + Alexa 1 + 自社 1 = 合計5スロット消費。満杯。これ以上の登録は不可。</div>
       </div>
       <div class="scenario-card safe">
         <div class="scenario-label safe">✅ 問題なし</div>
-        <div class="scenario-title">上限5 × Google Home + Alexa + 自社アプリ</div>
-        <div class="scenario-desc">Google 1 + Alexa 1 + 自社 1 = 合計3スロット消費。Apple Homeを使わなければ余裕が生まれる。</div>
+        <div class="scenario-title" data-ja="上限5 × Google Home + Alexa + 自社アプリ" data-en="Limit 5 × Google Home + Alexa + Vendor App">上限5 × Google Home + Alexa + 自社アプリ</div>
+        <div class="scenario-desc" data-ja="Google 1 + Alexa 1 + 自社 1 = 合計3スロット消費。Apple Homeを使わなければ余裕が生まれる。" data-en="Google 1 + Alexa 1 + Vendor 1 = 3 slots used. Skipping Apple Home leaves more room.">Google 1 + Alexa 1 + 自社 1 = 合計3スロット消費。Apple Homeを使わなければ余裕が生まれる。</div>
       </div>
       <div class="scenario-card danger">
         <div class="scenario-label danger">⚠️ 意外と早く満杯</div>
-        <div class="scenario-title">上限3のデバイス × Apple Home</div>
-        <div class="scenario-desc">Apple Home だけで2スロット消費。残り1スロットしかない。上限が低い安価なデバイスは特に要注意。</div>
+        <div class="scenario-title" data-ja="上限3のデバイス × Apple Home" data-en="Device with Limit 3 × Apple Home">上限3のデバイス × Apple Home</div>
+        <div class="scenario-desc" data-ja="Apple Home だけで2スロット消費。残り1スロットしかない。上限が低い安価なデバイスは特に要注意。" data-en="Apple Home alone uses 2 slots, leaving only 1 remaining. Extra caution needed with low-cost devices that have a low SupportedFabrics value.">Apple Home だけで2スロット消費。残り1スロットしかない。上限が低い安価なデバイスは特に要注意。</div>
       </div>
     </div>
   </section>
@@ -320,28 +320,28 @@
   <!-- ===== 3. Apple 2消費 ===== -->
   <section id="fabric-apple" class="fade-in">
     <div class="section-label">🍎 03 — APPLE HOME</div>
-    <h2>Apple Homeが2スロット消費する仕組み</h2>
-    <p>Apple HomeにMatterデバイスをコミッショニングすると、なぜ自動的に2つのFabricスロットが使われるのか、その背景を説明します。</p>
+    <h2 data-ja="Apple Homeが2スロット消費する仕組み" data-en="Why Apple Home Consumes 2 Fabric Slots">Apple Homeが2スロット消費する仕組み</h2>
+    <p data-ja="Apple HomeにMatterデバイスをコミッショニングすると、なぜ自動的に2つのFabricスロットが使われるのか、その背景を説明します。" data-en="This section explains why commissioning a Matter device into Apple Home automatically consumes two Fabric slots.">Apple HomeにMatterデバイスをコミッショニングすると、なぜ自動的に2つのFabricスロットが使われるのか、その背景を説明します。</p>
 
     <div class="flow">
       <div class="flow-step step-blue">
         <div class="flow-left"><div class="flow-circle">1</div><div class="flow-line"></div></div>
         <div class="flow-body">
-          <div class="flow-title">Apple HomeアプリでコミッショニングするとFabricが作られる</div>
+          <div class="flow-title" data-ja="Apple HomeアプリでコミッショニングするとFabricが作られる" data-en="Commissioning via Apple Home Creates a Fabric">Apple HomeアプリでコミッショニングするとFabricが作られる</div>
           <div class="flow-desc">iPhone/iPadなどのApple Homeアプリが「Apple Home」Fabricを作成し、1スロット目を消費します。これは他のエコシステム（Google・Amazon等）と同じ動きです。</div>
         </div>
       </div>
       <div class="flow-step step-orange">
         <div class="flow-left"><div class="flow-circle">2</div><div class="flow-line"></div></div>
         <div class="flow-body">
-          <div class="flow-title">HomePodがあると自動的に追加コミッショニングされる</div>
+          <div class="flow-title" data-ja="HomePodがあると自動的に追加コミッショニングされる" data-en="HomePod is Automatically Commissioned as a Second Fabric">HomePodがあると自動的に追加コミッショニングされる</div>
           <div class="flow-desc">Apple Homeエコシステムでは、HomePod / HomePod mini / Apple TV 4Kが「ホームハブ」として自動参加します。このときHomePodが<strong>独立したFabric</strong>としてデバイスに登録されるため、2スロット目が消費されます。</div>
         </div>
       </div>
       <div class="flow-step step-red">
         <div class="flow-left"><div class="flow-circle">3</div><div class="flow-line"></div></div>
         <div class="flow-body">
-          <div class="flow-title">他のエコシステムは通常1スロット</div>
+          <div class="flow-title" data-ja="他のエコシステムは通常1スロット" data-en="Other Ecosystems Typically Use 1 Slot">他のエコシステムは通常1スロット</div>
           <div class="flow-desc">Google Home・Amazon Alexaは通常、コントローラー側が1つのFabricとしてまとめて登録されます。Apple Homeのように「アプリ用」＋「ハブ用」で2スロット消費する動きはありません。</div>
         </div>
       </div>
@@ -363,35 +363,35 @@
           <tr><td><strong>その他の自社アプリ</strong></td><td>1スロット</td><td>メーカーアプリ等は通常1スロット</td></tr>
         </tbody>
       </table>
-      <p style="font-size:12px; color:var(--text-light); margin-top:10px;">※ 各エコシステムの実装は変更される可能性があります。最新情報はメーカー公式情報でご確認ください。</p>
+      <p style="font-size:12px; color:var(--text-light); margin-top:10px;" data-ja="※ 各エコシステムの実装は変更される可能性があります。最新情報はメーカー公式情報でご確認ください。" data-en="* Each ecosystem's implementation may change. Always check the latest official information from the respective manufacturer.">※ 各エコシステムの実装は変更される可能性があります。最新情報はメーカー公式情報でご確認ください。</p>
     </div>
   </section>
 
   <!-- ===== 4. 確認方法 ===== -->
   <section id="fabric-check" class="fade-in">
     <div class="section-label">🔎 04 — HOW TO CHECK</div>
-    <h2>自分のデバイスのFabric数を確認するには</h2>
-    <p>残念ながら、一般ユーザーがスマートフォンアプリから「このデバイスはあと何個Fabricを登録できる」という情報を見る方法は、現時点では限られています。</p>
+    <h2 data-ja="自分のデバイスのFabric数を確認するには" data-en="How to Check Your Device's Fabric Count">自分のデバイスのFabric数を確認するには</h2>
+    <p data-ja="残念ながら、一般ユーザーがスマートフォンアプリから「このデバイスはあと何個Fabricを登録できる」という情報を見る方法は、現時点では限られています。" data-en="Unfortunately, there is currently no straightforward way for general users to check "how many more Fabrics can this device join" from a smartphone app.">残念ながら、一般ユーザーがスマートフォンアプリから「このデバイスはあと何個Fabricを登録できる」という情報を見る方法は、現時点では限られています。</p>
 
     <div class="checklist" style="margin-top:18px;">
       <div class="check-item">
         <div class="check-num" style="color:var(--primary);">①</div>
         <div class="check-body">
-          <div class="check-title">製品スペックページ・マニュアルを確認する</div>
+          <div class="check-title" data-ja="製品スペックページ・マニュアルを確認する" data-en="Check the Product Spec Page or Manual">製品スペックページ・マニュアルを確認する</div>
           <div class="check-desc">一部のメーカーは「Supported Fabrics：16」などとスペック欄に記載しています。購入前にメーカー公式サイトや技術資料を確認してみましょう。特にスマートロックのような重要デバイスは事前確認をお勧めします。</div>
         </div>
       </div>
       <div class="check-item">
         <div class="check-num" style="color:var(--primary);">②</div>
         <div class="check-body">
-          <div class="check-title">メーカーサポートに問い合わせる</div>
+          <div class="check-title" data-ja="メーカーサポートに問い合わせる" data-en="Contact Manufacturer Support">メーカーサポートに問い合わせる</div>
           <div class="check-desc">スペックが公開されていない場合、メーカーのサポートチャネルで「SupportedFabricsの値はいくつか」と直接確認するのが確実です。技術担当者なら把握していることがほとんどです。</div>
         </div>
       </div>
       <div class="check-item">
         <div class="check-num" style="color:#1e40af;">③</div>
         <div class="check-body">
-          <div class="check-title">技術者向け：デバイスのアトリビュートを直接読む</div>
+          <div class="check-title" data-ja="技術者向け：デバイスのアトリビュートを直接読む" data-en="For Engineers: Read Attributes Directly from the Device">技術者向け：デバイスのアトリビュートを直接読む</div>
           <div class="check-desc">MatterデバイスのOperational Credentials Clusterには <code>SupportedFabrics</code>（上限）と <code>CommissionedFabrics</code>（現在の登録数）のアトリビュートがあります。chip-toolやMatter SDKを使えばコマンドラインから読み出せます。<br><code style="font-size:11px;">chip-tool operationalcredentials read supported-fabrics [node-id] 0</code></div>
         </div>
       </div>
@@ -405,14 +405,14 @@
   <!-- ===== 5. 対処法 ===== -->
   <section id="fabric-fix" class="fade-in">
     <div class="section-label">🛠 05 — HOW TO FIX</div>
-    <h2>Fabric上限を超えてしまったときの対処法</h2>
-    <p>Fabric登録数が上限に達してしまった場合、以下の対処法を順番に試してみてください。</p>
+    <h2 data-ja="Fabric上限を超えてしまったときの対処法" data-en="What to Do When You Hit the Fabric Limit">Fabric上限を超えてしまったときの対処法</h2>
+    <p data-ja="Fabric登録数が上限に達してしまった場合、以下の対処法を順番に試してみてください。" data-en="If the device has reached its Fabric limit, work through the following remedies in order.">Fabric登録数が上限に達してしまった場合、以下の対処法を順番に試してみてください。</p>
 
     <div class="flow" style="margin-top:18px;">
       <div class="flow-step step-blue">
         <div class="flow-left"><div class="flow-circle">1</div><div class="flow-line"></div></div>
         <div class="flow-body">
-          <div class="flow-title">使っていないFabric（エコシステム）を削除する</div>
+          <div class="flow-title" data-ja="使っていないFabric（エコシステム）を削除する" data-en="Remove Unused Fabrics (Ecosystems)">使っていないFabric（エコシステム）を削除する</div>
           <div class="flow-desc">古いアプリや使わなくなったエコシステムのFabricが残っているなら、そちらのアプリから「デバイスの削除」を行います。この操作でFabricスロットが解放されます。<br><br>
           Apple Home → デバイス詳細 →「アクセサリを取り外す」<br>
           Google Home → デバイス設定 →「デバイスを削除」<br>
@@ -422,15 +422,15 @@
       <div class="flow-step step-green">
         <div class="flow-left"><div class="flow-circle">2</div><div class="flow-line"></div></div>
         <div class="flow-body">
-          <div class="flow-title">削除後、新しいエコシステムに追加する</div>
+          <div class="flow-title" data-ja="削除後、新しいエコシステムに追加する" data-en="Re-commission to the New Ecosystem">削除後、新しいエコシステムに追加する</div>
           <div class="flow-desc">不要なFabricを削除してスロットを空けたら、改めて追加したいアプリでコミッショニングを行います。既存のFabricから「共有アクセス」で行うのが確実です。<a href="#multi-app" style="color:var(--blue);">→ 複数アプリへの登録手順はこちら</a></div>
         </div>
       </div>
       <div class="flow-step step-orange">
         <div class="flow-left"><div class="flow-circle">3</div><div class="flow-line"></div></div>
         <div class="flow-body">
-          <div class="flow-title">どうしても解消しない場合：ファクトリーリセット</div>
-          <div class="flow-desc">デバイスをファクトリーリセットすると、すべてのFabric情報が消去されてスロットが完全にリセットされます。ただし<strong>すべてのエコシステムから削除</strong>されるため、再登録が必要になります。最終手段として検討してください。</div>
+          <div class="flow-title" data-ja="どうしても解消しない場合：ファクトリーリセット" data-en="Last Resort: Factory Reset">どうしても解消しない場合：ファクトリーリセット</div>
+          <div class="flow-desc" data-ja="デバイスをファクトリーリセットすると、すべてのFabric情報が消去されてスロットが完全にリセットされます。ただし<strong>すべてのエコシステムから削除</strong>されるため、再登録が必要になります。最終手段として検討してください。" data-en="A factory reset erases all Fabric data, completely resetting the slots. However, this <strong>removes the device from all ecosystems</strong>, requiring re-commissioning everywhere. Use as a last resort.">デバイスをファクトリーリセットすると、すべてのFabric情報が消去されてスロットが完全にリセットされます。ただし<strong>すべてのエコシステムから削除</strong>されるため、再登録が必要になります。最終手段として検討してください。</div>
         </div>
       </div>
     </div>
@@ -443,8 +443,8 @@
   <!-- ===== 6. 複数アプリへの正しい登録手順 ===== -->
   <section id="multi-app" class="fade-in">
     <div class="section-label">🔗 06 — MULTI-APP SETUP</div>
-    <h2>複数アプリに登録するときの正しい手順</h2>
-    <p>「Apple HomeとGoogle Homeの両方で同じデバイスを使いたい」——これはFabric上限の範囲内であれば可能です。正しい手順を守ることが重要です。</p>
+    <h2 data-ja="複数アプリに登録するときの正しい手順" data-en="The Correct Way to Add a Device to Multiple Apps">複数アプリに登録するときの正しい手順</h2>
+    <p data-ja="「Apple HomeとGoogle Homeの両方で同じデバイスを使いたい」——これはFabric上限の範囲内であれば可能です。正しい手順を守ることが重要です。" data-en=""I want to use the same device in both Apple Home and Google Home" — this is possible as long as it stays within the SupportedFabrics limit. Following the correct procedure is essential.">「Apple HomeとGoogle Homeの両方で同じデバイスを使いたい」——これはFabric上限の範囲内であれば可能です。正しい手順を守ることが重要です。</p>
 
     <div class="highlight-red">
       <strong>❌ よくある間違い：ファクトリーリセットして2つ目のアプリで登録し直す</strong><br>
@@ -457,29 +457,29 @@
         <div class="flow-step step-blue">
           <div class="flow-left"><div class="flow-circle">1</div><div class="flow-line"></div></div>
           <div class="flow-body">
-            <div class="flow-title">まずApple Homeアプリでデバイスを登録する（初回コミッショニング）</div>
-            <div class="flow-desc">QRコードまたはManual Pairing Codeを使って、最初のエコシステムに登録します。</div>
+            <div class="flow-title" data-ja="まずApple Homeアプリでデバイスを登録する（初回コミッショニング）" data-en="Step 1: Commission the Device with Apple Home (First Commissioning)">まずApple Homeアプリでデバイスを登録する（初回コミッショニング）</div>
+            <div class="flow-desc" data-ja="QRコードまたはManual Pairing Codeを使って、最初のエコシステムに登録します。" data-en="Commission the device into the first ecosystem using its QR code or Manual Pairing Code.">QRコードまたはManual Pairing Codeを使って、最初のエコシステムに登録します。</div>
           </div>
         </div>
         <div class="flow-step step-blue">
           <div class="flow-left"><div class="flow-circle">2</div><div class="flow-line"></div></div>
           <div class="flow-body">
-            <div class="flow-title">Apple Homeアプリ内でコミッショニングウィンドウを開く</div>
-            <div class="flow-desc">Apple Homeのデバイス詳細画面 → 「その他のオプション」または「共有アクセス」→ 「他のアプリに追加」の操作でコミッショニング用のQRコードまたはコードが生成されます。</div>
+            <div class="flow-title" data-ja="Apple Homeアプリ内でコミッショニングウィンドウを開く" data-en="Step 2: Open a Commissioning Window from Apple Home">Apple Homeアプリ内でコミッショニングウィンドウを開く</div>
+            <div class="flow-desc" data-ja="Apple Homeのデバイス詳細画面 → 「その他のオプション」または「共有アクセス」→ 「他のアプリに追加」の操作でコミッショニング用のQRコードまたはコードが生成されます。" data-en="Go to the device detail screen in Apple Home → "More Options" or "Share Access" → "Add to Another App." This generates a commissioning QR code or pairing code.">Apple Homeのデバイス詳細画面 → 「その他のオプション」または「共有アクセス」→ 「他のアプリに追加」の操作でコミッショニング用のQRコードまたはコードが生成されます。</div>
           </div>
         </div>
         <div class="flow-step step-green">
           <div class="flow-left"><div class="flow-circle">3</div><div class="flow-line"></div></div>
           <div class="flow-body">
-            <div class="flow-title">Google Homeアプリでそのコードを読み取る</div>
-            <div class="flow-desc">Google Homeアプリの「デバイスを追加」→「Matterデバイスを追加」の画面で、手順2で生成されたコードを読み取ります。</div>
+            <div class="flow-title" data-ja="Google Homeアプリでそのコードを読み取る" data-en="Step 3: Scan the Code with Google Home">Google Homeアプリでそのコードを読み取る</div>
+            <div class="flow-desc" data-ja="Google Homeアプリの「デバイスを追加」→「Matterデバイスを追加」の画面で、手順2で生成されたコードを読み取ります。" data-en="In Google Home, tap "Add device" → "Matter device," then scan the code generated in Step 2.">Google Homeアプリの「デバイスを追加」→「Matterデバイスを追加」の画面で、手順2で生成されたコードを読み取ります。</div>
           </div>
         </div>
         <div class="flow-step step-green">
           <div class="flow-left"><div class="flow-circle">4</div><div class="flow-line"></div></div>
           <div class="flow-body">
-            <div class="flow-title">両アプリから操作できる状態になる</div>
-            <div class="flow-desc">ファクトリーリセット不要で、Apple HomeとGoogle Homeの両方からデバイスを操作できます。Fabric上限の範囲内であれば、この手順でさらに別のアプリにも追加できます。</div>
+            <div class="flow-title" data-ja="両アプリから操作できる状態になる" data-en="Step 4: Device is Now Accessible from Both Apps">両アプリから操作できる状態になる</div>
+            <div class="flow-desc" data-ja="ファクトリーリセット不要で、Apple HomeとGoogle Homeの両方からデバイスを操作できます。Fabric上限の範囲内であれば、この手順でさらに別のアプリにも追加できます。" data-en="No factory reset needed. The device is now accessible from both Apple Home and Google Home. Repeat this process to add additional apps, as long as the SupportedFabrics limit allows.">ファクトリーリセット不要で、Apple HomeとGoogle Homeの両方からデバイスを操作できます。Fabric上限の範囲内であれば、この手順でさらに別のアプリにも追加できます。</div>
           </div>
         </div>
       </div>
@@ -493,36 +493,36 @@
   <!-- ===== 7. Thread ===== -->
   <section id="thread" class="fade-in">
     <div class="section-label">🕸 07 — THREAD</div>
-    <h2>Threadデバイスが見つからない・つながらない</h2>
-    <p>ThreadはWi-Fiとは異なるプロトコルのため、独自のトラブルが発生することがあります。</p>
+    <h2 data-ja="Threadデバイスが見つからない・つながらない" data-en="Thread Device Not Found or Not Connecting">Threadデバイスが見つからない・つながらない</h2>
+    <p data-ja="ThreadはWi-Fiとは異なるプロトコルのため、独自のトラブルが発生することがあります。" data-en="Thread is a different protocol from Wi-Fi and has its own unique failure modes.">ThreadはWi-Fiとは異なるプロトコルのため、独自のトラブルが発生することがあります。</p>
 
     <div class="checklist">
       <div class="check-item">
         <div class="check-num" style="color:var(--primary);">①</div>
         <div class="check-body">
-          <div class="check-title">ボーダールーターは正しく動作しているか？</div>
-          <div class="check-desc">HomePod mini・Apple TV 4K（Apple Home）、Nest Hub 2nd Gen・Nest WiFi Pro（Google Home）などのボーダールーターの電源・接続状態を確認。再起動してみると解決することも。</div>
+          <div class="check-title" data-ja="ボーダールーターは正しく動作しているか？" data-en="Is the Border Router Functioning Correctly?">ボーダールーターは正しく動作しているか？</div>
+          <div class="check-desc" data-ja="HomePod mini・Apple TV 4K（Apple Home）、Nest Hub 2nd Gen・Nest WiFi Pro（Google Home）などのボーダールーターの電源・接続状態を確認。再起動してみると解決することも。" data-en="Check the power and connection status of the Border Router — HomePod mini or Apple TV 4K (Apple Home), Nest Hub 2nd Gen or Nest WiFi Pro (Google Home). Rebooting often resolves the issue.">HomePod mini・Apple TV 4K（Apple Home）、Nest Hub 2nd Gen・Nest WiFi Pro（Google Home）などのボーダールーターの電源・接続状態を確認。再起動してみると解決することも。</div>
         </div>
       </div>
       <div class="check-item">
         <div class="check-num" style="color:var(--primary);">②</div>
         <div class="check-body">
-          <div class="check-title">Threadデバイスの電池は十分か？</div>
-          <div class="check-desc">Thread/ICDデバイス（センサー・スイッチなど）の電池が消耗していると、応答が遅くなったり無応答になります。電池交換・充電を試してみてください。</div>
+          <div class="check-title" data-ja="Threadデバイスの電池は十分か？" data-en="Is the Thread Device Battery Sufficient?">Threadデバイスの電池は十分か？</div>
+          <div class="check-desc" data-ja="Thread/ICDデバイス（センサー・スイッチなど）の電池が消耗していると、応答が遅くなったり無応答になります。電池交換・充電を試してみてください。" data-en="A depleted battery in a Thread/ICD device (sensor, switch, etc.) causes slow or no response. Try replacing or charging the battery.">Thread/ICDデバイス（センサー・スイッチなど）の電池が消耗していると、応答が遅くなったり無応答になります。電池交換・充電を試してみてください。</div>
         </div>
       </div>
       <div class="check-item">
         <div class="check-num" style="color:var(--primary);">③</div>
         <div class="check-body">
-          <div class="check-title">ボーダールーターとデバイスの距離が遠すぎないか？</div>
-          <div class="check-desc">Threadはメッシュネットワークですが、初回コミッショニング時はボーダールーターと比較的近い距離が必要です。ボーダールーターの近くでコミッショニングを試み、登録完了後に設置場所に移動する方法を試してください。</div>
+          <div class="check-title" data-ja="ボーダールーターとデバイスの距離が遠すぎないか？" data-en="Is the Device Too Far from the Border Router?">ボーダールーターとデバイスの距離が遠すぎないか？</div>
+          <div class="check-desc" data-ja="Threadはメッシュネットワークですが、初回コミッショニング時はボーダールーターと比較的近い距離が必要です。ボーダールーターの近くでコミッショニングを試み、登録完了後に設置場所に移動する方法を試してください。" data-en="Thread forms a mesh, but initial commissioning requires the device to be relatively close to the Border Router. Try commissioning near the Border Router and moving the device to its final location afterward.">Threadはメッシュネットワークですが、初回コミッショニング時はボーダールーターと比較的近い距離が必要です。ボーダールーターの近くでコミッショニングを試み、登録完了後に設置場所に移動する方法を試してください。</div>
         </div>
       </div>
       <div class="check-item">
         <div class="check-num" style="color:var(--primary);">④</div>
         <div class="check-body">
-          <div class="check-title">複数エコシステムのボーダールーターが混在している場合</div>
-          <div class="check-desc">Apple HomePod（Apple Thread）とGoogle Nest Hub（Google Thread）が両方ある場合、デバイスがどちらのThreadネットワークに参加するかで挙動が変わることがあります。まずは使いたいアプリのボーダールーターのみを残してコミッショニングを試してみてください。</div>
+          <div class="check-title" data-ja="複数エコシステムのボーダールーターが混在している場合" data-en="Multiple Ecosystems with Multiple Border Routers">複数エコシステムのボーダールーターが混在している場合</div>
+          <div class="check-desc" data-ja="Apple HomePod（Apple Thread）とGoogle Nest Hub（Google Thread）が両方ある場合、デバイスがどちらのThreadネットワークに参加するかで挙動が変わることがあります。まずは使いたいアプリのボーダールーターのみを残してコミッショニングを試してみてください。" data-en="When both Apple (HomePod) and Google (Nest Hub) Border Routers are present, the Thread network the device joins can affect behavior. Try commissioning with only the Border Router for your intended app active.">Apple HomePod（Apple Thread）とGoogle Nest Hub（Google Thread）が両方ある場合、デバイスがどちらのThreadネットワークに参加するかで挙動が変わることがあります。まずは使いたいアプリのボーダールーターのみを残してコミッショニングを試してみてください。</div>
         </div>
       </div>
     </div>
