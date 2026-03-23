@@ -654,9 +654,9 @@
   <div class="hero-tags">
     <span class="hero-tag" data-ja="🔑 デジタル鍵" data-en="🔑 Digital Key">🔑 デジタル鍵</span>
     <span class="hero-tag">📱 NFC / Bluetooth / UWB</span>
-    <span class="hero-tag">🏠 ホーム・ホテル・オフィス</span>
-    <span class="hero-tag">🔒 高セキュリティ</span>
-    <span class="hero-tag">🚗 自動車はスコープ外（CCC担当）</span>
+    <span class="hero-tag" data-ja="🏠 ホーム・ホテル・オフィス" data-en="🏠 Home · Hotel · Office">🏠 ホーム・ホテル・オフィス</span>
+    <span class="hero-tag" data-ja="🔒 高セキュリティ" data-en="🔒 High Security">🔒 高セキュリティ</span>
+    <span class="hero-tag" data-ja="🚗 自動車はスコープ外（CCC担当）" data-en="🚗 Automotive out of scope (CCC handles it)">🚗 自動車はスコープ外（CCC担当）</span>
   </div>
 </div>
 
@@ -683,12 +683,12 @@
   <!-- ① Aliroって何？ -->
   <section id="what" class="fade-in">
     <div class="section-label">🔑 01 — OVERVIEW</div>
-    <h2>Aliroって何？　一言で言うと</h2>
+    <h2 data-ja="Aliroって何？　一言で言うと" data-en="What is Aliro? — In a Nutshell">Aliroって何？　一言で言うと</h2>
 
     <div class="card">
       <p><strong>Aliro（アリロ）</strong>は、<strong>スマートフォンや時計を「デジタルの鍵」として使うための国際標準規格</strong>です。</p>
       <p>Matterと同じく<strong>CSA（Connectivity Standards Alliance）</strong>が策定しており、2026年2月にバージョン1.0が正式リリースされました。</p>
-      <p>自宅の玄関・ホテルの部屋・会社のオフィス——どこでも同じ仕組みで、スマホをかざすだけで扉が開く世界を目指しています。</p>
+      <p data-ja="自宅の玄関・ホテルの部屋・会社のオフィス——どこでも同じ仕組みで、スマホをかざすだけで扉が開く世界を目指しています。" data-en="Whether at your front door, a hotel room, or an office — the goal is a world where the same mechanism lets you open any door by simply presenting your phone.">自宅の玄関・ホテルの部屋・会社のオフィス——どこでも同じ仕組みで、スマホをかざすだけで扉が開く世界を目指しています。</p>
     </div>
 
     <div class="highlight">
@@ -723,42 +723,42 @@
   <!-- ② 登場人物 -->
   <section id="players" class="fade-in">
     <div class="section-label">👥 02 — PLAYERS</div>
-    <h2>登場人物（エコシステムの構成）</h2>
+    <h2 data-ja="登場人物（エコシステムの構成）" data-en="Ecosystem Participants">登場人物（エコシステムの構成）</h2>
 
-    <p>Aliroには4つの役割が登場します。それぞれの関係を理解すると、仕組み全体がスッキリします。</p>
+    <p data-ja="Aliroには4つの役割が登場します。それぞれの関係を理解すると、仕組み全体がスッキリします。" data-en="Aliro involves four roles. Understanding how they relate makes the entire system click.">Aliroには4つの役割が登場します。それぞれの関係を理解すると、仕組み全体がスッキリします。</p>
 
     <div class="actors-diagram">
       <!-- 上段：3役割を横並び -->
       <div class="actors-top-row">
         <div class="actor-box">
           <div class="actor-icon blue">📱</div>
-          <div class="actor-name">ユーザーデバイス</div>
+          <div class="actor-name" data-ja="ユーザーデバイス" data-en="User Device">ユーザーデバイス</div>
           <div class="actor-en">User Device</div>
-          <div class="actor-desc">スマホ・スマートウォッチなど。鍵（アクセス資格情報）を保持する端末</div>
+          <div class="actor-desc" data-ja="スマホ・スマートウォッチなど。鍵（アクセス資格情報）を保持する端末" data-en="Smartphone, smartwatch, etc. — the device that holds the access credential (digital key).">スマホ・スマートウォッチなど。鍵（アクセス資格情報）を保持する端末</div>
         </div>
         <div class="actor-arrow-cell">⇄</div>
         <div class="actor-box">
           <div class="actor-icon green">🚪</div>
-          <div class="actor-name">リーダー</div>
+          <div class="actor-name" data-ja="リーダー" data-en="Reader">リーダー</div>
           <div class="actor-en">Reader</div>
-          <div class="actor-desc">ドアに設置されたスキャナー。スマホの情報を読み取り、開錠を判断する</div>
+          <div class="actor-desc" data-ja="ドアに設置されたスキャナー。スマホの情報を読み取り、開錠を判断する" data-en="The scanner installed at the door. Reads the credential from the phone and decides whether to unlock.">ドアに設置されたスキャナー。スマホの情報を読み取り、開錠を判断する</div>
         </div>
         <div class="actor-arrow-cell">→</div>
         <div class="actor-box">
           <div class="actor-icon purple">🛡️</div>
-          <div class="actor-name">アクセスマネージャー</div>
+          <div class="actor-name" data-ja="アクセスマネージャー" data-en="Access Manager">アクセスマネージャー</div>
           <div class="actor-en">Access Manager</div>
-          <div class="actor-desc">「この人は入っていいか」を判断するシステム。リーダーに内蔵されることも</div>
+          <div class="actor-desc" data-ja="「この人は入っていいか」を判断するシステム。リーダーに内蔵されることも" data-en="The system that decides whether to grant access. May be embedded in the Reader.">「この人は入っていいか」を判断するシステム。リーダーに内蔵されることも</div>
         </div>
       </div>
       <!-- 下段：クレデンシャル発行者 -->
       <div class="actors-bottom-row">
-        <div class="actors-down-arrow">▲ スマホに「鍵のデータ」を発行・署名する</div>
+        <div class="actors-down-arrow" data-ja="▲ スマホに「鍵のデータ」を発行・署名する" data-en="▲ Issues and signs credential data to the smartphone">▲ スマホに「鍵のデータ」を発行・署名する</div>
         <div class="actor-box" style="width: 200px;">
           <div class="actor-icon orange">🏢</div>
-          <div class="actor-name">クレデンシャル発行者</div>
+          <div class="actor-name" data-ja="クレデンシャル発行者" data-en="Credential Issuer">クレデンシャル発行者</div>
           <div class="actor-en">Credential Issuer</div>
-          <div class="actor-desc">Apple / Google / Samsungなど</div>
+          <div class="actor-desc" data-ja="Apple / Google / Samsungなど" data-en="Apple, Google, Samsung, etc.">Apple / Google / Samsungなど</div>
         </div>
       </div>
     </div>
@@ -771,32 +771,32 @@
   <!-- ③ 認証の仕組み -->
   <section id="how" class="fade-in">
     <div class="section-label">⚙️ 03 — MECHANISM</div>
-    <h2>スマホをかざしたとき、何が起きているの？</h2>
+    <h2 data-ja="スマホをかざしたとき、何が起きているの？" data-en="What Happens When You Present Your Phone?">スマホをかざしたとき、何が起きているの？</h2>
 
-    <p>鍵を「出す」というより、<strong>「自分のIDを証明する」</strong>イメージです。マイナンバーカードに近い仕組みで、スマホはドアに自分の身元を証明し、ドア側が「許可リスト」と照合して開錠を決めます。</p>
+    <p data-ja="鍵を「出す」というより、<strong>「自分のIDを証明する」</strong>イメージです。マイナンバーカードに近い仕組みで、スマホはドアに自分の身元を証明し、ドア側が「許可リスト」と照合して開錠を決めます。" data-en="Think of it less as "presenting a key" and more as <strong>"proving your identity."</strong> Like a national ID card, your phone proves your identity to the door, and the door checks it against an access list before unlocking.">鍵を「出す」というより、<strong>「自分のIDを証明する」</strong>イメージです。マイナンバーカードに近い仕組みで、スマホはドアに自分の身元を証明し、ドア側が「許可リスト」と照合して開錠を決めます。</p>
 
     <div class="flow-diagram">
-      <div class="flow-title">🔄 認証フローの概要（NFCの場合）</div>
+      <div class="flow-title" data-ja="🔄 認証フローの概要（NFCの場合）" data-en="🔄 Authentication Flow Overview (NFC)">🔄 認証フローの概要（NFCの場合）</div>
 
       <div class="flow-columns">
         <div>
-          <div class="flow-col-label user">📱 スマホ（ユーザーデバイス）</div>
+          <div class="flow-col-label user" data-ja="📱 スマホ（ユーザーデバイス）" data-en="📱 Smartphone (User Device)">📱 スマホ（ユーザーデバイス）</div>
         </div>
         <div class="flow-col-center">
           <div class="flow-col-label" style="background: var(--gray-100); color: var(--gray-600);">通信</div>
         </div>
         <div>
-          <div class="flow-col-label reader">🚪 ドアのリーダー</div>
+          <div class="flow-col-label reader" data-ja="🚪 ドアのリーダー" data-en="🚪 Door Reader">🚪 ドアのリーダー</div>
         </div>
 
         <!-- Expedited Phase -->
         <div>
-          <div class="phase-badge expedited">⚡ Expedited Phase（迅速フェーズ）</div>
-          <div class="flow-step user-step">「どのドアへのアクセスか」を確認</div>
+          <div class="phase-badge expedited" data-ja="⚡ Expedited Phase（迅速フェーズ）" data-en="⚡ Expedited Phase">⚡ Expedited Phase（迅速フェーズ）</div>
+          <div class="flow-step user-step" data-ja="「どのドアへのアクセスか」を確認" data-en="Identify which door to access">「どのドアへのアクセスか」を確認</div>
           <div class="flow-arrow-vertical">↓</div>
-          <div class="flow-step user-step">暗号の証明（cryptogram）を送信</div>
+          <div class="flow-step user-step" data-ja="暗号の証明（cryptogram）を送信" data-en="Send cryptogram (proof of credential)">暗号の証明（cryptogram）を送信</div>
           <div class="flow-arrow-vertical">↓</div>
-          <div class="flow-step user-step">✅ 認証完了 or 次フェーズへ</div>
+          <div class="flow-step user-step" data-ja="✅ 認証完了 or 次フェーズへ" data-en="✅ Authenticated — or proceed to Step-up">✅ 認証完了 or 次フェーズへ</div>
         </div>
 
         <div>
@@ -820,17 +820,17 @@
         </div>
 
         <div>
-          <div class="phase-badge expedited">⚡ Expedited Phase（迅速フェーズ）</div>
-          <div class="flow-step reader-step">reader_identifier（ID）を提示</div>
+          <div class="phase-badge expedited" data-ja="⚡ Expedited Phase（迅速フェーズ）" data-en="⚡ Expedited Phase">⚡ Expedited Phase（迅速フェーズ）</div>
+          <div class="flow-step reader-step" data-ja="reader_identifier（ID）を提示" data-en="Present reader_identifier">reader_identifier（ID）を提示</div>
           <div class="flow-arrow-vertical">↓</div>
-          <div class="flow-step reader-step">暗号証明を検証</div>
+          <div class="flow-step reader-step" data-ja="暗号証明を検証" data-en="Verify cryptogram">暗号証明を検証</div>
           <div class="flow-arrow-vertical">↓</div>
-          <div class="flow-step reader-step">✅ 開錠 or Step-upへ</div>
+          <div class="flow-step reader-step" data-ja="✅ 開錠 or Step-upへ" data-en="✅ Unlock — or proceed to Step-up">✅ 開錠 or Step-upへ</div>
         </div>
 
         <!-- Step-up phase（オプション） -->
         <div style="margin-top: 16px;">
-          <div class="phase-badge stepup">🔍 Step-up Phase（詳細確認・初回のみ等）</div>
+          <div class="phase-badge stepup" data-ja="🔍 Step-up Phase（詳細確認・初回のみ等）" data-en="🔍 Step-up Phase (full verification, first-time, etc.)">🔍 Step-up Phase（詳細確認・初回のみ等）</div>
           <div class="flow-step user-step">アクセスドキュメントを送信<br><small>（有効期限・権限情報など）</small></div>
         </div>
         <div style="margin-top: 50px;">
@@ -841,7 +841,7 @@
           </div>
         </div>
         <div style="margin-top: 16px;">
-          <div class="phase-badge stepup">🔍 Step-up Phase（詳細確認・初回のみ等）</div>
+          <div class="phase-badge stepup" data-ja="🔍 Step-up Phase（詳細確認・初回のみ等）" data-en="🔍 Step-up Phase (full verification, first-time, etc.)">🔍 Step-up Phase（詳細確認・初回のみ等）</div>
           <div class="flow-step reader-step">内容を検証して<br>最終的な開錠判断</div>
         </div>
       </div>
@@ -868,9 +868,9 @@
   <!-- ④ 通信手段 -->
   <section id="transport" class="fade-in">
     <div class="section-label">📡 04 — TRANSPORT</div>
-    <h2>通信手段は3つある</h2>
+    <h2 data-ja="通信手段は3つある" data-en="Three Communication Methods">通信手段は3つある</h2>
 
-    <p>Aliroは場面に応じて3つの通信方式をサポートしています。それぞれに得意なことがあります。</p>
+    <p data-ja="Aliroは場面に応じて3つの通信方式をサポートしています。それぞれに得意なことがあります。" data-en="Aliro supports three communication methods suited to different scenarios, each with its own strengths.">Aliroは場面に応じて3つの通信方式をサポートしています。それぞれに得意なことがあります。</p>
 
     <div class="transport-diagram">
       <div class="transport-title">通信方式の比較</div>
@@ -930,18 +930,18 @@
     <div class="grid-3-equal">
       <div class="card">
         <div class="chip-list"><span class="chip primary">📶 NFC</span></div>
-        <h3>かざす方式</h3>
-        <p style="font-size:13px;">スマホを10cm以内にかざして認証。最も普及していてシンプル。エクスプレスモード（スリープのままかざせる）と組み合わせて快適に使える。</p>
+        <h3 data-ja="かざす方式" data-en="Tap (NFC)">かざす方式</h3>
+        <p style="font-size:13px;" data-ja="スマホを10cm以内にかざして認証。最も普及していてシンプル。エクスプレスモード（スリープのままかざせる）と組み合わせて快適に使える。" data-en="Authenticate by tapping your phone within 10 cm of the reader. The most widely deployed method — simple and reliable. Works well with Express Mode (tap without waking the screen).">スマホを10cm以内にかざして認証。最も普及していてシンプル。エクスプレスモード（スリープのままかざせる）と組み合わせて快適に使える。</p>
       </div>
       <div class="card">
         <div class="chip-list"><span class="chip" style="background:#dbeafe;color:#1e40af;">🔵 Bluetooth LE</span></div>
-        <h3>近づく方式</h3>
-        <p style="font-size:13px;">数メートル以内に近づくと認証が始まる。かざさなくてOKだが、UWBなしでは位置精度が低く、セキュリティ面でBLE単体は限定的。</p>
+        <h3 data-ja="近づく方式" data-en="Walk-up (Bluetooth LE)">近づく方式</h3>
+        <p style="font-size:13px;" data-ja="数メートル以内に近づくと認証が始まる。かざさなくてOKだが、UWBなしでは位置精度が低く、セキュリティ面でBLE単体は限定的。" data-en="Authentication begins when you approach within a few meters. No tapping required, but without UWB, positional accuracy is limited and BLE alone has security constraints.">数メートル以内に近づくと認証が始まる。かざさなくてOKだが、UWBなしでは位置精度が低く、セキュリティ面でBLE単体は限定的。</p>
       </div>
       <div class="card">
         <div class="chip-list"><span class="chip purple">📍 BLE + UWB</span></div>
-        <h3>ハンズフリー方式</h3>
-        <p style="font-size:13px;">BLEで通信しながら、UWBでセンチ単位の位置測定。「ドア正面1m以内」を正確に判定し、スマホをポケットに入れたままドアが開く本当のハンズフリー。</p>
+        <h3 data-ja="ハンズフリー方式" data-en="Hands-free (UWB)">ハンズフリー方式</h3>
+        <p style="font-size:13px;" data-ja="BLEで通信しながら、UWBでセンチ単位の位置測定。「ドア正面1m以内」を正確に判定し、スマホをポケットに入れたままドアが開く本当のハンズフリー。" data-en="BLE handles communication while UWB measures position to centimeter precision. Accurately determines "within 1 m directly in front of the door," enabling true hands-free unlocking without taking the phone out.">BLEで通信しながら、UWBでセンチ単位の位置測定。「ドア正面1m以内」を正確に判定し、スマホをポケットに入れたままドアが開く本当のハンズフリー。</p>
       </div>
     </div>
 
@@ -953,7 +953,7 @@
   <!-- ⑤ UWB -->
   <section id="uwb" class="fade-in">
     <div class="section-label">📍 05 — UWB</div>
-    <h2>UWBとは？　ハンズフリーを安全に実現する技術</h2>
+    <h2 data-ja="UWBとは？　ハンズフリーを安全に実現する技術" data-en="What is UWB? — The Technology Behind Safe Hands-free Access">UWBとは？　ハンズフリーを安全に実現する技術</h2>
 
     <div class="uwb-visual">
       <div class="uwb-rings">
@@ -981,13 +981,13 @@
 
     <div class="grid-2-equal">
       <div class="card">
-        <h3>💡 なぜUWBが必要？</h3>
+        <h3 data-ja="💡 なぜUWBが必要？" data-en="💡 Why is UWB Needed?">💡 なぜUWBが必要？</h3>
         <p style="font-size:13px;">Bluetoothだけでは<strong>距離の測定が不正確</strong>です。「家の中にスマホがあるのに、外の車の鍵が開いてしまう」などのリレーアタック（中継攻撃）が起きる可能性があります。</p>
         <p style="font-size:13px;">UWBはパルス波の飛行時間を計測し、<strong>センチメートル単位で「正面1m以内にいる」を正確に判定</strong>できます。</p>
       </div>
       <div class="card">
-        <h3>🛡️ リレーアタックって何？</h3>
-        <p style="font-size:13px;">悪意ある人が電波を中継する装置を使い、「実際には遠くにあるスマホの信号」を「すぐそこにあるように偽装」する攻撃です。</p>
+        <h3 data-ja="🛡️ リレーアタックって何？" data-en="🛡️ What is a Relay Attack?">🛡️ リレーアタックって何？</h3>
+        <p style="font-size:13px;" data-ja="悪意ある人が電波を中継する装置を使い、「実際には遠くにあるスマホの信号」を「すぐそこにあるように偽装」する攻撃です。" data-en="An attack where malicious actors use relay devices to amplify a distant phone's signal, making the lock believe the credential is right in front of it.">悪意ある人が電波を中継する装置を使い、「実際には遠くにあるスマホの信号」を「すぐそこにあるように偽装」する攻撃です。</p>
         <p style="font-size:13px;">UWBは電波の飛行時間を正確に測るため、<strong>距離の偽装が非常に困難</strong>。これがハンズフリー解錠を安全に実現できる理由です。</p>
       </div>
     </div>
@@ -1000,7 +1000,7 @@
   <!-- ⑥ MatterとAliro -->
   <section id="vs-matter" class="fade-in">
     <div class="section-label">🔗 06 — MATTER × ALIRO</div>
-    <h2>MatterとAliroの関係</h2>
+    <h2 data-ja="MatterとAliroの関係" data-en="Matter and Aliro — How They Relate">MatterとAliroの関係</h2>
 
     <p>どちらもCSAが策定したスマートホーム規格ですが、<strong>「何と何をつなぐか」の役割が異なります</strong>。</p>
 
@@ -1118,20 +1118,20 @@
   <!-- ⑦ 対象範囲・自動車との棲み分け -->
   <section id="scope" class="fade-in">
     <div class="section-label">🌐 07 — SCOPE</div>
-    <h2>Aliroの対象範囲と自動車（CCC）との棲み分け</h2>
+    <h2 data-ja="Aliroの対象範囲と自動車（CCC）との棲み分け" data-en="Aliro Scope and Separation from Automotive (CCC)">Aliroの対象範囲と自動車（CCC）との棲み分け</h2>
 
     <p>Aliroはスマートホームだけを対象にしているわけではありません。また、「デジタルキー＝自動車の鍵」とイメージする方もいるかもしれませんが、<strong>自動車はAliroのスコープ外</strong>です。</p>
 
     <div class="grid-2-equal" style="margin: 20px 0;">
       <div class="card" style="border-top: 4px solid var(--green);">
         <div class="chip-list"><span class="chip green">✅ Aliroの対象</span></div>
-        <h3>🏢 建物のアクセス管理</h3>
+        <h3 data-ja="🏢 建物のアクセス管理" data-en="🏢 Building Access Control">🏢 建物のアクセス管理</h3>
         <p style="font-size:13px;">Aliroが担うのは、<strong>住宅・オフィス・ホテル・大学キャンパス・医療施設・ジム</strong>など「建物への入退室管理」です。</p>
         <p style="font-size:13px;">B2C（個人向け）だけでなく、B2B（法人向け）の商業施設まで対象範囲に含めた設計になっています。カードリーダー式のシステムも置き換えを想定しています。</p>
       </div>
       <div class="card" style="border-top: 4px solid var(--orange);">
         <div class="chip-list"><span class="chip orange">🚗 自動車は別規格</span></div>
-        <h3>🚗 自動車：CCC Digital Key</h3>
+        <h3 data-ja="🚗 自動車：CCC Digital Key" data-en="🚗 Automotive: CCC Digital Key">🚗 自動車：CCC Digital Key</h3>
         <p style="font-size:13px;">自動車のデジタルキーは、<strong>Car Connectivity Consortium（CCC）</strong>が「Digital Key」仕様として別途策定しています。</p>
         <p style="font-size:13px;">BMW・General Motors・Honda・Hyundai・Volkswagenなどの自動車メーカーと、Apple・Google・Samsungも参画しています。</p>
       </div>
@@ -1155,7 +1155,7 @@
   <!-- ⑧ Q&A -->
   <section id="qa" class="fade-in">
     <div class="section-label">💬 08 — Q&A</div>
-    <h2>よくある疑問にお答えします</h2>
+    <h2 data-ja="よくある疑問にお答えします" data-en="Frequently Asked Questions">よくある疑問にお答えします</h2>
 
     <div class="qa-item">
       <div class="qa-question" onclick="toggleQA(this)">
@@ -1235,10 +1235,10 @@
   <!-- ⑨ まとめ -->
   <section id="summary" class="fade-in">
     <div class="section-label">✨ 09 — SUMMARY</div>
-    <h2>まとめ</h2>
+    <h2 data-ja="まとめ" data-en="Summary">まとめ</h2>
 
     <div class="summary-box">
-      <h3>🔑 Aliroが描く未来のアクセス体験</h3>
+      <h3 data-ja="🔑 Aliroが描く未来のアクセス体験" data-en="🔑 The Access Experience Aliro Envisions">🔑 Aliroが描く未来のアクセス体験</h3>
       <p>「どのカードを出そうか」と悩む必要はなくなります。<br>
       <strong>「自分のスマホ（または自分自身というアイデンティティ）を持ち歩くだけで、許可されている場所ならどこでも、かざすか近づくだけで自動的に扉が開く」</strong>——それがAliroが目指す世界です。</p>
     </div>
