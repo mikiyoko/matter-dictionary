@@ -31,16 +31,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Noto Sans JP', sans-serif; color: var(--text); background: #f8fafc; line-height: 1.7; }
 
-    header { background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
-    .header-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
-    .site-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
-    .site-logo .logo-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; font-weight: 700; font-family: 'Inter', sans-serif; }
-    .site-logo .logo-text { font-size: 14px; font-weight: 700; }
-    .header-nav { display: flex; gap: 4px; }
-    .nav-link { padding: 6px 14px; border-radius: 8px; text-decoration: none; color: var(--gray-600); font-size: 13px; font-weight: 500; transition: all 0.15s; }
-    .nav-link:hover { background: var(--gray-100); color: var(--text); }
-    .nav-link.active { background: var(--primary-light); color: var(--primary); }
-
     .hero { background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #059669 100%); color: #fff; padding: 64px 24px 56px; text-align: center; position: relative; overflow: hidden; }
     .hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
     .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 500; margin-bottom: 20px; backdrop-filter: blur(4px); }
@@ -71,8 +61,6 @@
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
     @media (max-width: 600px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
     @media (max-width: 640px) {
-      .header-inner { padding: 0 14px; height: auto; min-height: 52px; flex-wrap: wrap; gap: 6px; padding-top: 8px; padding-bottom: 8px; }
-      .site-logo .logo-text { font-size: 13px; }
       .header-nav a { font-size: 11px; padding: 5px 8px; }
     }
     @media (max-width: 768px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
@@ -188,29 +176,22 @@
     .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
   </style>
+  <script src="nav.js"></script>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <a class="site-logo" href="index.html">
-      <div class="logo-icon">M</div>
-      <span class="logo-text">Matter辞書</span>
-    </a>
-    <nav class="header-nav">
-      <a class="nav-link" href="index.html">🏠 辞書トップ</a>
-      <a class="nav-link active" href="#">📡 Matterとは</a>
-      <a class="nav-link" href="matter-security.html">🔒 セキュリティ</a>
-      <a class="nav-link" href="aliro.html">🔑 Aliroとは</a>
-      <a class="nav-link" href="troubleshoot.html">🔧 困ったときは</a>
-    </nav>
-  </div>
-</header>
+<div id="site-nav"></div>
 
 <div class="hero">
   <div class="hero-badge">✨ Connectivity Standards Alliance 公式仕様 v1.5</div>
-  <h1><span class="matter-green">Matter</span> とは？</h1>
-  <p>メーカーを超えてつながる——<br>スマートホームの「共通言語」として世界標準となった規格のすべて</p>
+  <h1 data-ja="<span class='matter-green'>Matter</span> とは？"
+    data-en="What is <span class='matter-green'>Matter</span>?">
+  <span class="matter-green">Matter</span> とは？
+</h1>
+  <p data-ja="メーカーを超えてつながる——<br>スマートホームの「共通言語」として世界標準となった規格のすべて"
+     data-en="Connected beyond brands——<br>Everything about the smart home open standard that unites Apple, Google &amp; Amazon">
+    メーカーを超えてつながる——<br>スマートホームの「共通言語」として世界標準となった規格のすべて
+  </p>
   <div class="hero-tags">
     <span class="hero-tag">🌐 メーカー横断の互換性</span>
     <span class="hero-tag">📡 Wi-Fi / Thread / Ethernet</span>
@@ -814,6 +795,7 @@
 </footer>
 
 <script>
+  initNav('guide');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.08 });
