@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>困ったときは | Matter辞書</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-light: #d1fae5;
+      --primary-dark: #065f46;
+      --blue: #1a56db;
+      --blue-light: #e8f0fe;
+      --purple: #7c3aed;
+      --purple-light: #ede9fe;
+      --orange: #d97706;
+      --orange-light: #fef3c7;
+      --red: #dc2626;
+      --red-light: #fee2e2;
+      --yellow: #ca8a04;
+      --yellow-light: #fef9c3;
+      --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb;
+      --gray-300: #d1d5db; --gray-600: #4b5563; --gray-700: #374151;
+      --gray-800: #1f2937; --gray-900: #111827;
+      --text: #1f2937; --text-light: #6b7280; --border: #e5e7eb;
+      --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans JP', sans-serif; color: var(--text); background: #f8fafc; line-height: 1.7; }
+
+    header { background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
+    .header-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+    .site-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+    .site-logo .logo-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; font-weight: 700; font-family: 'Inter', sans-serif; }
+    .site-logo .logo-text { font-size: 14px; font-weight: 700; }
+    .header-nav { display: flex; gap: 4px; }
+    .nav-link { padding: 6px 14px; border-radius: 8px; text-decoration: none; color: var(--gray-600); font-size: 13px; font-weight: 500; transition: all 0.15s; }
+    .nav-link:hover { background: var(--gray-100); color: var(--text); }
+    .nav-link.active { background: #dbeafe; color: #1e40af; }
+    @media (max-width: 640px) {
+      .header-inner { padding: 0 14px; height: auto; min-height: 52px; flex-wrap: wrap; gap: 6px; padding-top: 8px; padding-bottom: 8px; }
+      .header-nav a { font-size: 11px; padding: 5px 8px; }
+    }
+
+    .hero { background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 60%, #2563eb 100%); color: #fff; padding: 56px 24px 48px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 500; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 700; font-family: 'Inter', 'Noto Sans JP', sans-serif; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .hero p { font-size: 15px; color: rgba(255,255,255,0.85); max-width: 520px; margin: 0 auto; }
+
+    main { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
+    section { margin-bottom: 56px; }
+    .section-label { display: inline-flex; align-items: center; gap: 6px; color: #1d4ed8; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    h2 { font-size: 24px; font-weight: 700; color: var(--gray-900); margin-bottom: 18px; line-height: 1.3; }
+    h3 { font-size: 16px; font-weight: 700; color: var(--gray-800); margin-bottom: 10px; }
+    p { font-size: 15px; color: var(--gray-700); margin-bottom: 16px; }
+    p:last-child { margin-bottom: 0; }
+
+    .card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 26px; box-shadow: var(--shadow); }
+    .card + .card { margin-top: 14px; }
+
+    .highlight { background: var(--primary-light); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 16px 0; font-size: 14px; color: var(--primary-dark); }
+    .highlight-blue { background: var(--blue-light); border-left: 4px solid var(--blue); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 16px 0; font-size: 14px; color: #1e3a8a; }
+    .highlight-orange { background: var(--orange-light); border-left: 4px solid var(--orange); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 16px 0; font-size: 14px; color: #92400e; }
+    .highlight-red { background: var(--red-light); border-left: 4px solid var(--red); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 16px 0; font-size: 14px; color: #991b1b; }
+    .highlight-yellow { background: var(--yellow-light); border-left: 4px solid var(--yellow); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 16px 0; font-size: 14px; color: #713f12; }
+
+    .toc { background: var(--gray-50); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 40px; }
+    .toc-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-light); margin-bottom: 10px; }
+    .toc ol { padding-left: 20px; }
+    .toc li { margin-bottom: 5px; }
+    .toc a { font-size: 14px; color: var(--blue); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+
+    /* Checklist */
+    .checklist { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: #fff; box-shadow: var(--shadow); }
+    .check-item { display: grid; grid-template-columns: 44px 1fr; align-items: stretch; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+    .check-item:last-child { border-bottom: none; }
+    .check-item:hover { background: var(--gray-50); }
+    .check-num { display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; font-family: 'Inter', sans-serif; background: var(--gray-50); border-right: 1px solid var(--border); color: var(--blue); }
+    .check-body { padding: 16px 18px; }
+    .check-title { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 5px; }
+    .check-desc { font-size: 13px; color: var(--gray-600); line-height: 1.65; }
+    .check-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
+    .badge-blind { background: var(--red-light); color: #991b1b; }
+    .badge-common { background: var(--orange-light); color: #92400e; }
+    .badge-thread { background: var(--primary-light); color: var(--primary-dark); }
+
+    /* Fabric slots visualizer */
+    .fabric-viz { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; box-shadow: var(--shadow); margin: 18px 0; }
+    .fabric-viz-title { font-size: 14px; font-weight: 700; color: var(--gray-800); margin-bottom: 6px; }
+    .fabric-viz-sub { font-size: 12px; color: var(--text-light); margin-bottom: 14px; }
+    .fabric-slots { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .slot { width: 52px; height: 52px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; text-align: center; line-height: 1.3; flex-shrink: 0; }
+    .slot-apple { background: #ede9fe; border: 1.5px solid #c4b5fd; color: #5b21b6; }
+    .slot-google { background: #dbeafe; border: 1.5px solid #93c5fd; color: #1e40af; }
+    .slot-amazon { background: var(--orange-light); border: 1.5px solid #fcd34d; color: #92400e; }
+    .slot-custom { background: var(--primary-light); border: 1.5px solid #6ee7b7; color: var(--primary-dark); }
+    .slot-empty { background: var(--gray-100); border: 2px dashed var(--gray-300); color: var(--text-light); }
+    .slot-full { background: var(--red-light); border: 1.5px solid #fca5a5; color: #991b1b; font-size: 16px; }
+    .fabric-legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--gray-600); }
+    .legend-item { display: flex; align-items: center; gap: 5px; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+    /* Flow diagram */
+    .flow { display: flex; flex-direction: column; gap: 0; margin: 18px 0; }
+    .flow-step { display: flex; gap: 16px; align-items: flex-start; }
+    .flow-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 36px; }
+    .flow-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; flex-shrink: 0; }
+    .flow-line { width: 2px; background: var(--border); flex: 1; min-height: 20px; }
+    .flow-body { flex: 1; padding-bottom: 20px; }
+    .flow-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: var(--gray-900); }
+    .flow-desc { font-size: 13px; color: var(--gray-600); line-height: 1.65; }
+    .flow-step:last-child .flow-body { padding-bottom: 0; }
+
+    .step-blue .flow-circle { background: var(--blue-light); color: #1e40af; }
+    .step-green .flow-circle { background: var(--primary-light); color: var(--primary-dark); }
+    .step-orange .flow-circle { background: var(--orange-light); color: #92400e; }
+    .step-red .flow-circle { background: var(--red-light); color: #991b1b; }
+
+    /* ecosystem table */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin: 16px 0; }
+    th { background: var(--gray-50); padding: 10px 14px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+    td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--gray-700); vertical-align: top; font-size: 13px; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--gray-50); }
+
+    /* scenario cards */
+    .scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+    @media (max-width: 600px) { .scenario-grid { grid-template-columns: 1fr; } }
+    .scenario-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px; box-shadow: var(--shadow); }
+    .scenario-card.danger { border-color: #fca5a5; }
+    .scenario-card.safe { border-color: #6ee7b7; }
+    .scenario-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    .scenario-label.danger { color: var(--red); }
+    .scenario-label.safe { color: var(--primary); }
+    .scenario-title { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
+    .scenario-desc { font-size: 13px; color: var(--gray-600); line-height: 1.65; }
+
+    /* back to guide banner */
+    .guide-banner { background: var(--primary-light); border: 1px solid #a7f3d0; border-radius: var(--radius); padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 14px; }
+    .guide-banner span { font-size: 14px; color: var(--primary-dark); }
+    .guide-banner a { flex-shrink: 0; background: var(--primary); color: #fff; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700; }
+    @media (max-width: 600px) { .guide-banner { flex-direction: column; align-items: flex-start; } }
+
+    footer { background: var(--gray-800); color: var(--gray-300); text-align: center; padding: 28px 24px; font-size: 13px; }
+    footer a { color: #6ee7b7; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    code { font-family: 'Inter', monospace; background: var(--gray-100); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="site-logo" href="index.html">
+      <div class="logo-icon">M</div>
+      <span class="logo-text">Matter辞書</span>
+    </a>
+    <nav class="header-nav">
+      <a class="nav-link" href="index.html">🏠 辞書トップ</a>
+      <a class="nav-link" href="guide.html">📡 Matterとは</a>
+      <a class="nav-link" href="matter-security.html">🔒 セキュリティ</a>
+      <a class="nav-link" href="aliro.html">🔑 Aliroとは</a>
+      <a class="nav-link active" href="#">🔧 困ったときは</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">🔧 トラブルシューティング</div>
+  <h1>Matterで困ったときは</h1>
+  <p>「登録できない」「つながらない」——原因は意外と多い。<br>順番に確認してわかりやすく解決しましょう。</p>
+</div>
+
+<main>
+
+  <div class="toc fade-in">
+    <div class="toc-title">📋 このページの内容</div>
+    <ol>
+      <li><a href="#checklist">「登録できない」原因チェックリスト</a></li>
+      <li><a href="#fabric-limit">Fabric登録数の上限問題（盲点！）</a></li>
+      <li><a href="#fabric-apple">Apple Homeが2スロット消費する仕組み</a></li>
+      <li><a href="#fabric-check">自分のデバイスのFabric数を確認するには</a></li>
+      <li><a href="#fabric-fix">Fabric上限を超えてしまったときの対処法</a></li>
+      <li><a href="#multi-app">複数アプリに登録するときの正しい手順</a></li>
+      <li><a href="#thread">Threadデバイスが見つからない・つながらない</a></li>
+    </ol>
+  </div>
+
+  <!-- ===== 1. チェックリスト ===== -->
+  <section id="checklist" class="fade-in">
+    <div class="section-label">🔍 01 — CHECKLIST</div>
+    <h2>「登録できない」原因チェックリスト</h2>
+    <p>Matter対応なのに登録できないとき、原因は複数考えられます。番号順に確認してみてください。</p>
+
+    <div class="checklist">
+      <div class="check-item">
+        <div class="check-num">1</div>
+        <div class="check-body">
+          <div class="check-title">コントローラーアプリは最新か？<span class="check-badge badge-common">よくある</span></div>
+          <div class="check-desc">Apple Home・Google Home・Amazon Alexaアプリを最新版に更新してから再試行。Matterの実装品質はアップデートで大きく改善されることがあります。</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-num">2</div>
+        <div class="check-body">
+          <div class="check-title">デバイスのファームウェアは最新か？</div>
+          <div class="check-desc">Matter対応は製品出荷後のファームウェアアップデートで追加される場合があります。まずメーカー純正アプリ（SwitchBot・Aqara等）でファームウェアを最新にしてから、Matterコミッショニングを試みてください。</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-num">3</div>
+        <div class="check-body">
+          <div class="check-title">コミッショニングモードになっているか？</div>
+          <div class="check-desc">多くのデバイスは「登録受付状態（コミッショニングモード）」に手動で切り替える必要があります。デバイスのボタン長押し、リセットボタン、または純正アプリからの操作が必要なことがあります。マニュアルを確認してください。</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-num">4</div>
+        <div class="check-body">
+          <div class="check-title">Bluetooth（BLE）はオンになっているか？<span class="check-badge badge-common">よくある</span></div>
+          <div class="check-desc">Matter初回登録（コミッショニング）はBluetoothを使って行われます。スマートフォンのBluetoothをオンにしてから再試行してください。コミッショニング完了後はWi-FiまたはThreadで通信します。</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-num">5</div>
+        <div class="check-body">
+          <div class="check-title">Thread対応デバイスなら→ボーダールーターはあるか？<span class="check-badge badge-thread">Thread</span></div>
+          <div class="check-desc">Threadデバイス（センサー・スイッチ・スマートロックなど）はボーダールーターがないとコミッショニング自体が完了しないことがあります。<br>Apple Home → HomePod mini・Apple TV 4K<br>Google Home → Nest Hub 2nd Gen・Nest WiFi Pro<br>Amazon → eero（Thread搭載モデル）</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-num">6</div>
+        <div class="check-body">
+          <div class="check-title">Wi-Fiは2.4GHz / 5GHzどちらか？</div>
+          <div class="check-desc">Matter over Wi-Fiのデバイスは2.4GHz帯のみ対応のものが多いです。スマートフォンが5GHzに接続していると登録に失敗することがあります。コミッショニング中は2.4GHzのSSIDに接続し直してみてください。</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-num">7</div>
+        <div class="check-body">
+          <div class="check-title">Fabric登録数が上限に達していないか？<span class="check-badge badge-blind">盲点</span></div>
+          <div class="check-desc">デバイスには登録できるFabric数の上限（SupportedFabrics）があります。この上限に達すると、エラー理由がアプリ画面に表示されないまま登録が失敗することがあります。特にApple Homeは自動で2スロット消費するため注意。<a href="#fabric-limit" style="color:var(--blue);">→ 詳しくはこちら</a></div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-num">8</div>
+        <div class="check-body">
+          <div class="check-title">QRコードの読み取り環境を改善する</div>
+          <div class="check-desc">暗い場所・斜め角度・遠すぎる距離だと読み取りが失敗します。明るい場所でスマートフォンを正面から近づけ、カメラをゆっくり動かして試してください。QRコードが読み取れない場合はManual Pairing Code（数字コード）でも登録できます。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-blue" style="margin-top:18px;">
+      <strong>💡 「エラーメッセージが出ないまま失敗する」ケースについて：</strong>Matter仕様上、Fabric上限オーバーの場合は <code>TableFull</code> というエラーコードが返されますが、Apple Home・Google Homeなどのアプリがこの理由を画面に表示してくれるとは限りません。「なぜか登録できない」という状況では、チェック7のFabric上限を疑ってみてください。
+    </div>
+  </section>
+
+  <!-- ===== 2. Fabric上限 ===== -->
+  <section id="fabric-limit" class="fade-in">
+    <div class="section-label">⚠️ 02 — FABRIC LIMIT</div>
+    <h2>Fabric登録数の上限問題（盲点！）</h2>
+    <p>Matterの「マルチアドミン」は複数のエコシステムに同時登録できる革命的な機能ですが、<strong>各デバイスには登録できるFabric数の上限が設定されています。</strong>これが「登録できない」の意外な原因になることがあります。</p>
+
+    <div class="card">
+      <h3 style="margin-bottom:10px;">Fabricの上限を定義する2つのアトリビュート</h3>
+      <table>
+        <thead><tr><th>アトリビュート名</th><th>意味</th><th>仕様上の値の範囲</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>SupportedFabrics</code></td>
+            <td>そのデバイスが登録を受け付けられるFabricの<strong>最大数</strong>。製品の設計段階で決まる固定値。</td>
+            <td>最低5〜最大254</td>
+          </tr>
+          <tr>
+            <td><code>CommissionedFabrics</code></td>
+            <td>現在すでに登録済みのFabric数。この値が <code>SupportedFabrics</code> と等しくなると新規登録が拒否される。</td>
+            <td>0〜SupportedFabricsの値</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="highlight" style="margin-top:14px;">
+        <strong>仕様上の保証は「最低5」：</strong>Matter仕様書（Core Specification）では <code>SupportedFabrics</code> の最小値は5と定められています。ただしメーカーが製品ごとに異なる値を設定でき、安価なセンサー類は5に近い値、高スペックのハブ類は16以上に設定されることがあります。
+      </div>
+    </div>
+
+    <!-- シミュレーター -->
+    <div class="fabric-viz">
+      <div class="fabric-viz-title">📊 シナリオ別：Fabricスロットの消費イメージ</div>
+      <div class="fabric-viz-sub">上限5のデバイスにApple HomeとGoogle HomeとAlexaを登録した場合</div>
+      <div class="fabric-slots">
+        <div class="slot slot-apple" title="Apple Home（自動登録）">Apple<br>Home</div>
+        <div class="slot slot-apple" title="HomePod（Apple Homeが自動追加）">Home<br>Pod</div>
+        <div class="slot slot-google" title="Google Home">Google<br>Home</div>
+        <div class="slot slot-amazon" title="Amazon Alexa">Amazon<br>Alexa</div>
+        <div class="slot slot-empty" title="空き">空き<br>1</div>
+      </div>
+      <div class="fabric-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#ede9fe; border:1px solid #c4b5fd;"></div>Apple Home（2スロット自動消費）</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#dbeafe; border:1px solid #93c5fd;"></div>Google Home（1スロット）</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--orange-light); border:1px solid #fcd34d;"></div>Amazon Alexa（1スロット）</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--gray-100); border:2px dashed var(--gray-300);"></div>空きスロット</div>
+      </div>
+    </div>
+
+    <div class="scenario-grid">
+      <div class="scenario-card safe">
+        <div class="scenario-label safe">✅ 問題なし</div>
+        <div class="scenario-title">上限5 × Apple Home + Google Home</div>
+        <div class="scenario-desc">Apple 2 + Google 1 = 合計3スロット消費。残り2スロット空き。追加登録も可能。</div>
+      </div>
+      <div class="scenario-card danger">
+        <div class="scenario-label danger">⛔ 上限オーバー</div>
+        <div class="scenario-title">上限5 × Apple + Google + Alexa + 自社アプリ</div>
+        <div class="scenario-desc">Apple 2 + Google 1 + Alexa 1 + 自社 1 = 合計5スロット消費。満杯。これ以上の登録は不可。</div>
+      </div>
+      <div class="scenario-card safe">
+        <div class="scenario-label safe">✅ 問題なし</div>
+        <div class="scenario-title">上限5 × Google Home + Alexa + 自社アプリ</div>
+        <div class="scenario-desc">Google 1 + Alexa 1 + 自社 1 = 合計3スロット消費。Apple Homeを使わなければ余裕が生まれる。</div>
+      </div>
+      <div class="scenario-card danger">
+        <div class="scenario-label danger">⚠️ 意外と早く満杯</div>
+        <div class="scenario-title">上限3のデバイス × Apple Home</div>
+        <div class="scenario-desc">Apple Home だけで2スロット消費。残り1スロットしかない。上限が低い安価なデバイスは特に要注意。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. Apple 2消費 ===== -->
+  <section id="fabric-apple" class="fade-in">
+    <div class="section-label">🍎 03 — APPLE HOME</div>
+    <h2>Apple Homeが2スロット消費する仕組み</h2>
+    <p>Apple HomeにMatterデバイスをコミッショニングすると、なぜ自動的に2つのFabricスロットが使われるのか、その背景を説明します。</p>
+
+    <div class="flow">
+      <div class="flow-step step-blue">
+        <div class="flow-left"><div class="flow-circle">1</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <div class="flow-title">Apple HomeアプリでコミッショニングするとFabricが作られる</div>
+          <div class="flow-desc">iPhone/iPadなどのApple Homeアプリが「Apple Home」Fabricを作成し、1スロット目を消費します。これは他のエコシステム（Google・Amazon等）と同じ動きです。</div>
+        </div>
+      </div>
+      <div class="flow-step step-orange">
+        <div class="flow-left"><div class="flow-circle">2</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <div class="flow-title">HomePodがあると自動的に追加コミッショニングされる</div>
+          <div class="flow-desc">Apple Homeエコシステムでは、HomePod / HomePod mini / Apple TV 4Kが「ホームハブ」として自動参加します。このときHomePodが<strong>独立したFabric</strong>としてデバイスに登録されるため、2スロット目が消費されます。</div>
+        </div>
+      </div>
+      <div class="flow-step step-red">
+        <div class="flow-left"><div class="flow-circle">3</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <div class="flow-title">他のエコシステムは通常1スロット</div>
+          <div class="flow-desc">Google Home・Amazon Alexaは通常、コントローラー側が1つのFabricとしてまとめて登録されます。Apple Homeのように「アプリ用」＋「ハブ用」で2スロット消費する動きはありません。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-orange">
+      <strong>⚠️ これはMatter仕様の問題ではなく、Appleの実装上の挙動です：</strong>Matter仕様書にはFabricの登録方法に細かな規定はなく、エコシステムごとの実装に委ねられています。Appleの2スロット消費はApple Homeのアーキテクチャによるものです。Matter仕様上の最低保証は5スロットですが、上限の少ないデバイスにApple Homeを組み合わせると想定外に早く満杯になる可能性があります。
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+      <h3 style="font-size:14px; margin-bottom:10px;">📊 主要エコシステム別：消費スロット数の目安</h3>
+      <table style="margin:0;">
+        <thead><tr><th>エコシステム</th><th>消費スロット数</th><th>備考</th></tr></thead>
+        <tbody>
+          <tr><td><strong>🍎 Apple Home</strong></td><td style="color:#991b1b; font-weight:700;">2スロット</td><td>HomePodがある場合。HomePodなしの環境では1スロットの可能性あり（要確認）</td></tr>
+          <tr><td><strong>🔵 Google Home</strong></td><td>1スロット</td><td>通常1スロット</td></tr>
+          <tr><td><strong>🟠 Amazon Alexa</strong></td><td>1スロット</td><td>通常1スロット</td></tr>
+          <tr><td><strong>🟢 Samsung SmartThings</strong></td><td>1スロット</td><td>通常1スロット</td></tr>
+          <tr><td><strong>その他の自社アプリ</strong></td><td>1スロット</td><td>メーカーアプリ等は通常1スロット</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px; color:var(--text-light); margin-top:10px;">※ 各エコシステムの実装は変更される可能性があります。最新情報はメーカー公式情報でご確認ください。</p>
+    </div>
+  </section>
+
+  <!-- ===== 4. 確認方法 ===== -->
+  <section id="fabric-check" class="fade-in">
+    <div class="section-label">🔎 04 — HOW TO CHECK</div>
+    <h2>自分のデバイスのFabric数を確認するには</h2>
+    <p>残念ながら、一般ユーザーがスマートフォンアプリから「このデバイスはあと何個Fabricを登録できる」という情報を見る方法は、現時点では限られています。</p>
+
+    <div class="checklist" style="margin-top:18px;">
+      <div class="check-item">
+        <div class="check-num" style="color:var(--primary);">①</div>
+        <div class="check-body">
+          <div class="check-title">製品スペックページ・マニュアルを確認する</div>
+          <div class="check-desc">一部のメーカーは「Supported Fabrics：16」などとスペック欄に記載しています。購入前にメーカー公式サイトや技術資料を確認してみましょう。特にスマートロックのような重要デバイスは事前確認をお勧めします。</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-num" style="color:var(--primary);">②</div>
+        <div class="check-body">
+          <div class="check-title">メーカーサポートに問い合わせる</div>
+          <div class="check-desc">スペックが公開されていない場合、メーカーのサポートチャネルで「SupportedFabricsの値はいくつか」と直接確認するのが確実です。技術担当者なら把握していることがほとんどです。</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-num" style="color:#1e40af;">③</div>
+        <div class="check-body">
+          <div class="check-title">技術者向け：デバイスのアトリビュートを直接読む</div>
+          <div class="check-desc">MatterデバイスのOperational Credentials Clusterには <code>SupportedFabrics</code>（上限）と <code>CommissionedFabrics</code>（現在の登録数）のアトリビュートがあります。chip-toolやMatter SDKを使えばコマンドラインから読み出せます。<br><code style="font-size:11px;">chip-tool operationalcredentials read supported-fabrics [node-id] 0</code></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-yellow" style="margin-top:18px;">
+      <strong>📋 今後の課題として：</strong>Fabricの残り登録数をユーザーが簡単に確認できる手段は、現時点のスマートホームアプリには標準装備されていません。「登録できない原因がわからない」問題の根本はここにあります。エコシステム各社のアプリがこの情報を表示するようになることが、普及に向けた改善点の一つです。
+    </div>
+  </section>
+
+  <!-- ===== 5. 対処法 ===== -->
+  <section id="fabric-fix" class="fade-in">
+    <div class="section-label">🛠 05 — HOW TO FIX</div>
+    <h2>Fabric上限を超えてしまったときの対処法</h2>
+    <p>Fabric登録数が上限に達してしまった場合、以下の対処法を順番に試してみてください。</p>
+
+    <div class="flow" style="margin-top:18px;">
+      <div class="flow-step step-blue">
+        <div class="flow-left"><div class="flow-circle">1</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <div class="flow-title">使っていないFabric（エコシステム）を削除する</div>
+          <div class="flow-desc">古いアプリや使わなくなったエコシステムのFabricが残っているなら、そちらのアプリから「デバイスの削除」を行います。この操作でFabricスロットが解放されます。<br><br>
+          Apple Home → デバイス詳細 →「アクセサリを取り外す」<br>
+          Google Home → デバイス設定 →「デバイスを削除」<br>
+          Amazon Alexa → デバイス → 「デバイスを削除」</div>
+        </div>
+      </div>
+      <div class="flow-step step-green">
+        <div class="flow-left"><div class="flow-circle">2</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <div class="flow-title">削除後、新しいエコシステムに追加する</div>
+          <div class="flow-desc">不要なFabricを削除してスロットを空けたら、改めて追加したいアプリでコミッショニングを行います。既存のFabricから「共有アクセス」で行うのが確実です。<a href="#multi-app" style="color:var(--blue);">→ 複数アプリへの登録手順はこちら</a></div>
+        </div>
+      </div>
+      <div class="flow-step step-orange">
+        <div class="flow-left"><div class="flow-circle">3</div><div class="flow-line"></div></div>
+        <div class="flow-body">
+          <div class="flow-title">どうしても解消しない場合：ファクトリーリセット</div>
+          <div class="flow-desc">デバイスをファクトリーリセットすると、すべてのFabric情報が消去されてスロットが完全にリセットされます。ただし<strong>すべてのエコシステムから削除</strong>されるため、再登録が必要になります。最終手段として検討してください。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-red">
+      <strong>🚨 ファクトリーリセットの注意：</strong>ファクトリーリセットはすべてのFabricを同時に削除します。家族がApple Homeで設定したオートメーションや、別のアプリで行った設定が全て消えてしまいます。リセット前に、登録済みの全エコシステムアプリのメンバーに知らせましょう。
+    </div>
+  </section>
+
+  <!-- ===== 6. 複数アプリへの正しい登録手順 ===== -->
+  <section id="multi-app" class="fade-in">
+    <div class="section-label">🔗 06 — MULTI-APP SETUP</div>
+    <h2>複数アプリに登録するときの正しい手順</h2>
+    <p>「Apple HomeとGoogle Homeの両方で同じデバイスを使いたい」——これはFabric上限の範囲内であれば可能です。正しい手順を守ることが重要です。</p>
+
+    <div class="highlight-red">
+      <strong>❌ よくある間違い：ファクトリーリセットして2つ目のアプリで登録し直す</strong><br>
+      これをすると1つ目のアプリから削除されてしまいます。マルチアドミンでは「既存のFabricからコミッショニングウィンドウを開く」という手順が正しいやり方です。
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+      <h3 style="font-size:15px; margin-bottom:14px;">✅ 正しい手順：Apple Home → Google Homeに追加する例</h3>
+      <div class="flow" style="margin-top:0;">
+        <div class="flow-step step-blue">
+          <div class="flow-left"><div class="flow-circle">1</div><div class="flow-line"></div></div>
+          <div class="flow-body">
+            <div class="flow-title">まずApple Homeアプリでデバイスを登録する（初回コミッショニング）</div>
+            <div class="flow-desc">QRコードまたはManual Pairing Codeを使って、最初のエコシステムに登録します。</div>
+          </div>
+        </div>
+        <div class="flow-step step-blue">
+          <div class="flow-left"><div class="flow-circle">2</div><div class="flow-line"></div></div>
+          <div class="flow-body">
+            <div class="flow-title">Apple Homeアプリ内でコミッショニングウィンドウを開く</div>
+            <div class="flow-desc">Apple Homeのデバイス詳細画面 → 「その他のオプション」または「共有アクセス」→ 「他のアプリに追加」の操作でコミッショニング用のQRコードまたはコードが生成されます。</div>
+          </div>
+        </div>
+        <div class="flow-step step-green">
+          <div class="flow-left"><div class="flow-circle">3</div><div class="flow-line"></div></div>
+          <div class="flow-body">
+            <div class="flow-title">Google Homeアプリでそのコードを読み取る</div>
+            <div class="flow-desc">Google Homeアプリの「デバイスを追加」→「Matterデバイスを追加」の画面で、手順2で生成されたコードを読み取ります。</div>
+          </div>
+        </div>
+        <div class="flow-step step-green">
+          <div class="flow-left"><div class="flow-circle">4</div><div class="flow-line"></div></div>
+          <div class="flow-body">
+            <div class="flow-title">両アプリから操作できる状態になる</div>
+            <div class="flow-desc">ファクトリーリセット不要で、Apple HomeとGoogle Homeの両方からデバイスを操作できます。Fabric上限の範囲内であれば、この手順でさらに別のアプリにも追加できます。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-blue" style="margin-top:4px;">
+      <strong>📌 仕様書上の名称：</strong>この手順はMatter Core Specificationでは <em>Administrator-Assisted Commissioning</em>（管理者支援型コミッショニング）と呼ばれます。既存のFabric管理者がコミッショニングウィンドウを一時的に開き、新しいコントローラーがそこに参加する仕組みです。
+    </div>
+  </section>
+
+  <!-- ===== 7. Thread ===== -->
+  <section id="thread" class="fade-in">
+    <div class="section-label">🕸 07 — THREAD</div>
+    <h2>Threadデバイスが見つからない・つながらない</h2>
+    <p>ThreadはWi-Fiとは異なるプロトコルのため、独自のトラブルが発生することがあります。</p>
+
+    <div class="checklist">
+      <div class="check-item">
+        <div class="check-num" style="color:var(--primary);">①</div>
+        <div class="check-body">
+          <div class="check-title">ボーダールーターは正しく動作しているか？</div>
+          <div class="check-desc">HomePod mini・Apple TV 4K（Apple Home）、Nest Hub 2nd Gen・Nest WiFi Pro（Google Home）などのボーダールーターの電源・接続状態を確認。再起動してみると解決することも。</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-num" style="color:var(--primary);">②</div>
+        <div class="check-body">
+          <div class="check-title">Threadデバイスの電池は十分か？</div>
+          <div class="check-desc">Thread/ICDデバイス（センサー・スイッチなど）の電池が消耗していると、応答が遅くなったり無応答になります。電池交換・充電を試してみてください。</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-num" style="color:var(--primary);">③</div>
+        <div class="check-body">
+          <div class="check-title">ボーダールーターとデバイスの距離が遠すぎないか？</div>
+          <div class="check-desc">Threadはメッシュネットワークですが、初回コミッショニング時はボーダールーターと比較的近い距離が必要です。ボーダールーターの近くでコミッショニングを試み、登録完了後に設置場所に移動する方法を試してください。</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-num" style="color:var(--primary);">④</div>
+        <div class="check-body">
+          <div class="check-title">複数エコシステムのボーダールーターが混在している場合</div>
+          <div class="check-desc">Apple HomePod（Apple Thread）とGoogle Nest Hub（Google Thread）が両方ある場合、デバイスがどちらのThreadネットワークに参加するかで挙動が変わることがあります。まずは使いたいアプリのボーダールーターのみを残してコミッショニングを試してみてください。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="guide-banner">
+      <span>📡 Threadの仕組み・ボーダールーターの役割をもっと詳しく知りたい方は</span>
+      <a href="guide.html#network">Matterとは？→ 通信の仕組みへ</a>
+    </div>
+  </section>
+
+  <!-- Bottom navigation -->
+  <section class="fade-in" style="margin-bottom:0;">
+    <div style="background:var(--gray-50); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px; text-align:center;">
+      <p style="font-size:14px; font-weight:700; color:var(--gray-800); margin-bottom:16px;">他のページも見てみましょう</p>
+      <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
+        <a href="guide.html" style="display:inline-flex; align-items:center; gap:6px; background:var(--primary); color:#fff; padding:10px 20px; border-radius:8px; text-decoration:none; font-size:13px; font-weight:600;">📡 Matterとは？（基本解説）</a>
+        <a href="matter-security.html" style="display:inline-flex; align-items:center; gap:6px; background:#1e3a8a; color:#fff; padding:10px 20px; border-radius:8px; text-decoration:none; font-size:13px; font-weight:600;">🔒 Matterのセキュリティ</a>
+        <a href="index.html" style="display:inline-flex; align-items:center; gap:6px; background:var(--gray-700); color:#fff; padding:10px 20px; border-radius:8px; text-decoration:none; font-size:13px; font-weight:600;">🏠 辞書トップへ戻る</a>
+      </div>
+      <p style="font-size:12px; color:var(--text-light); margin-top:18px; margin-bottom:0;">
+        📄 参照仕様書：<a href="https://csa-iot.org/developer-resource/specifications-download-request/" target="_blank" style="color:var(--primary);">Matter Specification v1.5（CSA）</a><br>
+        解説ページ作成：<a href="index.html">Matter辞書</a> by ライフテックコーディネーター 織田未来
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Matter 1.5 デバイス辞書 | by ライフテックコーディネーター 織田未来 | <a href="https://github.com/mikiyoko/matter-dictionary">GitHub</a></p>
+  <p style="margin-top:6px; font-size:11px; color:#9ca3af;">本ページはMatter Specification v1.5（CSA）を参考に、一般ユーザー向けに解説したものです。</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
