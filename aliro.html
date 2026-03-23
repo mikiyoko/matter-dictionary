@@ -48,46 +48,6 @@
     }
 
     /* ─── ヘッダー ─── */
-    header {
-      background: #fff;
-      border-bottom: 1px solid var(--border);
-      position: sticky; top: 0; z-index: 100;
-      box-shadow: var(--shadow);
-    }
-    .header-inner {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 24px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .site-logo {
-      display: flex; align-items: center; gap: 10px;
-      text-decoration: none; color: var(--text);
-    }
-    .site-logo .logo-icon {
-      width: 32px; height: 32px;
-      background: var(--primary);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 16px; font-weight: 700;
-      font-family: 'Inter', sans-serif;
-    }
-    .site-logo .logo-text { font-size: 14px; font-weight: 700; }
-    .header-nav { display: flex; gap: 4px; }
-    .nav-link {
-      padding: 6px 14px;
-      border-radius: 8px;
-      text-decoration: none;
-      color: var(--gray-600);
-      font-size: 13px;
-      font-weight: 500;
-      transition: all 0.15s;
-    }
-    .nav-link:hover { background: var(--gray-100); color: var(--text); }
-    .nav-link.active { background: var(--primary-light); color: var(--primary); }
 
     /* ─── ヒーロー ─── */
     .hero {
@@ -205,9 +165,6 @@
       .grid-3 { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 640px) {
-      .header-inner { padding: 0 14px; height: auto; min-height: 52px; flex-wrap: wrap; gap: 6px; padding-top: 8px; padding-bottom: 8px; }
-      .site-logo .logo-text { font-size: 13px; }
-      .header-nav a { font-size: 11px; padding: 5px 8px; }
       .roles-compare-grid { grid-template-columns: 1fr !important; }
     }
 
@@ -677,31 +634,25 @@
     .toc a { font-size: 14px; color: var(--primary); text-decoration: none; }
     .toc a:hover { text-decoration: underline; }
   </style>
+  <script src="nav.js"></script>
 </head>
 <body>
 
 <!-- ヘッダー -->
-<header>
-  <div class="header-inner">
-    <a class="site-logo" href="index.html">
-      <div class="logo-icon">M</div>
-      <span class="logo-text">Matter辞書</span>
-    </a>
-    <nav class="header-nav">
-      <a class="nav-link" href="index.html">🏠 辞書トップ</a>
-      <a class="nav-link" href="guide.html">📖 Matterとは</a>
-      <a class="nav-link active" href="#">🔑 Aliroとは</a>
-    </nav>
-  </div>
-</header>
+<div id="site-nav"></div>
 
 <!-- ヒーロー -->
 <div class="hero">
   <div class="hero-badge">✨ Connectivity Standards Alliance 公式仕様 v1.0</div>
-  <h1><span>Aliro</span> とは？</h1>
-  <p>スマホが「デジタルの鍵」になる——<br>MatterのCSAが策定した、次世代アクセス規格のすべて</p>
+  <h1 data-ja="<span>Aliro</span> とは？" data-en="What is <span>Aliro</span>?">
+    <span>Aliro</span> とは？
+  </h1>
+  <p data-ja="スマホが「デジタルの鍵」になる——<br>MatterのCSAが策定した、次世代アクセス規格のすべて"
+     data-en="Your smartphone becomes a digital key——<br>Everything about the next-gen access standard from Matter&#39;s CSA">
+    スマホが「デジタルの鍵」になる——<br>MatterのCSAが策定した、次世代アクセス規格のすべて
+  </p>
   <div class="hero-tags">
-    <span class="hero-tag">🔑 デジタル鍵</span>
+    <span class="hero-tag" data-ja="🔑 デジタル鍵" data-en="🔑 Digital Key">🔑 デジタル鍵</span>
     <span class="hero-tag">📱 NFC / Bluetooth / UWB</span>
     <span class="hero-tag">🏠 ホーム・ホテル・オフィス</span>
     <span class="hero-tag">🔒 高セキュリティ</span>
@@ -1339,6 +1290,7 @@
 </footer>
 
 <script>
+  initNav('aliro');
   // Q&A トグル
   function toggleQA(btn) {
     const answer = btn.nextElementSibling;
