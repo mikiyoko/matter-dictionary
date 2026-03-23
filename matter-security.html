@@ -30,15 +30,6 @@
       --green-light: #d1fae5;
     }
     body { font-family: 'Noto Sans JP', sans-serif; color: var(--text); background: #f8fafc; line-height: 1.7; }
-    header { background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
-    .header-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
-    .site-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
-    .site-logo .logo-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; font-weight: 700; font-family: 'Inter', sans-serif; }
-    .site-logo .logo-text { font-size: 14px; font-weight: 700; }
-    .header-nav { display: flex; gap: 4px; }
-    .nav-link { padding: 6px 14px; border-radius: 8px; text-decoration: none; color: var(--gray-600); font-size: 13px; font-weight: 500; transition: all 0.15s; }
-    .nav-link:hover { background: var(--gray-100); color: var(--text); }
-    .nav-link.active { background: var(--primary-light); color: var(--primary); }
 
     .hero { background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #059669 100%); color: #fff; padding: 64px 24px 56px; text-align: center; position: relative; overflow: hidden; }
     .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(110,231,183,0.15) 0%, transparent 60%); }
@@ -128,40 +119,32 @@
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 640px) {
-      .header-inner { padding: 0 14px; height: auto; min-height: 52px; flex-wrap: wrap; gap: 6px; padding-top: 8px; padding-bottom: 8px; }
-      .site-logo .logo-text { font-size: 13px; }
       .header-nav a { font-size: 11px; padding: 5px 8px; }
       .grid-2, .grid-3 { grid-template-columns: 1fr; }
       .comm-step { grid-template-columns: 36px 1fr; }
     }
   </style>
+  <script src="nav.js"></script>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <a class="site-logo" href="index.html">
-      <div class="logo-icon">M</div>
-      <span class="logo-text">Matter辞書</span>
-    </a>
-    <nav class="header-nav">
-      <a class="nav-link" href="index.html">🏠 辞書トップ</a>
-      <a class="nav-link" href="guide.html">📡 Matterとは</a>
-      <a class="nav-link active" href="matter-security.html">🔒 セキュリティ</a>
-      <a class="nav-link" href="aliro.html">🔑 Aliroとは</a>
-    </nav>
-  </div>
-</header>
+<div id="site-nav"></div>
 
 <div class="hero">
   <div class="hero-badge">🔒 Matter Security</div>
-  <h1><span class="matter-green">Matter</span> のセキュリティと<br>登録の仕組み</h1>
-  <p>「QRコードを読むだけで勝手に家に入れられない？」そんな疑問への答えと、Matterが採用する多層防御の仕組みを図解で解説します。</p>
+  <h1 data-ja="<span class='matter-green'>Matter</span> のセキュリティと<br>登録の仕組み"
+      data-en="<span class='matter-green'>Matter</span> Security &amp;<br>How Commissioning Works">
+    <span class="matter-green">Matter</span> のセキュリティと<br>登録の仕組み
+  </h1>
+  <p data-ja="「QRコードを読むだけで勝手に家に入れられない？」そんな疑問への答えと、Matterが採用する多層防御の仕組みを図解で解説します。"
+     data-en="&#34;Can someone break in just by scanning a QR code?&#34; Learn how Matter&#39;s layered security model works — from device attestation to encrypted commissioning.">
+    「QRコードを読むだけで勝手に家に入れられない？」そんな疑問への答えと、Matterが採用する多層防御の仕組みを図解で解説します。
+  </p>
   <div class="hero-tags">
-    <span class="hero-tag">🛂 デバイス認証（DAC）</span>
-    <span class="hero-tag">🔐 通信の暗号化</span>
-    <span class="hero-tag">📋 コミッショニングフロー</span>
-    <span class="hero-tag">🌐 DCL（分散型台帳）</span>
+    <span class="hero-tag" data-ja="🛂 デバイス認証（DAC）" data-en="🛂 Device Attestation (DAC)">🛂 デバイス認証（DAC）</span>
+    <span class="hero-tag" data-ja="🔐 通信の暗号化" data-en="🔐 Encrypted Communication">🔐 通信の暗号化</span>
+    <span class="hero-tag" data-ja="📋 コミッショニングフロー" data-en="📋 Commissioning Flow">📋 コミッショニングフロー</span>
+    <span class="hero-tag" data-ja="🌐 DCL（分散型台帳）" data-en="🌐 DCL (Distributed Ledger)">🌐 DCL（分散型台帳）</span>
   </div>
 </div>
 
@@ -531,6 +514,7 @@
 </footer>
 
 <script>
+  initNav('security');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.08 });
