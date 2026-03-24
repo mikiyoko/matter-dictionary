@@ -1,0 +1,352 @@
+[
+  {
+    "id": "fabric",
+    "term": "Fabric",
+    "termJa": "ファブリック",
+    "category": "architecture",
+    "description": "Matterにおける「信頼の境界」となるネットワーク単位。1つのFabricに属するデバイスはすべて共通のルートCA証明書で署名されたNOC（Node Operational Certificate）を持ち、相互に認証して通信できる。デバイスは複数のFabricに同時参加可能（マルチアドミン）で、Apple HomeとGoogle Homeが同一デバイスを別Fabricとして管理するケースが典型例。",
+    "relatedTerms": ["noc", "commissioner", "operational-credentials", "rcac"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "node",
+    "term": "Node",
+    "termJa": "ノード",
+    "category": "architecture",
+    "description": "Matter Fabricに登録された単一のアドレス可能なデバイス。1つの物理デバイスが1つのノードを構成するのが基本。各ノードはFabricスコープで一意のNode IDを持つ。ノードはEndpointの集合体であり、Endpoint 0は必ずRoot Node（ユーティリティエンドポイント）。",
+    "relatedTerms": ["fabric", "endpoint", "root-node"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "endpoint",
+    "term": "Endpoint",
+    "termJa": "エンドポイント",
+    "category": "architecture",
+    "description": "ノード内の番号付きパーティション。各エンドポイントは1つ以上のデバイスタイプを実装し、複数のクラスターを持つ。Endpoint 0はRoot Node（コミッショニング・診断などの管理機能）。Endpoint 1以降がライト・センサーなどのアプリケーション機能。1つのデバイスが複数エンドポイントを持つことで多機能デバイスを表現できる。",
+    "relatedTerms": ["node", "cluster", "descriptor"],
+    "source": "Matter Spec"
+  },
+  {
+    "id": "cluster",
+    "term": "Cluster",
+    "termJa": "クラスター",
+    "category": "architecture",
+    "description": "Matterのデータモデルの基本単位。16ビットのIDで識別される機能グループで、属性（Attribute）・コマンド（Command）・イベント（Event）の集合体。On/OffクラスターならOnOff属性とOff/On/Toggleコマンドなど。サーバー側（実装側）とクライアント側（制御側）があり、デバイスはどちらか（または両方）を実装できる。",
+    "relatedTerms": ["attribute", "command", "event", "feature"],
+    "source": "Matter Spec"
+  },
+  {
+    "id": "attribute",
+    "term": "Attribute",
+    "termJa": "アトリビュート（属性）",
+    "category": "architecture",
+    "description": "クラスターが保持するデータ値。16ビットのIDを持ち、型・アクセス権・品質（揮発/不揮発/固定）が定義される。クライアントはRead/Write/Subscribe操作でアトリビュートにアクセスする。例：On/OffクラスターのOnOff（bool型、読み取り専用）、ThermostatクラスターのOccupiedCoolingSetpoint（int16型、読み書き可能）。",
+    "relatedTerms": ["cluster", "command", "interaction-model"],
+    "source": "Matter Spec"
+  },
+  {
+    "id": "command",
+    "term": "Command",
+    "termJa": "コマンド",
+    "category": "architecture",
+    "description": "クラスターのサーバーに対して送信するアクション要求。16ビットのIDを持ち、方向（クライアント→サーバー or サーバー→クライアント）とフィールドパラメーターが定義される。例：On/OffクラスターのToggleコマンド（引数なし）、Door LockクラスターのLockDoorコマンド（PINコードのオプションフィールドあり）。",
+    "relatedTerms": ["cluster", "attribute", "interaction-model"],
+    "source": "Matter Spec"
+  },
+  {
+    "id": "event",
+    "term": "Event",
+    "termJa": "イベント",
+    "category": "architecture",
+    "description": "クラスターサーバーが非同期に記録する通知ログ。16ビットのIDを持ち、優先度（critical/info/debug）が定義される。クライアントはSubscribeでリアルタイム受信できる。例：Basic InformationのStartUpイベント（起動時）・ShutDownイベント（シャットダウン時）、Door LockのDoorLockAlarmイベント（異常検知時）。",
+    "relatedTerms": ["cluster", "attribute", "command"],
+    "source": "Matter Spec"
+  },
+  {
+    "id": "feature",
+    "term": "Feature",
+    "termJa": "フィーチャー（機能フラグ）",
+    "category": "architecture",
+    "description": "クラスター内のオプション機能をビットフラグで表すもの。FeatureMap属性で実装済み機能を宣言し、アトリビュートやコマンドのConformance（必須/任意/禁止）がFeatureに条件付けられる。例：On/OffクラスターのLT（Lighting）フィーチャーが有効なら、StartUpOnOff属性が必須になる。",
+    "relatedTerms": ["cluster", "attribute"],
+    "source": "Matter Spec"
+  },
+  {
+    "id": "commissioner",
+    "term": "Commissioner",
+    "termJa": "コミッショナー",
+    "category": "commissioning",
+    "description": "新しいデバイスをMatter Fabricに参加させる（コミッショニングする）役割を持つソフトウェアまたはデバイス。スマートフォンアプリ・ハブ・コントローラーが担う。PASE（パスコード認証）でデバイスに接続し、ネットワーク設定・Fabric証明書の発行・ACL設定などのフローを完了させる。",
+    "relatedTerms": ["commissionee", "pase", "fabric", "administrator-commissioning"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "commissionee",
+    "term": "Commissionee",
+    "termJa": "コミッショニー",
+    "category": "commissioning",
+    "description": "コミッショニングの対象となる（Fabricに参加しようとしている）デバイス。PASEセッションを開いてコミッショナーからの設定を受け入れ、コミッショニング完了後はFabricの正式メンバー（Node）となる。",
+    "relatedTerms": ["commissioner", "pase"],
+    "source": "Matter Spec"
+  },
+  {
+    "id": "case",
+    "term": "CASE",
+    "termFull": "Certificate Authenticated Session Establishment",
+    "termJa": "証明書認証セッション確立",
+    "category": "security",
+    "description": "コミッショニング完了後の通常通信で使用するセッション確立プロトコル。双方がFabric証明書（NOC）を提示してSigma1/Sigma2/Sigma3のハンドシェイクを行い、共有セッションキーを生成する。コミッショニング後のすべての操作（属性読み取り・コマンド送信等）はCASEセッション上で行われる。",
+    "relatedTerms": ["pase", "noc", "fabric"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "pase",
+    "term": "PASE",
+    "termFull": "Passcode-Authenticated Session Establishment",
+    "termJa": "パスコード認証セッション確立",
+    "category": "commissioning",
+    "description": "コミッショニング時のみ使用するセッション確立プロトコル。QRコードや数字コードに含まれるパスコードをSPAKE2+アルゴリズムで認証し、コミッショニング専用の一時セッションを確立する。コミッショニング完了後は破棄され、以降はCASEで通信する。",
+    "relatedTerms": ["case", "commissioner", "commissionee"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "noc",
+    "term": "NOC",
+    "termFull": "Node Operational Certificate",
+    "termJa": "ノード運用証明書",
+    "category": "security",
+    "description": "コミッショニング時にFabricのルートCA（RCAC）によって署名されるデバイス固有の証明書。Node IDとFabric IDを含み、CASEセッション確立時に身元証明として使用する。デバイスは参加しているFabricの数だけNOCを持つ（マルチFabric対応）。",
+    "relatedTerms": ["rcac", "case", "operational-credentials", "fabric"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "rcac",
+    "term": "RCAC",
+    "termFull": "Root CA Certificate",
+    "termJa": "ルートCA証明書",
+    "category": "security",
+    "description": "Fabric全体の信頼の起点となるルートCA証明書。コミッショナーが所有し、NOC（Node Operational Certificate）の署名に使用する。同一FabricのデバイスはすべてこのRCACで検証できる。",
+    "relatedTerms": ["noc", "paa", "pai", "dac"],
+    "source": "Matter Spec"
+  },
+  {
+    "id": "dac",
+    "term": "DAC",
+    "termFull": "Device Attestation Certificate",
+    "termJa": "デバイス認証証明書",
+    "category": "security",
+    "description": "デバイスの正真性を証明するための製品固有の証明書。製造時に書き込まれ、PAI（PAA署名）で検証される。コミッショニング時にコミッショナーがDACチェーンを確認し、正規製品かどうかを検証する（偽造品排除のための仕組み）。",
+    "relatedTerms": ["paa", "pai", "rcac", "noc"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "paa",
+    "term": "PAA",
+    "termFull": "Product Attestation Authority",
+    "termJa": "製品認証機関",
+    "category": "security",
+    "description": "DAC（デバイス認証証明書）の信頼チェーンの最上位CA。CSA（Connectivity Standards Alliance）が管理するルートCAで、PAI（Product Attestation Intermediate）の証明書に署名する。コミッショナーはDCL（Distributed Compliance Ledger）でPAAリストを確認してデバイスの正真性を検証する。",
+    "relatedTerms": ["pai", "dac", "rcac"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "pai",
+    "term": "PAI",
+    "termFull": "Product Attestation Intermediate",
+    "termJa": "製品認証中間CA",
+    "category": "security",
+    "description": "PAA（ルートCA）とDAC（デバイス固有証明書）の間に位置する中間CA証明書。通常メーカーまたはその認証サービスが管理し、同一製品ラインのDACに一括署名する。信頼チェーン：PAA → PAI → DAC。",
+    "relatedTerms": ["paa", "dac"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "icd",
+    "term": "ICD",
+    "termFull": "Intermittently Connected Device",
+    "termJa": "間欠接続デバイス",
+    "category": "power",
+    "description": "バッテリー駆動などにより常時ネットワークに接続せず、定期的にスリープするデバイス。コントローラーへの通知はCheck-Inプロトコル（CIP）で行い、デバイスがアクティブになったタイミングで溜まったコマンドを受信する。SIT（Short Interval Time）とLIT（Long Idle Time）の2モードがある。",
+    "relatedTerms": ["sit", "lit", "cip", "uat", "icd-management"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "sit",
+    "term": "SIT",
+    "termFull": "Short Interval Time",
+    "termJa": "短時間間隔（SITモード）",
+    "category": "power",
+    "description": "ICDのスリープモードの一種で、比較的短い間隔（数秒〜数十秒）で定期的に起動してポーリングするモード。応答性が高い代わりにバッテリー消費が大きい。センサーや煙感知器など、準リアルタイムな応答が必要なデバイスに使用。",
+    "relatedTerms": ["icd", "lit", "cip"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "lit",
+    "term": "LIT",
+    "termFull": "Long Idle Time",
+    "termJa": "長時間アイドル（LITモード）",
+    "category": "power",
+    "description": "ICDのスリープモードの一種で、数分〜数時間単位の長いスリープ間隔を持つモード。バッテリー寿命を最大化できるが、コマンドへの応答が遅延する。コントローラーはCheck-Inプロトコル（CIP）でデバイスの起床時にコマンドをキューから送信する。",
+    "relatedTerms": ["icd", "sit", "cip", "uat"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "cip",
+    "term": "CIP",
+    "termFull": "Check-In Protocol",
+    "termJa": "チェックインプロトコル",
+    "category": "power",
+    "description": "LIT ICDデバイスが定期的にコントローラーに「起きています」と通知するプロトコル。デバイスがアクティブになると暗号化されたCheck-Inメッセージを登録済みクライアントに送信し、クライアントはキューに溜まったコマンドを返信として送る。",
+    "relatedTerms": ["icd", "lit", "uat", "icd-management"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "uat",
+    "term": "UAT",
+    "termFull": "User Active Mode Trigger",
+    "termJa": "ユーザーアクティブモードトリガー",
+    "category": "power",
+    "description": "ユーザーの物理操作（ボタン押下など）によってLIT ICDデバイスを即座にアクティブモードに切り替える機能。緊急のコマンド送信が必要な場合に使用。ICD ManagementクラスターのUserActiveModeTriggerHint属性で「どんな操作で起こせるか」をアプリに伝える。",
+    "relatedTerms": ["icd", "lit", "cip"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "bcm",
+    "term": "BCM",
+    "termFull": "Basic Commissioning Method",
+    "termJa": "基本コミッショニング方式",
+    "category": "commissioning",
+    "description": "コミッショニングウィンドウを開く際の簡易的な方式。デバイス固有のパスコードをそのまま使用し、追加の暗号化ネゴシエーションなしにPASEセッションを開く。主に初回コミッショニングや開発用途に使用。セキュリティ面ではECMより劣る。",
+    "relatedTerms": ["ecm", "pase", "administrator-commissioning"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "ecm",
+    "term": "ECM",
+    "termFull": "Enhanced Commissioning Method",
+    "termJa": "拡張コミッショニング方式",
+    "category": "commissioning",
+    "description": "追加のマルチ管理者対応のコミッショニング方式。Administrator CommissioningクラスターのOpenCommissioningWindowコマンドで、ランダムに生成した一時パスコードを使ってPASEセッションを開く。BCMより安全でマルチ管理者シナリオの標準方式。",
+    "relatedTerms": ["bcm", "pase", "administrator-commissioning"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "evse",
+    "term": "EVSE",
+    "termFull": "Electric Vehicle Supply Equipment",
+    "termJa": "電気自動車給電装置",
+    "category": "energy",
+    "description": "EV（電気自動車）への充電を行う設備（充電ステーション・充電器）の総称。Matterでは「Energy EVSE」クラスター（0x0099）と「Energy EVSE」デバイスタイプ（0x050C）として定義され、充電電流の制御・スケジューリング・エネルギー計測を管理する。",
+    "relatedTerms": ["energy-evse", "energy-evse-mode", "device-energy-management"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "rvc",
+    "term": "RVC",
+    "termFull": "Robotic Vacuum Cleaner",
+    "termJa": "ロボット掃除機",
+    "category": "appliances",
+    "description": "Matterにおけるロボット掃除機のデバイスカテゴリの略称。専用クラスターとして「RVC Run Mode（0x0054）」「RVC Clean Mode（0x0055）」「RVC Operational State（0x0061）」が定義されており、動作モードや清掃モードをMatter経由で制御できる。",
+    "relatedTerms": ["rvc-run-mode", "rvc-clean-mode", "rvc-operational-state"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "tcc",
+    "term": "TCC",
+    "termFull": "Temperature Controlled Cabinet",
+    "termJa": "温度管理キャビネット",
+    "category": "appliances",
+    "description": "温度管理が必要なキャビネット型家電（冷蔵庫・ワインセラー・冷凍庫など）のMatterにおける略称。「Temperature Controlled Cabinet」デバイスタイプ（0x0071）として定義され、複数の温度ゾーン管理に対応する。",
+    "relatedTerms": ["refrigerator-tcc-mode", "temperature-control"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "smco",
+    "term": "SMCO",
+    "termFull": "Smoke and Carbon Monoxide",
+    "termJa": "煙・一酸化炭素アラーム",
+    "category": "sensors",
+    "description": "煙（Smoke）と一酸化炭素（CO）の両方を検知するアラームデバイスのMatterにおける略称。「Smoke CO Alarm」クラスター（0x005C）とデバイスタイプ（0x0076）として定義され、火災・CO中毒の早期警報機能をMatter経由で提供する。",
+    "relatedTerms": ["smoke-co-alarm"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "pcc",
+    "term": "PCC",
+    "termFull": "Pump Configuration and Control",
+    "termJa": "ポンプ設定・制御",
+    "category": "hvac",
+    "description": "循環ポンプ・給水ポンプなどの制御を行うMatterクラスターの略称。「Pump Configuration and Control」クラスター（0x0200）として定義され、動作モード・圧力・流量などのポンプパラメーターを管理する。灌漑システムや暖房システムのポンプ制御に使用。",
+    "relatedTerms": ["pump-configuration"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "mei",
+    "term": "MEI",
+    "termFull": "Manufacturer Extensible Identifier",
+    "termJa": "メーカー拡張識別子",
+    "category": "architecture",
+    "description": "標準のMatter ID空間に収まらないベンダー独自のクラスター・アトリビュート・コマンドを定義するためのID形式。上位16ビットがVendor ID、下位16ビットが製品固有IDの構成。相互運用性は保証されないが、独自機能の追加が可能。",
+    "relatedTerms": [],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "paf",
+    "term": "PAF",
+    "termFull": "Wi-Fi Public Action Frame",
+    "termJa": "Wi-Fi公開アクションフレーム",
+    "category": "networking",
+    "description": "Wi-Fiの管理フレームの一種で、暗号化なしに送受信できるブロードキャストフレーム。MatterではPAFを使ってデバイス発見・コミッショニングの事前通信を行う「Wi-Fi PAF」プロトコルに利用。Bluetoothが使えない環境でのコミッショニングを可能にする。",
+    "relatedTerms": ["commissioner"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "pdc",
+    "term": "PDC",
+    "termFull": "Per-device Credentials",
+    "termJa": "デバイス固有クレデンシャル",
+    "category": "security",
+    "description": "各デバイスに固有のセキュリティクレデンシャル。DAC（Device Attestation Certificate）とその秘密鍵の組み合わせを指す。製造時に安全なエレメント（SE）や信頼実行環境（TEE）に書き込まれ、デバイスの正真性証明に使用される。",
+    "relatedTerms": ["dac", "paa", "pai"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "pics",
+    "term": "PICS",
+    "termFull": "Protocol Implementation Conformance Statement",
+    "termJa": "プロトコル実装適合宣言",
+    "category": "certification",
+    "description": "Matterの認証テストで使用するクラスター固有の短縮コード。各クラスターには固有のPICSコードが割り当てられており（例：On/Off=OO、Thermostat=TSTAT）、認証試験の対象機能を宣言・識別するために使用する。Matter認証を取得するデバイスはPICSに従って試験が実施される。",
+    "relatedTerms": [],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "bdx",
+    "term": "BDX",
+    "termFull": "Bulk Data eXchange",
+    "termJa": "バルクデータ転送プロトコル",
+    "category": "protocols",
+    "description": "Matter内で大容量データを転送するためのプロトコル。OTA（ファームウェア更新）でのイメージ転送や、診断ログの取得に使用される。通常のMatter Interaction Model（小データの読み書き）では効率が悪い大容量データ転送に対応するために設計された。",
+    "relatedTerms": ["ota-provider", "ota-requestor", "diagnostic-logs"],
+    "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "acl",
+    "term": "ACL",
+    "termFull": "Access Control List",
+    "termJa": "アクセス制御リスト",
+    "category": "security",
+    "description": "どのFabricメンバーがどのクラスター・アトリビュート・コマンドにアクセスできるかを定義するリスト。Access Controlクラスター（0x001F）で管理される。権限レベルはview < operate < manage < adminの4段階。コミッショナーはコミッショニング時に初期ACLを設定する。",
+    "relatedTerms": ["access-control", "fabric"],
+    "source": "Matter Spec"
+  },
+  {
+    "id": "tlv",
+    "term": "TLV",
+    "termFull": "Tag-Length-Value",
+    "termJa": "タグ-長さ-値（エンコード形式）",
+    "category": "protocols",
+    "description": "Matterがワイヤー上でのデータエンコードに使用するバイナリ形式。すべてのMatterメッセージ（属性値・コマンドパラメーター・イベントデータ等）はTLV形式でシリアライズされる。JSONと比べてコンパクトでIoTデバイスの限られたリソースに適している。",
+    "relatedTerms": [],
+    "source": "Matter Spec"
+  }
+]

@@ -2731,44 +2731,51 @@
     ]
   },
   {
-    "id": "network-infrastructure-manager",
+    "id": "zone-management",
     "clusterId": "0x0550",
     "name": "Zone Management",
-    "nameJa": "ゾーン管理（カメラ検知エリア）",
+    "nameJa": "ゾーン管理",
     "categories": [
-      "network"
+      "camera"
     ],
-    "description": "Matter Fabricのネットワークインフラを設定・管理するクラスター",
+    "description": "カメラの視野内にゾーン（エリア）を定義・管理するクラスター。動体検知ゾーン・プライバシーゾーンなどの領域を設定できる",
     "features": [
-      "WiFiNetworkManagement",
-      "ThreadBorderRouterManagement"
+      "TwoDimensionalCartesian（2D直交座標によるゾーン定義）"
     ],
     "keyAttributes": [
       {
-        "name": "IPv4Enabled",
-        "description": "IPv4の有効/無効"
+        "name": "SupportedZoneSensitivityLevels",
+        "description": "サポートする感度レベル数"
       },
       {
-        "name": "IPv6Enabled",
-        "description": "IPv6の有効/無効"
+        "name": "ZoneSensitivityLevel",
+        "description": "ゾーン全体の感度レベル"
+      },
+      {
+        "name": "ZoneList",
+        "description": "定義されたゾーンの一覧"
       }
     ],
     "keyCommands": [
       {
-        "name": "AddOrUpdateWiFiNetwork",
-        "description": "Wi-Fiネットワークを追加・更新"
+        "name": "CreateZone",
+        "description": "新規ゾーンを作成"
       },
       {
-        "name": "RemoveNetwork",
-        "description": "ネットワークを削除"
+        "name": "UpdateZone",
+        "description": "ゾーン設定を更新"
+      },
+      {
+        "name": "RemoveZone",
+        "description": "ゾーンを削除"
       }
     ],
     "tags": [
-      "ネットワーク",
-      "Wi-Fi",
-      "Thread",
-      "インフラ",
-      "Fabric管理"
+      "カメラ",
+      "ゾーン",
+      "プライバシー",
+      "動体検知",
+      "視野"
     ]
   },
   {
@@ -3631,6 +3638,1459 @@
       "最適化",
       "省エネ",
       "スマートグリッド"
+    ]
+  },
+  {
+    "id": "descriptor",
+    "clusterId": "0x001D",
+    "name": "Descriptor",
+    "nameJa": "デスクリプター",
+    "categories": [
+      "general"
+    ],
+    "description": "エンドポイントが実装するデバイスタイプ・クラスター・エンドポイントの一覧を公開する必須クラスター。Matter通信でのデバイス発見・自動構成に使用",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "DeviceTypeList",
+        "description": "実装するデバイスタイプの一覧"
+      },
+      {
+        "name": "ServerList",
+        "description": "サーバー側クラスターのID一覧"
+      },
+      {
+        "name": "ClientList",
+        "description": "クライアント側クラスターのID一覧"
+      },
+      {
+        "name": "PartsList",
+        "description": "このエンドポイントを構成する子エンドポイントの一覧"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "必須",
+      "発見",
+      "エンドポイント",
+      "インフラ"
+    ]
+  },
+  {
+    "id": "binding",
+    "clusterId": "0x001E",
+    "name": "Binding",
+    "nameJa": "バインディング",
+    "categories": [
+      "general"
+    ],
+    "description": "クライアントエンドポイントが制御対象のサーバーエンドポイントへのバインドを管理する。スイッチと照明の直接紐付けなど、コントローラー経由なしの制御を実現",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "Binding",
+        "description": "バインド先のノード・エンドポイント・クラスターのリスト"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "バインド",
+      "スイッチ",
+      "直接制御",
+      "インフラ"
+    ]
+  },
+  {
+    "id": "access-control",
+    "clusterId": "0x001F",
+    "name": "Access Control",
+    "nameJa": "アクセス制御",
+    "categories": [
+      "security"
+    ],
+    "description": "FabricスコープのアクセスコントロールリストACLを管理する。どのノードがどのクラスターをどの権限で操作できるかを定義するセキュリティ中核クラスター",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "ACL",
+        "description": "アクセス制御リスト（Fabricスコープ）"
+      },
+      {
+        "name": "Extension",
+        "description": "ACLの拡張データ（オプション）"
+      },
+      {
+        "name": "SubjectsPerAccessControlEntry",
+        "description": "1エントリあたりの最大対象数"
+      },
+      {
+        "name": "TargetsPerAccessControlEntry",
+        "description": "1エントリあたりの最大ターゲット数"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "ACL",
+      "セキュリティ",
+      "権限管理",
+      "Fabric",
+      "必須"
+    ]
+  },
+  {
+    "id": "actions",
+    "clusterId": "0x0025",
+    "name": "Actions",
+    "nameJa": "アクション",
+    "categories": [
+      "general"
+    ],
+    "description": "デバイス上の物理的なアクションや論理的な状態（シーン・部屋など）をメタ情報として記述するクラスター。Matter対応のスマートホームUIでのデバイス分類に活用",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "ActionList",
+        "description": "定義されたアクションの一覧"
+      },
+      {
+        "name": "EndpointLists",
+        "description": "アクションに関連するエンドポイントグループの一覧"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "InstantAction",
+        "description": "指定アクションを即時実行"
+      },
+      {
+        "name": "StartAction",
+        "description": "時間付きアクションを開始"
+      },
+      {
+        "name": "StopAction",
+        "description": "実行中のアクションを停止"
+      }
+    ],
+    "tags": [
+      "アクション",
+      "シーン",
+      "部屋",
+      "自動化"
+    ]
+  },
+  {
+    "id": "basic-information",
+    "clusterId": "0x0028",
+    "name": "Basic Information",
+    "nameJa": "基本情報",
+    "categories": [
+      "general"
+    ],
+    "description": "デバイスのメーカー名・モデル名・ファームウェアバージョン・シリアル番号などの基本識別情報を提供する全デバイス必須クラスター",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "VendorName",
+        "description": "メーカー名"
+      },
+      {
+        "name": "VendorID",
+        "description": "メーカーID（CSA割り当て）"
+      },
+      {
+        "name": "ProductName",
+        "description": "製品名"
+      },
+      {
+        "name": "ProductID",
+        "description": "製品ID"
+      },
+      {
+        "name": "NodeLabel",
+        "description": "ユーザーが設定できるデバイス名"
+      },
+      {
+        "name": "HardwareVersion",
+        "description": "ハードウェアバージョン"
+      },
+      {
+        "name": "SoftwareVersion",
+        "description": "ソフトウェアバージョン"
+      },
+      {
+        "name": "SerialNumber",
+        "description": "シリアル番号"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "必須",
+      "識別",
+      "メーカー",
+      "バージョン",
+      "Root Node"
+    ]
+  },
+  {
+    "id": "ota-provider",
+    "clusterId": "0x0029",
+    "name": "OTA Software Update Provider",
+    "nameJa": "OTAソフトウェア更新プロバイダー",
+    "categories": [
+      "general"
+    ],
+    "description": "OTAファームウェア配布元として動作するクラスター。コントローラーやハブ側に実装され、デバイスからの更新問い合わせに応答してファームウェアを提供",
+    "features": [],
+    "keyAttributes": [],
+    "keyCommands": [
+      {
+        "name": "QueryImage",
+        "description": "利用可能なファームウェア更新を問い合わせ"
+      },
+      {
+        "name": "ApplyUpdateRequest",
+        "description": "ダウンロード済みイメージの適用を要求"
+      },
+      {
+        "name": "NotifyUpdateApplied",
+        "description": "更新適用完了を通知"
+      }
+    ],
+    "tags": [
+      "OTA",
+      "ファームウェア更新",
+      "BDX",
+      "インフラ"
+    ]
+  },
+  {
+    "id": "ota-requestor",
+    "clusterId": "0x002A",
+    "name": "OTA Software Update Requestor",
+    "nameJa": "OTAソフトウェア更新リクエスター",
+    "categories": [
+      "general"
+    ],
+    "description": "OTAファームウェア更新を受け取るデバイス側のクラスター。プロバイダーに問い合わせてBDXプロトコルでダウンロード・適用するデバイス側の必須クラスター",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "DefaultOTAProviders",
+        "description": "デフォルトのOTAプロバイダーリスト"
+      },
+      {
+        "name": "UpdatePossible",
+        "description": "更新受け入れ可能かどうか"
+      },
+      {
+        "name": "UpdateState",
+        "description": "現在の更新状態（Idle・Downloading・Applying等）"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "AnnounceOTAProvider",
+        "description": "OTAプロバイダーの存在をデバイスに通知"
+      }
+    ],
+    "tags": [
+      "OTA",
+      "ファームウェア更新",
+      "BDX",
+      "インフラ"
+    ]
+  },
+  {
+    "id": "localization-configuration",
+    "clusterId": "0x002B",
+    "name": "Localization Configuration",
+    "nameJa": "ローカライゼーション設定",
+    "categories": [
+      "general"
+    ],
+    "description": "デバイスの言語・地域設定を管理する。表示言語やロケール（例: ja-JP）を設定するクラスター",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "ActiveLocale",
+        "description": "現在のロケール設定（例: ja-JP、en-US）"
+      },
+      {
+        "name": "SupportedLocales",
+        "description": "サポートするロケールの一覧"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "言語",
+      "地域設定",
+      "ローカライゼーション"
+    ]
+  },
+  {
+    "id": "time-format-localization",
+    "clusterId": "0x002C",
+    "name": "Time Format Localization",
+    "nameJa": "時刻フォーマット設定",
+    "categories": [
+      "general"
+    ],
+    "description": "時刻表示形式（12時間/24時間制）やカレンダー方式（グレゴリオ暦など）を設定するクラスター",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "HourFormat",
+        "description": "12時間制か24時間制か"
+      },
+      {
+        "name": "ActiveCalendarType",
+        "description": "使用するカレンダー方式"
+      },
+      {
+        "name": "SupportedCalendarTypes",
+        "description": "サポートするカレンダー方式の一覧"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "時刻",
+      "フォーマット",
+      "ローカライゼーション"
+    ]
+  },
+  {
+    "id": "unit-localization",
+    "clusterId": "0x002D",
+    "name": "Unit Localization",
+    "nameJa": "単位設定",
+    "categories": [
+      "general"
+    ],
+    "description": "温度（℃/℉）などの表示単位を設定するクラスター。地域ごとの単位系に対応したUI表示を実現",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "TemperatureUnit",
+        "description": "温度単位（Celsius / Fahrenheit / Kelvin）"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "単位",
+      "温度",
+      "ローカライゼーション"
+    ]
+  },
+  {
+    "id": "power-source-configuration",
+    "clusterId": "0x002E",
+    "name": "Power Source Configuration",
+    "nameJa": "電源構成",
+    "categories": [
+      "energy"
+    ],
+    "description": "デバイスの電源エンドポイント構成を定義する。複数の電源（バッテリー＋AC等）が存在する場合の電源エンドポイントの割り当てを管理",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "Sources",
+        "description": "電源エンドポイントのリスト（優先順位順）"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "電源",
+      "バッテリー",
+      "電源構成",
+      "インフラ"
+    ]
+  },
+  {
+    "id": "power-source",
+    "clusterId": "0x002F",
+    "name": "Power Source",
+    "nameJa": "電源",
+    "categories": [
+      "energy"
+    ],
+    "description": "デバイスの電源状態を提供する。バッテリー残量・充電状態・AC給電の有無などをリアルタイムにレポートするクラスター",
+    "features": [
+      "Wired（有線給電）",
+      "Battery（バッテリー給電）",
+      "Rechargeable（充電可能バッテリー）",
+      "Replaceable（交換可能バッテリー）"
+    ],
+    "keyAttributes": [
+      {
+        "name": "Status",
+        "description": "電源の現在状態（Active・Standby・Unavailable等）"
+      },
+      {
+        "name": "Order",
+        "description": "優先順位（複数電源時）"
+      },
+      {
+        "name": "BatPercentRemaining",
+        "description": "バッテリー残量（%×2）"
+      },
+      {
+        "name": "BatChargeLevel",
+        "description": "バッテリー充電レベル（OK・Warning・Critical）"
+      },
+      {
+        "name": "WiredCurrentType",
+        "description": "有線給電の種別（AC/DC）"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "電源",
+      "バッテリー",
+      "充電",
+      "AC電源"
+    ]
+  },
+  {
+    "id": "general-commissioning",
+    "clusterId": "0x0030",
+    "name": "General Commissioning",
+    "nameJa": "一般コミッショニング",
+    "categories": [
+      "commissioning"
+    ],
+    "description": "Matterデバイスのネットワーク登録（コミッショニング）フローを制御する必須クラスター。ペアリングの開始・確認・中止を管理し、コミッショニングの信頼性を担保する",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "Breadcrumb",
+        "description": "コミッショニング進行状況のチェックポイント値"
+      },
+      {
+        "name": "BasicCommissioningInfo",
+        "description": "コミッショニングのタイムアウト等の基本設定"
+      },
+      {
+        "name": "RegulatoryConfig",
+        "description": "現在の規制設定（Indoor/Outdoor/Roaming）"
+      },
+      {
+        "name": "LocationCapability",
+        "description": "サポートする規制設定の種別"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "ArmFailSafe",
+        "description": "フェイルセーフタイマーを設定・リセット"
+      },
+      {
+        "name": "SetRegulatoryConfig",
+        "description": "規制設定（地域・屋内外）を設定"
+      },
+      {
+        "name": "CommissioningComplete",
+        "description": "コミッショニング完了を通知し、フェイルセーフを解除"
+      }
+    ],
+    "tags": [
+      "コミッショニング",
+      "ペアリング",
+      "必須",
+      "Root Node"
+    ]
+  },
+  {
+    "id": "network-commissioning",
+    "clusterId": "0x0031",
+    "name": "Network Commissioning",
+    "nameJa": "ネットワークコミッショニング",
+    "categories": [
+      "commissioning",
+      "network"
+    ],
+    "description": "Wi-FiやThreadネットワークへの参加設定をコミッショニング時に管理するクラスター。SSID・パスワード設定やThreadOperationalDatasetの投入を担う",
+    "features": [
+      "WiFiNetworkInterface（Wi-Fiネットワーク）",
+      "ThreadNetworkInterface（Threadネットワーク）",
+      "EthernetNetworkInterface（有線Ethernet）"
+    ],
+    "keyAttributes": [
+      {
+        "name": "MaxNetworks",
+        "description": "登録可能なネットワーク数の上限"
+      },
+      {
+        "name": "Networks",
+        "description": "登録済みネットワークの一覧（接続状態含む）"
+      },
+      {
+        "name": "ConnectMaxTimeSeconds",
+        "description": "接続試行タイムアウト（秒）"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "ScanNetworks",
+        "description": "利用可能なWi-Fiネットワークをスキャン"
+      },
+      {
+        "name": "AddOrUpdateWiFiNetwork",
+        "description": "Wi-Fiネットワーク情報を追加・更新"
+      },
+      {
+        "name": "AddOrUpdateThreadNetwork",
+        "description": "ThreadのOperational Datasetを設定"
+      },
+      {
+        "name": "ConnectNetwork",
+        "description": "指定ネットワークへ接続を試行"
+      },
+      {
+        "name": "RemoveNetwork",
+        "description": "登録済みネットワークを削除"
+      }
+    ],
+    "tags": [
+      "コミッショニング",
+      "Wi-Fi",
+      "Thread",
+      "ネットワーク設定",
+      "Root Node"
+    ]
+  },
+  {
+    "id": "diagnostic-logs",
+    "clusterId": "0x0032",
+    "name": "Diagnostic Logs",
+    "nameJa": "診断ログ",
+    "categories": [
+      "diagnostics"
+    ],
+    "description": "デバイスの診断ログをBDXプロトコルで取得するクラスター。End-to-Endテストログ・クラッシュログ・ユーザーログの3種類を転送できる",
+    "features": [],
+    "keyAttributes": [],
+    "keyCommands": [
+      {
+        "name": "RetrieveLogsRequest",
+        "description": "ログの取得を要求（BDXまたはインラインで転送）"
+      }
+    ],
+    "tags": [
+      "診断",
+      "ログ",
+      "BDX",
+      "デバッグ"
+    ]
+  },
+  {
+    "id": "general-diagnostics",
+    "clusterId": "0x0033",
+    "name": "General Diagnostics",
+    "nameJa": "一般診断",
+    "categories": [
+      "diagnostics"
+    ],
+    "description": "デバイス全体の稼働状態・ハードウェア障害・ネットワーク接続数・起動理由などの診断情報を提供する。Root Nodeに必須",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "NetworkInterfaces",
+        "description": "ネットワークインターフェース情報の一覧"
+      },
+      {
+        "name": "RebootCount",
+        "description": "再起動回数"
+      },
+      {
+        "name": "UpTime",
+        "description": "最後の起動からの稼働時間（秒）"
+      },
+      {
+        "name": "ActiveHardwareFaults",
+        "description": "現在発生中のハードウェア障害"
+      },
+      {
+        "name": "ActiveNetworkFaults",
+        "description": "現在発生中のネットワーク障害"
+      },
+      {
+        "name": "BootReason",
+        "description": "最後の起動理由"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "TestEventTrigger",
+        "description": "テストイベントを手動でトリガー（認証テスト用）"
+      }
+    ],
+    "tags": [
+      "診断",
+      "ハードウェア",
+      "ネットワーク",
+      "必須",
+      "Root Node"
+    ]
+  },
+  {
+    "id": "software-diagnostics",
+    "clusterId": "0x0034",
+    "name": "Software Diagnostics",
+    "nameJa": "ソフトウェア診断",
+    "categories": [
+      "diagnostics"
+    ],
+    "description": "スレッド使用量・メモリ使用量などソフトウェア側の診断情報を提供する。開発・サポート時のリソース問題の特定に役立つ",
+    "features": [
+      "Watermarks（ハイウォーターマークの追跡）"
+    ],
+    "keyAttributes": [
+      {
+        "name": "ThreadMetrics",
+        "description": "スレッドごとのスタック使用量・名前"
+      },
+      {
+        "name": "CurrentHeapFree",
+        "description": "現在の空きヒープメモリ量"
+      },
+      {
+        "name": "CurrentHeapUsed",
+        "description": "現在使用中のヒープメモリ量"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "ResetWatermarks",
+        "description": "ウォーターマーク値をリセット"
+      }
+    ],
+    "tags": [
+      "診断",
+      "メモリ",
+      "スレッド",
+      "パフォーマンス"
+    ]
+  },
+  {
+    "id": "thread-network-diagnostics",
+    "clusterId": "0x0035",
+    "name": "Thread Network Diagnostics",
+    "nameJa": "Threadネットワーク診断",
+    "categories": [
+      "diagnostics",
+      "network"
+    ],
+    "description": "Threadネットワークの接続品質・ルーティング状態・ネットワークIDなどの診断情報を提供する。Threadデバイスのトラブルシューティングに使用",
+    "features": [
+      "PacketCounts（パケット統計）",
+      "ErrorCounts（エラー統計）",
+      "MLECounts（MLEプロトコル統計）",
+      "MACCounts（MACレイヤー統計）"
+    ],
+    "keyAttributes": [
+      {
+        "name": "Channel",
+        "description": "使用中のThreadチャンネル"
+      },
+      {
+        "name": "RoutingRole",
+        "description": "ルーティングロール（Leader/Router/End Device等）"
+      },
+      {
+        "name": "NetworkName",
+        "description": "Threadネットワーク名"
+      },
+      {
+        "name": "PanId",
+        "description": "PAN ID"
+      },
+      {
+        "name": "ExtendedPanId",
+        "description": "拡張PAN ID"
+      },
+      {
+        "name": "RssiAverage",
+        "description": "平均RSSI値"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "ResetCounts",
+        "description": "統計カウンターをリセット"
+      }
+    ],
+    "tags": [
+      "診断",
+      "Thread",
+      "ネットワーク",
+      "ルーティング"
+    ]
+  },
+  {
+    "id": "wifi-network-diagnostics",
+    "clusterId": "0x0036",
+    "name": "Wi-Fi Network Diagnostics",
+    "nameJa": "Wi-Fiネットワーク診断",
+    "categories": [
+      "diagnostics",
+      "network"
+    ],
+    "description": "Wi-Fi接続の信号強度・BSSID・接続速度・エラー統計などを提供するクラスター。Wi-Fi接続品質の監視やトラブルシューティングに使用",
+    "features": [
+      "PacketCounts（パケット統計）",
+      "ErrorCounts（エラー統計）"
+    ],
+    "keyAttributes": [
+      {
+        "name": "BSSID",
+        "description": "接続中のアクセスポイントのBSSID"
+      },
+      {
+        "name": "SecurityType",
+        "description": "セキュリティ方式（WPA2/WPA3等）"
+      },
+      {
+        "name": "WiFiVersion",
+        "description": "Wi-Fi規格バージョン（802.11ax等）"
+      },
+      {
+        "name": "ChannelNumber",
+        "description": "使用チャンネル番号"
+      },
+      {
+        "name": "RSSI",
+        "description": "現在の受信信号強度"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "ResetCounts",
+        "description": "統計カウンターをリセット"
+      }
+    ],
+    "tags": [
+      "診断",
+      "Wi-Fi",
+      "ネットワーク",
+      "信号強度"
+    ]
+  },
+  {
+    "id": "ethernet-network-diagnostics",
+    "clusterId": "0x0037",
+    "name": "Ethernet Network Diagnostics",
+    "nameJa": "イーサネットネットワーク診断",
+    "categories": [
+      "diagnostics",
+      "network"
+    ],
+    "description": "有線イーサネット接続の速度・デュプレックス設定・パケット統計などの診断情報を提供するクラスター",
+    "features": [
+      "PacketCounts（パケット統計）",
+      "ErrorCounts（エラー統計）"
+    ],
+    "keyAttributes": [
+      {
+        "name": "PHYRate",
+        "description": "物理レイヤーの通信速度"
+      },
+      {
+        "name": "FullDuplex",
+        "description": "全二重通信かどうか"
+      },
+      {
+        "name": "PacketRxCount",
+        "description": "受信パケット数"
+      },
+      {
+        "name": "PacketTxCount",
+        "description": "送信パケット数"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "ResetCounts",
+        "description": "統計カウンターをリセット"
+      }
+    ],
+    "tags": [
+      "診断",
+      "イーサネット",
+      "有線",
+      "ネットワーク"
+    ]
+  },
+  {
+    "id": "time-synchronization",
+    "clusterId": "0x0038",
+    "name": "Time Synchronization",
+    "nameJa": "時刻同期",
+    "categories": [
+      "general"
+    ],
+    "description": "デバイスの時刻をUTC基準で管理し、NTPや信頼できる時刻ソースと同期するクラスター。時刻依存の自動化・スケジュール・ログに必要",
+    "features": [
+      "TimeZone（タイムゾーン設定）",
+      "NTPClient（NTPクライアント機能）",
+      "NTPServer（NTPサーバー機能）",
+      "TimeSyncClient（時刻同期クライアント）"
+    ],
+    "keyAttributes": [
+      {
+        "name": "UTCTime",
+        "description": "現在のUTC時刻（マイクロ秒）"
+      },
+      {
+        "name": "Granularity",
+        "description": "時刻精度（Milliseconds/Seconds等）"
+      },
+      {
+        "name": "TimeSource",
+        "description": "時刻ソースの種別（NTP/GPS等）"
+      },
+      {
+        "name": "TrustedTimeSource",
+        "description": "信頼できる時刻ソースのノード情報"
+      },
+      {
+        "name": "TimeZone",
+        "description": "タイムゾーン設定の一覧"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "SetUTCTime",
+        "description": "UTCを手動設定"
+      },
+      {
+        "name": "SetTrustedTimeSource",
+        "description": "信頼できる時刻ソースを設定"
+      }
+    ],
+    "tags": [
+      "時刻",
+      "NTP",
+      "同期",
+      "スケジュール"
+    ]
+  },
+  {
+    "id": "bridged-device-basic-information",
+    "clusterId": "0x0039",
+    "name": "Bridged Device Basic Information",
+    "nameJa": "ブリッジデバイス基本情報",
+    "categories": [
+      "general"
+    ],
+    "description": "ブリッジ経由でMatter Fabricに接続された非Matterデバイスの基本情報（メーカー・モデル・到達可能状態）を提供するクラスター",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "VendorName",
+        "description": "元デバイスのメーカー名"
+      },
+      {
+        "name": "ProductName",
+        "description": "元デバイスの製品名"
+      },
+      {
+        "name": "NodeLabel",
+        "description": "ユーザー設定の名前"
+      },
+      {
+        "name": "Reachable",
+        "description": "ブリッジ先デバイスが到達可能かどうか"
+      },
+      {
+        "name": "UniqueID",
+        "description": "デバイスの一意識別子"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "ブリッジ",
+      "非Matter",
+      "識別",
+      "インフラ"
+    ]
+  },
+  {
+    "id": "administrator-commissioning",
+    "clusterId": "0x003C",
+    "name": "Administrator Commissioning",
+    "nameJa": "管理者コミッショニング",
+    "categories": [
+      "commissioning",
+      "security"
+    ],
+    "description": "新しい管理者がFabricにデバイスを追加するためのコミッショニングウィンドウを開く。マルチ管理者（複数エコシステムへの同時登録）機能の中核クラスター",
+    "features": [
+      "Basic（基本コミッショニングウィンドウ）"
+    ],
+    "keyAttributes": [
+      {
+        "name": "WindowStatus",
+        "description": "コミッショニングウィンドウの開閉状態"
+      },
+      {
+        "name": "AdminFabricIndex",
+        "description": "ウィンドウを開いた管理者のFabricIndex"
+      },
+      {
+        "name": "AdminVendorId",
+        "description": "ウィンドウを開いた管理者のベンダーID"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "OpenCommissioningWindow",
+        "description": "Enhanced Commissioning Method (PAKE) でウィンドウを開く"
+      },
+      {
+        "name": "OpenBasicCommissioningWindow",
+        "description": "Basic Commissioning Method でウィンドウを開く"
+      },
+      {
+        "name": "RevokeCommissioning",
+        "description": "コミッショニングウィンドウを閉じる"
+      }
+    ],
+    "tags": [
+      "コミッショニング",
+      "マルチ管理者",
+      "セキュリティ",
+      "Fabric",
+      "必須"
+    ]
+  },
+  {
+    "id": "operational-credentials",
+    "clusterId": "0x003E",
+    "name": "Operational Credentials",
+    "nameJa": "運用クレデンシャル",
+    "categories": [
+      "security"
+    ],
+    "description": "デバイスのFabric証明書（NOC）とルート証明書（RCAC）を管理する。Fabric参加・離脱・証明書更新・管理者追加などFabricの信頼基盤を担う必須クラスター",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "NOCs",
+        "description": "Node Operational Certificate（NOC）の一覧"
+      },
+      {
+        "name": "Fabrics",
+        "description": "参加中のFabric情報の一覧"
+      },
+      {
+        "name": "SupportedFabrics",
+        "description": "同時参加できるFabricの最大数"
+      },
+      {
+        "name": "CommissionedFabrics",
+        "description": "現在コミッション済みのFabric数"
+      },
+      {
+        "name": "TrustedRootCertificates",
+        "description": "信頼するルートCA証明書の一覧"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "AttestationRequest",
+        "description": "デバイス認証（DAC）情報を要求"
+      },
+      {
+        "name": "CertificateChainRequest",
+        "description": "証明書チェーン（DAC/PAI）を要求"
+      },
+      {
+        "name": "CSRRequest",
+        "description": "CSR（証明書署名要求）を生成"
+      },
+      {
+        "name": "AddNOC",
+        "description": "新しいNOCを追加してFabricに参加"
+      },
+      {
+        "name": "UpdateNOC",
+        "description": "既存NOCを更新"
+      },
+      {
+        "name": "RemoveFabric",
+        "description": "指定FabricのNOCを削除（Fabric離脱）"
+      },
+      {
+        "name": "AddTrustedRootCertificate",
+        "description": "信頼するルートCA証明書を追加"
+      }
+    ],
+    "tags": [
+      "セキュリティ",
+      "証明書",
+      "Fabric",
+      "NOC",
+      "DAC",
+      "必須"
+    ]
+  },
+  {
+    "id": "group-key-management",
+    "clusterId": "0x003F",
+    "name": "Group Key Management",
+    "nameJa": "グループキー管理",
+    "categories": [
+      "security"
+    ],
+    "description": "グループ通信用の暗号鍵（Group Key Set）を管理する。複数デバイスへのマルチキャスト制御（グループ一括操作）を安全に実現するために必要",
+    "features": [
+      "CacheAndSync（グループキーのキャッシュと同期）"
+    ],
+    "keyAttributes": [
+      {
+        "name": "GroupKeyMap",
+        "description": "グループIDとキーセットの紐付け一覧"
+      },
+      {
+        "name": "GroupTable",
+        "description": "エンドポイントとグループIDの紐付け一覧"
+      },
+      {
+        "name": "MaxGroupsPerFabric",
+        "description": "Fabricあたりの最大グループ数"
+      },
+      {
+        "name": "MaxGroupKeysPerFabric",
+        "description": "Fabricあたりの最大グループキー数"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "KeySetWrite",
+        "description": "グループキーセットを書き込む"
+      },
+      {
+        "name": "KeySetRead",
+        "description": "グループキーセットを読み込む"
+      },
+      {
+        "name": "KeySetRemove",
+        "description": "グループキーセットを削除"
+      },
+      {
+        "name": "KeySetReadAllIndices",
+        "description": "全グループキーセットのIDを取得"
+      }
+    ],
+    "tags": [
+      "セキュリティ",
+      "グループ",
+      "暗号鍵",
+      "マルチキャスト",
+      "必須"
+    ]
+  },
+  {
+    "id": "fixed-label",
+    "clusterId": "0x0040",
+    "name": "Fixed Label",
+    "nameJa": "固定ラベル",
+    "categories": [
+      "general"
+    ],
+    "description": "メーカーが製造時に設定した読み取り専用のラベルリスト。設置場所・用途・デバイスカテゴリなどのメタ情報をタグ形式で付与する",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "LabelList",
+        "description": "固定ラベルのリスト（キーと値のペア）"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "ラベル",
+      "メタ情報",
+      "読み取り専用",
+      "タグ"
+    ]
+  },
+  {
+    "id": "user-label",
+    "clusterId": "0x0041",
+    "name": "User Label",
+    "nameJa": "ユーザーラベル",
+    "categories": [
+      "general"
+    ],
+    "description": "ユーザーが自由に設定・変更できるラベルリスト。「リビングの照明」「北側センサー」などのカスタムタグをデバイスに付与する",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "LabelList",
+        "description": "ユーザー設定ラベルのリスト（キーと値のペア）"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "ラベル",
+      "カスタム",
+      "ユーザー設定",
+      "タグ"
+    ]
+  },
+  {
+    "id": "icd-management",
+    "clusterId": "0x0046",
+    "name": "ICD Management",
+    "nameJa": "ICDマネジメント",
+    "categories": [
+      "general"
+    ],
+    "description": "間欠接続デバイス（ICD）のスリープ・起動スケジュールを管理する。バッテリーデバイスのCheck-Inプロトコル設定やアクティブモードトリガーを制御",
+    "features": [
+      "CheckInProtocolSupport（Check-Inプロトコル対応）",
+      "UserActiveModeTrigger（ユーザーによる強制起動）",
+      "LongIdleTimeSupport（長時間スリープLIT対応）",
+      "DynamicSITLITSupport（SIT/LIT動的切替）"
+    ],
+    "keyAttributes": [
+      {
+        "name": "IdleModeDuration",
+        "description": "スリープ（アイドル）モードの最大継続時間（秒）"
+      },
+      {
+        "name": "ActiveModeDuration",
+        "description": "アクティブモードの最小継続時間（ミリ秒）"
+      },
+      {
+        "name": "ActiveModeThreshold",
+        "description": "アクティブモード維持のしきい値（ミリ秒）"
+      },
+      {
+        "name": "RegisteredClients",
+        "description": "Check-In通知の登録クライアント一覧"
+      },
+      {
+        "name": "ICDCounter",
+        "description": "Check-Inメッセージ用カウンター"
+      },
+      {
+        "name": "UserActiveModeTriggerHint",
+        "description": "ユーザーがデバイスを起こす操作方法のヒント"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "RegisterClient",
+        "description": "Check-In通知の受信クライアントを登録"
+      },
+      {
+        "name": "UnregisterClient",
+        "description": "クライアント登録を解除"
+      },
+      {
+        "name": "StayActiveRequest",
+        "description": "アクティブモードの延長を要求"
+      }
+    ],
+    "tags": [
+      "ICD",
+      "バッテリー",
+      "スリープ",
+      "Check-In",
+      "省電力"
+    ]
+  },
+  {
+    "id": "refrigerator-alarm",
+    "clusterId": "0x0057",
+    "name": "Refrigerator Alarm",
+    "nameJa": "冷蔵庫アラーム",
+    "categories": [
+      "appliances"
+    ],
+    "description": "冷蔵庫のドア開きっぱなしなどの異常状態をアラームで通知するクラスター。AlarmBaseクラスターを継承した冷蔵庫専用のアラーム管理",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "Mask",
+        "description": "有効なアラームのビットマスク"
+      },
+      {
+        "name": "State",
+        "description": "現在発生中のアラーム状態"
+      },
+      {
+        "name": "Supported",
+        "description": "サポートするアラーム種別"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "冷蔵庫",
+      "アラーム",
+      "ドア",
+      "家電"
+    ]
+  },
+  {
+    "id": "water-tank-level-monitoring",
+    "clusterId": "0x0079",
+    "name": "Water Tank Level Monitoring",
+    "nameJa": "水タンクレベル監視",
+    "categories": [
+      "appliances"
+    ],
+    "description": "加湿器・空気清浄機・コーヒーメーカーなどの水タンク残量を監視するクラスター。ResourceMonitoringクラスターを継承した水タンク専用の残量管理",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "Condition",
+        "description": "タンクの状態（残量レベル）"
+      },
+      {
+        "name": "DegradationDirection",
+        "description": "状態値の減少方向（通常は減少）"
+      },
+      {
+        "name": "ChangeIndication",
+        "description": "交換・補充の推奨度（OK/Warning/Critical）"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "水タンク",
+      "残量",
+      "加湿器",
+      "空気清浄機",
+      "家電"
+    ]
+  },
+  {
+    "id": "ecosystem-information",
+    "clusterId": "0x0750",
+    "name": "Ecosystem Information",
+    "nameJa": "エコシステム情報",
+    "categories": [
+      "general"
+    ],
+    "description": "デバイスが所属するエコシステム（Apple Home・Google Home等）の情報を提供するクラスター。ブリッジ配下デバイスの元エコシステムをコントローラーが識別するために使用",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "DeviceDirectory",
+        "description": "ブリッジ配下のデバイス情報ディレクトリ"
+      },
+      {
+        "name": "LocationDirectory",
+        "description": "ブリッジ配下のロケーション情報ディレクトリ"
+      }
+    ],
+    "keyCommands": [],
+    "tags": [
+      "エコシステム",
+      "ブリッジ",
+      "Apple Home",
+      "Google Home",
+      "Matter Hub"
+    ]
+  },
+  {
+    "id": "commissioner-control",
+    "clusterId": "0x0751",
+    "name": "Commissioner Control",
+    "nameJa": "コミッショナー制御",
+    "categories": [
+      "commissioning"
+    ],
+    "description": "同一Fabric上の別コントローラーに対してコミッショニングウィンドウの開放を要求するクラスター。マルチ管理者シナリオや、デバイスから別エコシステムへの追加依頼に活用",
+    "features": [],
+    "keyAttributes": [],
+    "keyCommands": [
+      {
+        "name": "RequestCommissioningApproval",
+        "description": "コミッショニング承認を要求"
+      },
+      {
+        "name": "CommissionNode",
+        "description": "ノードのコミッションを実行"
+      }
+    ],
+    "tags": [
+      "コミッショニング",
+      "マルチ管理者",
+      "エコシステム連携"
+    ]
+  },
+  {
+    "id": "joint-fabric-datastore",
+    "clusterId": "0x0752",
+    "name": "Joint Fabric Datastore",
+    "nameJa": "ジョイントFabricデータストア",
+    "categories": [
+      "security"
+    ],
+    "description": "複数のFabric間でデバイス情報を共有・同期するためのデータストアクラスター。Matter 1.4で導入されたFederation（エコシステム間連携）機能の一部",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "AnchorRootCA",
+        "description": "ジョイントFabricのルートCA証明書"
+      },
+      {
+        "name": "AnchorNodeID",
+        "description": "アンカーノードのID"
+      },
+      {
+        "name": "FriendlyName",
+        "description": "ジョイントFabricのフレンドリー名"
+      },
+      {
+        "name": "GroupKeySetList",
+        "description": "共有グループキーの一覧"
+      },
+      {
+        "name": "AdminList",
+        "description": "ジョイントFabricの管理者リスト"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "AddAdmin",
+        "description": "管理者を追加"
+      },
+      {
+        "name": "RemoveAdmin",
+        "description": "管理者を削除"
+      },
+      {
+        "name": "AddKeySet",
+        "description": "グループキーセットを追加"
+      }
+    ],
+    "tags": [
+      "Fabric",
+      "Federation",
+      "エコシステム連携",
+      "Matter 1.4",
+      "セキュリティ"
+    ]
+  },
+  {
+    "id": "joint-fabric-administrator",
+    "clusterId": "0x0753",
+    "name": "Joint Fabric Administrator",
+    "nameJa": "ジョイントFabric管理者（クラスター）",
+    "categories": [
+      "security"
+    ],
+    "description": "複数のFabricを跨いだ管理操作を行うクラスター。Matter 1.4のFederation機能で、異なるエコシステム間でのデバイス共有・管理権限委譲を実現",
+    "features": [],
+    "keyAttributes": [],
+    "keyCommands": [
+      {
+        "name": "ICDRegistrationComplete",
+        "description": "ICDデバイスの登録完了を通知"
+      },
+      {
+        "name": "TransferAdminNode",
+        "description": "管理ノード権限を別ノードに移譲"
+      }
+    ],
+    "tags": [
+      "Fabric",
+      "Federation",
+      "エコシステム連携",
+      "Matter 1.4",
+      "セキュリティ"
+    ]
+  },
+  {
+    "id": "tls-certificate-management",
+    "clusterId": "0x0801",
+    "name": "TLS Certificate Management",
+    "nameJa": "TLS証明書管理",
+    "categories": [
+      "security"
+    ],
+    "description": "デバイスのTLS証明書を管理するクラスター。カメラのクラウド接続・WebRTCシグナリングなど、外部サービスとのTLS通信に必要な証明書の追加・削除・検索を提供",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "MaxRootCertificates",
+        "description": "格納可能なルート証明書の最大数"
+      },
+      {
+        "name": "ProvisionedCertificates",
+        "description": "プロビジョニング済み証明書の一覧"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "ProvisionRootCertificate",
+        "description": "ルートCA証明書を追加"
+      },
+      {
+        "name": "FindRootCertificate",
+        "description": "証明書を検索"
+      },
+      {
+        "name": "LookupRootCertificate",
+        "description": "指定フィンガープリントの証明書を取得"
+      },
+      {
+        "name": "RemoveRootCertificate",
+        "description": "証明書を削除"
+      }
+    ],
+    "tags": [
+      "TLS",
+      "証明書",
+      "セキュリティ",
+      "カメラ",
+      "クラウド"
+    ]
+  },
+  {
+    "id": "tls-client-management",
+    "clusterId": "0x0802",
+    "name": "TLS Client Management",
+    "nameJa": "TLSクライアント管理",
+    "categories": [
+      "security"
+    ],
+    "description": "TLSクライアント接続の設定（ホスト名・ポート・証明書紐付け）を管理するクラスター。カメラのクラウドストリーミングなど外部サービスへのTLS接続先を設定",
+    "features": [],
+    "keyAttributes": [
+      {
+        "name": "MaxTLSEndpoints",
+        "description": "設定可能なTLSエンドポイントの最大数"
+      },
+      {
+        "name": "ProvisionedEndpoints",
+        "description": "設定済みTLSエンドポイントの一覧"
+      }
+    ],
+    "keyCommands": [
+      {
+        "name": "ProvisionTLSClientCertificate",
+        "description": "クライアント証明書を追加"
+      },
+      {
+        "name": "FindTLSClientCertificate",
+        "description": "設定済み証明書を検索"
+      },
+      {
+        "name": "RemoveTLSClientCertificate",
+        "description": "設定済み証明書を削除"
+      }
+    ],
+    "tags": [
+      "TLS",
+      "クライアント認証",
+      "セキュリティ",
+      "カメラ",
+      "クラウド"
     ]
   }
 ]

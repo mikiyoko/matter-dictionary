@@ -1392,7 +1392,7 @@
   {
     "id": "evse",
     "deviceTypeId": "0x050C",
-    "name": "EVSE",
+    "name": "Energy EVSE",
     "nameJa": "EV充電器",
     "category": "energy",
     "icon": "🔋",
@@ -2267,5 +2267,34 @@
       "省エネ"
     ],
     "notes": null
+  },
+  {
+    "id": "ambient-context-sensor",
+    "deviceTypeId": "0x0150",
+    "name": "Ambient Context Sensor",
+    "nameJa": "アンビエントコンテキストセンサー",
+    "category": "sensors",
+    "icon": "🌐",
+    "description": "複数の環境センシング機能を組み合わせた複合センサーデバイスタイプ。温度・湿度・照度・空気質などの周囲環境情報を統合的に提供",
+    "req": [
+      "identify"
+    ],
+    "opt": [
+      "temperature-measurement",
+      "humidity-measurement",
+      "illuminance-measurement",
+      "air-quality",
+      "carbon-dioxide",
+      "tvoc-concentration"
+    ],
+    "tags": [
+      "センサー",
+      "環境",
+      "複合センサー",
+      "温度",
+      "湿度",
+      "空気質"
+    ],
+    "notes": "Matter 1.4で追加された複合環境センサーのデバイスタイプ。スマートホームの部屋の環境を包括的に監視するデバイスに使用される。"
   }
 ]
