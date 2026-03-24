@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matter 用語集 | Matter辞書</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0f14; --surface: #16181f; --surface2: #1e2029;
+  --border: #2a2d38; --accent: #7ee8a2; --accent2: #5bc4f5;
+  --accent3: #f5a623; --text: #e8eaf0; --muted: #9da3b8; --dim: #8b90a8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; font-size: 14px; min-height: 100vh; }
+
+/* ===== HEADER ===== */
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: rgba(14,15,20,0.97);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+.logo-badge { font-family: 'Space Mono', monospace; font-size: 11px; background: var(--accent); color: #0e0f14; padding: 3px 8px; border-radius: 3px; font-weight: 700; }
+.logo-title { font-size: 16px; font-weight: 700; }
+.logo-sub { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+.header-stat { font-size: 11px; color: var(--muted); text-align: right; font-family: 'Space Mono', monospace; }
+.back-btn {
+  padding: 6px 13px; border-radius: 7px; font-size: 12px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; text-decoration: none;
+  font-family: 'Noto Sans JP', sans-serif; transition: all 0.15s;
+  display: flex; align-items: center; gap: 5px;
+}
+.back-btn:hover { background: var(--surface2); color: var(--accent); border-color: var(--accent); }
+.lang-toggle {
+  display: flex; align-items: center;
+  border: 1px solid var(--border); border-radius: 7px; overflow: hidden;
+  font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+}
+.lang-toggle button { padding: 5px 10px; border: none; cursor: pointer; background: transparent; color: var(--muted); transition: all 0.15s; }
+.lang-toggle button.active { background: var(--accent); color: #0e0f14; }
+.lang-toggle button:hover:not(.active) { color: var(--text); }
+@media (max-width: 600px) {
+  header { padding: 10px 14px; }
+  .logo-sub { display: none; }
+  .header-stat { display: none; }
+}
+
+/* ===== SEARCH BAR ===== */
+.search-bar {
+  padding: 14px 28px; border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+}
+.search-wrap { flex: 1; min-width: 200px; position: relative; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.search-input {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 7px; padding: 9px 12px 9px 36px;
+  color: var(--text); font-size: 14px; font-family: 'Noto Sans JP', sans-serif; outline: none;
+  transition: border-color 0.15s;
+}
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--muted); }
+.sort-select {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 7px;
+  color: var(--muted); font-size: 12px; padding: 8px 12px;
+  font-family: 'Noto Sans JP', sans-serif; outline: none; cursor: pointer; transition: all 0.15s;
+}
+.sort-select:focus { border-color: var(--accent); color: var(--text); }
+@media (max-width: 600px) { .search-bar { padding: 10px 14px; } }
+
+/* ===== LAYOUT ===== */
+.layout { display: grid; grid-template-columns: 210px 1fr; min-height: calc(100vh - 120px); }
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { border-right: none; border-bottom: 1px solid var(--border); }
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar { border-right: 1px solid var(--border); padding: 14px 0; }
+.sidebar-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--dim); padding: 8px 18px 6px; font-family: 'Space Mono', monospace;
+}
+.cat-btn {
+  display: flex; align-items: center; gap: 9px;
+  width: 100%; padding: 9px 18px; border: none; background: transparent;
+  color: var(--muted); cursor: pointer; text-align: left; font-size: 13px;
+  font-family: 'Noto Sans JP', sans-serif; border-left: 2px solid transparent;
+  transition: all 0.15s; white-space: nowrap;
+}
+.cat-btn:hover { background: var(--surface2); color: var(--text); }
+.cat-btn.active { background: var(--surface2); color: var(--accent); border-left-color: var(--accent); }
+.cat-btn .cnt {
+  margin-left: auto; font-size: 10px; font-family: 'Space Mono', monospace;
+  background: var(--surface); padding: 1px 6px; border-radius: 3px; color: var(--dim);
+}
+.cat-icon { font-size: 15px; flex-shrink: 0; width: 18px; text-align: center; }
+
+/* ===== MAIN ===== */
+.main { padding: 22px 28px; }
+.sec-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 18px; }
+.sec-title { font-size: 18px; font-weight: 700; }
+.sec-count { font-size: 12px; color: var(--muted); font-family: 'Space Mono', monospace; }
+
+/* A-Z インデックスバー */
+.alpha-index {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 18px;
+}
+.alpha-btn {
+  font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+  padding: 4px 9px; border-radius: 5px; border: 1px solid var(--border);
+  background: transparent; color: var(--dim); cursor: pointer; transition: all 0.15s;
+}
+.alpha-btn:hover { background: var(--surface2); color: var(--text); }
+.alpha-btn.active { background: var(--surface2); color: var(--accent); border-color: var(--accent); }
+.alpha-btn.disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+
+/* 用語カードグリッド */
+.term-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+@media (max-width: 600px) { .main { padding: 14px; } .term-grid { grid-template-columns: 1fr; } }
+
+.term-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 16px; cursor: pointer; transition: all 0.18s; position: relative;
+}
+.term-card:hover { border-color: var(--accent2); background: var(--surface2); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+.term-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.term-abbr { font-family: 'Space Mono', monospace; font-size: 20px; font-weight: 700; color: var(--accent); letter-spacing: 0.04em; line-height: 1; }
+.cat-badge {
+  font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; padding: 2px 7px;
+  border-radius: 3px; letter-spacing: 0.06em; text-transform: uppercase; flex-shrink: 0;
+}
+.cat-badge.architecture { background: rgba(126,232,162,0.1); color: var(--accent); border: 1px solid rgba(126,232,162,0.25); }
+.cat-badge.commissioning { background: rgba(91,196,245,0.1); color: var(--accent2); border: 1px solid rgba(91,196,245,0.25); }
+.cat-badge.security { background: rgba(245,166,35,0.1); color: var(--accent3); border: 1px solid rgba(245,166,35,0.25); }
+.cat-badge.power { background: rgba(167,139,250,0.1); color: #a78bfa; border: 1px solid rgba(167,139,250,0.25); }
+.cat-badge.networking { background: rgba(52,211,153,0.1); color: #34d399; border: 1px solid rgba(52,211,153,0.25); }
+.cat-badge.protocols { background: rgba(251,191,36,0.1); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
+.cat-badge.certification { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
+.cat-badge.energy { background: rgba(74,222,128,0.1); color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+.cat-badge.appliances { background: rgba(129,140,248,0.1); color: #818cf8; border: 1px solid rgba(129,140,248,0.25); }
+
+.term-ja { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+.term-full { font-size: 10px; color: var(--dim); font-family: 'Space Mono', monospace; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.term-desc-short {
+  font-size: 12px; color: var(--muted); line-height: 1.6;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.term-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+.related-preview { display: flex; gap: 4px; flex-wrap: wrap; }
+.rchip {
+  font-size: 9px; font-family: 'Space Mono', monospace; padding: 2px 6px;
+  border-radius: 3px; background: var(--surface2); border: 1px solid var(--border); color: var(--dim);
+}
+.expand-icon { color: var(--dim); font-size: 12px; flex-shrink: 0; }
+
+/* 空状態 */
+.empty { text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }
+.empty .big { font-size: 42px; margin-bottom: 12px; }
+
+/* ===== MODAL ===== */
+.overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.76); z-index: 300;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.overlay.open { display: flex; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto;
+  animation: slideUp 0.22s ease;
+}
+@keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+.modal-close-row {
+  display: flex; justify-content: flex-end; padding: 14px 18px 0;
+  position: sticky; top: 0; background: var(--surface); z-index: 1;
+}
+.close-btn {
+  background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
+  width: 30px; height: 30px; border-radius: 6px; cursor: pointer; font-size: 14px;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.close-btn:hover { color: var(--text); border-color: var(--muted); }
+
+.modal-body { padding: 6px 28px 28px; }
+.modal-header { margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 18px; }
+.modal-abbr {
+  font-family: 'Space Mono', monospace; font-size: 36px; font-weight: 700;
+  color: var(--accent); letter-spacing: 0.04em; line-height: 1; margin-bottom: 6px;
+}
+.modal-ja { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.modal-full {
+  font-size: 12px; color: var(--dim); font-family: 'Space Mono', monospace;
+  margin-bottom: 8px; word-break: break-all;
+}
+.modal-cat { display: inline-block; margin-bottom: 0; }
+
+.modal-section { margin-bottom: 20px; }
+.modal-section-title {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--muted); font-family: 'Space Mono', monospace;
+  margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+}
+.modal-desc {
+  font-size: 14px; color: var(--muted); line-height: 1.8;
+  border-left: 3px solid var(--accent2); padding-left: 14px;
+  background: rgba(91,196,245,0.04); border-radius: 0 6px 6px 0; padding: 12px 14px;
+}
+.related-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.related-chip {
+  font-size: 11px; font-family: 'Space Mono', monospace; padding: 4px 11px;
+  border-radius: 5px; background: var(--surface2); border: 1px solid var(--border);
+  color: var(--accent2); cursor: pointer; transition: all 0.15s;
+}
+.related-chip:hover { border-color: var(--accent2); background: rgba(91,196,245,0.08); }
+.source-text {
+  font-size: 11px; color: var(--dim); font-family: 'Space Mono', monospace;
+  background: var(--surface2); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border);
+}
+
+/* カテゴリ表示名 */
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <a class="logo" href="index.html">
+    <div class="logo-badge">M</div>
+    <div>
+      <div class="logo-title">Matter辞書</div>
+      <div class="logo-sub">Technical Glossary</div>
+    </div>
+  </a>
+  <div class="header-right">
+    <div class="header-stat" id="header-stat">-- terms</div>
+    <a class="back-btn" href="index.html">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      辞書トップ
+    </a>
+    <div class="lang-toggle">
+      <button id="btn-ja" class="active" onclick="setLang('ja')">JA</button>
+      <button id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== SEARCH BAR ===== -->
+<div class="search-bar">
+  <div class="search-wrap">
+    <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="search-input" id="search-input" type="text" placeholder="用語を検索… 例: CASE, Fabric, ICD" autocomplete="off">
+  </div>
+  <select class="sort-select" id="sort-select">
+    <option value="alpha">A-Z 順</option>
+    <option value="category">カテゴリ順</option>
+  </select>
+</div>
+
+<!-- ===== LAYOUT ===== -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-label">カテゴリ</div>
+    <button class="cat-btn active" data-cat="all" onclick="filterCat('all')">
+      <span class="cat-icon">#</span>
+      <span>すべて</span>
+      <span class="cnt" id="cnt-all">0</span>
+    </button>
+    <button class="cat-btn" data-cat="architecture" onclick="filterCat('architecture')">
+      <span class="cat-icon">◈</span>
+      <span>アーキテクチャ</span>
+      <span class="cnt" id="cnt-architecture">0</span>
+    </button>
+    <button class="cat-btn" data-cat="commissioning" onclick="filterCat('commissioning')">
+      <span class="cat-icon">⟳</span>
+      <span>コミッショニング</span>
+      <span class="cnt" id="cnt-commissioning">0</span>
+    </button>
+    <button class="cat-btn" data-cat="security" onclick="filterCat('security')">
+      <span class="cat-icon">◻</span>
+      <span>セキュリティ</span>
+      <span class="cnt" id="cnt-security">0</span>
+    </button>
+    <button class="cat-btn" data-cat="power" onclick="filterCat('power')">
+      <span class="cat-icon">◦</span>
+      <span>電源・省電力</span>
+      <span class="cnt" id="cnt-power">0</span>
+    </button>
+    <button class="cat-btn" data-cat="protocols" onclick="filterCat('protocols')">
+      <span class="cat-icon">~</span>
+      <span>プロトコル</span>
+      <span class="cnt" id="cnt-protocols">0</span>
+    </button>
+    <button class="cat-btn" data-cat="networking" onclick="filterCat('networking')">
+      <span class="cat-icon">≋</span>
+      <span>ネットワーク</span>
+      <span class="cnt" id="cnt-networking">0</span>
+    </button>
+    <button class="cat-btn" data-cat="energy" onclick="filterCat('energy')">
+      <span class="cat-icon">⚡</span>
+      <span>エネルギー</span>
+      <span class="cnt" id="cnt-energy">0</span>
+    </button>
+    <button class="cat-btn" data-cat="appliances" onclick="filterCat('appliances')">
+      <span class="cat-icon">◇</span>
+      <span>家電・デバイス</span>
+      <span class="cnt" id="cnt-appliances">0</span>
+    </button>
+    <button class="cat-btn" data-cat="certification" onclick="filterCat('certification')">
+      <span class="cat-icon">✓</span>
+      <span>認証・テスト</span>
+      <span class="cnt" id="cnt-certification">0</span>
+    </button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="sec-header">
+      <span class="sec-title" id="sec-title">用語集</span>
+      <span class="sec-count" id="sec-count">0 terms</span>
+    </div>
+    <!-- A-Zインデックス -->
+    <div class="alpha-index" id="alpha-index"></div>
+    <!-- カード一覧 -->
+    <div class="term-grid" id="term-grid"></div>
+  </main>
+</div>
+
+<!-- ===== MODAL ===== -->
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <div class="modal-close-row">
+      <button class="close-btn" onclick="closeOverlay()" aria-label="閉じる">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ===== 状態 =====
+let ALL_TERMS = [];
+let currentCat = 'all';
+let currentLang = localStorage.getItem('matter-glossary-lang') || 'ja';
+let currentAlpha = null;
+let searchQuery = '';
+
+// カテゴリ表示名
+const CAT_LABELS = {
+  architecture:  'アーキテクチャ',
+  commissioning: 'コミッショニング',
+  security:      'セキュリティ',
+  power:         '電源・省電力',
+  protocols:     'プロトコル',
+  networking:    'ネットワーク',
+  energy:        'エネルギー',
+  appliances:    '家電・デバイス',
+  certification: '認証・テスト',
+};
+const CAT_LABELS_EN = {
+  architecture:  'Architecture',
+  commissioning: 'Commissioning',
+  security:      'Security',
+  power:         'Power / ICD',
+  protocols:     'Protocols',
+  networking:    'Networking',
+  energy:        'Energy',
+  appliances:    'Appliances',
+  certification: 'Certification',
+};
+
+// ===== データ読み込み =====
+fetch('data/glossary.json')
+  .then(r => r.json())
+  .then(data => {
+    ALL_TERMS = data.sort((a, b) => a.term.localeCompare(b.term));
+    updateCounts();
+    buildAlphaIndex();
+    render();
+    document.getElementById('header-stat').textContent = ALL_TERMS.length + ' terms';
+  });
+
+// ===== カテゴリカウント =====
+function updateCounts() {
+  document.getElementById('cnt-all').textContent = ALL_TERMS.length;
+  const cats = ['architecture','commissioning','security','power','protocols','networking','energy','appliances','certification'];
+  cats.forEach(cat => {
+    const el = document.getElementById('cnt-' + cat);
+    if (el) el.textContent = ALL_TERMS.filter(t => t.category === cat).length;
+  });
+}
+
+// ===== A-Zインデックス =====
+function buildAlphaIndex() {
+  const container = document.getElementById('alpha-index');
+  const letters = [...new Set(ALL_TERMS.map(t => t.term[0].toUpperCase()))].sort();
+  const allLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  container.innerHTML = allLetters.map(l => {
+    const has = letters.includes(l);
+    const active = currentAlpha === l ? ' active' : '';
+    return `<button class="alpha-btn${active}${has ? '' : ' disabled'}" onclick="toggleAlpha('${l}')">${l}</button>`;
+  }).join('');
+}
+
+function toggleAlpha(l) {
+  currentAlpha = currentAlpha === l ? null : l;
+  buildAlphaIndex();
+  render();
+}
+
+// ===== フィルタリング =====
+function getFiltered() {
+  return ALL_TERMS.filter(t => {
+    if (currentCat !== 'all' && t.category !== currentCat) return false;
+    if (currentAlpha && t.term[0].toUpperCase() !== currentAlpha) return false;
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      return t.term.toLowerCase().includes(q)
+        || t.termJa.includes(q)
+        || (t.termFull || '').toLowerCase().includes(q)
+        || t.description.includes(q)
+        || t.description.toLowerCase().includes(q);
+    }
+    return true;
+  });
+}
+
+// ===== 並び順 =====
+function getSorted(terms) {
+  const sort = document.getElementById('sort-select').value;
+  if (sort === 'category') {
+    return [...terms].sort((a, b) => a.category.localeCompare(b.category) || a.term.localeCompare(b.term));
+  }
+  return [...terms].sort((a, b) => a.term.localeCompare(b.term));
+}
+
+// ===== レンダリング =====
+function render() {
+  const filtered = getSorted(getFiltered());
+  const grid = document.getElementById('term-grid');
+  const count = document.getElementById('sec-count');
+
+  count.textContent = filtered.length + ' terms';
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="empty">
+      <div class="big">🔍</div>
+      <div>該当する用語がありません</div>
+      <div style="font-size:12px;margin-top:6px;color:var(--dim)">検索語を変えてみてください</div>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(t => renderCard(t)).join('');
+}
+
+function renderCard(t) {
+  const relPreview = (t.relatedTerms || []).slice(0, 3)
+    .map(r => `<span class="rchip">${r.toUpperCase().replace(/-/g,' ').split(' ')[0]}</span>`)
+    .join('');
+  const termLabel = currentLang === 'en' ? t.term : t.termJa;
+  const subLabel  = currentLang === 'en' ? (t.termFull || t.termJa) : (t.termFull || t.term);
+  const catLabel  = currentLang === 'en' ? (CAT_LABELS_EN[t.category] || t.category) : (CAT_LABELS[t.category] || t.category);
+
+  return `<div class="term-card" onclick="openModal('${t.id}')" tabindex="0" role="button" aria-label="${t.term}">
+    <div class="term-card-top">
+      <span class="term-abbr">${t.term}</span>
+      <span class="cat-badge ${t.category}">${catLabel}</span>
+    </div>
+    <div class="term-ja">${termLabel}</div>
+    <div class="term-full" title="${subLabel}">${subLabel}</div>
+    <div class="term-desc-short">${t.description}</div>
+    <div class="term-card-footer">
+      <div class="related-preview">${relPreview}</div>
+      <span class="expand-icon">→</span>
+    </div>
+  </div>`;
+}
+
+// ===== モーダル =====
+function openModal(id) {
+  const t = ALL_TERMS.find(x => x.id === id);
+  if (!t) return;
+
+  const catLabel = currentLang === 'en' ? (CAT_LABELS_EN[t.category] || t.category) : (CAT_LABELS[t.category] || t.category);
+  const relChips = (t.relatedTerms || []).map(r => {
+    const rel = ALL_TERMS.find(x => x.id === r);
+    const label = rel ? `${rel.term}` : r.toUpperCase().replace(/-/g,' ');
+    return `<span class="related-chip" onclick="navToTerm('${r}')">${label}</span>`;
+  }).join('');
+
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-header">
+      <div class="modal-abbr">${t.term}</div>
+      <div class="modal-ja">${currentLang === 'en' ? (t.termFull || t.termJa) : t.termJa}</div>
+      ${t.termFull ? `<div class="modal-full">${t.termFull}</div>` : ''}
+      <span class="cat-badge ${t.category} modal-cat">${catLabel}</span>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">解説 / Description</div>
+      <div class="modal-desc">${t.description}</div>
+    </div>
+    ${relChips ? `<div class="modal-section">
+      <div class="modal-section-title">関連用語 / Related Terms</div>
+      <div class="related-chips">${relChips}</div>
+    </div>` : ''}
+    <div class="modal-section">
+      <div class="modal-section-title">出典 / Source</div>
+      <div class="source-text">${t.source || 'Matter Spec'}</div>
+    </div>
+  `;
+
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function navToTerm(id) {
+  closeOverlay();
+  setTimeout(() => openModal(id), 120);
+}
+
+function closeOverlay() {
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('overlay')) closeOverlay();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOverlay(); });
+
+// ===== カテゴリフィルタ =====
+function filterCat(cat) {
+  currentCat = cat;
+  currentAlpha = null;
+  buildAlphaIndex();
+  document.querySelectorAll('.cat-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.cat === cat);
+  });
+  const catName = cat === 'all'
+    ? (currentLang === 'en' ? 'All Terms' : '用語集')
+    : (currentLang === 'en' ? (CAT_LABELS_EN[cat] || cat) : (CAT_LABELS[cat] || cat));
+  document.getElementById('sec-title').textContent = catName;
+  render();
+}
+
+// ===== 言語切替 =====
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('matter-glossary-lang', lang);
+  document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.documentElement.lang = lang === 'en' ? 'en' : 'ja';
+  document.getElementById('search-input').placeholder =
+    lang === 'en' ? 'Search terms… e.g. CASE, Fabric, ICD' : '用語を検索… 例: CASE, Fabric, ICD';
+  render();
+}
+
+// ===== 検索 =====
+document.getElementById('search-input').addEventListener('input', e => {
+  searchQuery = e.target.value.trim();
+  currentAlpha = null;
+  buildAlphaIndex();
+  render();
+});
+
+// ===== ソート =====
+document.getElementById('sort-select').addEventListener('change', () => render());
+
+// ===== キーボード操作 =====
+document.getElementById('term-grid').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const id = e.target.closest('.term-card')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+    if (id) openModal(id);
+  }
+});
+
+// ===== 初期言語適用 =====
+setLang(currentLang);
+</script>
+</body>
+</html>

@@ -44,6 +44,12 @@
       ja: '🔧 困ったときは',
       en: '🔧 Troubleshooting',
     },
+    {
+      id: 'glossary',
+      href: 'glossary.html',
+      ja: '📖 用語集',
+      en: '📖 Glossary',
+    },
   ];
 
   // ===== CSS（ヘッダー共通スタイル）=====
