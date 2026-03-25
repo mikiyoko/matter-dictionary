@@ -175,20 +175,27 @@ header {
 .dt-row {
   display: flex; align-items: center; gap: 10px;
   padding: 10px 12px; background: var(--surface2); border-radius: 7px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border); transition: border-color 0.15s;
 }
+.dt-row-link { cursor: pointer; }
+.dt-row-link:hover { border-color: var(--accent); }
 .dt-row-icon { font-size: 20px; flex-shrink: 0; }
 .dt-row-name { font-size: 13px; font-weight: 700; }
 .dt-row-en { font-size: 11px; color: var(--dim); }
 .dt-row-id { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent2); margin-left: auto; flex-shrink: 0; }
+.dt-row-arrow { font-size: 11px; color: var(--dim); flex-shrink: 0; transition: color 0.15s; }
+.dt-row-link:hover .dt-row-arrow { color: var(--accent); }
 
 /* Cluster chips */
 .cluster-section-grid { display: flex; flex-direction: column; gap: 5px; }
 .cluster-item {
   display: flex; align-items: center; gap: 8px;
   padding: 7px 10px; background: var(--surface2); border-radius: 6px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border); transition: border-color 0.15s; cursor: pointer;
 }
+.cluster-item:hover { border-color: var(--accent2); }
+.cluster-arrow { font-size: 11px; color: var(--dim); flex-shrink: 0; transition: color 0.15s; }
+.cluster-item:hover .cluster-arrow { color: var(--accent2); }
 .cluster-abbr {
   font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
   padding: 2px 6px; border-radius: 4px; flex-shrink: 0;
@@ -454,56 +461,44 @@ function openProductModal(idx) {
     var icon = dt ? dt.icon : '📦';
     var nameJ = dt ? (dt.nameJa || dt.name) : id;
     var nameE = dt ? dt.name : id;
-    return '<div class="dt-row">'
+    return '<a class="dt-row dt-row-link" href="index.html?dt=' + esc(id) + '" style="text-decoration:none;color:inherit">'
       + '<span class="dt-row-icon">' + icon + '</span>'
       + '<div style="flex:1"><div class="dt-row-name">' + esc(nameJ) + '</div>'
       + (nameJ !== nameE ? '<div class="dt-row-en">' + esc(nameE) + '</div>' : '')
       + '</div>'
       + '<span class="dt-row-id">' + esc(id) + '</span>'
-      + '</div>';
+      + '<span class="dt-row-arrow">↗</span>'
+      + '</a>';
   }).join('');
 
   // Clusters section
   var clusters = p.supportedClusters || [];
   var clusterHtml = '';
   if (clusters.length > 0) {
-    // Group by category
     var grouped = {};
     clusters.forEach(function(c) {
       var cat = c.category || 'other';
       if (!grouped[cat]) grouped[cat] = [];
       grouped[cat].push(c);
     });
+    function renderClusterGroup(list) {
+      return list.map(function(c) {
+        return '<a class="cluster-item" href="index.html?cluster=' + esc(c.id) + '" style="text-decoration:none;color:inherit">'
+          + '<span class="cluster-abbr">' + esc(c.picsAbbr || c.id.slice(0,4).toUpperCase()) + '</span>'
+          + '<span class="cluster-name">' + esc(c.name) + '</span>'
+          + '<span class="cluster-role">' + esc(c.role || '') + '</span>'
+          + '<span class="cluster-arrow">↗</span>'
+          + '</a>';
+      }).join('');
+    }
     var catOrder = ['application', 'utility', 'system', 'other'];
-    catOrder.forEach(function(cat) {
-      if (!grouped[cat]) return;
-      clusterHtml += '<div style="margin-bottom:8px">'
-        + '<div style="font-size:10px;color:var(--dim);font-family:\'Space Mono\',monospace;margin-bottom:4px;text-transform:uppercase;">' + esc(cat) + '</div>'
-        + '<div class="cluster-section-grid">'
-        + grouped[cat].map(function(c) {
-          return '<div class="cluster-item">'
-            + '<span class="cluster-abbr">' + esc(c.picsAbbr || c.id.slice(0,4).toUpperCase()) + '</span>'
-            + '<span class="cluster-name">' + esc(c.name) + '</span>'
-            + '<span class="cluster-role">' + esc(c.role || '') + '</span>'
-            + '</div>';
-        }).join('')
-        + '</div></div>';
-    });
-    // any extra categories
-    Object.keys(grouped).forEach(function(cat) {
-      if (catOrder.indexOf(cat) >= 0) return;
-      clusterHtml += '<div style="margin-bottom:8px">'
-        + '<div style="font-size:10px;color:var(--dim);font-family:\'Space Mono\',monospace;margin-bottom:4px;text-transform:uppercase;">' + esc(cat) + '</div>'
-        + '<div class="cluster-section-grid">'
-        + grouped[cat].map(function(c) {
-          return '<div class="cluster-item">'
-            + '<span class="cluster-abbr">' + esc(c.picsAbbr || c.id.slice(0,4).toUpperCase()) + '</span>'
-            + '<span class="cluster-name">' + esc(c.name) + '</span>'
-            + '<span class="cluster-role">' + esc(c.role || '') + '</span>'
-            + '</div>';
-        }).join('')
-        + '</div></div>';
-    });
+    catOrder.concat(Object.keys(grouped).filter(function(k){ return catOrder.indexOf(k) < 0; }))
+      .forEach(function(cat) {
+        if (!grouped[cat]) return;
+        clusterHtml += '<div style="margin-bottom:8px">'
+          + '<div style="font-size:10px;color:var(--dim);font-family:\'Space Mono\',monospace;margin-bottom:4px;text-transform:uppercase;">' + esc(cat) + '</div>'
+          + '<div class="cluster-section-grid">' + renderClusterGroup(grouped[cat]) + '</div></div>';
+      });
   }
 
   // CSA section

@@ -432,6 +432,19 @@ Promise.all([
   window.CLUSTERS = results[0];
   window.DEVICE_TYPES = results[1];
   initApp();
+  // URLパラメータでデバイスタイプ/クラスターのモーダルを自動オープン
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    var openDt = params.get('dt');
+    var openCl = params.get('cluster');
+    if (openDt) {
+      var dt = window.DEVICE_TYPES.find(function(d){ return d.deviceTypeId === openDt; });
+      if (dt) { setTimeout(function(){ openDeviceModal(dt.id); }, 80); }
+    } else if (openCl) {
+      var cl = window.CLUSTERS.find(function(c){ return c.id === openCl; });
+      if (cl) { setTimeout(function(){ openClusterModal(cl.id); }, 80); }
+    }
+  })();
   // 製品データはバックグラウンド取得（モーダル表示に使用）
   fetch('https://smart-home-recipe.vercel.app/api/products')
     .then(function(r){ return r.json(); })
