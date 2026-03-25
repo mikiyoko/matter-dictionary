@@ -446,10 +446,11 @@ Promise.all([
       });
       if (dt) { setTimeout(function(){ window.openDeviceModal(dt.id); }, 80); }
     } else if (openCl) {
-      // 製品データのクラスターIDは hex形式（"0x0006"）、clusters.json は clusterId フィールドで照合
+      // hex形式("0x0006")でもスラグ形式("on-off")でも両方照合
       var normCl = openCl.toLowerCase();
       var cl = window.CLUSTERS.find(function(c){
-        return c.clusterId && c.clusterId.toLowerCase() === normCl;
+        return (c.clusterId && c.clusterId.toLowerCase() === normCl) ||
+               (c.id && c.id.toLowerCase() === normCl);
       });
       if (cl) { setTimeout(function(){ window.openClusterModal(cl.id); }, 80); }
     }
@@ -927,14 +928,14 @@ function openDeviceModal(deviceId) {
       var col = MAKER_COLORS_IDX[p.maker] || '#9da3b8';
       var name = (currentLang === 'en' ? (p.nameEn || p.nameJa) : (p.nameJa || p.nameEn)) || '';
       var productHref = 'products.html' + (p.id ? '?product=' + encodeURIComponent(p.id) : '');
-      return '<a class="prod-ref" href="' + productHref + '" style="text-decoration:none" title="' + name + '">'
+      return '<a class="prod-ref" href="' + productHref + '" target="_blank" rel="noopener" style="text-decoration:none" title="' + name + '">'
         + '<span class="prod-ref-dot" style="background:' + col + '"></span>'
         + '<span class="prod-ref-name">' + name + '</span>'
         + '</a>';
     }).join('');
     var moreLink = matchingProducts.length > 6
-      ? '<a href="products.html" class="prod-ref-more" style="font-size:11px;color:var(--accent2);text-decoration:none;padding:4px 0;">+' + (matchingProducts.length - 6) + (currentLang==='en'?' more products →':' 件以上 →') + '</a>'
-      : '<a href="products.html" class="prod-ref-more" style="font-size:11px;color:var(--accent2);text-decoration:none;padding:4px 0;">' + (currentLang==='en'?'View all in product database →':'製品データベースで全件を見る →') + '</a>';
+      ? '<a href="products.html" target="_blank" rel="noopener" class="prod-ref-more" style="font-size:11px;color:var(--accent2);text-decoration:none;padding:4px 0;">+' + (matchingProducts.length - 6) + (currentLang==='en'?' more products →':' 件以上 →') + '</a>'
+      : '<a href="products.html" target="_blank" rel="noopener" class="prod-ref-more" style="font-size:11px;color:var(--accent2);text-decoration:none;padding:4px 0;">' + (currentLang==='en'?'View all in product database →':'製品データベースで全件を見る →') + '</a>';
     productsHtml = '<div class="modal-section">'
       + '<div class="modal-section-title">' + (currentLang==='en'?'Compatible Products ('+matchingProducts.length+')':'対応製品（'+matchingProducts.length+'件）') + '</div>'
       + '<div class="prod-refs">' + productCards + '</div>'

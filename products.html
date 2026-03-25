@@ -463,7 +463,7 @@ function openProductModal(idx) {
     var nameE = dt ? dt.name : id;
     // 0x なし形式("0015")を "0x0015" に正規化してリンクを生成
     var normId = id.toLowerCase().indexOf('0x') === 0 ? id : '0x' + id;
-    return '<a class="dt-row dt-row-link" href="index.html?dt=' + esc(normId) + '" style="text-decoration:none;color:inherit">'
+    return '<a class="dt-row dt-row-link" href="index.html?dt=' + esc(normId) + '" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">'
       + '<span class="dt-row-icon">' + icon + '</span>'
       + '<div style="flex:1"><div class="dt-row-name">' + esc(nameJ) + '</div>'
       + (nameJ !== nameE ? '<div class="dt-row-en">' + esc(nameE) + '</div>' : '')
@@ -485,7 +485,7 @@ function openProductModal(idx) {
     });
     function renderClusterGroup(list) {
       return list.map(function(c) {
-        return '<a class="cluster-item" href="index.html?cluster=' + esc(c.id) + '" style="text-decoration:none;color:inherit">'
+        return '<a class="cluster-item" href="index.html?cluster=' + esc(c.id) + '" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">'
           + '<span class="cluster-abbr">' + esc(c.picsAbbr || c.id.slice(0,4).toUpperCase()) + '</span>'
           + '<span class="cluster-name">' + esc(c.name) + '</span>'
           + '<span class="cluster-role">' + esc(c.role || '') + '</span>'
