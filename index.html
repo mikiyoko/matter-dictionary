@@ -350,6 +350,7 @@ header {
         </div>
       </div>
     </div>
+    <a href="products.html" class="guide-btn" id="productsBtn">📦 <span id="productsBtnLabel">製品DB</span></a>
     <div class="header-stat">
       <span id="statDevices">—</span> <span id="statLabelDevices">デバイスタイプ</span> &nbsp;|&nbsp; <span id="statClusters">—</span> <span id="statLabelClusters">クラスター</span>
     </div>
@@ -496,6 +497,9 @@ function setLang(lang) {
   // 学ぶボタンのラベル
   var learnBtnSpan = document.querySelector('.learn-btn span');
   if (learnBtnSpan) learnBtnSpan.textContent = lang === 'en' ? 'Learn' : '学ぶ';
+  // 製品DBボタンのラベル
+  var productsLabel = document.getElementById('productsBtnLabel');
+  if (productsLabel) productsLabel.textContent = lang === 'en' ? 'Products' : '製品DB';
   // localStorage に保存（読み物ページと共有）
   localStorage.setItem('matter-dict-lang', lang);
   // サイドバーカテゴリラベルを更新

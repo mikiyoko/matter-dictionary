@@ -50,6 +50,12 @@
       ja: '📖 用語集',
       en: '📖 Glossary',
     },
+    {
+      id: 'products',
+      href: 'products.html',
+      ja: '📦 製品DB',
+      en: '📦 Products',
+    },
   ];
 
   // ===== CSS（ヘッダー共通スタイル）=====

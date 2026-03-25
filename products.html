@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matter認証製品データベース — Matter辞書</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0f14; --surface: #16181f; --surface2: #1e2029;
+  --border: #2a2d38; --accent: #7ee8a2; --accent2: #5bc4f5;
+  --accent3: #f5a623; --text: #e8eaf0; --muted: #9da3b8; --dim: #8b90a8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; font-size: 14px; min-height: 100vh; }
+
+/* ─── Header ─── */
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 16px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(14,15,20,0.97);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+.logo-badge { font-family: 'Space Mono', monospace; font-size: 11px; background: var(--accent); color: #0e0f14; padding: 3px 8px; border-radius: 3px; font-weight: 700; }
+.logo-title { font-size: 16px; font-weight: 700; }
+.logo-sub { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+.header-stat { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
+.back-btn {
+  padding: 6px 13px; border-radius: 7px; font-size: 12px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; text-decoration: none;
+  font-family: 'Noto Sans JP', sans-serif; transition: all 0.15s;
+  display: flex; align-items: center; gap: 5px; white-space: nowrap;
+}
+.back-btn:hover { background: var(--surface2); color: var(--accent); border-color: var(--accent); }
+.lang-toggle {
+  display: flex; align-items: center;
+  border: 1px solid var(--border); border-radius: 7px; overflow: hidden;
+  font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+}
+.lang-toggle button {
+  padding: 5px 10px; border: none; cursor: pointer;
+  background: transparent; color: var(--muted); transition: all 0.15s;
+}
+.lang-toggle button.active { background: var(--accent); color: #0e0f14; }
+.lang-toggle button:hover:not(.active) { color: var(--text); }
+
+/* ─── Search bar ─── */
+.search-bar {
+  padding: 14px 28px; border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+}
+.search-wrap { flex: 1; min-width: 200px; position: relative; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.search-input {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 7px; padding: 9px 12px 9px 36px;
+  color: var(--text); font-size: 14px; font-family: 'Noto Sans JP', sans-serif; outline: none;
+  transition: border-color 0.15s;
+}
+.search-input:focus { border-color: var(--accent2); }
+.filter-chips { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.chip {
+  padding: 5px 11px; border-radius: 20px; font-size: 12px; cursor: pointer;
+  border: 1px solid var(--border); background: transparent; color: var(--muted);
+  transition: all 0.15s; white-space: nowrap; font-family: 'Noto Sans JP', sans-serif;
+}
+.chip.active { background: var(--accent); color: #0e0f14; border-color: var(--accent); font-weight: 700; }
+.chip:hover:not(.active) { border-color: var(--accent2); color: var(--accent2); }
+
+/* ─── Layout ─── */
+.layout { display: flex; min-height: calc(100vh - 120px); }
+.sidebar {
+  width: 200px; flex-shrink: 0; padding: 20px 16px;
+  border-right: 1px solid var(--border); background: var(--surface);
+  overflow-y: auto; position: sticky; top: 61px; height: calc(100vh - 61px);
+}
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+}
+.sidebar-label { font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; font-family: 'Space Mono', monospace; padding: 0 4px; }
+.cat-btn {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; padding: 8px 10px; border-radius: 7px;
+  background: transparent; border: none; color: var(--muted); cursor: pointer;
+  font-size: 13px; font-family: 'Noto Sans JP', sans-serif;
+  text-align: left; transition: all 0.15s; margin-bottom: 2px;
+}
+.cat-btn:hover { background: var(--surface2); color: var(--text); }
+.cat-btn.active { background: rgba(126,232,162,0.12); color: var(--accent); font-weight: 500; }
+.cat-count { margin-left: auto; font-size: 11px; color: var(--dim); font-family: 'Space Mono', monospace; }
+.sidebar-sep { height: 1px; background: var(--border); margin: 14px 0; }
+
+/* ─── Main ─── */
+.main { flex: 1; padding: 24px 28px; min-width: 0; }
+.sec-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+.sec-title { font-size: 14px; font-weight: 700; color: var(--accent); font-family: 'Space Mono', monospace; }
+.sec-count { font-size: 12px; color: var(--muted); font-family: 'Space Mono', monospace; }
+.dev-mode-toggle {
+  margin-left: auto; display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--muted); cursor: pointer; user-select: none;
+}
+.dev-mode-toggle input { cursor: pointer; accent-color: var(--accent2); }
+
+/* ─── Product Grid ─── */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.product-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px;
+  transition: border-color 0.15s, transform 0.15s;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.product-card:hover { border-color: rgba(126,232,162,0.35); transform: translateY(-2px); }
+
+.card-maker { display: flex; align-items: center; gap: 8px; }
+.maker-badge {
+  font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 4px; color: #0e0f14;
+}
+.card-name-ja { font-size: 14px; font-weight: 700; line-height: 1.4; color: var(--text); }
+.card-name-en { font-size: 11px; color: var(--muted); line-height: 1.3; margin-top: 2px; }
+
+.transport-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.ttag {
+  font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 700;
+  font-family: 'Space Mono', monospace;
+}
+.ttag-thread { background: rgba(91,196,245,0.15); color: var(--accent2); border: 1px solid rgba(91,196,245,0.3); }
+.ttag-wifi   { background: rgba(245,166,35,0.12); color: var(--accent3); border: 1px solid rgba(245,166,35,0.3); }
+.ttag-eth    { background: rgba(126,232,162,0.1); color: var(--accent);  border: 1px solid rgba(126,232,162,0.2); }
+.ttag-ble    { background: rgba(155,100,255,0.12); color: #b388ff; border: 1px solid rgba(155,100,255,0.25); }
+
+.device-type-label { font-size: 12px; color: var(--muted); }
+.device-type-name { color: var(--text); font-weight: 500; }
+
+.card-price { font-size: 13px; font-weight: 700; color: var(--accent3); font-family: 'Space Mono', monospace; }
+
+.purchase-links { display: flex; gap: 6px; flex-wrap: wrap; }
+.plink {
+  font-size: 11px; padding: 4px 10px; border-radius: 6px;
+  text-decoration: none; border: 1px solid var(--border);
+  color: var(--muted); transition: all 0.15s; font-family: 'Noto Sans JP', sans-serif;
+}
+.plink:hover { border-color: var(--accent2); color: var(--accent2); }
+.plink-amazon:hover { border-color: #f5a623; color: #f5a623; }
+.plink-rakuten:hover { border-color: #e83929; color: #e83929; }
+.plink-official:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Developer mode detail */
+.dev-detail {
+  display: none; border-top: 1px solid var(--border);
+  padding-top: 10px; margin-top: 2px;
+}
+.dev-detail.visible { display: block; }
+.dev-id { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--dim); margin-bottom: 6px; }
+.cluster-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.ctag {
+  font-size: 10px; padding: 2px 6px; border-radius: 4px;
+  background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+  color: var(--muted); font-family: 'Space Mono', monospace;
+  cursor: default;
+}
+.ctag-app { color: var(--accent2); border-color: rgba(91,196,245,0.2); }
+.ctag-util { color: var(--dim); }
+
+/* ─── Loading / Empty ─── */
+.loading-state {
+  text-align: center; padding: 80px 20px; color: var(--muted);
+  font-family: 'Space Mono', monospace; font-size: 13px;
+}
+.loading-spinner {
+  width: 28px; height: 28px; border: 2px solid var(--border);
+  border-top-color: var(--accent); border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.empty-state { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 13px; }
+
+/* ─── Mobile ─── */
+@media (max-width: 600px) {
+  header { padding: 12px 16px; }
+  .main { padding: 16px; }
+  .search-bar { padding: 12px 16px; }
+  .product-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">
+    <span class="logo-badge">Matter 1.5</span>
+    <div>
+      <div class="logo-title" id="logoTitle">⚡ Matter辞書</div>
+      <div class="logo-sub">by ライフテックコーディネーター 織田未来</div>
+    </div>
+  </a>
+  <div class="header-right">
+    <span class="header-stat" id="headerStat"></span>
+    <a href="index.html" class="back-btn">← <span id="backBtnLabel">辞書トップ</span></a>
+    <div class="lang-toggle">
+      <button id="btnJa" class="active" onclick="setLang('ja')">JA</button>
+      <button id="btnEn" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</header>
+
+<div class="search-bar">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" class="search-input" id="searchInput"
+           placeholder="製品名・メーカー名で検索…">
+  </div>
+  <div class="filter-chips" id="transportChips">
+    <button class="chip active" data-transport="all" onclick="setTransport('all')">すべて</button>
+    <button class="chip" data-transport="Thread" onclick="setTransport('Thread')">Thread</button>
+    <button class="chip" data-transport="Wi-Fi" onclick="setTransport('Wi-Fi')">Wi-Fi</button>
+    <button class="chip" data-transport="Ethernet" onclick="setTransport('Ethernet')">Ethernet</button>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-label" id="sidebarMakerLabel">メーカー</div>
+    <div id="makerList"></div>
+    <div class="sidebar-sep"></div>
+    <div class="sidebar-label" id="sidebarCsaLabel">CSA認証</div>
+    <button class="cat-btn active" data-maker="all" onclick="setMaker('all')">
+      <span id="allProductsLabel">すべての製品</span>
+      <span class="cat-count" id="countAll">—</span>
+    </button>
+  </nav>
+
+  <main class="main">
+    <div class="sec-header">
+      <span class="sec-title" id="secTitle">PRODUCTS</span>
+      <span class="sec-count" id="secCount"></span>
+      <label class="dev-mode-toggle" title="デバイスタイプID・クラスター情報を表示">
+        <input type="checkbox" id="devModeToggle" onchange="toggleDevMode()">
+        <span id="devModeLabel">🔬 デベロッパーモード</span>
+      </label>
+    </div>
+    <div id="productGrid" class="product-grid"></div>
+  </main>
+</div>
+
+<script>
+// ─── State ───────────────────────────────────────────────────
+var ALL_PRODUCTS = [];
+var DEVICE_TYPE_MAP = {}; // id → { name, nameEn, category }
+var currentLang     = localStorage.getItem('matter-dict-lang') || 'ja';
+var currentMaker    = 'all';
+var currentTransport = 'all';
+var searchQuery     = '';
+var devMode         = false;
+
+// ─── API ─────────────────────────────────────────────────────
+// 製品データ取得先（Vercel デプロイ後に確定）
+var PRODUCTS_API_URL = 'https://smart-home-recipe.vercel.app/api/products';
+
+// ─── Maker color palette ─────────────────────────────────────
+var MAKER_COLORS = {
+  'Aqara':      '#7ee8a2',
+  'SwitchBot':  '#5bc4f5',
+  'TP-Link':    '#f5a623',
+  'IKEA':       '#ffdb3e',
+  'Philips Hue':'#e040fb',
+  'Nanoleaf':   '#69f0ae',
+  'Govee':      '#ff6e6e',
+  'Meross':     '#40c4ff',
+};
+function getMakerColor(maker) {
+  return MAKER_COLORS[maker] || '#9da3b8';
+}
+
+// ─── Transport tag ────────────────────────────────────────────
+function transportTag(t) {
+  var cls = 'ttag ';
+  if (t === 'Thread')   cls += 'ttag-thread';
+  else if (t === 'Wi-Fi' || t === 'WiFi') cls += 'ttag-wifi';
+  else if (t === 'Ethernet') cls += 'ttag-eth';
+  else cls += 'ttag-ble';
+  return '<span class="' + cls + '">' + t + '</span>';
+}
+
+// ─── Device type display name ────────────────────────────────
+function getDeviceTypeName(id) {
+  var dt = DEVICE_TYPE_MAP[id];
+  if (!dt) return id;
+  return (currentLang === 'en' && dt.nameEn) ? dt.nameEn : dt.name;
+}
+
+// ─── Render ──────────────────────────────────────────────────
+function renderProducts() {
+  var filtered = getFiltered();
+  var grid = document.getElementById('productGrid');
+  var secCount = document.getElementById('secCount');
+
+  secCount.textContent = filtered.length + (currentLang === 'en' ? ' products' : ' 件');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="empty-state" id="emptyMsg">該当する製品が見つかりません</div>';
+    if (currentLang === 'en') {
+      var el = document.getElementById('emptyMsg');
+      if (el) el.textContent = 'No products found';
+    }
+    return;
+  }
+
+  grid.innerHTML = filtered.map(function(p) {
+    return renderCard(p);
+  }).join('');
+}
+
+function renderCard(p) {
+  var makerColor = getMakerColor(p.maker);
+  var nameJa = p.nameJa || p.nameEn || '';
+  var nameEn = p.nameEn || '';
+  var displayName = (currentLang === 'en') ? (nameEn || nameJa) : (nameJa || nameEn);
+  var subName     = (currentLang === 'en') ? '' : nameEn;
+
+  // Transport badges
+  var transports = (p.transport || []).map(transportTag).join('');
+
+  // Device type label
+  var dtIds = p.allDeviceTypeIds && p.allDeviceTypeIds.length ? p.allDeviceTypeIds : [p.primaryDeviceTypeId];
+  var dtDisplay = dtIds.map(function(id) {
+    return getDeviceTypeName(id);
+  }).join(' / ');
+
+  // Price
+  var priceHtml = '';
+  if (p.priceYen) {
+    priceHtml = '<div class="card-price">¥' + p.priceYen.toLocaleString() + '</div>';
+  }
+
+  // Purchase links
+  var links = '';
+  if (p.purchaseLinks) {
+    if (p.purchaseLinks.amazon) links += '<a class="plink plink-amazon" href="' + p.purchaseLinks.amazon + '" target="_blank" rel="noopener">Amazon</a>';
+    if (p.purchaseLinks.rakuten) links += '<a class="plink plink-rakuten" href="' + p.purchaseLinks.rakuten + '" target="_blank" rel="noopener">楽天</a>';
+    if (p.purchaseLinks.official) links += '<a class="plink plink-official" href="' + p.purchaseLinks.official + '" target="_blank" rel="noopener">公式</a>';
+  }
+  var purchaseHtml = links ? '<div class="purchase-links">' + links + '</div>' : '';
+
+  // Developer mode detail
+  var devHtml = '';
+  var clusters = p.supportedClusters || [];
+  var clusterTagsHtml = '';
+  if (clusters.length > 0) {
+    clusterTagsHtml = clusters.slice(0, 16).map(function(c) {
+      return '<span class="ctag ctag-app" title="' + c.id + '">' + (c.picsAbbr || c.name.slice(0,12)) + '</span>';
+    }).join('');
+    if (clusters.length > 16) clusterTagsHtml += '<span class="ctag">+' + (clusters.length - 16) + '</span>';
+  }
+  var allDtTagsHtml = dtIds.map(function(id) {
+    return '<span class="ctag">' + id + '</span>';
+  }).join('');
+  var matterVer = (p.csa && p.csa.matterVersion) ? ' · Matter ' + p.csa.matterVersion : '';
+  devHtml = '<div class="dev-detail' + (devMode ? ' visible' : '') + '">'
+    + '<div class="dev-id">ID: ' + (p.id || p.slug) + matterVer + '</div>'
+    + (allDtTagsHtml ? '<div style="margin-bottom:6px"><span style="font-size:10px;color:var(--dim);font-family:\'Space Mono\',monospace;">Device Types: </span>' + allDtTagsHtml + '</div>' : '')
+    + (clusterTagsHtml ? '<div class="cluster-tags">' + clusterTagsHtml + '</div>' : '')
+    + '</div>';
+
+  return '<div class="product-card">'
+    + '<div class="card-maker">'
+    + '<span class="maker-badge" style="background:' + makerColor + '">' + (p.maker || '?') + '</span>'
+    + '</div>'
+    + '<div><div class="card-name-ja">' + escHtml(displayName) + '</div>'
+    + (subName ? '<div class="card-name-en">' + escHtml(subName) + '</div>' : '')
+    + '</div>'
+    + (transports ? '<div class="transport-tags">' + transports + '</div>' : '')
+    + '<div class="device-type-label"><span class="device-type-name">' + escHtml(dtDisplay) + '</span></div>'
+    + priceHtml
+    + purchaseHtml
+    + devHtml
+    + '</div>';
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── Filtering ────────────────────────────────────────────────
+function getFiltered() {
+  var q = searchQuery.toLowerCase().trim();
+  return ALL_PRODUCTS.filter(function(p) {
+    // Transport filter
+    if (currentTransport !== 'all') {
+      var t = p.transport || [];
+      if (!t.some(function(x){ return x === currentTransport || (currentTransport === 'Wi-Fi' && x === 'WiFi'); })) return false;
+    }
+    // Maker filter
+    if (currentMaker !== 'all' && p.maker !== currentMaker) return false;
+    // Search
+    if (q) {
+      var haystack = [p.nameJa || '', p.nameEn || '', p.maker || ''].join(' ').toLowerCase();
+      if (!haystack.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+// ─── Sidebar ─────────────────────────────────────────────────
+function buildSidebar() {
+  var makerCounts = {};
+  ALL_PRODUCTS.forEach(function(p) {
+    var m = p.maker || 'Other';
+    makerCounts[m] = (makerCounts[m] || 0) + 1;
+  });
+  var makers = Object.keys(makerCounts).sort(function(a,b){ return makerCounts[b] - makerCounts[a]; });
+
+  var countAll = document.getElementById('countAll');
+  if (countAll) countAll.textContent = ALL_PRODUCTS.length;
+
+  var list = document.getElementById('makerList');
+  list.innerHTML = makers.map(function(m) {
+    var color = getMakerColor(m);
+    return '<button class="cat-btn" data-maker="' + escHtml(m) + '" onclick="setMaker(\'' + escHtml(m).replace(/'/g,"\\'") + '\')">'
+      + '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + color + ';flex-shrink:0"></span>'
+      + '<span style="flex:1">' + escHtml(m) + '</span>'
+      + '<span class="cat-count">' + makerCounts[m] + '</span>'
+      + '</button>';
+  }).join('');
+}
+
+function setMaker(maker) {
+  currentMaker = maker;
+  // Update active state
+  document.querySelectorAll('.cat-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.getAttribute('data-maker') === maker);
+  });
+  renderProducts();
+}
+
+// ─── Transport filter ─────────────────────────────────────────
+function setTransport(t) {
+  currentTransport = t;
+  document.querySelectorAll('.chip').forEach(function(c) {
+    c.classList.toggle('active', c.getAttribute('data-transport') === t);
+  });
+  renderProducts();
+}
+
+// ─── Search ───────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('searchInput').addEventListener('input', function(e) {
+    searchQuery = e.target.value;
+    renderProducts();
+  });
+});
+
+// ─── Developer mode ───────────────────────────────────────────
+function toggleDevMode() {
+  devMode = document.getElementById('devModeToggle').checked;
+  renderProducts();
+}
+
+// ─── Language ────────────────────────────────────────────────
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('matter-dict-lang', lang);
+  document.getElementById('btnJa').classList.toggle('active', lang === 'ja');
+  document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+  applyLangUI(lang);
+  renderProducts();
+}
+
+function applyLangUI(lang) {
+  var el;
+  el = document.getElementById('logoTitle');
+  if (el) el.textContent = lang === 'en' ? '⚡ Matter Dictionary' : '⚡ Matter辞書';
+  el = document.getElementById('backBtnLabel');
+  if (el) el.textContent = lang === 'en' ? 'Dictionary' : '辞書トップ';
+  el = document.getElementById('searchInput');
+  if (el) el.placeholder = lang === 'en' ? 'Search by product name or maker…' : '製品名・メーカー名で検索…';
+  el = document.getElementById('sidebarMakerLabel');
+  if (el) el.textContent = lang === 'en' ? 'MAKER' : 'メーカー';
+  el = document.getElementById('sidebarCsaLabel');
+  if (el) el.textContent = lang === 'en' ? 'FILTER' : 'CSA認証';
+  el = document.getElementById('allProductsLabel');
+  if (el) el.textContent = lang === 'en' ? 'All Products' : 'すべての製品';
+  el = document.getElementById('devModeLabel');
+  if (el) el.textContent = lang === 'en' ? '🔬 Developer Mode' : '🔬 デベロッパーモード';
+  // transport chips
+  var transportLabels = { 'all': lang === 'en' ? 'All' : 'すべて', 'Thread': 'Thread', 'Wi-Fi': 'Wi-Fi', 'Ethernet': 'Ethernet' };
+  document.querySelectorAll('.chip[data-transport]').forEach(function(c) {
+    var key = c.getAttribute('data-transport');
+    if (transportLabels[key]) c.textContent = transportLabels[key];
+  });
+  // header stat
+  var statEl = document.getElementById('headerStat');
+  if (statEl && ALL_PRODUCTS.length > 0) {
+    statEl.textContent = ALL_PRODUCTS.length + (lang === 'en' ? ' products' : ' 製品');
+  }
+}
+
+// ─── Init ─────────────────────────────────────────────────────
+Promise.all([
+  fetch(PRODUCTS_API_URL).then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }),
+  fetch('data/deviceTypes.json').then(function(r) { return r.json(); }).catch(function(){ return []; })
+]).then(function(results) {
+  var products = results[0];
+  var deviceTypes = results[1];
+
+  // Build device type lookup
+  deviceTypes.forEach(function(dt) {
+    DEVICE_TYPE_MAP[dt.id] = dt;
+  });
+
+  ALL_PRODUCTS = products;
+
+  buildSidebar();
+
+  var statEl = document.getElementById('headerStat');
+  if (statEl) statEl.textContent = products.length + ' 製品';
+
+  // Hide loading
+  var grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+
+  applyLangUI(currentLang);
+  renderProducts();
+
+}).catch(function(err) {
+  console.error('製品データ読み込みエラー:', err);
+  var grid = document.getElementById('productGrid');
+  grid.innerHTML = '<div class="empty-state">'
+    + '<div style="font-size:24px;margin-bottom:12px">⚠️</div>'
+    + '<div style="color:var(--muted)">製品データを読み込めませんでした</div>'
+    + '<div style="font-family:\'Space Mono\',monospace;font-size:10px;color:var(--dim);margin-top:8px">' + err.message + '</div>'
+    + '<div style="font-size:11px;color:var(--dim);margin-top:16px">Vercelへのデプロイ後に利用可能になります</div>'
+    + '</div>';
+});
+
+// Show loading skeleton immediately
+document.getElementById('productGrid').innerHTML = '<div class="loading-state"><div class="loading-spinner"></div>製品データを読み込み中…</div>';
+</script>
+
+</body>
+</html>
