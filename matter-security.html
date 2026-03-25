@@ -123,6 +123,8 @@
       .grid-2, .grid-3 { grid-template-columns: 1fr; }
       .comm-step { grid-template-columns: 36px 1fr; }
     }
+    .back-to-toc { display: block; text-align: right; font-size: 11px; color: var(--text-light); text-decoration: none; margin-top: 24px; }
+    .back-to-toc:hover { color: var(--primary); }
   </style>
   <script src="translations-security.js"></script>
   <script src="nav.js"></script>
@@ -151,7 +153,7 @@
 
 <main>
 
-  <div class="toc fade-in">
+  <div class="toc fade-in" id="toc">
     <div class="toc-title">📋 このページの内容</div>
     <ol>
       <li><a href="#concern">「QRコードで勝手に登録されない？」という疑問に答える</a></li>
@@ -197,6 +199,7 @@
         </div>
       </div>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- 02 コミッショニングフロー -->
@@ -297,6 +300,7 @@
       <strong data-ja="💡 まとめ：QRコードは「入口の合言葉」に過ぎない" data-en="💡 Summary: The QR Code is Just the Entry Passcode">💡 まとめ：QRコードは「入口の合言葉」に過ぎない</strong><br>
       QRコードで扉は開きますが、その中にある本当の「家の鍵（NOC）」は、デバイスが正規品であることを証明してから初めて渡されます。QRコードを写真に撮られても、それだけでは登録も操作もできません。
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- 03 証明書の仕組み -->
@@ -368,6 +372,7 @@
         style="position:absolute; top:0; left:0; width:100%; height:100%;">
       </iframe>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- 04 暗号化 -->
@@ -390,8 +395,9 @@
     </div>
 
     <div class="highlight-orange" style="margin-top:18px;">
-      <strong>⚠️ ただし注意点もあります：</strong>Matter自体の通信は安全ですが、デバイスによってはクラウドとの追加連携機能を持つものもあります。そのクラウド連携部分のプライバシーポリシーは各メーカーが責任を持って開示する必要があります。購入前にメーカーのプライバシーポリシーを確認することをお勧めします。
+      <strong>⚠️ ただし注意点もあります：</strong><span data-ja="Matter自体の通信は安全ですが、デバイスによってはクラウドとの追加連携機能を持つものもあります。そのクラウド連携部分のプライバシーポリシーは各メーカーが責任を持って開示する必要があります。購入前にメーカーのプライバシーポリシーを確認することをお勧めします。" data-en="Matter communication itself is secure, but some devices offer additional cloud integration. The privacy policy for that cloud layer is each manufacturer's responsibility to disclose. We recommend reviewing the manufacturer's privacy policy before purchase.">Matter自体の通信は安全ですが、デバイスによってはクラウドとの追加連携機能を持つものもあります。そのクラウド連携部分のプライバシーポリシーは各メーカーが責任を持って開示する必要があります。購入前にメーカーのプライバシーポリシーを確認することをお勧めします。</span>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- 05 プライバシー -->
@@ -429,6 +435,7 @@
         </div>
       </div>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- 06 FAQ -->
@@ -439,57 +446,58 @@
     <div class="faq-item">
       <div class="faq-q">
         <div class="faq-badge">Q</div>
-        <div class="faq-q-text">箱に書いてあるQRコードを他人に見られたら、家のデバイスを乗っ取られる？</div>
+        <div class="faq-q-text" data-ja="箱に書いてあるQRコードを他人に見られたら、家のデバイスを乗っ取られる？" data-en="If someone sees the QR code on the box, can they take over my devices?">箱に書いてあるQRコードを他人に見られたら、家のデバイスを乗っ取られる？</div>
       </div>
       <div class="faq-a">
-        <strong>→ 乗っ取りはできません。</strong><br>
-        QRコードは「初回登録のための短期パスコード」であり、これだけでは操作も、登録後の通信も行えません。登録完了後はQRコードのパスコードはデバイスから完全に廃棄されます。また仕様書では、スマートロック等の屋外設置機器はQRコードを外から見えない位置に設置することを推奨しています。
+        <strong data-ja="→ 乗っ取りはできません。" data-en="→ No, they cannot.">→ 乗っ取りはできません。</strong><br>
+        <span data-ja="QRコードは「初回登録のための短期パスコード」であり、これだけでは操作も、登録後の通信も行えません。登録完了後はQRコードのパスコードはデバイスから完全に廃棄されます。また仕様書では、スマートロック等の屋外設置機器はQRコードを外から見えない位置に設置することを推奨しています。" data-en="The QR code is only a short-lived commissioning passcode — it cannot control the device or enable post-commissioning communication. The passcode is fully discarded from the device after commissioning. The specification also recommends that outdoor devices such as smart locks be installed with the QR code facing away from public view.">QRコードは「初回登録のための短期パスコード」であり、これだけでは操作も、登録後の通信も行えません。登録完了後はQRコードのパスコードはデバイスから完全に廃棄されます。また仕様書では、スマートロック等の屋外設置機器はQRコードを外から見えない位置に設置することを推奨しています。</span>
       </div>
     </div>
 
     <div class="faq-item">
       <div class="faq-q">
         <div class="faq-badge">Q</div>
-        <div class="faq-q-text">中国製など安価な製品は大丈夫？偽物が入り込まない？</div>
+        <div class="faq-q-text" data-ja="中国製など安価な製品は大丈夫？偽物が入り込まない？" data-en="Are inexpensive products (e.g., made in China) safe? Can counterfeits slip through?">中国製など安価な製品は大丈夫？偽物が入り込まない？</div>
       </div>
       <div class="faq-a">
-        <strong>→ 「Matter認定済み」であれば一定の保証があります。</strong><br>
-        Matter認定には世界共通の認証試験（CSAによる）が必要で、合格品にのみDAC・CDが発行されます。これらがDCLで照合されるため、偽造品はコミッショニング段階で弾かれます。ただし認定を取得していない「Matter対応をうたった製品」には注意が必要です。購入時はCSAの認定済み製品リストを確認することをお勧めします。
+        <strong data-ja="→ 「Matter認定済み」であれば一定の保証があります。" data-en="→ &quot;Matter-certified&quot; products carry a meaningful guarantee.">→ 「Matter認定済み」であれば一定の保証があります。</strong><br>
+        <span data-ja="Matter認定には世界共通の認証試験（CSAによる）が必要で、合格品にのみDAC・CDが発行されます。これらがDCLで照合されるため、偽造品はコミッショニング段階で弾かれます。ただし認定を取得していない「Matter対応をうたった製品」には注意が必要です。購入時はCSAの認定済み製品リストを確認することをお勧めします。" data-en="Matter certification requires passing a global CSA test; only passing products receive a DAC and CD. These are verified against the DCL, so counterfeits are rejected during commissioning. However, be cautious of products claiming Matter compatibility without certification. We recommend checking the CSA certified product list before purchasing.">Matter認定には世界共通の認証試験（CSAによる）が必要で、合格品にのみDAC・CDが発行されます。これらがDCLで照合されるため、偽造品はコミッショニング段階で弾かれます。ただし認定を取得していない「Matter対応をうたった製品」には注意が必要です。購入時はCSAの認定済み製品リストを確認することをお勧めします。</span>
       </div>
     </div>
 
     <div class="faq-item">
       <div class="faq-q">
         <div class="faq-badge">Q</div>
-        <div class="faq-q-text">スマートロックをMatterで使うのは怖い。物理的に家を開けられたりしない？</div>
+        <div class="faq-q-text" data-ja="スマートロックをMatterで使うのは怖い。物理的に家を開けられたりしない？" data-en="I'm worried about using a smart lock with Matter. Could someone physically unlock my door?">スマートロックをMatterで使うのは怖い。物理的に家を開けられたりしない？</div>
       </div>
       <div class="faq-a">
-        <strong>→ Matterの通信経路自体は高度に保護されています。</strong><br>
-        Matter通信はCASEによる相互認証と暗号化で保護されており、「正しいFabricメンバーのコントローラー」以外からのコマンドは受け付けません。ただしスマートロックのセキュリティは、Matter通信だけでなく、デバイス自体の物理セキュリティ・アプリのアカウント保護など複合的な要素で決まります。アプリの2段階認証設定も忘れずに。
+        <strong data-ja="→ Matterの通信経路自体は高度に保護されています。" data-en="→ Matter's communication channel itself is strongly protected.">→ Matterの通信経路自体は高度に保護されています。</strong><br>
+        <span data-ja="Matter通信はCASEによる相互認証と暗号化で保護されており、「正しいFabricメンバーのコントローラー」以外からのコマンドは受け付けません。ただしスマートロックのセキュリティは、Matter通信だけでなく、デバイス自体の物理セキュリティ・アプリのアカウント保護など複合的な要素で決まります。アプリの2段階認証設定も忘れずに。" data-en="Matter communication uses CASE mutual authentication and encryption, rejecting commands from any non-Fabric Controller. However, smart lock security overall depends on multiple factors beyond Matter: the device's physical security and app account protection. Don't forget to enable two-factor authentication on your app.">Matter通信はCASEによる相互認証と暗号化で保護されており、「正しいFabricメンバーのコントローラー」以外からのコマンドは受け付けません。ただしスマートロックのセキュリティは、Matter通信だけでなく、デバイス自体の物理セキュリティ・アプリのアカウント保護など複合的な要素で決まります。アプリの2段階認証設定も忘れずに。</span>
       </div>
     </div>
 
     <div class="faq-item">
       <div class="faq-q">
         <div class="faq-badge">Q</div>
-        <div class="faq-q-text">デバイスを廃棄・売却するときはどうすればいい？</div>
+        <div class="faq-q-text" data-ja="デバイスを廃棄・売却するときはどうすればいい？" data-en="What should I do when disposing of or selling a device?">デバイスを廃棄・売却するときはどうすればいい？</div>
       </div>
       <div class="faq-a">
-        <strong>→ ファクトリーリセットで全Fabricから切り離せます。</strong><br>
-        ファクトリーリセットを行うと、デバイスに登録されているすべてのFabric情報・NOCが削除されます。リセット後のデバイスは「新品状態」になり、前のFabricからは操作できなくなります。売却・廃棄前は必ずリセットを行ってください。
+        <strong data-ja="→ ファクトリーリセットで全Fabricから切り離せます。" data-en="→ A factory reset disconnects it from all Fabrics.">→ ファクトリーリセットで全Fabricから切り離せます。</strong><br>
+        <span data-ja="ファクトリーリセットを行うと、デバイスに登録されているすべてのFabric情報・NOCが削除されます。リセット後のデバイスは「新品状態」になり、前のFabricからは操作できなくなります。売却・廃棄前は必ずリセットを行ってください。" data-en="A factory reset deletes all Fabric records and NOCs from the device. It returns to a factory-fresh state and can no longer be controlled from its previous Fabrics. Always perform a factory reset before selling or disposing of a device.">ファクトリーリセットを行うと、デバイスに登録されているすべてのFabric情報・NOCが削除されます。リセット後のデバイスは「新品状態」になり、前のFabricからは操作できなくなります。売却・廃棄前は必ずリセットを行ってください。</span>
       </div>
     </div>
 
     <div class="faq-item">
       <div class="faq-q">
         <div class="faq-badge">Q</div>
-        <div class="faq-q-text">セキュリティ脆弱性が見つかったとき、どう対応される？</div>
+        <div class="faq-q-text" data-ja="セキュリティ脆弱性が見つかったとき、どう対応される？" data-en="How are security vulnerabilities handled?">セキュリティ脆弱性が見つかったとき、どう対応される？</div>
       </div>
       <div class="faq-a">
-        <strong>→ OTA（Over-the-Air）アップデートの仕組みが組み込まれています。</strong><br>
-        MatterにはOTAソフトウェアアップデートのクラスターが標準搭載されており、メーカーがファームウェアを更新することで素早くセキュリティ対応できます。スマホのOS更新と同じ仕組みです。対応デバイスは自動またはアプリ経由で最新の状態に保てます。
+        <strong data-ja="→ OTA（Over-the-Air）アップデートの仕組みが組み込まれています。" data-en="→ OTA (Over-the-Air) update capability is built in.">→ OTA（Over-the-Air）アップデートの仕組みが組み込まれています。</strong><br>
+        <span data-ja="MatterにはOTAソフトウェアアップデートのクラスターが標準搭載されており、メーカーがファームウェアを更新することで素早くセキュリティ対応できます。スマホのOS更新と同じ仕組みです。対応デバイスは自動またはアプリ経由で最新の状態に保てます。" data-en="Matter includes a standardized OTA Software Update Cluster that enables manufacturers to push security patches quickly — the same mechanism as smartphone OS updates. Compatible devices can be kept up to date automatically or via the app.">MatterにはOTAソフトウェアアップデートのクラスターが標準搭載されており、メーカーがファームウェアを更新することで素早くセキュリティ対応できます。スマホのOS更新と同じ仕組みです。対応デバイスは自動またはアプリ経由で最新の状態に保てます。</span>
       </div>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <section class="fade-in">
@@ -505,6 +513,7 @@
       <a href="guide.html" style="display:inline-block; background:var(--primary); color:#fff; padding:10px 24px; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600; margin-right:12px;">← Matterとは？に戻る</a>
       <a href="index.html" style="display:inline-block; background:var(--gray-700); color:#fff; padding:10px 24px; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">辞書トップへ</a>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
 </main>

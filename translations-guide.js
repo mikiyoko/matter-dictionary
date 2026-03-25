@@ -209,7 +209,7 @@ window.PAGE_TRANSLATIONS = {
   '📡 Threadって何が特別なの？': '📡 What makes Thread special?',
   'オープン規格・IPv6ベース・省電力・メッシュ対応という4つの条件を満たしているから。特に電池駆動のセンサー類では、Wi-FiやBluetoothより圧倒的に有利です。': 'Thread satisfies four requirements: open standard, IPv6-native, ultra-low power, and native mesh. For battery-powered sensors, it outperforms Wi-Fi and Bluetooth by a wide margin.',
   '📊 通信方式の比較': '📊 Transport Comparison',
-  '🏠 HRAP（Home Router &amp; Access Point）構想：': '🏠 HRAP (Home Router & Access Point) initiative:',
+  '🏠 HRAP（Home Router & Access Point）構想：': '🏠 HRAP (Home Router & Access Point) initiative:',
   'Matter 1.4から、家庭用Wi-FiルーターにThread ボーダールーター機能を標準搭載する規格が追加されました。通信事業者からレンタルするルーターにこの機能が組み込まれれば、ユーザーが意識しなくても「ネット回線を引いた時点でThreadが使える家」になります。AmazonのeeroなどはすでにThread搭載済みで、この動きが広がると専用ハブ不要でThreadデバイスが使えるようになります。': 'Starting with Matter 1.4, a standard was added to include Thread Border Router functionality in consumer Wi-Fi routers. When ISP-provided routers embed this feature, homes will have Thread connectivity the moment broadband is installed — no separate hub needed. Amazon eero already ships with Thread, and this trend is growing.',
   '💡 なぜMatterがThreadを採用したか：': '💡 Why did Matter choose Thread?',
   /* ── Roles ── */

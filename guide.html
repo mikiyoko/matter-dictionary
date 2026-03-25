@@ -175,6 +175,8 @@
 
     .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .back-to-toc { display: block; text-align: right; font-size: 11px; color: var(--text-light); text-decoration: none; margin-top: 24px; }
+    .back-to-toc:hover { color: var(--primary); }
   </style>
   <script src="translations-guide.js"></script>
   <script src="nav.js"></script>
@@ -203,7 +205,7 @@
 
 <main>
 
-  <div class="toc fade-in">
+  <div class="toc fade-in" id="toc">
     <div class="toc-title">📋 このページの内容</div>
     <ol>
       <li><a href="#what">Matterって何？　一言で言うと</a></li>
@@ -217,7 +219,6 @@
       <li><a href="#roles">3つの役割：コントローラー・ブリッジ・ボーダールーター</a></li>
       <li><a href="#multi-admin">マルチアドミンとFabric登録の上限</a></li>
       <li><a href="#faq">よくある質問</a></li>
-      <li><a href="#glossary">よく出てくる用語集</a></li>
     </ol>
   </div>
 
@@ -249,6 +250,7 @@
     <div class="info-box" style="margin-top:18px;">
       <strong>🆕 Matter 1.5の新機能：</strong>カメラ・ドアベル・ビデオ通話（WebRTC）・新世代クロージャー（窓・扉）が大幅追加。ヒートポンプ・給湯器など家全体のエネルギー管理も強化されました。
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <section id="structure" class="fade-in">
@@ -270,13 +272,14 @@
       <strong>🏷 Device Type（デバイスタイプ）はどこに入る？</strong><br>
       デバイスタイプは「このエンドポイントはどんな機器か」を定義する"レッテル"のようなもの。「Dimmable Light（調光ライト）なら On/Off と Level Control クラスターが必須」という資格要件を決めています。
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <section id="device-type" class="fade-in">
     <div class="section-label">📱 03 — DEVICE TYPES</div>
     <h2 data-ja="デバイスタイプとは？" data-en="What are Device Types?">デバイスタイプとは？</h2>
     <p data-ja="「この機器はMatter的にどんな種類か」を定義するラベルです。デバイスタイプによって「必ず持つべき機能（必須クラスター）」が決まります。" data-en="A label that defines what kind of device an endpoint represents in Matter terms. The Device Type determines which Clusters are mandatory.">「この機器はMatter的にどんな種類か」を定義するラベルです。デバイスタイプによって「必ず持つべき機能（必須クラスター）」が決まります。</p>
-    <div class="code-box">
+    <div class="code-box ja-only">
 <span class="c-dim">// デバイスタイプの例：Dimmable Light（調光対応照明）</span>
 デバイスタイプID: <span class="c-blue">0x0101</span>
 名前: <span class="c-green">Dimmable Light</span>
@@ -291,6 +294,21 @@
   ☑️ <span class="c-purple">Scenes Management</span>  <span class="c-dim">← シーン保存（省略OK）</span>
   ☑️ <span class="c-purple">Ballast Config</span>     <span class="c-dim">← バラスト設定（省略OK）</span>
     </div>
+    <div class="code-box en-only">
+<span class="c-dim">// Device Type example: Dimmable Light</span>
+Device Type ID: <span class="c-blue">0x0101</span>
+Name: <span class="c-green">Dimmable Light</span>
+
+Mandatory Clusters (M):
+  ✅ <span class="c-yellow">Identify</span>        <span class="c-dim">← identify device via LED blink</span>
+  ✅ <span class="c-yellow">Groups</span>          <span class="c-dim">← group control support</span>
+  ✅ <span class="c-yellow">On/Off</span>          <span class="c-dim">← power on/off</span>
+  ✅ <span class="c-yellow">Level Control</span>   <span class="c-dim">← brightness (0–100%)</span>
+
+Optional Clusters (O):
+  ☑️ <span class="c-purple">Scenes Management</span>  <span class="c-dim">← scene recall (optional)</span>
+  ☑️ <span class="c-purple">Ballast Config</span>     <span class="c-dim">← ballast config (optional)</span>
+    </div>
     <div class="highlight">
       <strong>M（必須）と O（任意）の違い：</strong>M = このデバイスタイプを名乗るために絶対に実装しなければならない機能。O = あれば便利だけど、なくてもデバイスタイプとして認められる機能。
     </div>
@@ -304,6 +322,7 @@
         </tbody>
       </table>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <section id="cluster" class="fade-in">
@@ -338,6 +357,7 @@
     <div class="highlight-blue">
       <strong>クラスターの「Server」と「Client」：</strong>同じクラスターでも「提供する側（Server）」と「使う側（Client）」があります。電球はOn/Off ClusterのServer（制御される側）で、スマートフォンアプリはOn/Off ClusterのClient（制御する側）です。1つのデバイスがServerにもClientにもなれます。
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <section id="cluster-elements" class="fade-in">
@@ -350,7 +370,7 @@
       <div class="elem-card"><div class="elem-type">Event</div><div class="elem-head"><div class="elem-icon">🔔</div><div class="elem-name" data-ja="イベント" data-en="Event">イベント</div></div><div class="elem-desc">状態変化の通知。<br>例:「温度が閾値を超えた」<br>「ドアが開いた」</div></div>
       <div class="elem-card"><div class="elem-type">Feature</div><div class="elem-head"><div class="elem-icon">🔧</div><div class="elem-name" data-ja="フィーチャー" data-en="Feature">フィーチャー</div></div><div class="elem-desc">オプション機能の有無。<br>例:「Lighting機能あり<br>（調光カーブ対応）」</div></div>
     </div>
-    <div class="code-box">
+    <div class="code-box ja-only">
 <span class="c-dim">// Level Control Cluster の中身（例）</span>
 
 <span class="c-green">Attributes（アトリビュート）:</span>
@@ -367,10 +387,28 @@
   [OO] OnOff           <span class="c-dim">← On/Off Clusterと連携する機能</span>
   [LT] Lighting        <span class="c-dim">← 照明用の調光カーブ対応</span>
     </div>
+    <div class="code-box en-only">
+<span class="c-dim">// Level Control Cluster — elements (example)</span>
+
+<span class="c-green">Attributes:</span>
+  CurrentLevel         <span class="c-dim">= current brightness (0–254)</span>
+  MinLevel / MaxLevel  <span class="c-dim">= minimum / maximum brightness</span>
+  OnLevel              <span class="c-dim">= default brightness when turned on</span>
+
+<span class="c-yellow">Commands:</span>
+  MoveToLevel          <span class="c-dim">← set brightness to target level</span>
+  Move                 <span class="c-dim">← gradually increase / decrease brightness</span>
+  Step                 <span class="c-dim">← increase / decrease by one step</span>
+
+<span class="c-blue">Features:</span>
+  [OO] OnOff           <span class="c-dim">← link with On/Off Cluster</span>
+  [LT] Lighting        <span class="c-dim">← lighting dimming curve support</span>
+    </div>
     <div class="highlight-blue">
       <strong>💡 フィーチャーって何が嬉しいの？</strong><br>
       同じクラスターでも製品によってサポートする機能が異なります。フィーチャーがあることで「この製品はどこまで対応しているか」がアプリ側に正確に伝わり、UIが自動的に最適化されます。例えば「調光カーブ（Lighting フィーチャー）」対応の電球は、Apple Homeの「適応照明」機能が使えるようになります。
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <section id="superset" class="fade-in">
@@ -390,6 +428,7 @@
       <strong>✅ 具体的に何が嬉しいか：</strong>フルカラー電球（Extended Color Light）は、色温度だけ対応のアプリからも「Color Temperature Light」として認識されて動作できます。互換性を最大限保ちながら機能を追加できる、Matterの賢い設計です。<br><br>
       <strong>🍎 Apple Homeの「適応照明」：</strong>Color Temperature Light以上に対応しています。電球を買うときに「色温度対応かどうか」をチェックするのはそのためです。
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <section id="semantic-tag" class="fade-in">
@@ -399,14 +438,21 @@
     <div class="card">
       <h3 data-ja="🏷 タグがないと何が困るか" data-en="🏷 What Goes Wrong Without Tags?">🏷 タグがないと何が困るか</h3>
       <p>タグがないと、スマートホームアプリは照明を「ダウンライト1、ダウンライト2…」と番号で並べるしかありません。どれがリビングのどの照明かを自動で判断できないのです。<br><br>
-      セマンティックタグがあれば：<br>「<strong>リビング（LivingRoom）</strong>の<strong>ソファの上（Sofa × Above）</strong>にあるライト」という情報をアプリが自動で読み取り、最適なUIを生成できます。</p>
+      セマンティックタグがあれば：<br><span data-ja="「" data-en='"'>「</span><strong data-ja="リビング（LivingRoom）" data-en="Living Room (LivingRoom)">リビング（LivingRoom）</strong><span data-ja="の" data-en=" above the sofa ">の</span><strong data-ja="ソファの上（Sofa × Above）" data-en="Sofa × Above">ソファの上（Sofa × Above）</strong><span data-ja="にあるライト」という情報をアプリが自動で読み取り、最適なUIを生成できます。" data-en='" — the app reads this location data automatically and generates an optimal UI.'>にあるライト」という情報をアプリが自動で読み取り、最適なUIを生成できます。</span></p>
     </div>
-    <div class="code-box">
+    <div class="code-box ja-only">
 <span class="c-dim">// セマンティックタグの例：リビングの窓の左ブラインド</span>
 タグ1: Common Area     → <span class="c-green">LivingRoom</span>     <span class="c-dim">（場所：リビング）</span>
 タグ2: Common Landmark → <span class="c-blue">Window</span>          <span class="c-dim">（目印：窓）</span>
 タグ3: Common Position → <span class="c-yellow">Left</span>            <span class="c-dim">（位置：左）</span>
 タグ4: Closure Covering→ <span class="c-purple">Blind</span>           <span class="c-dim">（種類：ブラインド）</span>
+    </div>
+    <div class="code-box en-only">
+<span class="c-dim">// Semantic Tag example: left blind on the living room window</span>
+Tag 1: Common Area     → <span class="c-green">LivingRoom</span>     <span class="c-dim">(location: living room)</span>
+Tag 2: Common Landmark → <span class="c-blue">Window</span>          <span class="c-dim">(landmark: window)</span>
+Tag 3: Common Position → <span class="c-yellow">Left</span>            <span class="c-dim">(position: left)</span>
+Tag 4: Closure Covering→ <span class="c-purple">Blind</span>           <span class="c-dim">(type: blind)</span>
     </div>
     <div class="table-wrap">
       <table>
@@ -420,6 +466,7 @@
         </tbody>
       </table>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <section id="network" class="fade-in">
@@ -480,6 +527,7 @@
     <div class="highlight" style="margin-top:14px;">
       <strong>💡 なぜMatterがThreadを採用したか：</strong>オープン規格・IPv6ベース・省電力・メッシュ対応という4つの条件を満たしているから。特に電池駆動のセンサー類では、Wi-FiやBluetoothより圧倒的に有利です。<br><br><strong>🏠 HRAP（Home Router &amp; Access Point）構想：</strong>Matter 1.4から、家庭用Wi-FiルーターにThread ボーダールーター機能を標準搭載する規格が追加されました。通信事業者からレンタルするルーターにこの機能が組み込まれれば、ユーザーが意識しなくても「ネット回線を引いた時点でThreadが使える家」になります。AmazonのeeroなどはすでにThread搭載済みで、この動きが広がると専用ハブ不要でThreadデバイスが使えるようになります。
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <section id="roles" class="fade-in">
@@ -536,6 +584,7 @@
         </div>
       </div>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ===== MULTI-ADMIN + FABRIC LIMIT (UPDATED SECTION) ===== -->
@@ -559,7 +608,7 @@
       <h3 style="font-size:15px; margin-bottom:12px;" data-ja="Fabric（ファブリック）とは？" data-en="What is a Fabric?">Fabric（ファブリック）とは？</h3>
       <p style="font-size:13px;" data-ja="Matterでは「誰が・どのデバイスを・どのコントローラーで管理するか」という信頼グループを<strong>Fabric（ファブリック）</strong>と呼びます。Apple HomeもGoogle Homeもそれぞれ独立したFabricです。" data-en="In Matter, the trust group defining "who manages which device with which Controller" is called a <strong>Fabric</strong>. Apple Home and Google Home are each an independent Fabric.">Matterでは「誰が・どのデバイスを・どのコントローラーで管理するか」という信頼グループを<strong>Fabric（ファブリック）</strong>と呼びます。Apple HomeもGoogle Homeもそれぞれ独立したFabricです。</p>
       <div class="highlight" style="margin-top:12px;">
-        🗝️ <strong>鍵の例え：</strong>デバイスが複数の鍵穴を持ち、それぞれのプラットフォームが自分の鍵で自由に出入りできるイメージ。鍵穴の数だけ異なるエコシステムに同時登録できます。
+        🗝️ <strong data-ja="鍵の例え：" data-en="Key analogy:">鍵の例え：</strong>デバイスが複数の鍵穴を持ち、それぞれのプラットフォームが自分の鍵で自由に出入りできるイメージ。鍵穴の数だけ異なるエコシステムに同時登録できます。
       </div>
     </div>
 
@@ -634,6 +683,7 @@
       </div>
       <a class="ts-banner-btn" href="troubleshoot.html">困ったときはこちら →</a>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <section id="faq" class="fade-in">
@@ -745,29 +795,7 @@
       </div>
 
     </div>
-  </section>
-
-  <section id="glossary" class="fade-in">
-    <div class="section-label">📚 12 — GLOSSARY</div>
-    <h2 data-ja="よく出てくる用語集" data-en="Glossary">よく出てくる用語集</h2>
-    <p>Matterの仕様書や製品情報で頻繁に登場する用語をまとめました。</p>
-    <div class="glossary-grid">
-      <div class="gloss-item"><div class="gloss-term">ノード<span class="en">Node</span></div><div class="gloss-def" data-ja="Matter対応デバイス1台のこと。スマート電球1つ、スマートロック1つなど。" data-en="A single Matter-capable device — one smart bulb, one smart lock, etc.">Matter対応デバイス1台のこと。スマート電球1つ、スマートロック1つなど。</div></div>
-      <div class="gloss-item"><div class="gloss-term">ファブリック<span class="en">Fabric</span></div><div class="gloss-def" data-ja="Apple HomeやGoogle Homeなど、1つのエコシステムが管理する信頼の輪。1台のデバイスが複数のFabricに所属できる（マルチファブリック）。各デバイスには登録できるFabric数の上限がある。" data-en="The trust boundary administered by a single ecosystem (e.g., Apple Home, Google Home). A device can belong to multiple Fabrics simultaneously. Each device has a maximum (SupportedFabrics) on how many Fabrics it can join.">Apple HomeやGoogle Homeなど、1つのエコシステムが管理する信頼の輪。1台のデバイスが複数のFabricに所属できる（マルチファブリック）。各デバイスには登録できるFabric数の上限がある。</div></div>
-      <div class="gloss-item"><div class="gloss-term">エンドポイント<span class="en">Endpoint</span></div><div class="gloss-def" data-ja="1つのデバイス（Node）内で、個別にアドレス指定できる機能の単位。コンセントが2口のスマートプラグなら、それぞれの口がエンドポイント。" data-en="The individually addressable functional unit within a Node. A smart plug with two outlets has one Endpoint per outlet.">1つのデバイス（Node）内で、個別にアドレス指定できる機能の単位。コンセントが2口のスマートプラグなら、それぞれの口がエンドポイント。</div></div>
-      <div class="gloss-item"><div class="gloss-term">クラスター<span class="en">Cluster</span></div><div class="gloss-def" data-ja="機能の仕様単位。On/Off Cluster、Thermostat Clusterなど。デバイスが「何ができるか」を定義する。" data-en="The specification unit for a set of functionality — e.g., On/Off Cluster, Thermostat Cluster. Defines what a device can do.">機能の仕様単位。On/Off Cluster、Thermostat Clusterなど。デバイスが「何ができるか」を定義する。</div></div>
-      <div class="gloss-item"><div class="gloss-term">アトリビュート<span class="en">Attribute</span></div><div class="gloss-def" data-ja="クラスターが持つ「現在の状態や設定値」。「現在の明るさ＝80%」「現在の温度＝23℃」など。読み書きができる。" data-en="The current state or configuration value held by a Cluster — e.g., CurrentLevel = 80%, MeasuredValue = 23°C. Readable and (where permitted) writable.">クラスターが持つ「現在の状態や設定値」。「現在の明るさ＝80%」「現在の温度＝23℃」など。読み書きができる。</div></div>
-      <div class="gloss-item"><div class="gloss-term">コマンド<span class="en">Command</span></div><div class="gloss-def" data-ja="クラスターへの「操作命令」。「ToggleコマンドでON/OFFを切り替えろ」「MoveToLevelで明るさを60%にしろ」など。" data-en="An instruction sent to a Cluster server — e.g., Toggle (flip on/off state), MoveToLevel (set brightness to 60%).">クラスターへの「操作命令」。「ToggleコマンドでON/OFFを切り替えろ」「MoveToLevelで明るさを60%にしろ」など。</div></div>
-      <div class="gloss-item"><div class="gloss-term">イベント<span class="en">Event</span></div><div class="gloss-def" data-ja="デバイスから自発的に送られてくる「状態変化の通知」。「ドアが開いた」「温度が閾値を超えた」「電池残量が少なくなった」など。" data-en="A notification proactively generated by a device when its state changes — e.g., "Door opened," "Temperature exceeded threshold," "Battery low."">デバイスから自発的に送られてくる「状態変化の通知」。「ドアが開いた」「温度が閾値を超えた」「電池残量が少なくなった」など。</div></div>
-      <div class="gloss-item"><div class="gloss-term">フィーチャー<span class="en">Feature</span></div><div class="gloss-def" data-ja="クラスター内のオプション機能の有無を示すフラグ。「LightingフィーチャーON＝照明用の調光カーブ対応」のように、製品の詳細スペックを表す。" data-en="A flag indicating whether an optional capability within a Cluster is supported — e.g., the Lighting feature ON = dimming curve support, enabling Apple Adaptive Lighting.">クラスター内のオプション機能の有無を示すフラグ。「LightingフィーチャーON＝照明用の調光カーブ対応」のように、製品の詳細スペックを表す。</div></div>
-      <div class="gloss-item"><div class="gloss-term">コミッショニング<span class="en">Commissioning</span></div><div class="gloss-def" data-ja="新しいMatterデバイスをスマートホームに追加する作業のこと。iPhoneでQRコードを読み取ってHomePodと接続する、あの操作がコミッショニング。" data-en="The process of adding a new Matter device to a Fabric. Scanning a QR code with your iPhone to pair a device with HomePod is commissioning.">新しいMatterデバイスをスマートホームに追加する作業のこと。iPhoneでQRコードを読み取ってHomePodと接続する、あの操作がコミッショニング。</div></div>
-      <div class="gloss-item"><div class="gloss-term">SupportedFabrics<span class="en">登録可能Fabric上限</span></div><div class="gloss-def">デバイスが同時に登録を受け付けられるFabricの最大数。製品ごとに異なり、仕様上の最低保証は5。この上限を超えると新規登録が拒否される。</div></div>
-      <div class="gloss-item"><div class="gloss-term">ICD<span class="en">Intermittently Connected Device</span></div><div class="gloss-def" data-ja="間欠接続デバイス。バッテリー駆動のセンサーのように、常時ネットワークにつながらず定期的にデータを送るデバイス。電池持ちを良くするための仕組み。" data-en="Intermittently Connected Device. A battery-powered device (e.g., a sensor) that is not continuously reachable on the network, communicating only at intervals to conserve power.">間欠接続デバイス。バッテリー駆動のセンサーのように、常時ネットワークにつながらず定期的にデータを送るデバイス。電池持ちを良くするための仕組み。</div></div>
-      <div class="gloss-item"><div class="gloss-term">スーパーセット<span class="en">Superset</span></div><div class="gloss-def" data-ja="デバイスタイプの継承関係。「Extended Color Light」は「Color Temperature Light」のスーパーセットで、下位デバイスとしても動作できる。" data-en="Device Type inheritance. Extended Color Light is a superset of Color Temperature Light — it satisfies the requirements of the lower Device Type as well.">デバイスタイプの継承関係。「Extended Color Light」は「Color Temperature Light」のスーパーセットで、下位デバイスとしても動作できる。</div></div>
-      <div class="gloss-item"><div class="gloss-term">DAC<span class="en">Device Attestation Certificate</span></div><div class="gloss-def" data-ja="デバイスが「正規品であること」を証明する証明書。Matter対応を名乗るには必ずCSAの認証が必要で、このDACがその証明になる。" data-en="Device Attestation Certificate. The cryptographic certificate that proves a device is CSA-certified genuine hardware. Required for any device claiming Matter compliance.">デバイスが「正規品であること」を証明する証明書。Matter対応を名乗るには必ずCSAの認証が必要で、このDACがその証明になる。</div></div>
-      <div class="gloss-item"><div class="gloss-term">バインディング<span class="en">Binding</span></div><div class="gloss-def" data-ja="コントローラー（スイッチ）と制御対象（照明）を直接結びつける設定。ハブなしでスイッチが直接照明を操作できるようにする。" data-en="A configuration that directly associates a Controller (e.g., a switch) with a target (e.g., a light), enabling direct control without a hub.">コントローラー（スイッチ）と制御対象（照明）を直接結びつける設定。ハブなしでスイッチが直接照明を操作できるようにする。</div></div>
-      <div class="gloss-item"><div class="gloss-term">Aliro<span class="en">Aliro Digital Key</span></div><div class="gloss-def">Matter 1.3〜対応の「デジタル鍵」規格。iPhoneのウォレットアプリで玄関ドアを開けられる仕組みの標準規格。<a href="aliro.html" style="color:var(--primary);">→ Aliroとは？</a></div></div>
-    </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <section class="fade-in">

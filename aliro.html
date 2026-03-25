@@ -633,6 +633,12 @@
     .toc li { margin-bottom: 6px; }
     .toc a { font-size: 14px; color: var(--primary); text-decoration: none; }
     .toc a:hover { text-decoration: underline; }
+    .back-to-toc {
+      display: block; text-align: right;
+      font-size: 11px; color: var(--text-light);
+      text-decoration: none; margin-top: 24px;
+    }
+    .back-to-toc:hover { color: var(--primary); }
   </style>
   <script src="translations-aliro.js"></script>
   <script src="nav.js"></script>
@@ -665,19 +671,18 @@
 <main>
 
   <!-- 目次 -->
-  <div class="toc fade-in">
+  <div class="toc fade-in" id="toc">
     <div class="toc-title">📋 このページの内容</div>
     <ol>
-      <li><a href="#what">Aliroって何？　一言で言うと</a></li>
-      <li><a href="#players">登場人物（エコシステムの構成）</a></li>
-      <li><a href="#how">スマホをかざしたとき、何が起きているの？</a></li>
-      <li><a href="#transport">通信手段は3つある</a></li>
-      <li><a href="#uwb">UWBとは？　ハンズフリーを安全に実現する技術</a></li>
-      <li><a href="#vs-matter">MatterとAliroの関係</a></li>
-      <li><a href="#scope">Aliroの対象範囲と自動車（CCC）との棲み分け</a></li>
-      <li><a href="#qa">よくある疑問にお答えします</a></li>
-      <li><a href="#summary">まとめ</a></li>
-      <li><a href="#summary">まとめ</a></li>
+      <li><a href="#what" data-ja="Aliroって何？　一言で言うと" data-en="What is Aliro? — In a Nutshell">Aliroって何？　一言で言うと</a></li>
+      <li><a href="#players" data-ja="登場人物（エコシステムの構成）" data-en="Players (Ecosystem Roles)">登場人物（エコシステムの構成）</a></li>
+      <li><a href="#how" data-ja="スマホをかざしたとき、何が起きているの？" data-en="What Happens When You Present Your Phone?">スマホをかざしたとき、何が起きているの？</a></li>
+      <li><a href="#transport" data-ja="通信手段は3つある" data-en="Three Communication Methods">通信手段は3つある</a></li>
+      <li><a href="#uwb" data-ja="UWBとは？　ハンズフリーを安全に実現する技術" data-en="What is UWB? — The Technology Behind Safe Hands-free Access">UWBとは？　ハンズフリーを安全に実現する技術</a></li>
+      <li><a href="#vs-matter" data-ja="MatterとAliroの関係" data-en="Matter and Aliro — How They Relate">MatterとAliroの関係</a></li>
+      <li><a href="#scope" data-ja="Aliroの対象範囲と自動車（CCC）との棲み分け" data-en="Aliro Scope and Separation from Automotive (CCC)">Aliroの対象範囲と自動車（CCC）との棲み分け</a></li>
+      <li><a href="#qa" data-ja="よくある疑問にお答えします" data-en="Frequently Asked Questions">よくある疑問にお答えします</a></li>
+      <li><a href="#summary" data-ja="まとめ" data-en="Summary">まとめ</a></li>
     </ol>
   </div>
 
@@ -719,6 +724,7 @@
         </div>
       </div>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ② 登場人物 -->
@@ -767,6 +773,7 @@
     <div class="highlight">
       <strong>🔍 わかりやすく言うと：</strong>「クレデンシャル発行者（Apple等）」がスマホに鍵データを書き込み、「リーダー（ドアのスキャナー）」がその鍵を読んで、「アクセスマネージャー（許可リスト）」が開錠を決める、という流れです。
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ③ 認証の仕組み -->
@@ -864,6 +871,7 @@
         </div>
       </div>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ④ 通信手段 -->
@@ -874,21 +882,21 @@
     <p data-ja="Aliroは場面に応じて3つの通信方式をサポートしています。それぞれに得意なことがあります。" data-en="Aliro supports three communication methods suited to different scenarios, each with its own strengths.">Aliroは場面に応じて3つの通信方式をサポートしています。それぞれに得意なことがあります。</p>
 
     <div class="transport-diagram">
-      <div class="transport-title">通信方式の比較</div>
+      <div class="transport-title" data-ja="通信方式の比較" data-en="Communication Method Comparison">通信方式の比較</div>
       <!-- NFC -->
       <div class="transport-row">
         <div class="transport-device">
           <div class="icon">📱</div>
-          <div class="label">スマホ</div>
+          <div class="label" data-ja="スマホ" data-en="Phone">スマホ</div>
           <div class="sublabel">User Device</div>
         </div>
         <div class="transport-wave">
           <div class="wave-label">📶 NFC</div>
-          <div class="wave-sub">かざす（10cm以内）</div>
+          <div class="wave-sub" data-ja="かざす（10cm以内）" data-en="Tap (within 10 cm)">かざす（10cm以内）</div>
         </div>
         <div class="transport-device">
           <div class="icon">🚪</div>
-          <div class="label">NFCリーダー</div>
+          <div class="label" data-ja="NFCリーダー" data-en="NFC Reader">NFCリーダー</div>
           <div class="sublabel">Reader</div>
         </div>
       </div>
@@ -896,16 +904,16 @@
       <div class="transport-row">
         <div class="transport-device">
           <div class="icon">📱</div>
-          <div class="label">スマホ</div>
+          <div class="label" data-ja="スマホ" data-en="Phone">スマホ</div>
           <div class="sublabel">User Device</div>
         </div>
         <div class="transport-wave">
           <div class="wave-label">🔵 Bluetooth LE</div>
-          <div class="wave-sub">数メートル以内に近づく</div>
+          <div class="wave-sub" data-ja="数メートル以内に近づく" data-en="Approach within a few meters">数メートル以内に近づく</div>
         </div>
         <div class="transport-device">
           <div class="icon">🚪</div>
-          <div class="label">BLEリーダー</div>
+          <div class="label" data-ja="BLEリーダー" data-en="BLE Reader">BLEリーダー</div>
           <div class="sublabel">Reader</div>
         </div>
       </div>
@@ -913,16 +921,16 @@
       <div class="transport-row">
         <div class="transport-device">
           <div class="icon">📱</div>
-          <div class="label">スマホ</div>
+          <div class="label" data-ja="スマホ" data-en="Phone">スマホ</div>
           <div class="sublabel">User Device</div>
         </div>
         <div class="transport-wave">
           <div class="wave-label">🔵+📍 BLE + UWB</div>
-          <div class="wave-sub">ハンズフリー（近づくだけ）</div>
+          <div class="wave-sub" data-ja="ハンズフリー（近づくだけ）" data-en="Hands-free (approach only)">ハンズフリー（近づくだけ）</div>
         </div>
         <div class="transport-device">
           <div class="icon">🚪</div>
-          <div class="label">UWB対応リーダー</div>
+          <div class="label" data-ja="UWB対応リーダー" data-en="UWB Reader">UWB対応リーダー</div>
           <div class="sublabel">Reader</div>
         </div>
       </div>
@@ -949,6 +957,7 @@
     <div class="highlight" style="margin-top: 20px;">
       <strong>📱 Apple WalletのエクスプレスモードとAliroの関係：</strong> Aliro仕様書のExpedited Phase（迅速フェーズ）が、Apple等のエクスプレスモードと組み合わさることで、スリープ画面のままかざすだけで解錠できるUXを実現しています。
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ⑤ UWB -->
@@ -983,19 +992,20 @@
     <div class="grid-2-equal">
       <div class="card">
         <h3 data-ja="💡 なぜUWBが必要？" data-en="💡 Why is UWB Needed?">💡 なぜUWBが必要？</h3>
-        <p style="font-size:13px;">Bluetoothだけでは<strong>距離の測定が不正確</strong>です。「家の中にスマホがあるのに、外の車の鍵が開いてしまう」などのリレーアタック（中継攻撃）が起きる可能性があります。</p>
-        <p style="font-size:13px;">UWBはパルス波の飛行時間を計測し、<strong>センチメートル単位で「正面1m以内にいる」を正確に判定</strong>できます。</p>
+        <p style="font-size:13px;" data-ja="Bluetoothだけでは距離の測定が不正確です。「家の中にスマホがあるのに、外の車の鍵が開いてしまう」などのリレーアタック（中継攻撃）が起きる可能性があります。" data-en="Bluetooth alone cannot measure distance accurately. This opens the door to relay attacks — where, for example, an outside device amplifies the phone signal, unlocking a car even though the phone is actually inside the house.">Bluetoothだけでは<strong>距離の測定が不正確</strong>です。「家の中にスマホがあるのに、外の車の鍵が開いてしまう」などのリレーアタック（中継攻撃）が起きる可能性があります。</p>
+        <p style="font-size:13px;" data-ja="UWBはパルス波の飛行時間を計測し、センチメートル単位で「正面1m以内にいる」を正確に判定できます。" data-en="UWB measures pulse signal time-of-flight to accurately determine centimeter-level position — specifically whether the user is within 1 m directly in front of the door.">UWBはパルス波の飛行時間を計測し、<strong>センチメートル単位で「正面1m以内にいる」を正確に判定</strong>できます。</p>
       </div>
       <div class="card">
         <h3 data-ja="🛡️ リレーアタックって何？" data-en="🛡️ What is a Relay Attack?">🛡️ リレーアタックって何？</h3>
         <p style="font-size:13px;" data-ja="悪意ある人が電波を中継する装置を使い、「実際には遠くにあるスマホの信号」を「すぐそこにあるように偽装」する攻撃です。" data-en="An attack where malicious actors use relay devices to amplify a distant phone's signal, making the lock believe the credential is right in front of it.">悪意ある人が電波を中継する装置を使い、「実際には遠くにあるスマホの信号」を「すぐそこにあるように偽装」する攻撃です。</p>
-        <p style="font-size:13px;">UWBは電波の飛行時間を正確に測るため、<strong>距離の偽装が非常に困難</strong>。これがハンズフリー解錠を安全に実現できる理由です。</p>
+        <p style="font-size:13px;" data-ja="UWBは電波の飛行時間を正確に測るため、距離の偽装が非常に困難。これがハンズフリー解錠を安全に実現できる理由です。" data-en="Because UWB precisely measures signal travel time, spoofing the distance is extremely difficult. This is why UWB enables hands-free unlocking safely.">UWBは電波の飛行時間を正確に測るため、<strong>距離の偽装が非常に困難</strong>。これがハンズフリー解錠を安全に実現できる理由です。</p>
       </div>
     </div>
 
     <div class="highlight" style="margin-top: 16px;">
-      <strong>⚠️ ハンズフリー解錠にはUWBチップ搭載端末が必要です。</strong>iPhoneはiPhone 11以降の主要モデルに搭載されています。Androidは各メーカー・機種によって異なり、今後対応端末が増えていく見込みです。NFC／Bluetoothでの「かざす・近づく」解錠はUWB非搭載端末でも利用できます。
+      <strong data-ja="⚠️ ハンズフリー解錠にはUWBチップ搭載端末が必要です。" data-en="⚠️ Hands-free unlocking requires a UWB-capable device.">⚠️ ハンズフリー解錠にはUWBチップ搭載端末が必要です。</strong><span data-ja="iPhoneはiPhone 11以降の主要モデルに搭載されています。Androidは各メーカー・機種によって異なり、今後対応端末が増えていく見込みです。NFC／Bluetoothでの「かざす・近づく」解錠はUWB非搭載端末でも利用できます。" data-en="Major iPhone models from iPhone 11 onward include UWB. Android availability varies by manufacturer and model, with more devices expected to add support over time. Tap/walk-up unlocking via NFC or Bluetooth is available on devices without UWB.">iPhoneはiPhone 11以降の主要モデルに搭載されています。Androidは各メーカー・機種によって異なり、今後対応端末が増えていく見込みです。NFC／Bluetoothでの「かざす・近づく」解錠はUWB非搭載端末でも利用できます。</span>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ⑥ MatterとAliro -->
@@ -1007,32 +1017,32 @@
 
     <!-- 図解：役割の違い -->
     <div style="background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow-md); margin:20px 0;">
-      <div style="text-align:center; font-size:12px; font-weight:700; color:var(--text-light); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:24px;">🔗 役割の違いを図で見る</div>
+      <div style="text-align:center; font-size:12px; font-weight:700; color:var(--text-light); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:24px;" data-ja="🔗 役割の違いを図で見る" data-en="🔗 Comparing the Two Roles">🔗 役割の違いを図で見る</div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;" class="roles-compare-grid">
 
         <!-- Aliro側 -->
         <div style="background:var(--green-light); border:1px solid #a7f3d0; border-radius:10px; padding:20px;">
           <div style="text-align:center; margin-bottom:16px;">
-            <span style="background:#059669; color:#fff; font-size:11px; font-weight:700; padding:3px 12px; border-radius:12px;">Aliro の役割</span>
+            <span style="background:#059669; color:#fff; font-size:11px; font-weight:700; padding:3px 12px; border-radius:12px;" data-ja="Aliro の役割" data-en="Aliro's Role">Aliro の役割</span>
           </div>
           <!-- 人→スマホ→ドア -->
           <div style="display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;">
             <div style="text-align:center;">
               <div style="font-size:28px;">🧑</div>
-              <div style="font-size:10px; color:#065f46; font-weight:600;">ユーザー</div>
+              <div style="font-size:10px; color:#065f46; font-weight:600;" data-ja="ユーザー" data-en="User">ユーザー</div>
             </div>
             <div style="font-size:18px; color:#059669;">→</div>
             <div style="text-align:center;">
               <div style="font-size:28px;">📱</div>
-              <div style="font-size:10px; color:#065f46; font-weight:600;">スマホ</div>
+              <div style="font-size:10px; color:#065f46; font-weight:600;" data-ja="スマホ" data-en="Phone">スマホ</div>
             </div>
             <div style="font-size:18px; color:#059669;">📡</div>
             <div style="text-align:center;">
               <div style="font-size:28px;">🚪</div>
-              <div style="font-size:10px; color:#065f46; font-weight:600;">ドアのリーダー</div>
+              <div style="font-size:10px; color:#065f46; font-weight:600;" data-ja="ドアのリーダー" data-en="Door Reader">ドアのリーダー</div>
             </div>
           </div>
-          <div style="margin-top:14px; font-size:12px; color:#065f46; text-align:center; line-height:1.6;">
+          <div style="margin-top:14px; font-size:12px; color:#065f46; text-align:center; line-height:1.6;" data-ja="NFC / BLE / UWBで直接通信。スマホをかざす・近づくだけで物理的に鍵を開閉する" data-en="Direct communication via NFC / BLE / UWB. Tap or approach to physically lock/unlock.">
             NFC / BLE / UWBで<strong>直接通信</strong><br>
             スマホをかざす・近づくだけで<br><strong>物理的に鍵を開閉する</strong>
           </div>
@@ -1041,26 +1051,26 @@
         <!-- Matter側 -->
         <div style="background:var(--primary-light); border:1px solid #bfdbfe; border-radius:10px; padding:20px;">
           <div style="text-align:center; margin-bottom:16px;">
-            <span style="background:var(--primary); color:#fff; font-size:11px; font-weight:700; padding:3px 12px; border-radius:12px;">Matter の役割</span>
+            <span style="background:var(--primary); color:#fff; font-size:11px; font-weight:700; padding:3px 12px; border-radius:12px;" data-ja="Matter の役割" data-en="Matter's Role">Matter の役割</span>
           </div>
           <!-- スマホ→ハブ→ドア -->
           <div style="display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;">
             <div style="text-align:center;">
               <div style="font-size:28px;">📱</div>
-              <div style="font-size:10px; color:var(--primary-dark); font-weight:600;">スマホ/音声</div>
+              <div style="font-size:10px; color:var(--primary-dark); font-weight:600;" data-ja="スマホ/音声" data-en="Phone / Voice">スマホ/音声</div>
             </div>
             <div style="font-size:18px; color:var(--primary);">→</div>
             <div style="text-align:center;">
               <div style="font-size:28px;">🌐</div>
-              <div style="font-size:10px; color:var(--primary-dark); font-weight:600;">ネット/ハブ経由</div>
+              <div style="font-size:10px; color:var(--primary-dark); font-weight:600;" data-ja="ネット/ハブ経由" data-en="Via Hub / Internet">ネット/ハブ経由</div>
             </div>
             <div style="font-size:18px; color:var(--primary);">→</div>
             <div style="text-align:center;">
               <div style="font-size:28px;">🔒</div>
-              <div style="font-size:10px; color:var(--primary-dark); font-weight:600;">スマートロック</div>
+              <div style="font-size:10px; color:var(--primary-dark); font-weight:600;" data-ja="スマートロック" data-en="Smart Lock">スマートロック</div>
             </div>
           </div>
-          <div style="margin-top:14px; font-size:12px; color:var(--primary-dark); text-align:center; line-height:1.6;">
+          <div style="margin-top:14px; font-size:12px; color:var(--primary-dark); text-align:center; line-height:1.6;" data-ja="Wi-Fi / Threadを経由したネットワーク通信。遠隔操作・状態確認・自動化などIoT機器としての制御" data-en="Network communication via Wi-Fi / Thread. Remote control, status monitoring, automation — IoT device management.">
             Wi-Fi / Threadを経由した<strong>ネットワーク通信</strong><br>
             遠隔操作・状態確認・自動化など<br><strong>IoT機器としての制御</strong>
           </div>
@@ -1114,6 +1124,7 @@
         </div>
       </div>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ⑦ 対象範囲・自動車との棲み分け -->
@@ -1145,12 +1156,13 @@
     <div class="point-box purple" style="margin-top: 20px;">
       <div class="point-icon">🔮</div>
       <div>
-        <div class="point-title">「鍵を持たない近未来」へ</div>
-        <div class="point-desc">
+        <div class="point-title" data-ja="「鍵を持たない近未来」へ" data-en="Toward a Keyless Future">「鍵を持たない近未来」へ</div>
+        <div class="point-desc" data-ja="AliroとCCC Digital Keyの両方が普及すれば、財布の中の鍵束・カードキー・社員証・ホテルカード・車の鍵——これらすべてがスマホに集約されます。紛失しても遠隔で即時無効化でき、時限キーの発行や入退室ログの管理もデジタルで完結。アクセスが「生活インフラ」になる日は近づいています。" data-en="When both Aliro and CCC Digital Key become widespread, everything in your wallet — house keys, card keys, employee badges, hotel cards, car keys — will consolidate onto your phone. Lost access can be revoked instantly from anywhere, and issuing time-limited keys or managing entry logs all happens digitally. The day access becomes everyday infrastructure is drawing near.">
           AliroとCCC Digital Keyの両方が普及すれば、財布の中の鍵束・カードキー・社員証・ホテルカード・車の鍵——これらすべてがスマホに集約されます。紛失しても遠隔で即時無効化でき、時限キーの発行や入退室ログの管理もデジタルで完結。アクセスが「生活インフラ」になる日は近づいています。
         </div>
       </div>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ⑧ Q&A -->
@@ -1161,76 +1173,77 @@
     <div class="qa-item">
       <div class="qa-question" onclick="toggleQA(this)">
         <div class="qa-q-icon">Q</div>
-        <div class="qa-q-text">AndroidでGoogle WalletとSamsung Walletを両方使っている場合、どちらが使われる？</div>
+        <div class="qa-q-text" data-ja="AndroidでGoogle WalletとSamsung Walletを両方使っている場合、どちらが使われる？" data-en="If I use both Google Wallet and Samsung Wallet on Android, which one is used?">AndroidでGoogle WalletとSamsung Walletを両方使っている場合、どちらが使われる？</div>
         <div class="qa-toggle">＋</div>
       </div>
       <div class="qa-answer" style="display:none;">
         <div class="qa-a-icon">A</div>
-        Android OSの<strong>「デフォルトNFCアプリ」設定</strong>に従います。設定アプリから「デフォルトの支払いアプリ」を選択した方が優先されます。リーダーが提示するAID（アプリケーション識別子）にもとづき、OSがどのウォレットアプリを呼び出すかをシステムレベルで決定する仕組みです。
+        <span data-ja="Android OSの「デフォルトNFCアプリ」設定に従います。設定アプリから「デフォルトの支払いアプリ」を選択した方が優先されます。リーダーが提示するAID（アプリケーション識別子）にもとづき、OSがどのウォレットアプリを呼び出すかをシステムレベルで決定する仕組みです。" data-en="The Android OS follows the &quot;Default NFC app&quot; setting. The app set as &quot;Default payment app&quot; in Settings takes priority. The OS determines which wallet app to invoke at the system level based on the AID (Application Identifier) presented by the reader.">Android OSの<strong>「デフォルトNFCアプリ」設定</strong>に従います。設定アプリから「デフォルトの支払いアプリ」を選択した方が優先されます。リーダーが提示するAID（アプリケーション識別子）にもとづき、OSがどのウォレットアプリを呼び出すかをシステムレベルで決定する仕組みです。</span>
       </div>
     </div>
 
     <div class="qa-item">
       <div class="qa-question" onclick="toggleQA(this)">
         <div class="qa-q-icon">Q</div>
-        <div class="qa-q-text">Apple Walletの「エクスプレスモード」（スリープのままかざせる機能）はAliroに対応している？</div>
+        <div class="qa-q-text" data-ja="Apple Walletの「エクスプレスモード」（スリープのままかざせる機能）はAliroに対応している？" data-en="Does Apple Wallet's &quot;Express Mode&quot; (tap without waking the screen) work with Aliro?">Apple Walletの「エクスプレスモード」（スリープのままかざせる機能）はAliroに対応している？</div>
         <div class="qa-toggle">＋</div>
       </div>
       <div class="qa-answer" style="display:none;">
         <div class="qa-a-icon">A</div>
-        <strong>対応しています。</strong> Aliro規格自体に「エクスプレスモード」という名称はありませんが、仕様書のExpedited Phase（迅速フェーズ）が数往復の通信だけで認証を完了させる設計になっており、Apple等のエクスプレスモードと組み合わさることで、スリープ画面のままかざすだけで解錠できるUXを実現します。
+        <strong data-ja="対応しています。" data-en="Yes, it is compatible.">対応しています。</strong> <span data-ja="Aliro規格自体に「エクスプレスモード」という名称はありませんが、仕様書のExpedited Phase（迅速フェーズ）が数往復の通信だけで認証を完了させる設計になっており、Apple等のエクスプレスモードと組み合わさることで、スリープ画面のままかざすだけで解錠できるUXを実現します。" data-en="The Aliro specification doesn't use the term &quot;Express Mode&quot; itself, but the Expedited Phase in the spec completes authentication in just a few round-trips. Combined with Express Mode on Apple devices, this enables unlocking simply by tapping with the screen off.">Aliro規格自体に「エクスプレスモード」という名称はありませんが、仕様書のExpedited Phase（迅速フェーズ）が数往復の通信だけで認証を完了させる設計になっており、Apple等のエクスプレスモードと組み合わさることで、スリープ画面のままかざすだけで解錠できるUXを実現します。</span>
       </div>
     </div>
 
     <div class="qa-item">
       <div class="qa-question" onclick="toggleQA(this)">
         <div class="qa-q-icon">Q</div>
-        <div class="qa-q-text">スマホをかざしたとき、交通系ICと鍵が混同して変なことにならない？</div>
+        <div class="qa-q-text" data-ja="スマホをかざしたとき、交通系ICと鍵が混同して変なことにならない？" data-en="When I tap my phone, won't transit cards and access keys interfere with each other?">スマホをかざしたとき、交通系ICと鍵が混同して変なことにならない？</div>
         <div class="qa-toggle">＋</div>
       </div>
       <div class="qa-answer" style="display:none;">
         <div class="qa-a-icon">A</div>
-        <strong>自動的に正しく識別されます。</strong> 決済端末はFeliCaやEMVなど決済専用のプロトコルで通信を開始し、AliroリーダーはAliro専用のNFC AIDを使用して通信を開始します。スマホはリーダーが「どの種類の通信か」を宣言するのを受けて、対応するアプリ（決済 or 鍵）が応答するため、ユーザーが手動で切り替える必要はありません。
+        <strong data-ja="自動的に正しく識別されます。" data-en="They are automatically and correctly distinguished.">自動的に正しく識別されます。</strong> <span data-ja="決済端末はFeliCaやEMVなど決済専用のプロトコルで通信を開始し、AliroリーダーはAliro専用のNFC AIDを使用して通信を開始します。スマホはリーダーが「どの種類の通信か」を宣言するのを受けて、対応するアプリ（決済 or 鍵）が応答するため、ユーザーが手動で切り替える必要はありません。" data-en="Payment terminals initiate communication using payment-specific protocols such as FeliCa or EMV, while Aliro readers use an Aliro-specific NFC AID. The phone responds to whichever app (payment or key) matches the reader's declared protocol type — no manual switching required.">決済端末はFeliCaやEMVなど決済専用のプロトコルで通信を開始し、AliroリーダーはAliro専用のNFC AIDを使用して通信を開始します。スマホはリーダーが「どの種類の通信か」を宣言するのを受けて、対応するアプリ（決済 or 鍵）が応答するため、ユーザーが手動で切り替える必要はありません。</span>
       </div>
     </div>
 
     <div class="qa-item">
       <div class="qa-question" onclick="toggleQA(this)">
         <div class="qa-q-icon">Q</div>
-        <div class="qa-q-text">自宅と職場、ホテルなど複数の鍵をどう出し分けるの？</div>
+        <div class="qa-q-text" data-ja="自宅と職場、ホテルなど複数の鍵をどう出し分けるの？" data-en="How does the phone present the right key for home, work, hotel, etc.?">自宅と職場、ホテルなど複数の鍵をどう出し分けるの？</div>
         <div class="qa-toggle">＋</div>
       </div>
       <div class="qa-answer" style="display:none;">
         <div class="qa-a-icon">A</div>
-        <strong>「鍵を出し分ける」ではなく「リーダーが相手を見て判断する」</strong>仕組みです。<br><br>
-        まずドアのリーダーが自分のreader_identifier（固有ID）をスマホに提示します。スマホはそのIDを見て「このリーダーには自分のIDを見せていい」と判断し、自分の認証情報を返します。その後、リーダー側（またはアクセスマネージャー）が「このスマホのIDは許可リストにある？」を確認して開錠を決めます。<br><br>
-        スマホには最低16個のreader_group_identifierを紐づけられるため、自宅・職場・ホテルなど複数のドアを1台のスマホで管理できます。
+        <span data-ja="「鍵を出し分ける」ではなく「リーダーが相手を見て判断する」仕組みです。" data-en="It's not the phone that selects a key — the reader identifies itself and the phone responds."><strong>「鍵を出し分ける」ではなく「リーダーが相手を見て判断する」</strong>仕組みです。</span><br><br>
+        <span data-ja="まずドアのリーダーが自分のreader_identifier（固有ID）をスマホに提示します。スマホはそのIDを見て「このリーダーには自分のIDを見せていい」と判断し、自分の認証情報を返します。その後、リーダー側（またはアクセスマネージャー）が「このスマホのIDは許可リストにある？」を確認して開錠を決めます。" data-en="The door reader presents its reader_identifier (unique ID) to the phone. The phone sees that ID, decides it's safe to share its credential with this reader, and returns its authentication data. The reader (or Access Manager) then checks whether that phone's ID is on the allow list before unlocking.">まずドアのリーダーが自分のreader_identifier（固有ID）をスマホに提示します。スマホはそのIDを見て「このリーダーには自分のIDを見せていい」と判断し、自分の認証情報を返します。その後、リーダー側（またはアクセスマネージャー）が「このスマホのIDは許可リストにある？」を確認して開錠を決めます。</span><br><br>
+        <span data-ja="スマホには最低16個のreader_group_identifierを紐づけられるため、自宅・職場・ホテルなど複数のドアを1台のスマホで管理できます。" data-en="A phone can be associated with at least 16 reader_group_identifiers, allowing a single phone to manage multiple doors — home, office, hotel, and more.">スマホには最低16個のreader_group_identifierを紐づけられるため、自宅・職場・ホテルなど複数のドアを1台のスマホで管理できます。</span>
       </div>
     </div>
 
     <div class="qa-item">
       <div class="qa-question" onclick="toggleQA(this)">
         <div class="qa-q-icon">Q</div>
-        <div class="qa-q-text">鍵を紛失（スマホを盗まれた・紛失した）したらどうなる？</div>
+        <div class="qa-q-text" data-ja="鍵を紛失（スマホを盗まれた・紛失した）したらどうなる？" data-en="What happens if I lose my key (phone stolen or lost)?">鍵を紛失（スマホを盗まれた・紛失した）したらどうなる？</div>
         <div class="qa-toggle">＋</div>
       </div>
       <div class="qa-answer" style="display:none;">
         <div class="qa-a-icon">A</div>
-        Aliroには<strong>失効（Revocation）の仕組み</strong>があります。クレデンシャル発行者（Apple / Google等）から「このIDは無効」という失効情報（Revocation Document）をリーダーに伝えることで、不正使用を防ぎます。また、スマホ本体の生体認証ロックと組み合わせることで、仮に端末を取得されても認証自体をブロックできます。物理カードより遥かに素早く無効化できる点が大きなメリットです。
+        <span data-ja="Aliroには失効（Revocation）の仕組みがあります。クレデンシャル発行者（Apple / Google等）から「このIDは無効」という失効情報（Revocation Document）をリーダーに伝えることで、不正使用を防ぎます。また、スマホ本体の生体認証ロックと組み合わせることで、仮に端末を取得されても認証自体をブロックできます。物理カードより遥かに素早く無効化できる点が大きなメリットです。" data-en="Aliro has a Revocation mechanism. The credential issuer (Apple, Google, etc.) can send a Revocation Document to the reader, marking the credential ID as invalid and preventing unauthorized use. Combined with the phone's biometric lock, even if someone obtains the device they can't authenticate. The ability to revoke access far faster than a physical card is a major advantage.">Aliroには<strong>失効（Revocation）の仕組み</strong>があります。クレデンシャル発行者（Apple / Google等）から「このIDは無効」という失効情報（Revocation Document）をリーダーに伝えることで、不正使用を防ぎます。また、スマホ本体の生体認証ロックと組み合わせることで、仮に端末を取得されても認証自体をブロックできます。物理カードより遥かに素早く無効化できる点が大きなメリットです。</span>
       </div>
     </div>
 
     <div class="qa-item">
       <div class="qa-question" onclick="toggleQA(this)">
         <div class="qa-q-icon">Q</div>
-        <div class="qa-q-text">Aliroに対応しているスマートロックは日本でも買える？</div>
+        <div class="qa-q-text" data-ja="Aliroに対応しているスマートロックは日本でも買える？" data-en="Are Aliro-compatible smart locks available in Japan?">Aliroに対応しているスマートロックは日本でも買える？</div>
         <div class="qa-toggle">＋</div>
       </div>
       <div class="qa-answer" style="display:none;">
         <div class="qa-a-icon">A</div>
-        Aliro仕様書v1.0は2026年2月にリリースされたばかりです。対応製品は現時点では海外（主に米国・欧州）から順次展開されており、日本市場への本格普及はこれからです。ただし、Apple WalletのホームキーやGoogle Walletのデジタルキーは先行して展開されており、Aliro準拠の互換性が今後の製品に標準搭載されていく見込みです。
+        <span data-ja="Aliro仕様書v1.0は2026年2月にリリースされたばかりです。対応製品は現時点では海外（主に米国・欧州）から順次展開されており、日本市場への本格普及はこれからです。ただし、Apple WalletのホームキーやGoogle Walletのデジタルキーは先行して展開されており、Aliro準拠の互換性が今後の製品に標準搭載されていく見込みです。" data-en="Aliro Specification v1.0 was just released in February 2026. Compatible products are being rolled out initially in the US and Europe, with broader availability in Japan still to come. However, Apple Wallet Home Key and Google Wallet digital keys have launched ahead of the spec, and full Aliro-compliant interoperability is expected to become standard in upcoming products.">Aliro仕様書v1.0は2026年2月にリリースされたばかりです。対応製品は現時点では海外（主に米国・欧州）から順次展開されており、日本市場への本格普及はこれからです。ただし、Apple WalletのホームキーやGoogle Walletのデジタルキーは先行して展開されており、Aliro準拠の互換性が今後の製品に標準搭載されていく見込みです。</span>
       </div>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ⑨ まとめ -->
@@ -1248,7 +1261,7 @@
       <div class="point-box blue">
         <div class="point-icon">✅</div>
         <div>
-          <div class="point-title">Aliroでできること・できつつあること</div>
+          <div class="point-title" data-ja="Aliroでできること・できつつあること" data-en="What Aliro Can (and Is Starting to) Do">Aliroでできること・できつつあること</div>
           <div class="point-desc">
             ・自宅の玄関をスマホで解錠（NFC / UWB）<br>
             ・ホテルのチェックインキーをApple Walletに<br>
@@ -1262,7 +1275,7 @@
       <div class="point-box orange">
         <div class="point-icon">📋</div>
         <div>
-          <div class="point-title">Aliroのここが画期的</div>
+          <div class="point-title" data-ja="Aliroのここが画期的" data-en="What Makes Aliro Groundbreaking">Aliroのここが画期的</div>
           <div class="point-desc">
             ・<strong>メーカー横断の互換性</strong>（Apple・Google・Samsung対応の鍵が同じドアで使える）<br>
             ・<strong>物理カードより安全</strong>（暗号署名・失効機能・生体認証連携）<br>
@@ -1281,6 +1294,7 @@
       </p>
       <a href="index.html" style="display: inline-block; background: var(--primary); color: #fff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 600;">← Matter辞書トップへ戻る</a>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
 </main>

@@ -143,6 +143,12 @@
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
     code { font-family: 'Inter', monospace; background: var(--gray-100); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+    .back-to-toc {
+      display: block; text-align: right;
+      font-size: 11px; color: var(--text-light);
+      text-decoration: none; margin-top: 24px;
+    }
+    .back-to-toc:hover { color: var(--blue); }
   </style>
   <script src="translations-troubleshoot.js"></script>
   <script src="nav.js"></script>
@@ -164,16 +170,16 @@
 
 <main>
 
-  <div class="toc fade-in">
+  <div class="toc fade-in" id="toc">
     <div class="toc-title">📋 このページの内容</div>
     <ol>
-      <li><a href="#checklist">「登録できない」原因チェックリスト</a></li>
-      <li><a href="#fabric-limit">Fabric登録数の上限問題（盲点！）</a></li>
-      <li><a href="#fabric-apple">Apple Homeが2スロット消費する仕組み</a></li>
-      <li><a href="#fabric-check">自分のデバイスのFabric数を確認するには</a></li>
-      <li><a href="#fabric-fix">Fabric上限を超えてしまったときの対処法</a></li>
-      <li><a href="#multi-app">複数アプリに登録するときの正しい手順</a></li>
-      <li><a href="#thread">Threadデバイスが見つからない・つながらない</a></li>
+      <li><a href="#checklist" data-ja="「登録できない」原因チェックリスト" data-en="Commissioning Failure Checklist">「登録できない」原因チェックリスト</a></li>
+      <li><a href="#fabric-limit" data-ja="Fabric登録数の上限問題（盲点！）" data-en="Fabric Registration Limit — The Hidden Gotcha">Fabric登録数の上限問題（盲点！）</a></li>
+      <li><a href="#fabric-apple" data-ja="Apple Homeが2スロット消費する仕組み" data-en="Why Apple Home Consumes 2 Fabric Slots">Apple Homeが2スロット消費する仕組み</a></li>
+      <li><a href="#fabric-check" data-ja="自分のデバイスのFabric数を確認するには" data-en="How to Check Your Device's Fabric Count">自分のデバイスのFabric数を確認するには</a></li>
+      <li><a href="#fabric-fix" data-ja="Fabric上限を超えてしまったときの対処法" data-en="What to Do When You Hit the Fabric Limit">Fabric上限を超えてしまったときの対処法</a></li>
+      <li><a href="#multi-app" data-ja="複数アプリに登録するときの正しい手順" data-en="The Correct Way to Add a Device to Multiple Apps">複数アプリに登録するときの正しい手順</a></li>
+      <li><a href="#thread" data-ja="Threadデバイスが見つからない・つながらない" data-en="Thread Device Not Found or Not Connecting">Threadデバイスが見つからない・つながらない</a></li>
     </ol>
   </div>
 
@@ -245,6 +251,7 @@
     <div class="highlight-blue" style="margin-top:18px;">
       <strong>💡 「エラーメッセージが出ないまま失敗する」ケースについて：</strong>Matter仕様上、Fabric上限オーバーの場合は <code>TableFull</code> というエラーコードが返されますが、Apple Home・Google Homeなどのアプリがこの理由を画面に表示してくれるとは限りません。「なぜか登録できない」という状況では、チェック7のFabric上限を疑ってみてください。
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ===== 2. Fabric上限 ===== -->
@@ -316,6 +323,7 @@
         <div class="scenario-desc" data-ja="Apple Home だけで2スロット消費。残り1スロットしかない。上限が低い安価なデバイスは特に要注意。" data-en="Apple Home alone uses 2 slots, leaving only 1 remaining. Extra caution needed with low-cost devices that have a low SupportedFabrics value.">Apple Home だけで2スロット消費。残り1スロットしかない。上限が低い安価なデバイスは特に要注意。</div>
       </div>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ===== 3. Apple 2消費 ===== -->
@@ -366,6 +374,7 @@
       </table>
       <p style="font-size:12px; color:var(--text-light); margin-top:10px;" data-ja="※ 各エコシステムの実装は変更される可能性があります。最新情報はメーカー公式情報でご確認ください。" data-en="* Each ecosystem's implementation may change. Always check the latest official information from the respective manufacturer.">※ 各エコシステムの実装は変更される可能性があります。最新情報はメーカー公式情報でご確認ください。</p>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ===== 4. 確認方法 ===== -->
@@ -401,6 +410,7 @@
     <div class="highlight-yellow" style="margin-top:18px;">
       <strong>📋 今後の課題として：</strong>Fabricの残り登録数をユーザーが簡単に確認できる手段は、現時点のスマートホームアプリには標準装備されていません。「登録できない原因がわからない」問題の根本はここにあります。エコシステム各社のアプリがこの情報を表示するようになることが、普及に向けた改善点の一つです。
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ===== 5. 対処法 ===== -->
@@ -439,6 +449,7 @@
     <div class="highlight-red">
       <strong>🚨 ファクトリーリセットの注意：</strong>ファクトリーリセットはすべてのFabricを同時に削除します。家族がApple Homeで設定したオートメーションや、別のアプリで行った設定が全て消えてしまいます。リセット前に、登録済みの全エコシステムアプリのメンバーに知らせましょう。
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ===== 6. 複数アプリへの正しい登録手順 ===== -->
@@ -489,6 +500,7 @@
     <div class="highlight-blue" style="margin-top:4px;">
       <strong>📌 仕様書上の名称：</strong>この手順はMatter Core Specificationでは <em>Administrator-Assisted Commissioning</em>（管理者支援型コミッショニング）と呼ばれます。既存のFabric管理者がコミッショニングウィンドウを一時的に開き、新しいコントローラーがそこに参加する仕組みです。
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- ===== 7. Thread ===== -->
@@ -532,6 +544,7 @@
       <span>📡 Threadの仕組み・ボーダールーターの役割をもっと詳しく知りたい方は</span>
       <a href="guide.html#network">Matterとは？→ 通信の仕組みへ</a>
     </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
   <!-- Bottom navigation -->
