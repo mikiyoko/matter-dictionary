@@ -446,7 +446,11 @@ Promise.all([
       });
       if (dt) { setTimeout(function(){ window.openDeviceModal(dt.id); }, 80); }
     } else if (openCl) {
-      var cl = window.CLUSTERS.find(function(c){ return c.id === openCl; });
+      // 製品データのクラスターIDは hex形式（"0x0006"）、clusters.json は clusterId フィールドで照合
+      var normCl = openCl.toLowerCase();
+      var cl = window.CLUSTERS.find(function(c){
+        return c.clusterId && c.clusterId.toLowerCase() === normCl;
+      });
       if (cl) { setTimeout(function(){ window.openClusterModal(cl.id); }, 80); }
     }
   })();
