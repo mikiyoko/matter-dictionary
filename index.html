@@ -438,7 +438,12 @@ Promise.all([
     var openDt = params.get('dt');
     var openCl = params.get('cluster');
     if (openDt) {
-      var dt = window.DEVICE_TYPES.find(function(d){ return d.deviceTypeId === openDt; });
+      // "0015" → "0x0015" のように 0x なし形式も正規化して比較
+      var normDt = openDt.toLowerCase();
+      if (normDt.indexOf('0x') !== 0) normDt = '0x' + normDt;
+      var dt = window.DEVICE_TYPES.find(function(d){
+        return d.deviceTypeId.toLowerCase() === normDt;
+      });
       if (dt) { setTimeout(function(){ window.openDeviceModal(dt.id); }, 80); }
     } else if (openCl) {
       var cl = window.CLUSTERS.find(function(c){ return c.id === openCl; });

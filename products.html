@@ -461,7 +461,9 @@ function openProductModal(idx) {
     var icon = dt ? dt.icon : '📦';
     var nameJ = dt ? (dt.nameJa || dt.name) : id;
     var nameE = dt ? dt.name : id;
-    return '<a class="dt-row dt-row-link" href="index.html?dt=' + esc(id) + '" style="text-decoration:none;color:inherit">'
+    // 0x なし形式("0015")を "0x0015" に正規化してリンクを生成
+    var normId = id.toLowerCase().indexOf('0x') === 0 ? id : '0x' + id;
+    return '<a class="dt-row dt-row-link" href="index.html?dt=' + esc(normId) + '" style="text-decoration:none;color:inherit">'
       + '<span class="dt-row-icon">' + icon + '</span>'
       + '<div style="flex:1"><div class="dt-row-name">' + esc(nameJ) + '</div>'
       + (nameJ !== nameE ? '<div class="dt-row-en">' + esc(nameE) + '</div>' : '')
