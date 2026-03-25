@@ -36,6 +36,34 @@ header {
   display: flex; align-items: center; gap: 5px;
 }
 .back-btn:hover { background: var(--surface2); color: var(--accent); border-color: var(--accent); }
+/* 学ぶドロップダウン */
+.learn-menu { position: relative; }
+.learn-btn-g {
+  padding: 6px 13px; border-radius: 7px; font-size: 12px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; text-decoration: none;
+  font-family: 'Noto Sans JP', sans-serif; transition: all 0.15s;
+  display: flex; align-items: center; gap: 5px; white-space: nowrap;
+}
+.learn-btn-g:hover { background: var(--surface2); color: var(--accent); border-color: var(--accent); }
+.learn-dropdown-g {
+  display: none; position: absolute; right: 0; top: calc(100% + 6px);
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  min-width: 220px; z-index: 200; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  overflow: hidden;
+}
+.learn-dropdown-g.open { display: block; }
+.learn-dropdown-g a {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  color: var(--text); text-decoration: none; font-size: 12px; transition: background 0.12s;
+  border-bottom: 1px solid var(--border);
+}
+.learn-dropdown-g a:last-child { border-bottom: none; }
+.learn-dropdown-g a:hover { background: var(--surface2); color: var(--accent); }
+.learn-dropdown-g a.current { color: var(--accent); background: rgba(126,232,162,0.07); }
+.learn-drop-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+.learn-drop-label { font-weight: 500; }
+.learn-drop-sub { font-size: 10px; color: var(--dim); display: block; margin-top: 1px; }
 .lang-toggle {
   display: flex; align-items: center;
   border: 1px solid var(--border); border-radius: 7px; overflow: hidden;
@@ -240,10 +268,35 @@ header {
   </a>
   <div class="header-right">
     <div class="header-stat" id="header-stat">-- terms</div>
-    <a class="back-btn" href="index.html">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      辞書トップ
-    </a>
+    <div class="learn-menu">
+      <button class="learn-btn-g" onclick="toggleLearnGlossary(event)" id="learnBtnG">🎓 <span id="learnBtnGLabel">学ぶ</span> ▾</button>
+      <div class="learn-dropdown-g" id="learnDropdownG">
+        <a href="guide.html">
+          <span class="learn-drop-icon">📡</span>
+          <span><span class="learn-drop-label" id="gdrop-guide">Matterとは？</span><span class="learn-drop-sub" id="gdrop-guide-sub">スマートホーム規格の解説</span></span>
+        </a>
+        <a href="matter-security.html">
+          <span class="learn-drop-icon">🔒</span>
+          <span><span class="learn-drop-label" id="gdrop-security">セキュリティ</span><span class="learn-drop-sub" id="gdrop-security-sub">コミッショニングと暗号化</span></span>
+        </a>
+        <a href="aliro.html">
+          <span class="learn-drop-icon">🔑</span>
+          <span><span class="learn-drop-label" id="gdrop-aliro">Aliroとは？</span><span class="learn-drop-sub" id="gdrop-aliro-sub">スマートロック規格の解説</span></span>
+        </a>
+        <a href="troubleshoot.html">
+          <span class="learn-drop-icon">🔧</span>
+          <span><span class="learn-drop-label" id="gdrop-ts">困ったときは</span><span class="learn-drop-sub" id="gdrop-ts-sub">登録できない・つながらないとき</span></span>
+        </a>
+        <a href="glossary.html" class="current">
+          <span class="learn-drop-icon">📖</span>
+          <span><span class="learn-drop-label" id="gdrop-glossary">用語集</span><span class="learn-drop-sub" id="gdrop-glossary-sub">Matter技術用語の解説</span></span>
+        </a>
+        <a href="index.html">
+          <span class="learn-drop-icon">🏠</span>
+          <span><span class="learn-drop-label" id="gdrop-top">辞書トップ</span><span class="learn-drop-sub" id="gdrop-top-sub">デバイス・クラスター検索</span></span>
+        </a>
+      </div>
+    </div>
     <div class="lang-toggle">
       <button id="btn-ja" class="active" onclick="setLang('ja')">JA</button>
       <button id="btn-en" onclick="setLang('en')">EN</button>
@@ -552,15 +605,47 @@ function filterCat(cat) {
   render();
 }
 
+// ===== 学ぶドロップダウン =====
+function toggleLearnGlossary(e) {
+  e.stopPropagation();
+  document.getElementById('learnDropdownG').classList.toggle('open');
+}
+document.addEventListener('click', function() {
+  var d = document.getElementById('learnDropdownG');
+  if (d) d.classList.remove('open');
+});
+
 // ===== 言語切替 =====
+var LEARN_LABELS_G = {
+  'learnBtnGLabel': { ja: '学ぶ', en: 'Learn' },
+  'gdrop-guide':        { ja: 'Matterとは？',         en: 'What is Matter?' },
+  'gdrop-guide-sub':    { ja: 'スマートホーム規格の解説',  en: 'Smart home standard overview' },
+  'gdrop-security':     { ja: 'セキュリティ',           en: 'Security' },
+  'gdrop-security-sub': { ja: 'コミッショニングと暗号化',  en: 'Commissioning & encryption' },
+  'gdrop-aliro':        { ja: 'Aliroとは？',           en: 'What is Aliro?' },
+  'gdrop-aliro-sub':    { ja: 'スマートロック規格の解説',  en: 'Smart lock standard overview' },
+  'gdrop-ts':           { ja: '困ったときは',           en: 'Troubleshooting' },
+  'gdrop-ts-sub':       { ja: '登録できない・つながらないとき', en: "Can't add or connect a device" },
+  'gdrop-glossary':     { ja: '用語集',                en: 'Glossary' },
+  'gdrop-glossary-sub': { ja: 'Matter技術用語の解説',   en: 'Matter technical terms' },
+  'gdrop-top':          { ja: '辞書トップ',             en: 'Dictionary Top' },
+  'gdrop-top-sub':      { ja: 'デバイス・クラスター検索', en: 'Device & cluster search' },
+};
+
 function setLang(lang) {
   currentLang = lang;
   localStorage.setItem('matter-glossary-lang', lang);
+  localStorage.setItem('matter-dict-lang', lang);
   document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
   document.documentElement.lang = lang === 'en' ? 'en' : 'ja';
   document.getElementById('search-input').placeholder =
     lang === 'en' ? 'Search terms… e.g. CASE, Fabric, ICD' : '用語を検索… 例: CASE, Fabric, ICD';
+  // 学ぶドロップダウンのラベル更新
+  Object.keys(LEARN_LABELS_G).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = lang === 'en' ? LEARN_LABELS_G[id].en : LEARN_LABELS_G[id].ja;
+  });
   render();
 }
 

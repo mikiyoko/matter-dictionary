@@ -1,6 +1,12 @@
 /* translations-security.js — matter-security.html 日本語→英語テキスト置換テーブル */
 window.PAGE_TRANSLATIONS = {
+  /* ── Page title ── */
+  'Matterのセキュリティと登録の仕組み | Matter辞書': 'Matter Security & Commissioning | Matter Dictionary',
+  'のセキュリティと': ' Security &',
+  '登録の仕組み': 'Commissioning',
+  'Matter辞書': 'Matter Dictionary',
   /* ── Hero ── */
+  '「QRコードを読むだけで勝手に家に入れられない？」そんな疑問への答えと、Matterが採用する多層防御の仕組みを図解で解説します。': 'Answering "Can someone break into my home just by scanning a QR code?" — a visual walkthrough of Matter\'s defense-in-depth security model.',
   '🔒 Matter Security': '🔒 Matter Security',
   '🛂 デバイス認証（DAC）': '🛂 Device Attestation (DAC)',
   '🔐 通信の暗号化': '🔐 Encrypted Communication',
@@ -15,6 +21,7 @@ window.PAGE_TRANSLATIONS = {
   'プライバシーへの配慮': 'Privacy Considerations',
   'よくある不安・質問': 'Common Concerns & Questions',
   /* ── Section 1 ── */
+  'Matterデバイスを登録するとき、箱に書かれたQRコードや11桁の数字コードを読み込むだけで簡単につながります。これを見て「誰かに見られたら勝手に家に入れられない？」と心配する方は少なくありません。': 'When commissioning a Matter device, you simply scan the QR code on the box or enter the 11-digit code — it\'s easy. This naturally raises the question: "If someone sees that code, can they break in?"',
   '🔒 結論：QRコードだけでは登録できません。': '🔒 Bottom line: A QR code alone cannot commission a device.',
   'コードは「デバイスとコントローラーが同じ空間で最初に出会うための合言葉」に過ぎません。その後、デバイスが「本物の正規品か」を証明書で確認し、暗号化された通信路を確立するまでいくつもの関門があります。': 'The code is only the initial passcode for the first meeting between device and Controller. Multiple security gates follow: certificate verification, encrypted channel establishment, and more.',
   '物理的な近接が必要': 'Physical Proximity Required',
@@ -24,6 +31,23 @@ window.PAGE_TRANSLATIONS = {
   'コードは一時的なもの': 'The Code is Temporary',
   'QRコード・11桁コードは初回登録の「一時的な合言葉」。登録完了後は使われず、その後の通信は別の証明書（NOC）ベースで行われます。': 'The QR code and 11-digit code are a one-time commissioning passcode. After commissioning, the code is discarded and all communication uses the NOC.',
   /* ── Commissioning steps ── */
+  'Matter対応デバイスをアプリに登録するとき、裏側ではこれだけの確認が行われています。': 'When commissioning a Matter device into an app, this is everything happening behind the scenes.',
+  '📱 QRコード / 11桁コードの読み取り': '📱 Step 1: QR Code / 11-Digit Code Scan',
+  'ユーザーがアプリでデバイスのQRコードまたはマニュアルペアリングコード（11桁）を読み込む。このコードには「デバイスの種別」「初回接続用の短期パスコード」が入っている。': 'The user scans the device\'s QR code or enters the Manual Pairing Code (11 digits) in the app. This code contains the device category and a short-lived commissioning passcode.',
+  '📡 デバイスの発見（ネットワーク探索）': '📡 Step 2: Device Discovery (Network Scan)',
+  'コントローラーアプリがBluetooth LEまたはWi-Fiを使って、近くにある「登録待ち」のデバイスを探す（DNS-SD）。デバイスは物理操作（電源ON・ボタン押下等）で「受付モード」に入っている必要がある。': 'The Controller app uses Bluetooth LE or Wi-Fi to scan for nearby devices awaiting commissioning (DNS-SD). The device must be in commissioning mode, entered via a physical action (power-on, button press, etc.).',
+  '🤝 PASE：初回の安全な接続確立': '🤝 Step 3: PASE — Passcode-Authenticated Session Establishment',
+  'コントローラーとデバイスがQRコードのパスコードをもとに「PASE（パスワード認証鍵交換）」という暗号プロトコルで安全なチャンネルを確立する。この段階では互いの素性はまだ不明だが、通信路は暗号化される。': 'The Controller and device use the QR passcode to establish a secure channel via PASE (Password Authenticated Session Establishment). Neither party is fully authenticated yet, but the channel is encrypted.',
+  '🛂 Device Attestation：本物かを証明書で確認': '🛂 Step 4: Device Attestation — Certificate Verification',
+  '">コントローラーがデバイスの証明書（DAC）を要求し、世界共通のブロックチェーン台帳（DCL）に照合。「このデバイスはCSA認定の正規メーカーが製造した本物か」「認証取得済みか」を確認する。': 'The Controller requests the device\'s DAC and verifies it against the global DCL. It confirms: "Was this device manufactured by a CSA-certified vendor?" and "Is it Matter-certified?"',
+  '🔑 NOC発行：デバイスに「家の鍵」を渡す': '🔑 Step 5: NOC Issuance — Granting Fabric Membership',
+  '認証が通ると、コントローラーがデバイスに対して「このFabric（ネットワーク）に属するメンバー証明書（NOC: Node Operational Certificate）」を発行する。以降の通信はこのNOCを使って行われる。': 'Once attestation passes, the Controller issues the device a Node Operational Certificate (NOC) — its membership credential for this Fabric. All subsequent communication uses this NOC.',
+  '🔐 CASE：通常運用の安全な接続': '🔐 Step 6: CASE — Certificate-Authenticated Session Establishment',
+  'NOCをもとに「CASE（証明書認証セッション確立）」という相互認証プロトコルで恒久的な暗号チャンネルを確立。「相手が本当に正しいFabricのメンバーか」をお互いに確認してから通信を始める。': 'Using the NOC, the device and Controller establish a permanent encrypted channel via CASE (Certificate Authenticated Session Establishment), mutually verifying each other as valid Fabric members.',
+  '✅ コミッショニング完了': '✅ Step 7: Commissioning Complete',
+  'デバイスがFabricに正式に参加。初回のパスコード・QRコードは消去され、以降はNOCとCASEによる暗号通信のみで操作できる。アプリからデバイスの点灯・施錠などが可能になる。': 'The device has joined the Fabric. The initial passcode and QR code are discarded. All further control uses NOC-based, CASE-encrypted communication. The app can now control the device.',
+  '💡 まとめ：QRコードは「入口の合言葉」に過ぎない': '💡 Summary: The QR Code is Just the Entry Passcode',
+  'QRコードで扉は開きますが、その中にある本当の「家の鍵（NOC）」は、デバイスが正規品であることを証明してから初めて渡されます。QRコードを写真に撮られても、それだけでは登録も操作もできません。': 'The QR code opens the door to commissioning, but the real "key" (the NOC) is only issued after the device proves it is genuine. Photographing the QR code alone grants no control and no access.',
   '🔒 コードはこの瞬間だけ有効な使い捨て': '🔒 One-time code, valid only for this moment',
   '🔒 遠隔からの無断起動は不可': '🔒 Remote unauthorized activation is impossible',
   '🔒 SPAKE2+アルゴリズムで傍受・ブルートフォース攻撃を防止': '🔒 SPAKE2+ prevents eavesdropping and brute-force attacks',
@@ -33,6 +57,11 @@ window.PAGE_TRANSLATIONS = {
   '🔒 なりすまし・中間者攻撃を防止': '🔒 Prevents impersonation and man-in-the-middle attacks',
   '🔒 初回コードは完全に廃棄、再利用不可': '🔒 Initial code fully discarded — cannot be reused',
   /* ── Certificate chain ── */
+  'Matterのデバイス認証は、いくつかの証明書と台帳が連携する「信頼の連鎖（Chain of Trust）」によって成り立っています。入国審査のパスポートシステムに例えると分かりやすいです。': 'Matter device authentication is built on a Chain of Trust — a set of certificates and a ledger working together. Think of it as an immigration passport system.',
+  'DCL（Distributed Compliance Ledger）― 世界共通の信頼台帳': 'DCL (Distributed Compliance Ledger) — Global Trust Ledger',
+  'CSAが管理するブロックチェーンベースの公開台帳。正規メーカーの証明書情報が登録されており、改ざん不可。入国審査のデータベースに相当。': 'A blockchain-based public ledger managed by the CSA. Contains certificate records from certified manufacturers; tamper-proof. Equivalent to an immigration database.',
+  '↓ 発行': '↓ Issues',
+  'ここまでの証明書の連鎖を、アニメーション紙芝居で分かりやすく解説しています。': 'The certificate chain described above is illustrated step-by-step in this animated explainer.',
   '改ざん不可': 'Tamper-proof',
   '↓ 参照して照合': '↓ Referenced & verified',
   '厳格な審査': 'Strict audit required',
@@ -51,6 +80,11 @@ window.PAGE_TRANSLATIONS = {
   'もあります。DACとは別に、製品がMatter認証を取得したことを示す宣言書。CSAの認証試験に合格した製品にのみ発行され、DACとセットで検証されます。': 'also exists. Separate from the DAC, it is a declaration that the product has passed CSA Matter certification testing. Only issued to passing products; verified alongside the DAC.',
   '🎬 動画で見る：証明書の仕組み（紙芝居）': '🎬 Watch: Certificate Chain Explainer (animation)',
   /* ── Encryption ── */
+  'Matter対応デバイス間の通信は、すべて業界標準の暗号技術で保護されています。': 'All communication between Matter devices is protected by industry-standard cryptographic protocols.',
+  '🔑 PASE（初回接続）': '🔑 PASE (Initial Connection)',
+  'Password Authenticated Session Establishment。QRコードのパスコードをもとにSPAKE2+アルゴリズムで鍵を交換。パスコードを傍受されても実際の暗号鍵は導出できない設計。': 'Password Authenticated Session Establishment. Key exchange using the QR passcode via the SPAKE2+ algorithm. Intercepting the passcode does not reveal the actual session key.',
+  '🔐 CASE（通常運用）': '🔐 CASE (Ongoing Operation)',
+  'Certificate Authenticated Session Establishment。NOC証明書を使った相互認証。TLSに似た仕組みで、通信のたびにセッション鍵を生成。過去の通信が漏れても現在の通信は守られる（前方秘匿性）。': 'Certificate Authenticated Session Establishment. Mutual authentication using NOC certificates. Similar to TLS — a fresh session key is generated per session, providing forward secrecy: past sessions cannot be decrypted even if a key leaks.',
   '初回のみ使用・その後廃棄': 'Used only once, then discarded',
   '通常運用時に使用': 'Used for all normal operation',
   '⚠️ ただし注意点もあります：': '⚠️ One caveat:',
@@ -81,6 +115,7 @@ window.PAGE_TRANSLATIONS = {
   '→ OTA（Over-the-Air）アップデートの仕組みが組み込まれています。': '→ OTA (Over-the-Air) update capability is built in.',
   'MatterにはOTAソフトウェアアップデートのクラスターが標準搭載されており、メーカーがファームウェアを更新することで素早くセキュリティ対応できます。スマホのOS更新と同じ仕組みです。対応デバイスは': 'Matter includes a standardized OTA Software Update Cluster, enabling manufacturers to deliver security patches quickly — the same mechanism as smartphone OS updates. Compatible devices automaticall',
   /* ── Summary ── */
+  '🔒 Matterのセキュリティは「多層防御」': '🔒 Matter Security: Defense in Depth',
   '物理的な近接要件 → QRコード（一時パスコード）→ デバイス証明書の照合（DAC/DCL）→ 暗号化通信（PASE/CASE）→ ACLによるアクセス制御。一か所を突破しても他の関門で守られる設計で': 'Physical proximity → QR code (one-time passcode) → Device Attestation (DAC/DCL) → Encrypted session (PASE/CASE) → ACL access control. Breaching any single layer still leaves the others intact — this is defense-in-dept',
   /* ── Footer ── */
   '📄 参照仕様書：': '📄 Reference spec:',

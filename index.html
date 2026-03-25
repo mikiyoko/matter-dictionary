@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matter 1.5 デバイス辞書</title>
+<title>Matter辞書</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -303,7 +303,7 @@ header {
   <div class="logo">
     <span class="logo-badge">Matter 1.5</span>
     <div>
-      <div class="logo-title">⚡ Matterデバイス辞書</div>
+      <div class="logo-title" id="logoTitle">⚡ Matter辞書</div>
       <div class="logo-sub">by ライフテックコーディネーター 織田未来</div>
     </div>
   </div>
@@ -338,6 +338,13 @@ header {
           <span>
             <span class="drop-label" id="drop-ts">困ったときは</span>
             <span class="drop-sub" id="drop-ts-sub">登録できない・つながらないとき</span>
+          </span>
+        </a>
+        <a href="glossary.html">
+          <span class="drop-icon">📖</span>
+          <span>
+            <span class="drop-label" id="drop-glossary">用語集</span>
+            <span class="drop-sub" id="drop-glossary-sub">Matter技術用語の解説</span>
           </span>
         </a>
         </div>
@@ -476,11 +483,16 @@ function setLang(lang) {
     'drop-aliro-sub':    { ja: 'スマートロック規格の解説', en: 'Smart lock standard overview' },
     'drop-ts':           { ja: '困ったときは',       en: 'Troubleshooting' },
     'drop-ts-sub':       { ja: '登録できない・つながらないとき', en: "Can't add or connect a device" },
+    'drop-glossary':     { ja: '用語集',             en: 'Glossary' },
+    'drop-glossary-sub': { ja: 'Matter技術用語の解説', en: 'Matter technical terms' },
   };
   Object.keys(dropLabels).forEach(function(id) {
     var el = document.getElementById(id);
     if (el) el.textContent = lang === 'en' ? dropLabels[id].en : dropLabels[id].ja;
   });
+  // ロゴタイトル
+  var logoTitle = document.getElementById('logoTitle');
+  if (logoTitle) logoTitle.textContent = lang === 'en' ? '⚡ Matter Dictionary' : '⚡ Matter辞書';
   // 学ぶボタンのラベル
   var learnBtnSpan = document.querySelector('.learn-btn span');
   if (learnBtnSpan) learnBtnSpan.textContent = lang === 'en' ? 'Learn' : '学ぶ';
