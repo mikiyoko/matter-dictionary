@@ -555,6 +555,9 @@ function openProductModal(idx) {
 
 function closeModal() {
   document.getElementById('overlay').classList.remove('open');
+  if (window.location.search) {
+    window.history.replaceState({}, '', window.location.pathname);
+  }
 }
 
 // ─── Sidebar ─────────────────────────────────────────────────
@@ -689,7 +692,11 @@ Promise.all([
   var deviceTypes = results[1];
 
   deviceTypes.forEach(function(dt) {
-    DEVICE_TYPE_MAP[dt.deviceTypeId] = dt;
+    var id = dt.deviceTypeId;
+    DEVICE_TYPE_MAP[id] = dt;
+    // "0x0015" → "0015" など、0x なし形式でもヒットするよう両方登録
+    var noPrefix = id.replace(/^0x/i, '');
+    if (noPrefix !== id) DEVICE_TYPE_MAP[noPrefix] = dt;
   });
 
   ALL_PRODUCTS = products;
@@ -700,6 +707,18 @@ Promise.all([
   applyLangUI(currentLang);
   buildSidebar();
   renderProducts();
+
+  // URLパラメータ ?product={id} で特定製品のモーダルを自動オープン
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    var openId = params.get('product');
+    if (!openId) return;
+    var idx = -1;
+    for (var i = 0; i < ALL_PRODUCTS.length; i++) {
+      if (ALL_PRODUCTS[i].id === openId || ALL_PRODUCTS[i].slug === openId) { idx = i; break; }
+    }
+    if (idx >= 0) setTimeout(function(){ openProductModal(idx); }, 80);
+  })();
 
 }).catch(function(err) {
   console.error('製品データ読み込みエラー:', err);

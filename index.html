@@ -922,7 +922,8 @@ function openDeviceModal(deviceId) {
     var productCards = matchingProducts.slice(0, 6).map(function(p) {
       var col = MAKER_COLORS_IDX[p.maker] || '#9da3b8';
       var name = (currentLang === 'en' ? (p.nameEn || p.nameJa) : (p.nameJa || p.nameEn)) || '';
-      return '<a class="prod-ref" href="products.html" style="text-decoration:none" title="' + name + '">'
+      var productHref = 'products.html' + (p.id ? '?product=' + encodeURIComponent(p.id) : '');
+      return '<a class="prod-ref" href="' + productHref + '" style="text-decoration:none" title="' + name + '">'
         + '<span class="prod-ref-dot" style="background:' + col + '"></span>'
         + '<span class="prod-ref-name">' + name + '</span>'
         + '</a>';
@@ -1030,6 +1031,9 @@ function buildClusterDetailHtml(cl) {
 
 function closeModal() {
   document.getElementById("overlay").classList.remove("open");
+  if (window.location.search) {
+    window.history.replaceState({}, '', window.location.pathname);
+  }
 }
 
 // 初期言語をlocalStorageから復元
