@@ -68,6 +68,7 @@ window.PAGE_TRANSLATIONS = {
   'Google Home（1スロット）': 'Google Home (1 slot)',
   'Amazon Alexa（1スロット）': 'Amazon Alexa (1 slot)',
   '空きスロット': 'Empty slot',
+  '空き': 'Free',
   '✅ 問題なし': '✅ No problem',
   '⛔ 上限オーバー': '⛔ Limit exceeded',
   '⚠️ 意外と早く満杯': '⚠️ Fills up faster than expected',
