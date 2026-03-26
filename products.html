@@ -354,6 +354,37 @@ var currentMaker      = 'all';
 var currentDeviceType = 'all';   // ?deviceType= パラメータで絞り込み（index.htmlからの遷移用）
 var searchQuery       = '';
 
+// デバイスタイプ絞り込みを解除（グローバルスコープ: onclickから呼ばれる）
+function clearDeviceTypeFilter() {
+  currentDeviceType = 'all';
+  var banner = document.getElementById('dt-filter-banner');
+  if (banner) banner.remove();
+  renderProducts();
+  syncUrl();
+}
+
+// すべての絞り込みを解除
+function clearAllFilters() {
+  currentMaker      = 'all';
+  currentCat        = 'all';
+  currentTransport  = 'all';
+  currentDeviceType = 'all';
+  searchQuery       = '';
+  var searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.value = '';
+  // transport ボタンの active を "すべて" に戻す
+  document.querySelectorAll('.tfilter').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('data-t') === 'all');
+  });
+  // deviceType バナーを削除
+  var banner = document.getElementById('dt-filter-banner');
+  if (banner) banner.remove();
+  // サイドバーの active を更新（buildSidebar 後なら refreshSidebarActive で OK）
+  if (typeof refreshSidebarActive === 'function') refreshSidebarActive();
+  renderProducts();
+  syncUrl();
+}
+
 // フィルター状態をURLに同期（ブックマーク・シェア対応）
 function syncUrl() {
   var params = new URLSearchParams();
@@ -405,12 +436,56 @@ function getFiltered() {
   });
 }
 
+// ─── Active filter bar ───────────────────────────────────────
+function updateActiveFilterBar() {
+  var bar = document.getElementById('activeFilterBar');
+  var isActive = currentMaker !== 'all' || currentCat !== 'all'
+    || currentTransport !== 'all' || searchQuery !== ''
+    || currentDeviceType !== 'all';
+
+  if (!isActive) {
+    if (bar) bar.remove();
+    return;
+  }
+
+  // タグ生成
+  var tags = [];
+  if (currentDeviceType !== 'all') {
+    var dtObj = DEVICE_TYPE_MAP[currentDeviceType];
+    var dtName = dtObj ? (currentLang === 'ja' ? (dtObj.nameJa || dtObj.name) : dtObj.name) : currentDeviceType;
+    tags.push(dtName + ' <span style="font-family:\'Space Mono\',monospace;font-size:10px;opacity:.6">' + esc(currentDeviceType) + '</span>');
+  }
+  if (currentMaker      !== 'all') tags.push(esc(currentMaker));
+  if (currentCat        !== 'all') {
+    var catObj = (typeof CATEGORIES !== 'undefined') && CATEGORIES.find(function(c){ return c.id === currentCat; });
+    tags.push(catObj ? esc(catObj.label) : esc(currentCat));
+  }
+  if (currentTransport  !== 'all') tags.push(esc(currentTransport));
+  if (searchQuery)                  tags.push('「' + esc(searchQuery) + '」');
+
+  var tagsHtml = tags.map(function(t) {
+    return '<span style="background:var(--accent2);color:#0e0f14;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">' + t + '</span>';
+  }).join('');
+
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'activeFilterBar';
+    bar.style.cssText = 'display:flex;align-items:center;flex-wrap:wrap;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:12px;';
+    var grid = document.getElementById('productGrid');
+    grid.parentNode.insertBefore(bar, grid);
+  }
+  bar.innerHTML = '<span style="color:var(--dim)">絞り込み中:</span>'
+    + tagsHtml
+    + '<button onclick="clearAllFilters()" style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-size:11px;padding:3px 10px;white-space:nowrap;">✕ 解除</button>';
+}
+
 // ─── Render cards ────────────────────────────────────────────
 function renderProducts() {
   var list = getFiltered();
   var grid = document.getElementById('productGrid');
   var countEl = document.getElementById('secCount');
   countEl.textContent = list.length + (currentLang === 'en' ? ' products' : ' 件');
+  updateActiveFilterBar();
 
   if (list.length === 0) {
     grid.innerHTML = '<div class="empty-state">該当する製品が見つかりません</div>';
@@ -753,25 +828,9 @@ Promise.all([
 
   renderProducts();
 
-  // ?deviceType= バナー表示（state 設定後）
+  // ?product={id} で特定製品のモーダルを自動オープン
   (function() {
     var params = new URLSearchParams(window.location.search);
-    var dtParam = params.get('deviceType');
-    if (dtParam) {
-      var dtObj = DEVICE_TYPE_MAP[dtParam];
-      var dtName = dtObj ? (currentLang === 'ja' ? (dtObj.nameJa || dtObj.name) : dtObj.name) : dtParam;
-      var banner = document.createElement('div');
-      banner.id = 'dt-filter-banner';
-      banner.style.cssText = 'background:var(--surface2);border:1px solid var(--accent2);border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;display:flex;align-items:center;gap:10px;';
-      banner.innerHTML = '<span style="color:var(--accent2)">🔍 絞り込み中:</span>'
-        + '<span style="color:var(--fg1);font-weight:600">' + esc(dtName) + '</span>'
-        + '<span style="color:var(--dim);font-family:\'Space Mono\',monospace;font-size:10px">' + esc(dtParam) + '</span>'
-        + '<button onclick="clearDeviceTypeFilter()" style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-size:11px;padding:2px 8px;">✕ 解除</button>';
-      var grid = document.getElementById('productGrid');
-      grid.parentNode.insertBefore(banner, grid);
-    }
-
-    // ?product={id} で特定製品のモーダルを自動オープン
     var openId = params.get('product');
     if (!openId) return;
     var idx = -1;
@@ -781,13 +840,6 @@ Promise.all([
     if (idx >= 0) setTimeout(function(){ openProductModal(idx); }, 80);
   })();
 
-  function clearDeviceTypeFilter() {
-    currentDeviceType = 'all';
-    var banner = document.getElementById('dt-filter-banner');
-    if (banner) banner.remove();
-    renderProducts();
-    syncUrl();
-  }
 
 }).catch(function(err) {
   console.error('製品データ読み込みエラー:', err);
