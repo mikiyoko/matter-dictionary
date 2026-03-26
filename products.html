@@ -348,10 +348,11 @@ function makerColor(m) { return MAKER_COLORS[m] || '#9da3b8'; }
 var ALL_PRODUCTS = [];
 var DEVICE_TYPE_MAP = {};   // deviceTypeId (e.g. "0x0100") → dt object
 var currentLang      = localStorage.getItem('matter-dict-lang') || 'ja';
-var currentCat       = 'all';
-var currentTransport = 'all';
-var currentMaker     = 'all';
-var searchQuery      = '';
+var currentCat        = 'all';
+var currentTransport  = 'all';
+var currentMaker      = 'all';
+var currentDeviceType = 'all';   // ?deviceType= パラメータで絞り込み（index.htmlからの遷移用）
+var searchQuery       = '';
 
 // ─── Helpers ─────────────────────────────────────────────────
 function esc(s) {
@@ -380,6 +381,10 @@ function getFiltered() {
     }
     if (currentMaker !== 'all' && p.maker !== currentMaker) return false;
     if (currentCat !== 'all' && getProductCategory(p) !== currentCat) return false;
+    if (currentDeviceType !== 'all') {
+      var dtIds = p.allDeviceTypeIds && p.allDeviceTypeIds.length ? p.allDeviceTypeIds : [p.primaryDeviceTypeId];
+      if (dtIds.indexOf(currentDeviceType) < 0) return false;
+    }
     if (q) {
       var hay = [p.nameJa||'', p.nameEn||'', p.maker||''].join(' ').toLowerCase();
       if (!hay.includes(q)) return false;
@@ -708,9 +713,30 @@ Promise.all([
   buildSidebar();
   renderProducts();
 
-  // URLパラメータ ?product={id} で特定製品のモーダルを自動オープン
+  // URLパラメータ処理
   (function() {
     var params = new URLSearchParams(window.location.search);
+
+    // ?deviceType=0x0100 → デバイスタイプで絞り込み（index.htmlからの遷移）
+    var dtParam = params.get('deviceType');
+    if (dtParam) {
+      currentDeviceType = dtParam;
+      // 絞り込み中バナーを表示
+      var dtObj = DEVICE_TYPE_MAP[dtParam];
+      var dtName = dtObj ? (currentLang === 'ja' ? (dtObj.nameJa || dtObj.name) : dtObj.name) : dtParam;
+      var banner = document.createElement('div');
+      banner.id = 'dt-filter-banner';
+      banner.style.cssText = 'background:var(--surface2);border:1px solid var(--accent2);border-radius:8px;padding:8px 14px;margin-bottom:16px;font-size:12px;display:flex;align-items:center;gap:10px;';
+      banner.innerHTML = '<span style="color:var(--accent2)">🔍 絞り込み中:</span>'
+        + '<span style="color:var(--fg1);font-weight:600">' + esc(dtName) + '</span>'
+        + '<span style="color:var(--dim);font-family:\'Space Mono\',monospace;font-size:10px">' + esc(dtParam) + '</span>'
+        + '<button onclick="clearDeviceTypeFilter()" style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-size:11px;padding:2px 8px;">✕ 解除</button>';
+      var grid = document.getElementById('productGrid');
+      grid.parentNode.insertBefore(banner, grid);
+      renderProducts();
+    }
+
+    // ?product={id} で特定製品のモーダルを自動オープン
     var openId = params.get('product');
     if (!openId) return;
     var idx = -1;
@@ -719,6 +745,14 @@ Promise.all([
     }
     if (idx >= 0) setTimeout(function(){ openProductModal(idx); }, 80);
   })();
+
+  function clearDeviceTypeFilter() {
+    currentDeviceType = 'all';
+    var banner = document.getElementById('dt-filter-banner');
+    if (banner) banner.remove();
+    window.history.replaceState({}, '', window.location.pathname + (window.location.search.replace(/[?&]deviceType=[^&]*/g, '').replace(/^&/, '?') || ''));
+    renderProducts();
+  }
 
 }).catch(function(err) {
   console.error('製品データ読み込みエラー:', err);

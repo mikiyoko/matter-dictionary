@@ -933,9 +933,10 @@ function openDeviceModal(deviceId) {
         + '<span class="prod-ref-name">' + name + '</span>'
         + '</a>';
     }).join('');
+    var dtFilterUrl = 'products.html?deviceType=' + encodeURIComponent(d.deviceTypeId);
     var moreLink = matchingProducts.length > 6
-      ? '<a href="products.html" target="_blank" rel="noopener" class="prod-ref-more" style="font-size:11px;color:var(--accent2);text-decoration:none;padding:4px 0;">+' + (matchingProducts.length - 6) + (currentLang==='en'?' more products →':' 件以上 →') + '</a>'
-      : '<a href="products.html" target="_blank" rel="noopener" class="prod-ref-more" style="font-size:11px;color:var(--accent2);text-decoration:none;padding:4px 0;">' + (currentLang==='en'?'View all in product database →':'製品データベースで全件を見る →') + '</a>';
+      ? '<a href="' + dtFilterUrl + '" target="_blank" rel="noopener" class="prod-ref-more" style="font-size:11px;color:var(--accent2);text-decoration:none;padding:4px 0;">+' + (matchingProducts.length - 6) + (currentLang==='en'?' more products →':' 件以上 →') + '</a>'
+      : '<a href="' + dtFilterUrl + '" target="_blank" rel="noopener" class="prod-ref-more" style="font-size:11px;color:var(--accent2);text-decoration:none;padding:4px 0;">' + (currentLang==='en'?'View all in product database →':'製品データベースで全件を見る →') + '</a>';
     productsHtml = '<div class="modal-section">'
       + '<div class="modal-section-title">' + (currentLang==='en'?'Compatible Products ('+matchingProducts.length+')':'対応製品（'+matchingProducts.length+'件）') + '</div>'
       + '<div class="prod-refs">' + productCards + '</div>'
