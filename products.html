@@ -354,6 +354,18 @@ var currentMaker      = 'all';
 var currentDeviceType = 'all';   // ?deviceType= パラメータで絞り込み（index.htmlからの遷移用）
 var searchQuery       = '';
 
+// フィルター状態をURLに同期（ブックマーク・シェア対応）
+function syncUrl() {
+  var params = new URLSearchParams();
+  if (currentDeviceType !== 'all') params.set('deviceType', currentDeviceType);
+  if (currentMaker !== 'all')      params.set('maker', currentMaker);
+  if (currentCat    !== 'all')     params.set('cat', currentCat);
+  if (currentTransport !== 'all')  params.set('t', currentTransport);
+  if (searchQuery)                 params.set('q', searchQuery);
+  var qs = params.toString();
+  window.history.replaceState({}, '', window.location.pathname + (qs ? '?' + qs : ''));
+}
+
 // ─── Helpers ─────────────────────────────────────────────────
 function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -622,6 +634,7 @@ function buildSidebar() {
       currentMaker = 'all';
       refreshSidebarActive();
       renderProducts();
+      syncUrl();
     });
   });
   sidebar.querySelectorAll('.cat-btn.maker-btn').forEach(function(btn) {
@@ -630,6 +643,7 @@ function buildSidebar() {
       currentCat = 'all';
       refreshSidebarActive();
       renderProducts();
+      syncUrl();
     });
   });
 }
@@ -649,6 +663,7 @@ document.querySelectorAll('.tfilter').forEach(function(btn) {
     currentTransport = btn.getAttribute('data-t');
     document.querySelectorAll('.tfilter').forEach(function(b){ b.classList.toggle('active', b === btn); });
     renderProducts();
+    syncUrl();
   });
 });
 
@@ -656,6 +671,7 @@ document.querySelectorAll('.tfilter').forEach(function(btn) {
 document.getElementById('searchInput').addEventListener('input', function(e) {
   searchQuery = e.target.value;
   renderProducts();
+  syncUrl();
 });
 
 // ─── Modal close ─────────────────────────────────────────────
@@ -709,19 +725,39 @@ Promise.all([
   var statEl = document.getElementById('headerStat');
   if (statEl) statEl.textContent = products.length + (currentLang === 'en' ? ' products' : ' 製品');
 
-  applyLangUI(currentLang);
-  buildSidebar();
-  renderProducts();
-
-  // URLパラメータ処理
+  // URLパラメータ → state変数に先に反映してから描画する
   (function() {
     var params = new URLSearchParams(window.location.search);
 
-    // ?deviceType=0x0100 → デバイスタイプで絞り込み（index.htmlからの遷移）
+    // フィルター状態を復元
+    var makerParam = params.get('maker');
+    var catParam   = params.get('cat');
+    var tParam     = params.get('t');
+    var qParam     = params.get('q');
+    var dtParam    = params.get('deviceType');
+
+    if (makerParam)  currentMaker      = makerParam;
+    if (catParam)    currentCat        = catParam;
+    if (tParam)      currentTransport  = tParam;
+    if (qParam)      { searchQuery = qParam; document.getElementById('searchInput').value = qParam; }
+    if (dtParam)     currentDeviceType = dtParam;
+  })();
+
+  applyLangUI(currentLang);
+  buildSidebar();
+
+  // transport ボタンの active 状態を URL から復元
+  document.querySelectorAll('.tfilter').forEach(function(btn) {
+    btn.classList.toggle('active', btn.getAttribute('data-t') === currentTransport);
+  });
+
+  renderProducts();
+
+  // ?deviceType= バナー表示（state 設定後）
+  (function() {
+    var params = new URLSearchParams(window.location.search);
     var dtParam = params.get('deviceType');
     if (dtParam) {
-      currentDeviceType = dtParam;
-      // 絞り込み中バナーを表示
       var dtObj = DEVICE_TYPE_MAP[dtParam];
       var dtName = dtObj ? (currentLang === 'ja' ? (dtObj.nameJa || dtObj.name) : dtObj.name) : dtParam;
       var banner = document.createElement('div');
@@ -733,7 +769,6 @@ Promise.all([
         + '<button onclick="clearDeviceTypeFilter()" style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-size:11px;padding:2px 8px;">✕ 解除</button>';
       var grid = document.getElementById('productGrid');
       grid.parentNode.insertBefore(banner, grid);
-      renderProducts();
     }
 
     // ?product={id} で特定製品のモーダルを自動オープン
@@ -750,8 +785,8 @@ Promise.all([
     currentDeviceType = 'all';
     var banner = document.getElementById('dt-filter-banner');
     if (banner) banner.remove();
-    window.history.replaceState({}, '', window.location.pathname + (window.location.search.replace(/[?&]deviceType=[^&]*/g, '').replace(/^&/, '?') || ''));
     renderProducts();
+    syncUrl();
   }
 
 }).catch(function(err) {
