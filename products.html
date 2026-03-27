@@ -102,7 +102,13 @@ header {
 }
 .product-card:hover { border-color: var(--accent2); background: var(--surface2); transform: translateY(-1px); }
 
-.card-maker { display: flex; align-items: center; gap: 8px; }
+.card-maker { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.japan-badge {
+  font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px;
+  font-family: 'Space Mono', monospace; line-height: 1.4;
+}
+.japan-badge-active   { background: rgba(126,232,162,0.15); color: #7ee8a2; border: 1px solid rgba(126,232,162,0.35); }
+.japan-badge-inactive { background: rgba(80,80,100,0.2);    color: #888;   border: 1px solid rgba(120,120,140,0.3); }
 .maker-badge {
   font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
   padding: 2px 7px; border-radius: 4px; color: #0e0f14;
@@ -509,6 +515,14 @@ function renderProducts() {
     var transHtml = (p.transport || []).map(tTag).join('');
     var col = makerColor(p.maker);
 
+    // Japan status badge
+    var jpBadge = '';
+    if (p.japanStatus === 'active') {
+      jpBadge = '<span class="japan-badge japan-badge-active">🇯🇵 JP取扱あり</span>';
+    } else if (p.japanStatus === 'inactive') {
+      jpBadge = '<span class="japan-badge japan-badge-inactive">JP取扱なし</span>';
+    }
+
     // Purchase links + CSA link on card
     var linksHtml = '';
     if (p.purchaseLinks && p.purchaseLinks.amazon)   linksHtml += '<a class="plink plink-amazon" href="' + esc(p.purchaseLinks.amazon) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Amazon</a>';
@@ -517,7 +531,7 @@ function renderProducts() {
     if (p.csa && p.csa.pageUrl) linksHtml += '<a class="plink plink-csa" href="' + esc(p.csa.pageUrl) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">CSA</a>';
 
     return '<div class="product-card" data-idx="' + realIdx + '">'
-      + '<div class="card-maker"><span class="maker-badge" style="background:' + col + '">' + esc(p.maker || '?') + '</span></div>'
+      + '<div class="card-maker"><span class="maker-badge" style="background:' + col + '">' + esc(p.maker || '?') + '</span>' + jpBadge + '</div>'
       + '<div><div class="card-name-ja">' + esc(displayName) + '</div>'
       + (subName ? '<div class="card-name-en">' + esc(subName) + '</div>' : '')
       + '</div>'
@@ -621,6 +635,8 @@ function openProductModal(idx) {
     +     '<div class="modal-name-ja">' + esc(nameJa) + '</div>'
     +     (nameEn && nameEn !== nameJa ? '<div class="modal-name-en">' + esc(nameEn) + '</div>' : '')
     +     '<div class="modal-maker-label">' + esc(p.maker || '') + (p.makerVendorId ? ' · Vendor ' + esc(p.makerVendorId) : '') + '</div>'
+    +     (p.japanStatus === 'active'   ? '<span class="japan-badge japan-badge-active" style="margin-top:4px;display:inline-block">🇯🇵 JP取扱あり</span>' :
+           p.japanStatus === 'inactive' ? '<span class="japan-badge japan-badge-inactive" style="margin-top:4px;display:inline-block">JP取扱なし</span>' : '')
     +   '</div>'
     + '</div>'
     + (transHtml ? '<div class="transport-tags" style="margin-bottom:16px">' + transHtml + '</div>' : '')
