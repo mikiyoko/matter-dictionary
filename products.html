@@ -55,7 +55,15 @@ header {
   color: var(--text); font-size: 14px; font-family: 'Noto Sans JP', sans-serif; outline: none; transition: border-color 0.15s;
 }
 .search-input:focus { border-color: var(--accent2); }
-.transport-filter { display: flex; gap: 5px; flex-wrap: wrap; }
+.transport-filter { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+.filter-sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
+.jpfilter {
+  font-size: 11px; padding: 4px 10px; border-radius: 6px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--muted);
+  font-family: 'Noto Sans JP', sans-serif; transition: all 0.15s;
+}
+.jpfilter.active { background: rgba(126,232,162,0.15); color: #7ee8a2; border-color: rgba(126,232,162,0.5); font-weight: 700; }
+.jpfilter:hover:not(.active) { border-color: var(--accent2); color: var(--accent2); }
 .tfilter {
   padding: 5px 11px; border-radius: 20px; font-size: 12px; cursor: pointer;
   border: 1px solid var(--border); background: transparent; color: var(--muted);
@@ -297,6 +305,8 @@ header {
     <button class="tfilter" data-t="Thread">Thread</button>
     <button class="tfilter" data-t="Wi-Fi">Wi-Fi</button>
     <button class="tfilter" data-t="Ethernet">Ethernet</button>
+    <div class="filter-sep"></div>
+    <button class="jpfilter" id="jpFilterBtn" data-jp="active">🇯🇵 JP取扱あり</button>
   </div>
 </div>
 
@@ -357,8 +367,9 @@ var currentLang      = localStorage.getItem('matter-dict-lang') || 'ja';
 var currentCat        = 'all';
 var currentTransport  = 'all';
 var currentMaker      = 'all';
-var currentDeviceType = 'all';   // ?deviceType= パラメータで絞り込み（index.htmlからの遷移用）
-var searchQuery       = '';
+var currentDeviceType  = 'all';   // ?deviceType= パラメータで絞り込み（index.htmlからの遷移用）
+var currentJapanStatus = 'all';   // 'all' | 'active' | 'inactive'
+var searchQuery        = '';
 
 // デバイスタイプ絞り込みを解除（グローバルスコープ: onclickから呼ばれる）
 function clearDeviceTypeFilter() {
@@ -371,11 +382,14 @@ function clearDeviceTypeFilter() {
 
 // すべての絞り込みを解除
 function clearAllFilters() {
-  currentMaker      = 'all';
-  currentCat        = 'all';
-  currentTransport  = 'all';
-  currentDeviceType = 'all';
-  searchQuery       = '';
+  currentMaker        = 'all';
+  currentCat          = 'all';
+  currentTransport    = 'all';
+  currentDeviceType   = 'all';
+  currentJapanStatus  = 'all';
+  searchQuery         = '';
+  var jpBtn = document.getElementById('jpFilterBtn');
+  if (jpBtn) jpBtn.classList.remove('active');
   var searchInput = document.getElementById('searchInput');
   if (searchInput) searchInput.value = '';
   // transport ボタンの active を "すべて" に戻す
@@ -397,8 +411,9 @@ function syncUrl() {
   if (currentDeviceType !== 'all') params.set('deviceType', currentDeviceType);
   if (currentMaker !== 'all')      params.set('maker', currentMaker);
   if (currentCat    !== 'all')     params.set('cat', currentCat);
-  if (currentTransport !== 'all')  params.set('t', currentTransport);
-  if (searchQuery)                 params.set('q', searchQuery);
+  if (currentTransport    !== 'all') params.set('t', currentTransport);
+  if (currentJapanStatus  !== 'all') params.set('jp', currentJapanStatus);
+  if (searchQuery)                   params.set('q', searchQuery);
   var qs = params.toString();
   window.history.replaceState({}, '', window.location.pathname + (qs ? '?' + qs : ''));
 }
@@ -434,6 +449,7 @@ function getFiltered() {
       var dtIds = p.allDeviceTypeIds && p.allDeviceTypeIds.length ? p.allDeviceTypeIds : [p.primaryDeviceTypeId];
       if (dtIds.indexOf(currentDeviceType) < 0) return false;
     }
+    if (currentJapanStatus !== 'all' && (p.japanStatus || 'unknown') !== currentJapanStatus) return false;
     if (q) {
       var hay = [p.nameJa||'', p.nameEn||'', p.maker||''].join(' ').toLowerCase();
       if (!hay.includes(q)) return false;
@@ -447,7 +463,7 @@ function updateActiveFilterBar() {
   var bar = document.getElementById('activeFilterBar');
   var isActive = currentMaker !== 'all' || currentCat !== 'all'
     || currentTransport !== 'all' || searchQuery !== ''
-    || currentDeviceType !== 'all';
+    || currentDeviceType !== 'all' || currentJapanStatus !== 'all';
 
   if (!isActive) {
     if (bar) bar.remove();
@@ -467,6 +483,8 @@ function updateActiveFilterBar() {
     tags.push(catObj ? esc(catObj.label) : esc(currentCat));
   }
   if (currentTransport  !== 'all') tags.push(esc(currentTransport));
+  if (currentJapanStatus === 'active')   tags.push('🇯🇵 JP取扱あり');
+  if (currentJapanStatus === 'inactive') tags.push('JP取扱なし');
   if (searchQuery)                  tags.push('「' + esc(searchQuery) + '」');
 
   var tagsHtml = tags.map(function(t) {
@@ -758,6 +776,19 @@ document.querySelectorAll('.tfilter').forEach(function(btn) {
   });
 });
 
+// ─── Japan status filter ──────────────────────────────────────
+document.getElementById('jpFilterBtn').addEventListener('click', function() {
+  if (currentJapanStatus === 'active') {
+    currentJapanStatus = 'all';
+    this.classList.remove('active');
+  } else {
+    currentJapanStatus = 'active';
+    this.classList.add('active');
+  }
+  renderProducts();
+  syncUrl();
+});
+
 // ─── Search ───────────────────────────────────────────────────
 document.getElementById('searchInput').addEventListener('input', function(e) {
   searchQuery = e.target.value;
@@ -827,11 +858,14 @@ Promise.all([
     var qParam     = params.get('q');
     var dtParam    = params.get('deviceType');
 
-    if (makerParam)  currentMaker      = makerParam;
-    if (catParam)    currentCat        = catParam;
-    if (tParam)      currentTransport  = tParam;
+    var jpParam   = params.get('jp');
+
+    if (makerParam)  currentMaker        = makerParam;
+    if (catParam)    currentCat          = catParam;
+    if (tParam)      currentTransport    = tParam;
+    if (jpParam)     currentJapanStatus  = jpParam;
     if (qParam)      { searchQuery = qParam; document.getElementById('searchInput').value = qParam; }
-    if (dtParam)     currentDeviceType = dtParam;
+    if (dtParam)     currentDeviceType   = dtParam;
   })();
 
   applyLangUI(currentLang);
@@ -841,6 +875,10 @@ Promise.all([
   document.querySelectorAll('.tfilter').forEach(function(btn) {
     btn.classList.toggle('active', btn.getAttribute('data-t') === currentTransport);
   });
+
+  // Japan filter ボタンの active 状態を URL から復元
+  var jpBtn = document.getElementById('jpFilterBtn');
+  if (jpBtn) jpBtn.classList.toggle('active', currentJapanStatus === 'active');
 
   renderProducts();
 
