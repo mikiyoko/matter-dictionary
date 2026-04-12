@@ -1108,6 +1108,11 @@
             <td>IoT機器として管理・状態共有・遠隔操作</td>
             <td>近接でリーダーと認証して物理開錠</td>
           </tr>
+          <tr>
+            <td><strong>Aliroとの連携</strong></td>
+            <td>リーダーの設定・ユーザー鍵の発行と管理</td>
+            <td>（認証プロトコル側・設定はMatterに委任）</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -1121,6 +1126,50 @@
           <strong>📱 Matter：</strong>その開閉の状態が家族のスマホに通知され、「子どもが帰ってきた」と確認できる。また、親戚が来たときはアプリからリモートで開錠することも可能。<br>
           <br>
           <span style="font-size:12px; color:var(--primary-dark);">💡 ポイント：Aliroはあくまでスマホとドアのリーダーが<strong>直接・近接で</strong>やり取りする仕組みです。離れた場所からの開け閉めはMatterの役割です。両方に対応したスマートロックなら、このすべてが1台で実現できます。</span>
+        </div>
+      </div>
+    </div>
+    <div class="point-box blue" style="margin-top: 20px;">
+      <div class="point-icon">🔧</div>
+      <div>
+        <div class="point-title" data-ja="MatterによるAliroの「管理」：Access Managerの設定もMatterで" data-en="Matter for Aliro Management: Configuring the Access Manager via Matter">MatterによるAliroの「管理」：Access Managerの設定もMatterで</div>
+        <div class="point-desc">
+          <div class="ja-only">
+            多くの住宅向けスマートロックでは、<strong>Access Manager（アクセス権限を判断するシステム）</strong>がリーダー（ドアのスキャナー）に内蔵されています。
+            <br><br>
+            この場合、Access Managerの設定——つまり「誰のスマホに鍵を発行するか」「鍵を無効にする」「リーダー自体の暗号鍵を設定する」といった管理操作を、<strong>Matterプロトコル経由</strong>で行えます。
+            <br><br>
+            Matter仕様のDoor Lock Clusterに以下のAliro専用機能が定義されています：
+            <ul style="margin: 8px 0 8px 16px; line-height: 1.8;">
+              <li><strong>SetAliroReaderConfig</strong>：リーダーの暗号鍵やグループIDを設定する</li>
+              <li><strong>ClearAliroReaderConfig</strong>：リーダー設定をクリアする（全ユーザーの鍵が無効になる）</li>
+              <li><strong>SetCredential / ClearCredential</strong>：ユーザーのAliroクレデンシャル（鍵データ）を追加・削除する</li>
+            </ul>
+            つまり、AliroとMatterの役割は次のように分担されています：
+            <ul style="margin: 8px 0 8px 16px; line-height: 1.8;">
+              <li><strong>Aliro</strong>：スマホ↔リーダーの「認証」を担当（かざす瞬間の暗号通信）</li>
+              <li><strong>Matter</strong>：リーダー内Access Managerの「設定・管理」を担当（ネットワーク経由）</li>
+            </ul>
+            この分業により、「認証（鍵の証明）」と「管理（誰に鍵を渡すか）」の両方がスマートに完結するシステムが実現します。
+          </div>
+          <div class="en-only" style="display:none;">
+            In many residential smart locks, the <strong>Access Manager</strong> (the system that decides who gets access) is embedded directly in the Reader (the door scanner).
+            <br><br>
+            In this case, the Access Manager's configuration — such as "which smartphone gets a key," "revoking a key," and "setting the Reader's cryptographic keys" — can all be performed via the <strong>Matter protocol</strong>.
+            <br><br>
+            Matter's Door Lock Cluster defines these Aliro-specific capabilities:
+            <ul style="margin: 8px 0 8px 16px; line-height: 1.8;">
+              <li><strong>SetAliroReaderConfig</strong>: Configure the Reader's cryptographic keys and Group ID</li>
+              <li><strong>ClearAliroReaderConfig</strong>: Clear Reader config (invalidates all users' keys)</li>
+              <li><strong>SetCredential / ClearCredential</strong>: Add or remove a user's Aliro credentials (key data)</li>
+            </ul>
+            In other words, the Aliro–Matter relationship is:
+            <ul style="margin: 8px 0 8px 16px; line-height: 1.8;">
+              <li><strong>Aliro</strong>: Handles "authentication" between smartphone ↔ Reader (the crypto handshake at the door)</li>
+              <li><strong>Matter</strong>: Handles "configuration &amp; management" of the Access Manager inside the Reader (over the network)</li>
+            </ul>
+            This clear division of labor creates a system where both "authentication (proving your key)" and "management (deciding who gets a key)" work together seamlessly.
+          </div>
         </div>
       </div>
     </div>
