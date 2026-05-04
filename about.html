@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>このサイトについて | Matter辞書</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0f14; --surface: #16181f; --surface2: #1e2029;
+  --border: #2a2d38; --accent: #7ee8a2; --accent2: #5bc4f5;
+  --text: #e8eaf0; --muted: #9da3b8; --dim: #8b90a8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; font-size: 14px; min-height: 100vh; }
+
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: rgba(14,15,20,0.97);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+.logo-badge { font-family: 'Space Mono', monospace; font-size: 11px; background: var(--accent); color: #0e0f14; padding: 3px 8px; border-radius: 3px; font-weight: 700; }
+.logo-title { font-size: 16px; font-weight: 700; }
+.logo-sub { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+.back-btn {
+  padding: 6px 13px; border-radius: 7px; font-size: 12px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; text-decoration: none;
+  font-family: 'Noto Sans JP', sans-serif; transition: all 0.15s;
+  display: flex; align-items: center; gap: 5px;
+}
+.back-btn:hover { background: var(--surface2); color: var(--accent); border-color: var(--accent); }
+.lang-toggle {
+  display: flex; align-items: center;
+  border: 1px solid var(--border); border-radius: 7px; overflow: hidden;
+  font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+}
+.lang-toggle button { padding: 5px 10px; border: none; cursor: pointer; background: transparent; color: var(--muted); transition: all 0.15s; }
+.lang-toggle button.active { background: var(--accent); color: #0e0f14; }
+.lang-toggle button:hover:not(.active) { color: var(--text); }
+
+@media (max-width: 600px) {
+  header { padding: 10px 14px; }
+  .logo-sub { display: none; }
+}
+
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 28px 64px;
+}
+
+h1 {
+  font-size: 26px; font-weight: 700; margin-bottom: 32px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+h2 {
+  font-size: 16px; font-weight: 700; color: var(--accent);
+  margin: 36px 0 12px;
+  font-family: 'Space Mono', monospace; letter-spacing: 0.04em;
+  text-transform: uppercase; font-size: 12px;
+}
+p {
+  font-size: 14px; line-height: 1.85; color: var(--muted);
+  margin-bottom: 14px;
+}
+p:last-child { margin-bottom: 0; }
+a {
+  color: var(--accent2); text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+.stat-row {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  margin: 18px 0;
+}
+.stat-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px 22px;
+  flex: 1; min-width: 140px;
+}
+.stat-num {
+  font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700;
+  color: var(--accent); display: block; margin-bottom: 4px;
+}
+.stat-label { font-size: 12px; color: var(--dim); }
+
+.notice-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--accent2);
+  border-radius: 0 8px 8px 0; padding: 14px 18px;
+  margin: 20px 0;
+}
+.notice-box p { color: var(--muted); font-size: 13px; margin-bottom: 0; }
+
+hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+
+.site-footer { border-top: 1px solid var(--border); padding: 40px 28px; text-align: center; font-size: 13px; color: var(--muted); }
+.footer-inner { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 4px 14px; }
+.footer-sep { color: var(--border); }
+.footer-inner a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
+.footer-inner a:hover { color: var(--accent); }
+@media (max-width: 600px) {
+  main { padding: 32px 16px 48px; }
+  .site-footer { padding: 32px 16px; }
+  .footer-inner { flex-direction: column; gap: 10px; }
+  .footer-sep { display: none; }
+  .stat-row { gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">
+    <div class="logo-badge">M</div>
+    <div>
+      <div class="logo-title" id="logo-title">Matter辞書</div>
+      <div class="logo-sub">matter-dictionary</div>
+    </div>
+  </a>
+  <div class="header-right">
+    <a class="back-btn" href="index.html" id="back-btn">← <span id="back-label">辞書トップ</span></a>
+    <div class="lang-toggle">
+      <button id="btn-ja" class="active" onclick="setLang('ja')">JA</button>
+      <button id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<div id="content-ja">
+  <h1>このサイトについて</h1>
+
+  <h2>サイトの目的</h2>
+  <p>Matter辞書は、Connectivity Standards Alliance (CSA) が公開している Matter仕様を、日本語で引きやすい形に整理したリファレンスサイトです。</p>
+  <p>スマートホームの普及を「生活者の身近なもの」にするためには、規格の情報がもう少し身近な言葉で読める場所が必要だと感じ、個人プロジェクトとして作りました。</p>
+
+  <h2>収録しているもの</h2>
+  <div class="stat-row">
+    <div class="stat-item">
+      <span class="stat-num">92</span>
+      <span class="stat-label">デバイスタイプ</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">132</span>
+      <span class="stat-label">クラスター（機能の単位）</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">36</span>
+      <span class="stat-label">用語集</span>
+    </div>
+  </div>
+  <p>すべて、CSA公式の仕様書をもとに整理しています。</p>
+
+  <h2>運営者</h2>
+  <p>ライフテックコーディネーター 織田未来 (Miki Oda)</p>
+  <p>note: <a href="https://note.com/mikiyoko" target="_blank" rel="noopener noreferrer">https://note.com/mikiyoko</a><br>
+  スマートホームレシピ: <a href="https://smart-home-recipe.vercel.app/" target="_blank" rel="noopener noreferrer">https://smart-home-recipe.vercel.app/</a></p>
+
+  <h2>このサイトの位置づけ</h2>
+  <div class="notice-box">
+    <p>これは Matter 公式のサイトではなく、個人が運営している非公式の日本語リファレンスです。Matter 公式の情報は CSA のサイト（<a href="https://buildwithmatter.com" target="_blank" rel="noopener noreferrer">https://buildwithmatter.com</a>）をご参照ください。</p>
+  </div>
+
+  <h2>フィードバック</h2>
+  <p>「この用語の訳、こっちのほうがしっくりくる」「説明を補足してほしい」といったご意見は、<a href="https://github.com/mikiyoko/matter-dictionary/issues" target="_blank" rel="noopener noreferrer">GitHub の Issue</a> または <a href="https://note.com/mikiyoko" target="_blank" rel="noopener noreferrer">note のコメント</a>からお寄せください。</p>
+</div>
+
+<div id="content-en" style="display:none">
+  <h1>About this site</h1>
+
+  <h2>Purpose</h2>
+  <p>This Matter Dictionary is a Japanese-language reference site for the Matter specification published by the Connectivity Standards Alliance (CSA).</p>
+  <p>To make smart home technology more accessible to everyday users in Japan, I felt the need for a place where the specification could be read in more familiar terms. This is an individual project to fill that gap.</p>
+
+  <h2>Content</h2>
+  <div class="stat-row">
+    <div class="stat-item">
+      <span class="stat-num">92</span>
+      <span class="stat-label">Device Types</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">132</span>
+      <span class="stat-label">Clusters (functional units)</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">36</span>
+      <span class="stat-label">Glossary entries</span>
+    </div>
+  </div>
+  <p>All content is based on the official CSA specification.</p>
+
+  <h2>Operator</h2>
+  <p>Miki Oda (Life Tech Coordinator)</p>
+  <p>note: <a href="https://note.com/mikiyoko" target="_blank" rel="noopener noreferrer">https://note.com/mikiyoko</a><br>
+  Smart Home Recipe: <a href="https://smart-home-recipe.vercel.app/" target="_blank" rel="noopener noreferrer">https://smart-home-recipe.vercel.app/</a></p>
+
+  <h2>About this site's positioning</h2>
+  <div class="notice-box">
+    <p>This is not an official Matter site. It is an unofficial Japanese reference operated by an individual. For official Matter information, please visit the CSA site (<a href="https://buildwithmatter.com" target="_blank" rel="noopener noreferrer">https://buildwithmatter.com</a>).</p>
+  </div>
+
+  <h2>Feedback</h2>
+  <p>If you have suggestions like "this term might be better translated as..." or "I'd like more explanation on this," please reach out via <a href="https://github.com/mikiyoko/matter-dictionary/issues" target="_blank" rel="noopener noreferrer">GitHub Issues</a> or <a href="https://note.com/mikiyoko" target="_blank" rel="noopener noreferrer">comments on note</a>.</p>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>© Miki Oda / Life Tech Coordinator</span>
+    <span class="footer-sep">|</span>
+    <a href="about.html" id="footer-about-link">このサイトについて</a>
+    <span class="footer-sep">|</span>
+    <a href="license.html" id="footer-license-link">ライセンス・出典</a>
+    <span class="footer-sep">|</span>
+    <a href="https://github.com/mikiyoko/matter-dictionary" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </div>
+</footer>
+
+<script>
+var currentLang = localStorage.getItem('matter-dict-lang') || 'ja';
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('matter-dict-lang', lang);
+  localStorage.setItem('matter-glossary-lang', lang);
+  document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.documentElement.lang = lang === 'en' ? 'en' : 'ja';
+  document.getElementById('content-ja').style.display = lang === 'ja' ? '' : 'none';
+  document.getElementById('content-en').style.display = lang === 'en' ? '' : 'none';
+  document.getElementById('logo-title').textContent = lang === 'en' ? '⚡ Matter Dictionary' : '⚡ Matter辞書';
+  document.getElementById('back-label').textContent = lang === 'en' ? 'Dictionary Top' : '辞書トップ';
+  document.title = lang === 'en' ? 'About | Matter Dictionary' : 'このサイトについて | Matter辞書';
+  var footerAbout = document.getElementById('footer-about-link');
+  var footerLicense = document.getElementById('footer-license-link');
+  if (footerAbout) footerAbout.textContent = lang === 'en' ? 'About' : 'このサイトについて';
+  if (footerLicense) footerLicense.textContent = lang === 'en' ? 'License & Source' : 'ライセンス・出典';
+}
+
+setLang(currentLang);
+</script>
+</body>
+</html>

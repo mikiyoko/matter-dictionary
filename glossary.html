@@ -253,6 +253,17 @@ header {
 }
 
 /* カテゴリ表示名 */
+
+.site-footer { border-top: 1px solid var(--border); padding: 40px 28px; text-align: center; font-size: 13px; color: var(--muted); }
+.footer-inner { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 4px 14px; }
+.footer-sep { color: var(--border); }
+.footer-inner a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
+.footer-inner a:hover { color: var(--accent); }
+@media (max-width: 600px) {
+  .site-footer { padding: 32px 16px; }
+  .footer-inner { flex-direction: column; gap: 10px; }
+  .footer-sep { display: none; }
+}
 </style>
 <!-- Start KARTE Tag -->
 <script>!function(n){if(!window[n]){var o=window[n]=function(){var n=[].slice.call(arguments);return o.x?o.x.apply(0,n):o.q.push(n)};o.q=[],o.i=Date.now(),o.allow=function(){o.o="allow"},o.deny=function(){o.o="deny"}}}("krt")</script>
@@ -650,6 +661,10 @@ function setLang(lang) {
     var el = document.getElementById(id);
     if (el) el.textContent = lang === 'en' ? LEARN_LABELS_G[id].en : LEARN_LABELS_G[id].ja;
   });
+  var footerAbout = document.getElementById('footer-about-link');
+  var footerLicense = document.getElementById('footer-license-link');
+  if (footerAbout) footerAbout.textContent = lang === 'en' ? 'About' : 'このサイトについて';
+  if (footerLicense) footerLicense.textContent = lang === 'en' ? 'License & Source' : 'ライセンス・出典';
   render();
 }
 
@@ -675,5 +690,17 @@ document.getElementById('term-grid').addEventListener('keydown', e => {
 // ===== 初期言語適用 =====
 setLang(currentLang);
 </script>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>© Miki Oda / Life Tech Coordinator</span>
+    <span class="footer-sep">|</span>
+    <a href="about.html" id="footer-about-link">このサイトについて</a>
+    <span class="footer-sep">|</span>
+    <a href="license.html" id="footer-license-link">ライセンス・出典</a>
+    <span class="footer-sep">|</span>
+    <a href="https://github.com/mikiyoko/matter-dictionary" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </div>
+</footer>
 </body>
 </html>

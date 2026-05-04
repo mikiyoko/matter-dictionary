@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ライセンスと出典 | Matter辞書</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0f14; --surface: #16181f; --surface2: #1e2029;
+  --border: #2a2d38; --accent: #7ee8a2; --accent2: #5bc4f5;
+  --text: #e8eaf0; --muted: #9da3b8; --dim: #8b90a8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; font-size: 14px; min-height: 100vh; }
+
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: rgba(14,15,20,0.97);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+.logo-badge { font-family: 'Space Mono', monospace; font-size: 11px; background: var(--accent); color: #0e0f14; padding: 3px 8px; border-radius: 3px; font-weight: 700; }
+.logo-title { font-size: 16px; font-weight: 700; }
+.logo-sub { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+.back-btn {
+  padding: 6px 13px; border-radius: 7px; font-size: 12px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; text-decoration: none;
+  font-family: 'Noto Sans JP', sans-serif; transition: all 0.15s;
+  display: flex; align-items: center; gap: 5px;
+}
+.back-btn:hover { background: var(--surface2); color: var(--accent); border-color: var(--accent); }
+.lang-toggle {
+  display: flex; align-items: center;
+  border: 1px solid var(--border); border-radius: 7px; overflow: hidden;
+  font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+}
+.lang-toggle button { padding: 5px 10px; border: none; cursor: pointer; background: transparent; color: var(--muted); transition: all 0.15s; }
+.lang-toggle button.active { background: var(--accent); color: #0e0f14; }
+.lang-toggle button:hover:not(.active) { color: var(--text); }
+
+@media (max-width: 600px) {
+  header { padding: 10px 14px; }
+  .logo-sub { display: none; }
+}
+
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 28px 64px;
+}
+
+h1 {
+  font-size: 26px; font-weight: 700; margin-bottom: 32px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+h2 {
+  font-size: 12px; font-weight: 700; color: var(--accent);
+  margin: 36px 0 12px;
+  font-family: 'Space Mono', monospace; letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+h3 {
+  font-size: 14px; font-weight: 700; color: var(--text);
+  margin: 24px 0 8px;
+}
+p {
+  font-size: 14px; line-height: 1.85; color: var(--muted);
+  margin-bottom: 14px;
+}
+p:last-child { margin-bottom: 0; }
+a {
+  color: var(--accent2); text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+.source-list {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 18px 22px;
+  margin: 14px 0;
+}
+.source-list li {
+  list-style: none; padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px; color: var(--muted); line-height: 1.7;
+}
+.source-list li:last-child { border-bottom: none; }
+.source-list li .source-name { color: var(--text); font-weight: 500; display: block; margin-bottom: 2px; }
+
+.notice-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--accent2);
+  border-radius: 0 8px 8px 0; padding: 14px 18px;
+  margin: 20px 0;
+}
+.notice-box p { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+.notice-box p:last-child { margin-bottom: 0; }
+
+.warn-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0; padding: 14px 18px;
+  margin: 20px 0;
+}
+.warn-box p { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+.warn-box p:last-child { margin-bottom: 0; }
+
+hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+
+.site-footer { border-top: 1px solid var(--border); padding: 40px 28px; text-align: center; font-size: 13px; color: var(--muted); }
+.footer-inner { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 4px 14px; }
+.footer-sep { color: var(--border); }
+.footer-inner a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
+.footer-inner a:hover { color: var(--accent); }
+@media (max-width: 600px) {
+  main { padding: 32px 16px 48px; }
+  .site-footer { padding: 32px 16px; }
+  .footer-inner { flex-direction: column; gap: 10px; }
+  .footer-sep { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">
+    <div class="logo-badge">M</div>
+    <div>
+      <div class="logo-title" id="logo-title">Matter辞書</div>
+      <div class="logo-sub">matter-dictionary</div>
+    </div>
+  </a>
+  <div class="header-right">
+    <a class="back-btn" href="index.html" id="back-btn">← <span id="back-label">辞書トップ</span></a>
+    <div class="lang-toggle">
+      <button id="btn-ja" class="active" onclick="setLang('ja')">JA</button>
+      <button id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<div id="content-ja">
+  <h1>ライセンスと出典</h1>
+
+  <h2>ライセンス</h2>
+  <p>このサイトが参照している connectedhomeip リポジトリは、Apache License 2.0 のもとで公開されています。</p>
+  <div class="source-list">
+    <ul>
+      <li>
+        <span class="source-name">Apache License 2.0 — ライセンス全文</span>
+        <a href="https://github.com/project-chip/connectedhomeip/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">https://github.com/project-chip/connectedhomeip/blob/master/LICENSE</a>
+      </li>
+    </ul>
+  </div>
+
+  <h2>出典</h2>
+  <p>掲載している情報は、以下の公式リソースを参照しています。</p>
+  <div class="source-list">
+    <ul>
+      <li>
+        <span class="source-name">Matter 公式サイト</span>
+        <a href="https://buildwithmatter.com" target="_blank" rel="noopener noreferrer">https://buildwithmatter.com</a>
+      </li>
+      <li>
+        <span class="source-name">connectedhomeip リポジトリ</span>
+        <a href="https://github.com/project-chip/connectedhomeip" target="_blank" rel="noopener noreferrer">https://github.com/project-chip/connectedhomeip</a>
+      </li>
+      <li>
+        <span class="source-name">Matter 仕様書（CSA公式・要登録）</span>
+        <a href="https://csa-iot.org/developer-resource/specifications-download-request/" target="_blank" rel="noopener noreferrer">https://csa-iot.org/developer-resource/specifications-download-request/</a>
+      </li>
+    </ul>
+  </div>
+
+  <h2>重要なお知らせ</h2>
+
+  <h3>認証について</h3>
+  <div class="notice-box">
+    <p>Matter認証（certification）は、Connectivity Standards Alliance (CSA) のメンバー企業のみが取得できます。本サイトの情報は、製品の認証取得を保証するものではありません。</p>
+  </div>
+
+  <h3>商標について</h3>
+  <div class="notice-box">
+    <p>「Matter」および関連するロゴ・商標は、CSA およびそのメンバーの所有物です。本サイトでの「Matter」という名称の使用は、CSA公式の規格を説明する目的に限定されています。</p>
+    <p>商標およびロゴの使用ガイドラインの詳細は、CSA の公式ドキュメントをご参照ください：<br>
+    <a href="https://csa-iot.org/resources/governing-documents" target="_blank" rel="noopener noreferrer">https://csa-iot.org/resources/governing-documents</a></p>
+  </div>
+
+  <h3>第三者の知的財産権について</h3>
+  <div class="warn-box">
+    <p>Matter仕様の一部要素は、第三者の知的財産権（特許、著作権、商標など）の対象となる場合があります。これらの権利の特定については、CSA は責任を負わないとされています。</p>
+  </div>
+
+  <h3>CSA への参加について</h3>
+  <p>Connectivity Standards Alliance のメンバーシップに関する情報は、以下をご参照ください：<br>
+  <a href="https://csa-iot.org/become-member" target="_blank" rel="noopener noreferrer">https://csa-iot.org/become-member</a></p>
+</div>
+
+<div id="content-en" style="display:none">
+  <h1>License &amp; Source</h1>
+
+  <h2>License</h2>
+  <p>The connectedhomeip repository referenced by this site is published under the Apache License 2.0.</p>
+  <div class="source-list">
+    <ul>
+      <li>
+        <span class="source-name">Apache License 2.0 — Full license text</span>
+        <a href="https://github.com/project-chip/connectedhomeip/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">https://github.com/project-chip/connectedhomeip/blob/master/LICENSE</a>
+      </li>
+    </ul>
+  </div>
+
+  <h2>Source</h2>
+  <p>The content on this site is based on the following official resources:</p>
+  <div class="source-list">
+    <ul>
+      <li>
+        <span class="source-name">Matter official site</span>
+        <a href="https://buildwithmatter.com" target="_blank" rel="noopener noreferrer">https://buildwithmatter.com</a>
+      </li>
+      <li>
+        <span class="source-name">connectedhomeip repository</span>
+        <a href="https://github.com/project-chip/connectedhomeip" target="_blank" rel="noopener noreferrer">https://github.com/project-chip/connectedhomeip</a>
+      </li>
+      <li>
+        <span class="source-name">Matter specification (CSA, registration required)</span>
+        <a href="https://csa-iot.org/developer-resource/specifications-download-request/" target="_blank" rel="noopener noreferrer">https://csa-iot.org/developer-resource/specifications-download-request/</a>
+      </li>
+    </ul>
+  </div>
+
+  <h2>Important Notice</h2>
+
+  <h3>About certification</h3>
+  <div class="notice-box">
+    <p>Matter certification can only be obtained by member companies of the Connectivity Standards Alliance (CSA). Information on this site does not guarantee product certification.</p>
+  </div>
+
+  <h3>About trademarks</h3>
+  <div class="notice-box">
+    <p>"Matter" and related logos and trademarks are owned by CSA and its members. The use of the "Matter" name on this site is limited to describing the CSA-official standard.</p>
+    <p>For details on trademark and logo usage guidelines, please refer to the CSA official documents:<br>
+    <a href="https://csa-iot.org/resources/governing-documents" target="_blank" rel="noopener noreferrer">https://csa-iot.org/resources/governing-documents</a></p>
+  </div>
+
+  <h3>About third-party intellectual property</h3>
+  <div class="warn-box">
+    <p>Some elements of the Matter specification may be subject to third-party intellectual property rights (patents, copyrights, trademarks, etc.). CSA is not responsible for identifying these rights.</p>
+  </div>
+
+  <h3>Joining CSA</h3>
+  <p>For information on Connectivity Standards Alliance membership:<br>
+  <a href="https://csa-iot.org/become-member" target="_blank" rel="noopener noreferrer">https://csa-iot.org/become-member</a></p>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>© Miki Oda / Life Tech Coordinator</span>
+    <span class="footer-sep">|</span>
+    <a href="about.html" id="footer-about-link">このサイトについて</a>
+    <span class="footer-sep">|</span>
+    <a href="license.html" id="footer-license-link">ライセンス・出典</a>
+    <span class="footer-sep">|</span>
+    <a href="https://github.com/mikiyoko/matter-dictionary" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </div>
+</footer>
+
+<script>
+var currentLang = localStorage.getItem('matter-dict-lang') || 'ja';
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('matter-dict-lang', lang);
+  localStorage.setItem('matter-glossary-lang', lang);
+  document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.documentElement.lang = lang === 'en' ? 'en' : 'ja';
+  document.getElementById('content-ja').style.display = lang === 'ja' ? '' : 'none';
+  document.getElementById('content-en').style.display = lang === 'en' ? '' : 'none';
+  document.getElementById('logo-title').textContent = lang === 'en' ? '⚡ Matter Dictionary' : '⚡ Matter辞書';
+  document.getElementById('back-label').textContent = lang === 'en' ? 'Dictionary Top' : '辞書トップ';
+  document.title = lang === 'en' ? 'License & Source | Matter Dictionary' : 'ライセンスと出典 | Matter辞書';
+  var footerAbout = document.getElementById('footer-about-link');
+  var footerLicense = document.getElementById('footer-license-link');
+  if (footerAbout) footerAbout.textContent = lang === 'en' ? 'About' : 'このサイトについて';
+  if (footerLicense) footerLicense.textContent = lang === 'en' ? 'License & Source' : 'ライセンス・出典';
+}
+
+setLang(currentLang);
+</script>
+</body>
+</html>
