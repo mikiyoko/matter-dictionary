@@ -327,7 +327,7 @@ header {
 
 <header>
   <div class="logo">
-    <span class="logo-badge">Matter 1.5</span>
+    <span class="logo-badge">Matter 1.6</span>
     <div>
       <div class="logo-title" id="logoTitle">⚡ Matter辞書</div>
       <div class="logo-sub">by ライフテックコーディネーター 織田未来</div>
@@ -560,6 +560,8 @@ function setLang(lang) {
   var footerLicense = document.getElementById('footer-license-link');
   if (footerAbout) footerAbout.textContent = lang === 'en' ? 'About' : 'このサイトについて';
   if (footerLicense) footerLicense.textContent = lang === 'en' ? 'License & Source' : 'ライセンス・出典';
+  var footerChangelog = document.getElementById('footer-changelog-link');
+  if (footerChangelog) footerChangelog.textContent = lang === 'en' ? 'Changelog' : '更新履歴';
   // localStorage に保存（読み物ページと共有）
   localStorage.setItem('matter-dict-lang', lang);
   // サイドバーカテゴリラベルを更新
@@ -1093,6 +1095,8 @@ window._appReady = true;
     <a href="license.html" id="footer-license-link">ライセンス・出典</a>
     <span class="footer-sep">|</span>
     <a href="https://github.com/mikiyoko/matter-dictionary" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <span class="footer-sep">|</span>
+    <a href="about.html#changelog" id="footer-changelog-link">更新履歴</a>
   </div>
 </footer>
 </body>

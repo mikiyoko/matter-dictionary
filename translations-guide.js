@@ -42,7 +42,7 @@ window.PAGE_TRANSLATIONS = {
   'Matterはスマートホームデバイスにとっての「共通言語」': 'Matter is the "common language" for smart home devices',
   'です。AppleのHomePodも、GoogleのNest HubもAmazonのEchoも、Matter対応であれば同じ言葉でデバイスに命令できます。': ". Apple's HomePod, Google's Nest Hub, Amazon's Echo — if a device is Matter-certified, all of them can control it.",
   'CSA（Connectivity Standards Alliance）— Apple・Google・Amazon・Samsungなど600社以上が参加': 'CSA (Connectivity Standards Alliance) — 600+ members including Apple, Google, Amazon, and Samsung',
-  'する標準化団体が策定しており、2022年に初版がリリース。2024年末にはバージョン1.5が公開されました。': 'developed this standard. The first version launched in 2022; version 1.5 was published in late 2024.',
+  'する標準化団体が策定しており、2022年に初版がリリース。2026年6月にバージョン1.6が公開されました。': 'developed this standard. The first version launched in 2022; version 1.6 was published in June 2026.',
   'メーカー横断の互換性': 'Cross-Brand Interoperability',
   'Apple / Google / Amazon / Samsungなど主要エコシステムが全対応。どのメーカーの機器でもMatter対応なら一緒に使えます。': 'All major ecosystems — Apple, Google, Amazon, Samsung — are fully onboard. Any Matter-certified device works across all of them.',
   'ローカル優先で動く': 'Local-First Operation',

@@ -149,7 +149,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
       <span class="stat-label">デバイスタイプ</span>
     </div>
     <div class="stat-item">
-      <span class="stat-num">132</span>
+      <span class="stat-num">135</span>
       <span class="stat-label">クラスター（機能の単位）</span>
     </div>
     <div class="stat-item">
@@ -158,6 +158,11 @@ hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
     </div>
   </div>
   <p>すべて、CSA公式の仕様書をもとに整理しています。</p>
+
+  <h2>製品データベースについて</h2>
+  <div class="notice-box">
+    <p>掲載している製品は、CSAの認証情報（Distributed Compliance Ledger 等）をもとにしています。これは「Matter認証を取得している」ことを示すもので、特定のエコシステムやお使いの環境で実際に動作・連携することを保証するものではありません。ご導入を検討される際は、必ずメーカーの公式情報や対応状況をご確認ください。</p>
+  </div>
 
   <h2>運営者</h2>
   <p>ライフテックコーディネーター 織田未来 (Miki Oda)</p>
@@ -168,6 +173,53 @@ hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
   <div class="notice-box">
     <p>これは Matter 公式のサイトではなく、個人が運営している非公式の日本語リファレンスです。Matter 公式の情報は CSA のサイト（<a href="https://buildwithmatter.com" target="_blank" rel="noopener noreferrer">https://buildwithmatter.com</a>）をご参照ください。</p>
   </div>
+
+  <h2 id="changelog">更新履歴（Matterバージョン別）</h2>
+  <p>各Matterバージョンで追加されたデバイスタイプ・クラスター・主な機能の要約です。件数は CSA公式仕様書（Device Library / Application Cluster Specification）に基づきます。</p>
+
+  <h3>Matter 1.6 — 2026年6月</h3>
+  <p>新しいデバイスカテゴリの追加はなく、既存体験を磨き込んだリリース。</p>
+  <ul>
+    <li><strong>新クラスター（3）</strong>：環境コンテキストセンシング（人の活動・物体・音の検知）／グループキャスト（複数デバイスへの一斉配信）／温度アラーム（高温・低温の段階通知）</li>
+    <li><strong>主な機能</strong>：NFCタッチでのコミッショニング、Joint Fabric（複数エコシステムでの共同管理）、サーモスタットサジェスチョン（提案ベースの空調制御）、煙・CO警報の取り外し検知、防犯センサーのイベント履歴、証明書失効リストの分割管理</li>
+  </ul>
+
+  <h3>Matter 1.5 — 2025年11月</h3>
+  <p>カメラとクロージャーという大型カテゴリが登場。</p>
+  <ul>
+    <li><strong>新デバイスタイプ（18）</strong>：カメラ・ビデオドアベル・インターホン・チャイム、クロージャー（窓・扉・パネル）、灌水システム・土壌センサー、電力メーター系 など</li>
+    <li><strong>新クラスター（17）</strong>：カメラ映像・WebRTC配信、ゾーン管理、クロージャー制御/寸法、エネルギー料金・メーター、TLS証明書/クライアント管理、土壌計測 など</li>
+  </ul>
+
+  <h3>Matter 1.4 — 2024年11月</h3>
+  <p>マルチアドミンとネットワーク基盤の強化。</p>
+  <ul>
+    <li><strong>新デバイスタイプ（10）</strong>：ソーラー・蓄電池・ヒートポンプ・給湯器、Threadボーダールーター、壁付けスイッチ系 など</li>
+    <li><strong>新クラスター</strong>：Joint Fabric基盤（共同管理）、Wi-Fi/Threadネットワーク管理、サービスエリア、給湯器管理 など</li>
+    <li><strong>主な機能</strong>：拡張マルチアドミン（1度の同意で複数プラットフォーム共有）</li>
+  </ul>
+
+  <h3>Matter 1.3 — 2024年4月</h3>
+  <p>エネルギー管理と調理家電。</p>
+  <ul>
+    <li><strong>新デバイスタイプ（13）</strong>：EV充電器、デバイスエネルギー管理、電力センサー、オーブン・電子レンジ・クックトップ・レンジフード、水漏れ/結露/雨センサー など</li>
+    <li><strong>新クラスター</strong>：電力計測・電力量計測、デバイスエネルギー管理、EV充電器、バルブ制御、シーン管理、メッセージ など</li>
+  </ul>
+
+  <h3>Matter 1.2 — 2023年10月</h3>
+  <p>大型家電が一気に対応。</p>
+  <ul>
+    <li><strong>新デバイスタイプ（9）</strong>：冷蔵庫・洗濯機・食洗機・ロボット掃除機・エアコン・空気清浄機・空気質センサー・煙/CO警報器・温度管理庫</li>
+    <li><strong>新クラスター</strong>：各種モード（洗濯/食洗機/冷蔵庫/ロボット掃除機）、温度制御、空気質、煙・CO警報、動作状態、ICDマネジメント など</li>
+  </ul>
+
+  <p style="font-size:13px;color:var(--muted);">※ 1.4.1・1.4.2・1.5.1 は小規模なメンテナンス更新（NFCオンボーディング基盤、証明書失効リスト対応 等）。</p>
+
+  <h3>Matter 1.1 — 2023年5月</h3>
+  <p>バグ修正と仕様明確化が中心の小規模アップデート。</p>
+
+  <h3>Matter 1.0 — 2022年11月</h3>
+  <p>初版。照明・スマートプラグ・スイッチ・各種センサー・ドアロック・電動ブラインド・サーモスタット・メディアデバイスなど、スマートホームの基本デバイスに対応。</p>
 
   <h2>フィードバック</h2>
   <p>「この用語の訳、こっちのほうがしっくりくる」「説明を補足してほしい」といったご意見は、<a href="https://github.com/mikiyoko/matter-dictionary/issues" target="_blank" rel="noopener noreferrer">GitHub の Issue</a> または <a href="https://note.com/mikiyoko" target="_blank" rel="noopener noreferrer">note のコメント</a>からお寄せください。</p>
@@ -187,7 +239,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
       <span class="stat-label">Device Types</span>
     </div>
     <div class="stat-item">
-      <span class="stat-num">132</span>
+      <span class="stat-num">135</span>
       <span class="stat-label">Clusters (functional units)</span>
     </div>
     <div class="stat-item">
@@ -196,6 +248,11 @@ hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
     </div>
   </div>
   <p>All content is based on the official CSA specification.</p>
+
+  <h2>About the product database</h2>
+  <div class="notice-box">
+    <p>Listed products are based on CSA certification data (e.g. the Distributed Compliance Ledger). Certification means a product has obtained Matter certification — it does not guarantee that it will actually work or interoperate in a specific ecosystem or in your environment. Please check the manufacturer's official information before purchasing.</p>
+  </div>
 
   <h2>Operator</h2>
   <p>Miki Oda (Life Tech Coordinator)</p>
@@ -206,6 +263,53 @@ hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
   <div class="notice-box">
     <p>This is not an official Matter site. It is an unofficial Japanese reference operated by an individual. For official Matter information, please visit the CSA site (<a href="https://buildwithmatter.com" target="_blank" rel="noopener noreferrer">https://buildwithmatter.com</a>).</p>
   </div>
+
+  <h2 id="changelog-en">Changelog (by Matter version)</h2>
+  <p>A summary of device types, clusters, and key features added in each Matter version. Counts are based on the official CSA specifications (Device Library / Application Cluster Specification).</p>
+
+  <h3>Matter 1.6 — June 2026</h3>
+  <p>A refinement release with no new device categories.</p>
+  <ul>
+    <li><strong>New clusters (3):</strong> Ambient Context Sensing (detects human activity, objects, and sounds), Groupcast (broadcasts one action to multiple devices), Temperature Alarm (graded over/under-temperature alerts)</li>
+    <li><strong>Key features:</strong> NFC-based commissioning, Joint Fabric (co-administration across ecosystems), Thermostat Suggestions (suggestion-based climate control), unmounted-state detection for smoke/CO alarms, security sensor event history, partitioned certificate revocation lists</li>
+  </ul>
+
+  <h3>Matter 1.5 — November 2025</h3>
+  <p>Major new categories: cameras and closures.</p>
+  <ul>
+    <li><strong>New device types (18):</strong> cameras, video doorbells, intercoms, chimes; closures (windows, doors, panels); irrigation systems and soil sensors; electrical meters, and more</li>
+    <li><strong>New clusters (17):</strong> camera AV / WebRTC streaming, zone management, closure control/dimension, energy tariffs and metering, TLS certificate/client management, soil measurement, and more</li>
+  </ul>
+
+  <h3>Matter 1.4 — November 2024</h3>
+  <p>Stronger multi-admin and network foundations.</p>
+  <ul>
+    <li><strong>New device types (10):</strong> solar power, battery storage, heat pumps, water heaters, Thread border routers, mounted switches, and more</li>
+    <li><strong>New clusters:</strong> Joint Fabric foundation (co-administration), Wi-Fi/Thread network management, service area, water heater management, and more</li>
+    <li><strong>Key features:</strong> Enhanced Multi-Admin (share across platforms with a single consent)</li>
+  </ul>
+
+  <h3>Matter 1.3 — April 2024</h3>
+  <p>Energy management and cooking appliances.</p>
+  <ul>
+    <li><strong>New device types (13):</strong> EV chargers, device energy management, electrical sensors, ovens, microwaves, cooktops, extractor hoods, water leak/freeze/rain sensors, and more</li>
+    <li><strong>New clusters:</strong> electrical power/energy measurement, device energy management, EV charging, valve control, scenes management, messages, and more</li>
+  </ul>
+
+  <h3>Matter 1.2 — October 2023</h3>
+  <p>Major appliances arrive.</p>
+  <ul>
+    <li><strong>New device types (9):</strong> refrigerator, laundry washer, dishwasher, robotic vacuum, room air conditioner, air purifier, air quality sensor, smoke/CO alarm, temperature-controlled cabinet</li>
+    <li><strong>New clusters:</strong> appliance modes (laundry/dishwasher/refrigerator/RVC), temperature control, air quality, smoke/CO alarm, operational state, ICD management, and more</li>
+  </ul>
+
+  <p style="font-size:13px;color:var(--muted);">Note: 1.4.1, 1.4.2, and 1.5.1 were minor maintenance releases (NFC onboarding foundation, certificate revocation list support, etc.).</p>
+
+  <h3>Matter 1.1 — May 2023</h3>
+  <p>A small update focused on bug fixes and specification clarifications.</p>
+
+  <h3>Matter 1.0 — November 2022</h3>
+  <p>The first version, covering core smart home devices: lighting, smart plugs, switches, sensors, door locks, window coverings, thermostats, and media devices.</p>
 
   <h2>Feedback</h2>
   <p>If you have suggestions like "this term might be better translated as..." or "I'd like more explanation on this," please reach out via <a href="https://github.com/mikiyoko/matter-dictionary/issues" target="_blank" rel="noopener noreferrer">GitHub Issues</a> or <a href="https://note.com/mikiyoko" target="_blank" rel="noopener noreferrer">comments on note</a>.</p>
@@ -222,6 +326,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
     <a href="license.html" id="footer-license-link">ライセンス・出典</a>
     <span class="footer-sep">|</span>
     <a href="https://github.com/mikiyoko/matter-dictionary" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <span class="footer-sep">|</span>
+    <a href="about.html#changelog" id="footer-changelog-link">更新履歴</a>
   </div>
 </footer>
 
@@ -244,6 +350,8 @@ function setLang(lang) {
   var footerLicense = document.getElementById('footer-license-link');
   if (footerAbout) footerAbout.textContent = lang === 'en' ? 'About' : 'このサイトについて';
   if (footerLicense) footerLicense.textContent = lang === 'en' ? 'License & Source' : 'ライセンス・出典';
+  var footerChangelog = document.getElementById('footer-changelog-link');
+  if (footerChangelog) footerChangelog.textContent = lang === 'en' ? 'Changelog' : '更新履歴';
 }
 
 setLang(currentLang);

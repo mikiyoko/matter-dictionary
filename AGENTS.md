@@ -176,15 +176,21 @@ matter-dictionary/
 
 ### Matter仕様が更新されたとき（例: 1.6→1.7）
 
-```bash
-# 1. CSA公式リポジトリを確認
-#    https://github.com/project-chip/connectedhomeip/tree/master/data_model/
+データ更新:
+1. CSA公式の data_model（https://github.com/project-chip/connectedhomeip/tree/master/data_model/）を確認
+2. 新クラスターを data/clusters.json に追加（**clusterId（hex）で照合**。ファイル名差分はSDKの整理で誤検出が出るため必ずIDで確認）
+3. 新デバイスタイプを data/deviceTypes.json に追加
+4. 必要なら glossary.json に新用語を追加
+5. 既存クラスター/デバイスタイプに追加された feature・attribute・command も反映
 
-# 2. 新クラスターを data/clusters.json に追加
-# 3. 新デバイスタイプを data/deviceTypes.json に追加
-# 4. 必要なら glossary.json に新用語を追加
-# 5. GitHubにpush → GitHub Pagesに自動反映
-```
+サイト表記の連動更新（仕様データを変えたら必ず確認）:
+- index.html トップの統計（デバイスタイプ数・クラスター数）→ **自動**（CLUSTERS.length / DEVICE_TYPES.length。編集不要）
+- about.html の統計カードのクラスター数 → **手動**（JA・EN の2か所）。デバイスタイプ数を増やした場合も同様に2か所
+- バージョンバッジ「Matter X.Y」→ **手動**: index.html / products.html の logo-badge
+- about.html の「更新履歴」セクション（id="changelog"）に新バージョンを追記（JA・EN両方）
+- guide.html「Matterって何？」のバージョン記述（最新版の公開時期）→ 本文＋ translations-guide.js のキー＆英訳を揃えて更新
+
+6. ユーザーに確認 → GitHubにpush → GitHub Pagesに自動反映（法6: 確認なくpush禁止）
 
 ### 製品データを更新したいとき
 

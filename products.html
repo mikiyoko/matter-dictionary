@@ -100,6 +100,7 @@ header {
 .sec-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
 .sec-title { font-size: 18px; font-weight: 700; }
 .sec-count { font-size: 12px; color: var(--muted); font-family: 'Space Mono', monospace; }
+.sec-note { font-size: 13px; color: var(--muted); margin-top: 4px; margin-bottom: 16px; }
 
 /* ─── Product Grid ─── */
 .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
@@ -294,7 +295,7 @@ header {
 
 <header>
   <a class="logo" href="index.html">
-    <span class="logo-badge">Matter 1.5</span>
+    <span class="logo-badge">Matter 1.6</span>
     <div>
       <div class="logo-title" id="logoTitle">⚡ Matter辞書</div>
       <div class="logo-sub">by ライフテックコーディネーター 織田未来</div>
@@ -333,6 +334,7 @@ header {
       <span class="sec-title" id="secTitle">製品データベース</span>
       <span class="sec-count" id="secCount"></span>
     </div>
+    <p class="sec-note" id="secNote">※ 認証ベースの情報です。実際の動作・対応状況はメーカー公式情報をご確認ください。</p>
     <div id="productGrid" class="product-grid">
       <div class="loading-state"><div class="loading-spinner"></div>製品データを読み込み中…</div>
     </div>
@@ -839,10 +841,16 @@ function applyLangUI(lang) {
   if (el) el.placeholder = lang === 'en' ? 'Search by product name or maker…' : '製品名・メーカー名で検索…';
   var tLabels = {all: lang==='en'?'All':'すべて', Thread:'Thread', 'Wi-Fi':'Wi-Fi', Ethernet:'Ethernet'};
   document.querySelectorAll('.tfilter').forEach(function(b){ var k = b.getAttribute('data-t'); if(tLabels[k]) b.textContent = tLabels[k]; });
+  el = document.getElementById('secTitle');
+  if (el) el.textContent = lang === 'en' ? 'Product Database' : '製品データベース';
+  el = document.getElementById('secNote');
+  if (el) el.textContent = lang === 'en' ? 'Note: Based on certification data. Check the manufacturer\'s official information for actual functionality and compatibility.' : '※ 認証ベースの情報です。実際の動作・対応状況はメーカー公式情報をご確認ください。';
   var footerAbout = document.getElementById('footer-about-link');
   var footerLicense = document.getElementById('footer-license-link');
   if (footerAbout) footerAbout.textContent = lang === 'en' ? 'About' : 'このサイトについて';
   if (footerLicense) footerLicense.textContent = lang === 'en' ? 'License & Source' : 'ライセンス・出典';
+  var footerChangelog = document.getElementById('footer-changelog-link');
+  if (footerChangelog) footerChangelog.textContent = lang === 'en' ? 'Changelog' : '更新履歴';
 }
 
 // ─── Init ─────────────────────────────────────────────────────
@@ -934,6 +942,8 @@ Promise.all([
     <a href="license.html" id="footer-license-link">ライセンス・出典</a>
     <span class="footer-sep">|</span>
     <a href="https://github.com/mikiyoko/matter-dictionary" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <span class="footer-sep">|</span>
+    <a href="about.html#changelog" id="footer-changelog-link">更新履歴</a>
   </div>
 </footer>
 

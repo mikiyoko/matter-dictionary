@@ -238,8 +238,8 @@
       "general",
       "sensor"
     ],
-    "description": "True/Falseの二値状態を管理する汎用クラスター。開閉センサー・水漏れ検知などに使用",
-    "features": [],
+    "description": "開いている/閉じているなどの2値状態を表す基本クラスター。1.6で状態変化のイベント履歴に対応",
+    "features": ["StateChange（状態変化イベント：1.6）"],
     "keyAttributes": [
       {
         "name": "StateValue",
@@ -266,7 +266,8 @@
     "description": "Boolean Stateクラスターの設定・アラーム構成を管理する補助クラスター",
     "features": [
       "Visual（視覚的アラーム）",
-      "Audible（音声アラーム）"
+      "Audible（音声アラーム）",
+      "FaultEvents（異常イベント：1.6）"
     ],
     "keyAttributes": [
       {
@@ -885,6 +886,10 @@
       {
         "name": "EndOfServiceAlert",
         "description": "耐用年数終了アラート"
+      },
+      {
+        "name": "Unmounted",
+        "description": "設置場所から取り外されている状態かどうか（1.6で追加）"
       }
     ],
     "keyCommands": [
@@ -1156,7 +1161,8 @@
       "Occupancy（在室連動）",
       "Setback（省エネセットバック）",
       "AutoMode（自動モード）",
-      "HVAC解決"
+      "HVAC解決",
+      "ThermostatSuggestions（サジェスチョン：1.6）"
     ],
     "keyAttributes": [
       {
@@ -1178,12 +1184,32 @@
       {
         "name": "ThermostatRunningMode",
         "description": "現在の実行モード（冷房中/暖房中）"
+      },
+      {
+        "name": "ThermostatSuggestions",
+        "description": "エコシステムから届いている温度・モードの提案リスト"
+      },
+      {
+        "name": "CurrentThermostatSuggestion",
+        "description": "現在採用している提案"
+      },
+      {
+        "name": "ThermostatSuggestionNotFollowingReason",
+        "description": "提案に従わなかった理由"
       }
     ],
     "keyCommands": [
       {
         "name": "SetpointRaiseLower",
         "description": "設定温度を相対的に上げ下げ"
+      },
+      {
+        "name": "AddThermostatSuggestion",
+        "description": "温度・モードの提案を追加する（時間制限付き）"
+      },
+      {
+        "name": "RemoveThermostatSuggestion",
+        "description": "提案を取り消す"
       }
     ],
     "tags": [
@@ -5092,5 +5118,59 @@
       "カメラ",
       "クラウド"
     ]
+  },
+  {
+    "id": "groupcast",
+    "clusterId": "0x0065",
+    "name": "Groupcast",
+    "nameJa": "グループキャスト",
+    "categories": ["network"],
+    "description": "1つの操作を複数デバイスへ同時に届けるグループ通信の土台。照明の一斉オン/オフなどを効率化する",
+    "features": ["Listener（受信側）", "Sender（送信側）", "PerGroup（グループ単位）"],
+    "keyAttributes": [
+      { "name": "Membership", "description": "所属しているグループの一覧" },
+      { "name": "MaxMembershipCount", "description": "参加できるグループの最大数" }
+    ],
+    "keyCommands": [
+      { "name": "JoinGroup", "description": "グループに参加する" },
+      { "name": "LeaveGroup", "description": "グループから抜ける" },
+      { "name": "UpdateGroupKey", "description": "グループの鍵を更新する" }
+    ],
+    "tags": ["グループ", "一斉操作", "マルチキャスト", "ネットワーク"]
+  },
+  {
+    "id": "temperature-alarm",
+    "clusterId": "0x0064",
+    "name": "Temperature Alarm",
+    "nameJa": "温度アラーム",
+    "categories": ["hvac"],
+    "description": "温度が高すぎる/低すぎるときに段階的（注意・重大・危険）に知らせるアラーム。家電や空調の温度異常検知に使う",
+    "features": ["OverTemperature（高温）", "UnderTemperature（低温）", "MajorThreshold（重大しきい値）", "MinorThreshold（注意しきい値）"],
+    "keyAttributes": [
+      { "name": "CriticalOverTemperatureThreshold", "description": "危険レベルの高温しきい値" },
+      { "name": "MajorOverTemperatureThreshold", "description": "重大レベルの高温しきい値" },
+      { "name": "MinorUnderTemperatureThreshold", "description": "注意レベルの低温しきい値" }
+    ],
+    "keyCommands": [
+      { "name": "SetTemperatureAlarmThresholds", "description": "アラームのしきい値を設定する" }
+    ],
+    "tags": ["温度", "アラーム", "高温", "低温", "異常検知"]
+  },
+  {
+    "id": "ambient-context-sensing",
+    "clusterId": "0x0431",
+    "name": "Ambient Context Sensing",
+    "nameJa": "環境コンテキストセンシング",
+    "categories": ["sensor"],
+    "description": "人の活動・物体の数や種類・音の種類などをまとめて検知し、「今どんな状況か」を伝える高度なセンサー。AIカメラやマルチセンサーが対応",
+    "features": ["HumanActivity（人の活動）", "ObjectCounting（物体カウント）", "ObjectIdentification（物体識別）", "SoundIdentification（音識別）", "PredictedActivity（活動予測）"],
+    "keyAttributes": [
+      { "name": "HumanActivityDetected", "description": "人の活動を検知したか" },
+      { "name": "ObjectIdentified", "description": "識別した物体の情報" },
+      { "name": "AudioContextDetected", "description": "検知した音の種類" },
+      { "name": "ObjectCount", "description": "検知している物体の数" }
+    ],
+    "keyCommands": [],
+    "tags": ["センサー", "在室", "物体検知", "音検知", "AI"]
   }
 ]

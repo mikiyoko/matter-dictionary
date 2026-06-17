@@ -665,6 +665,8 @@ function setLang(lang) {
   var footerLicense = document.getElementById('footer-license-link');
   if (footerAbout) footerAbout.textContent = lang === 'en' ? 'About' : 'このサイトについて';
   if (footerLicense) footerLicense.textContent = lang === 'en' ? 'License & Source' : 'ライセンス・出典';
+  var footerChangelog = document.getElementById('footer-changelog-link');
+  if (footerChangelog) footerChangelog.textContent = lang === 'en' ? 'Changelog' : '更新履歴';
   render();
 }
 
@@ -700,6 +702,8 @@ setLang(currentLang);
     <a href="license.html" id="footer-license-link">ライセンス・出典</a>
     <span class="footer-sep">|</span>
     <a href="https://github.com/mikiyoko/matter-dictionary" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <span class="footer-sep">|</span>
+    <a href="about.html#changelog" id="footer-changelog-link">更新履歴</a>
   </div>
 </footer>
 </body>
