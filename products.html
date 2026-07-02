@@ -285,6 +285,37 @@ header {
   .footer-inner { flex-direction: column; gap: 10px; }
   .footer-sep { display: none; }
 }
+
+/* ── 製品追加リクエスト CTA（製品リストの末尾）── */
+.request-cta {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  flex-wrap: wrap;
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--accent2);
+  border-radius: 10px; padding: 14px 18px; margin-top: 20px; margin-bottom: 4px;
+}
+.request-cta-text { display: flex; flex-direction: column; gap: 3px; }
+.request-cta-text strong { font-size: 13px; color: var(--text); font-weight: 700; }
+.request-cta-text span { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.request-cta-btn {
+  flex-shrink: 0; display: inline-flex; align-items: center; gap: 5px;
+  padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 700;
+  text-decoration: none; white-space: nowrap;
+  background: rgba(91,196,245,0.12); color: var(--accent2);
+  border: 1px solid rgba(91,196,245,0.4); transition: all 0.15s;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.request-cta-btn:hover { background: rgba(91,196,245,0.2); border-color: var(--accent2); }
+
+/* サイドバー最下部の追加依頼リンク */
+.sidebar-request-link { text-decoration: none; }
+.sidebar-request-link .cat-label { color: var(--accent2); }
+.sidebar-request-link:hover { background: var(--surface2); }
+
+@media (max-width: 600px) {
+  .request-cta { flex-direction: column; align-items: stretch; }
+  .request-cta-btn { justify-content: center; }
+}
 </style>
 <!-- Start KARTE Tag -->
 <script>!function(n){if(!window[n]){var o=window[n]=function(){var n=[].slice.call(arguments);return o.x?o.x.apply(0,n):o.q.push(n)};o.q=[],o.i=Date.now(),o.allow=function(){o.o="allow"},o.deny=function(){o.o="deny"}}}("krt")</script>
@@ -338,6 +369,14 @@ header {
     <div id="productGrid" class="product-grid">
       <div class="loading-state"><div class="loading-spinner"></div>製品データを読み込み中…</div>
     </div>
+
+    <div class="request-cta">
+      <div class="request-cta-text">
+        <strong id="requestCtaTitle">この一覧にない対応製品をご存じですか？</strong>
+        <span id="requestCtaSub">Matter対応なのに載っていない製品は、追加をリクエストできます。</span>
+      </div>
+      <a class="request-cta-btn" id="requestCtaBtn" href="#" target="_blank" rel="noopener">＋ 製品の追加を依頼</a>
+    </div>
   </main>
 </div>
 
@@ -354,6 +393,9 @@ header {
 <script>
 // ─── Constants ───────────────────────────────────────────────
 var PRODUCTS_API_URL = 'https://smart-home-recipe.vercel.app/api/products';
+
+// 製品追加リクエスト用フォーム（Notion）。URLを変えるときはこの1行だけ直せばOK。
+var PRODUCT_REQUEST_FORM_URL = 'https://mikiyoko.notion.site/26ae15040c0640d690ddee98bb2cb90a?pvs=105';
 
 var CATEGORIES = [
   {id:'all',        label:'すべての製品',         labelEn:'All Products',      icon:'🏠'},
@@ -751,6 +793,13 @@ function buildSidebar() {
       + '</button>';
   });
 
+  // ── 製品追加リクエスト（サイドバー最下部）──
+  html += '<div class="sidebar-sep"></div>';
+  html += '<a class="cat-btn sidebar-request-link" href="' + PRODUCT_REQUEST_FORM_URL + '" target="_blank" rel="noopener">'
+    + '<span class="cat-icon">➕</span>'
+    + '<span class="cat-label">' + (currentLang === 'en' ? 'Request a product' : '製品の追加を依頼') + '</span>'
+    + '</a>';
+
   sidebar.innerHTML = html;
 
   // Bind events
@@ -845,6 +894,12 @@ function applyLangUI(lang) {
   if (el) el.textContent = lang === 'en' ? 'Product Database' : '製品データベース';
   el = document.getElementById('secNote');
   if (el) el.textContent = lang === 'en' ? 'Note: Based on certification data. Check the manufacturer\'s official information for actual functionality and compatibility.' : '※ 認証ベースの情報です。実際の動作・対応状況はメーカー公式情報をご確認ください。';
+  el = document.getElementById('requestCtaTitle');
+  if (el) el.textContent = lang === 'en' ? 'Know a compatible product missing here?' : 'この一覧にない対応製品をご存じですか？';
+  el = document.getElementById('requestCtaSub');
+  if (el) el.textContent = lang === 'en' ? 'If a Matter product isn\'t listed, you can request that we add it.' : 'Matter対応なのに載っていない製品は、追加をリクエストできます。';
+  el = document.getElementById('requestCtaBtn');
+  if (el) { el.href = PRODUCT_REQUEST_FORM_URL; el.textContent = lang === 'en' ? '＋ Request a product' : '＋ 製品の追加を依頼'; }
   var footerAbout = document.getElementById('footer-about-link');
   var footerLicense = document.getElementById('footer-license-link');
   if (footerAbout) footerAbout.textContent = lang === 'en' ? 'About' : 'このサイトについて';
