@@ -580,6 +580,8 @@ function setLang(lang) {
   if (footerLicense) footerLicense.textContent = lang === 'en' ? 'License & Source' : 'ライセンス・出典';
   var footerChangelog = document.getElementById('footer-changelog-link');
   if (footerChangelog) footerChangelog.textContent = lang === 'en' ? 'Changelog' : '更新履歴';
+  var footerFeedback = document.getElementById('footer-feedback-link');
+  if (footerFeedback) footerFeedback.textContent = lang === 'en' ? '💬 Feedback & Comments' : '💬 フィードバック・感想';
   // localStorage に保存（読み物ページと共有）
   localStorage.setItem('matter-dict-lang', lang);
   // サイドバーカテゴリラベルを更新
