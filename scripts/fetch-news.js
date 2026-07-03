@@ -1,15 +1,17 @@
-// scripts/fetch-news.js
+// scripts/fetch-news.js（v2：種別・英語列に対応）
 // NotionのUpdateデータベースから「公開フラグ」ONの記事を取得し、
 // 日付の新しい順に data/news.json へ書き出すスクリプト。
 // GitHub Actions（update-news.yml）から実行されます。
 //
-// 必要な環境変数（GitHubのSecretsに登録）:
+// 必要な環境変数（GitHubのSecretsに登録済み）:
 //   NOTION_TOKEN        … Notionインテグレーションのシークレット（ntn_...）
 //   NOTION_DATABASE_ID  … UpdateデータベースのID（URL中の32文字）
 //
 // Notion側の列名（変更したらここも合わせて変更が必要）:
 //   タイトル（タイトル型）／本文（テキスト型）／日付（日付型）／
-//   公開フラグ（チェックボックス型）／リンク先（URL型）
+//   公開フラグ（チェックボックス型）／リンク先（URL型）／
+//   種別（セレクト型：Matter対応・機能追加・お知らせ）※任意
+//   タイトルEN・本文EN（テキスト型）※任意。空欄なら日本語で表示される
 
 const fs = require("fs");
 
@@ -49,13 +51,19 @@ async function main() {
     cursor = data.has_more ? data.next_cursor : undefined;
   } while (cursor);
 
+  // テキスト系プロパティを安全に文字列へ変換するヘルパー
+  const text = (prop) => (prop?.rich_text || []).map((t) => t.plain_text).join("");
+
   // 必要な項目だけを取り出して整形
   const items = results
     .map((page) => {
       const p = page.properties;
       return {
+        type: p["種別"]?.select?.name || "",
         title: (p["タイトル"]?.title || []).map((t) => t.plain_text).join(""),
-        body: (p["本文"]?.rich_text || []).map((t) => t.plain_text).join(""),
+        title_en: text(p["タイトルEN"]),
+        body: text(p["本文"]),
+        body_en: text(p["本文EN"]),
         date: p["日付"]?.date?.start || "",
         url: p["リンク先"]?.url || "",
       };
