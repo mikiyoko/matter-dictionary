@@ -307,6 +307,17 @@ header {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
+/* 更新情報バナー（data/news.json から自動表示） */
+.news-banner { display: none; flex-direction: column; gap: 6px; padding: 10px 28px; background: rgba(245,166,35,0.06); border-bottom: 1px solid var(--border); border-left: 3px solid var(--accent3); }
+.news-item { display: flex; align-items: baseline; gap: 10px; font-size: 13px; color: var(--text); flex-wrap: wrap; }
+.news-tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; background: var(--accent3); color: #0e0f14; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+.news-date { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); white-space: nowrap; }
+.news-title a { color: var(--accent3); text-decoration: none; }
+.news-title a:hover { text-decoration: underline; }
+.news-more { align-self: flex-end; font-size: 11px; color: var(--muted); text-decoration: none; font-family: 'Space Mono', monospace; transition: color 0.15s; }
+.news-more:hover { color: var(--accent3); }
+@media (max-width: 600px) { .news-banner { padding: 10px 16px; } }
+
 .site-footer { border-top: 1px solid var(--border); padding: 40px 28px; text-align: center; font-size: 13px; color: var(--muted); }
 .footer-inner { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 4px 14px; }
 .footer-sep { color: var(--border); }
@@ -377,6 +388,7 @@ header {
       </div>
     </div>
     <a href="products.html" class="guide-btn" id="productsBtn">📦 <span id="productsBtnLabel">製品DB</span></a>
+    <a href="https://github.com/mikiyoko/matter-dictionary/discussions" class="guide-btn" id="feedbackBtn" target="_blank" rel="noopener noreferrer">💬 <span id="feedbackBtnLabel">フィードバック</span></a>
     <div class="header-stat">
       <span id="statDevices">—</span> <span id="statLabelDevices">デバイスタイプ</span> &nbsp;|&nbsp; <span id="statClusters">—</span> <span id="statLabelClusters">クラスター</span>
     </div>
@@ -386,6 +398,8 @@ header {
     </div>
   </div>
 </header>
+
+<div class="news-banner" id="newsBanner" aria-label="更新情報"></div>
 
 <div class="search-bar">
   <div class="search-wrap">
@@ -555,6 +569,10 @@ function setLang(lang) {
   // 製品DBボタンのラベル
   var productsLabel = document.getElementById('productsBtnLabel');
   if (productsLabel) productsLabel.textContent = lang === 'en' ? 'Products' : '製品DB';
+  var feedbackLabel = document.getElementById('feedbackBtnLabel');
+  if (feedbackLabel) feedbackLabel.textContent = lang === 'en' ? 'Feedback' : 'フィードバック';
+  var newsMore = document.getElementById('newsMoreLink');
+  if (newsMore) newsMore.textContent = lang === 'en' ? 'See all →' : 'もっと見る →';
   // フッターリンクのラベル更新
   var footerAbout = document.getElementById('footer-about-link');
   var footerLicense = document.getElementById('footer-license-link');
@@ -1086,6 +1104,54 @@ window._appReady = true;
 } // end initApp
 </script>
 
+<script>
+// 更新情報バナー（data/news.json から最新2件を表示
+(function () {
+  var wrap = document.getElementById('newsBanner');
+  if (!wrap) return;
+  fetch('data/news.json')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      if (!data || !data.items || !data.items.length) return;
+      data.items.slice(0, 2).forEach(function (item) {
+        var row = document.createElement('div');
+        row.className = 'news-item';
+        var tag = document.createElement('span');
+        tag.className = 'news-tag';
+        tag.textContent = 'UPDATE';
+        row.appendChild(tag);
+        if (item.date) {
+          var d = document.createElement('span');
+          d.className = 'news-date';
+          d.textContent = item.date;
+          row.appendChild(d);
+        }
+        var t;
+        if (item.url) {
+          t = document.createElement('a');
+          t.href = item.url;
+          t.target = '_blank';
+          t.rel = 'noopener noreferrer';
+        } else {
+          t = document.createElement('span');
+        }
+        t.className = 'news-title';
+        t.textContent = item.title + (item.body ? ' — ' + item.body : '');
+        row.appendChild(t);
+        wrap.appendChild(row);
+      });
+      var more = document.createElement('a');
+      more.className = 'news-more';
+      more.href = 'about.html#changelog';
+      more.id = 'newsMoreLink';
+      more.textContent = (localStorage.getItem('matter-dict-lang') === 'en') ? 'See all →' : 'もっと見る →';
+      wrap.appendChild(more);
+      wrap.style.display = 'flex';
+    })
+    .catch(function () { /* news.json が未生成の際は何も表示しない */ });
+})();
+</script>
+
 <footer class="site-footer">
   <div class="footer-inner">
     <span>© Miki Oda / Life Tech Coordinator</span>
@@ -1093,6 +1159,8 @@ window._appReady = true;
     <a href="about.html" id="footer-about-link">このサイトについて</a>
     <span class="footer-sep">|</span>
     <a href="license.html" id="footer-license-link">ライセンス・出典</a>
+    <span class="footer-sep">|</span>
+    <a href="https://github.com/mikiyoko/matter-dictionary/discussions" target="_blank" rel="noopener noreferrer" id="footer-feedback-link">💬 フィードバック・感想</a>
     <span class="footer-sep">|</span>
     <a href="https://github.com/mikiyoko/matter-dictionary" target="_blank" rel="noopener noreferrer">GitHub</a>
     <span class="footer-sep">|</span>
