@@ -312,10 +312,13 @@ header {
 .news-item { display: flex; align-items: baseline; gap: 10px; font-size: 13px; color: var(--text); flex-wrap: wrap; }
 .news-tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; background: var(--accent3); color: #0e0f14; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
 .news-date { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); white-space: nowrap; }
-.news-title a { color: var(--accent3); text-decoration: none; }
-.news-title a:hover { text-decoration: underline; }
+a.news-title { color: var(--accent2); text-decoration: none; }
+a.news-title:hover { text-decoration: underline; }
+a.news-title:visited { color: var(--accent2); }
 .news-more { align-self: flex-end; font-size: 11px; color: var(--muted); text-decoration: none; font-family: 'Space Mono', monospace; transition: color 0.15s; }
 .news-more:hover { color: var(--accent3); }
+.news-tag.t-feature { background: var(--accent2); }
+.news-tag.t-notice { background: var(--muted); }
 @media (max-width: 600px) { .news-banner { padding: 10px 16px; } }
 
 .site-footer { border-top: 1px solid var(--border); padding: 40px 28px; text-align: center; font-size: 13px; color: var(--muted); }
@@ -1115,12 +1118,15 @@ window._appReady = true;
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (data) {
       if (!data || !data.items || !data.items.length) return;
+      var isEn = localStorage.getItem('matter-dict-lang') === 'en';
       data.items.slice(0, 2).forEach(function (item) {
         var row = document.createElement('div');
         row.className = 'news-item';
+        var typeMap = { 'Matter対応': ['MATTER', ''], '機能追加': ['FEATURE', 't-feature'], 'お知らせ': ['NOTICE', 't-notice'] };
+        var info = typeMap[item.type] || ['UPDATE', ''];
         var tag = document.createElement('span');
-        tag.className = 'news-tag';
-        tag.textContent = 'UPDATE';
+        tag.className = 'news-tag' + (info[1] ? ' ' + info[1] : '');
+        tag.textContent = info[0];
         row.appendChild(tag);
         if (item.date) {
           var d = document.createElement('span');
@@ -1138,13 +1144,15 @@ window._appReady = true;
           t = document.createElement('span');
         }
         t.className = 'news-title';
-        t.textContent = item.title + (item.body ? ' — ' + item.body : '');
+        var bTitle = (isEn && item.title_en) ? item.title_en : item.title;
+        var bBody = (isEn && item.body_en) ? item.body_en : item.body;
+        t.textContent = bTitle + (bBody ? ' — ' + bBody : '');
         row.appendChild(t);
         wrap.appendChild(row);
       });
       var more = document.createElement('a');
       more.className = 'news-more';
-      more.href = 'about.html#changelog';
+      more.href = 'about.html#news';
       more.id = 'newsMoreLink';
       more.textContent = (localStorage.getItem('matter-dict-lang') === 'en') ? 'See all →' : 'もっと見る →';
       wrap.appendChild(more);

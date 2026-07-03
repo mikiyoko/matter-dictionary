@@ -8,7 +8,7 @@
 <style>
 :root {
   --bg: #0e0f14; --surface: #16181f; --surface2: #1e2029;
-  --border: #2a2d38; --accent: #7ee8a2; --accent2: #5bc4f5;
+  --border: #2a2d38; --accent: #7ee8a2; --accent2: #5bc4f5; --accent3: #f5a623;
   --text: #e8eaf0; --muted: #9da3b8; --dim: #8b90a8;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -70,10 +70,36 @@ p {
   margin-bottom: 14px;
 }
 p:last-child { margin-bottom: 0; }
+
+/* 更新履歴（Matterバージョン別）の見出しとリスト */
+h3 {
+  font-size: 15px; font-weight: 700; color: var(--text);
+  margin: 28px 0 6px; padding-left: 10px;
+  border-left: 3px solid var(--accent);
+}
+h3 + p { margin-bottom: 8px; }
+ul { padding-left: 1.5em; margin: 0 0 18px; }
+li { font-size: 14px; line-height: 1.85; color: var(--muted); margin-bottom: 6px; }
+li::marker { color: var(--dim); }
+li strong { color: var(--text); }
 a {
   color: var(--accent2); text-decoration: none;
 }
 a:hover { text-decoration: underline; }
+
+/* サイトの更新情報（data/news.json から自動表示） */
+.news-filter { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0; }
+.news-filter button { font-size: 12px; padding: 4px 12px; border-radius: 14px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; transition: all 0.15s; }
+.news-filter button:hover { color: var(--text); }
+.news-filter button.active { border-color: var(--accent2); color: var(--accent2); }
+.news-list { display: flex; flex-direction: column; gap: 12px; margin: 14px 0 8px; }
+.news-entry { padding: 12px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+.news-entry-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.news-entry-body { margin: 5px 0 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.news-tag { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; background: var(--accent3); color: #0e0f14; padding: 2px 7px; border-radius: 3px; white-space: nowrap; }
+.news-tag.t-feature { background: var(--accent2); }
+.news-tag.t-notice { background: var(--muted); }
+.news-date { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); white-space: nowrap; }
 
 .stat-row {
   display: flex; gap: 20px; flex-wrap: wrap;
@@ -174,6 +200,11 @@ hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
     <p>これは Matter 公式のサイトではなく、個人が運営している非公式の日本語リファレンスです。Matter 公式の情報は CSA のサイト（<a href="https://buildwithmatter.com" target="_blank" rel="noopener noreferrer">https://buildwithmatter.com</a>）をご参照ください。</p>
   </div>
 
+  <h2 id="news">サイトの更新情報</h2>
+  <p>Matter辞書の機能追加・データ更新・対応バージョンなどのお知らせです。</p>
+  <div class="news-filter" id="newsFilterJa"></div>
+  <div class="news-list" id="newsListJa"></div>
+
   <h2 id="changelog">更新履歴（Matterバージョン別）</h2>
   <p>各Matterバージョンで追加されたデバイスタイプ・クラスター・主な機能の要約です。件数は CSA公式仕様書（Device Library / Application Cluster Specification）に基づきます。</p>
 
@@ -263,6 +294,11 @@ hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
   <div class="notice-box">
     <p>This is not an official Matter site. It is an unofficial Japanese reference operated by an individual. For official Matter information, please visit the CSA site (<a href="https://buildwithmatter.com" target="_blank" rel="noopener noreferrer">https://buildwithmatter.com</a>).</p>
   </div>
+
+  <h2 id="news-en">Site updates</h2>
+  <p>News about new features, data updates, and supported Matter versions.</p>
+  <div class="news-filter" id="newsFilterEn"></div>
+  <div class="news-list" id="newsListEn"></div>
 
   <h2 id="changelog-en">Changelog (by Matter version)</h2>
   <p>A summary of device types, clusters, and key features added in each Matter version. Counts are based on the official CSA specifications (Device Library / Application Cluster Specification).</p>
@@ -355,6 +391,109 @@ function setLang(lang) {
 }
 
 setLang(currentLang);
+
+// サイトの更新情報（data/news.json から全件を種別絞り込み付きで表示
+(function () {
+  var TYPES = {
+    'Matter対応': { tag: 'MATTER',  cls: '',          ja: 'Matter対応', en: 'Matter updates' },
+    '機能追加':   { tag: 'FEATURE', cls: 't-feature', ja: '機能追加',   en: 'Features' },
+    'お知らせ':   { tag: 'NOTICE',  cls: 't-notice',  ja: 'お知らせ',   en: 'Notices' }
+  };
+  var allItems = [];
+  var currentFilter = 'all';
+
+  function render() {
+    ['Ja', 'En'].forEach(function (suffix) {
+      var list = document.getElementById('newsList' + suffix);
+      if (!list) return;
+      var en = suffix === 'En';
+      list.innerHTML = '';
+      allItems.forEach(function (item) {
+        if (currentFilter !== 'all' && item.type !== currentFilter) return;
+        var entry = document.createElement('div');
+        entry.className = 'news-entry';
+        var head = document.createElement('div');
+        head.className = 'news-entry-head';
+        var info = TYPES[item.type];
+        var tag = document.createElement('span');
+        tag.className = 'news-tag' + (info && info.cls ? ' ' + info.cls : '');
+        tag.textContent = info ? info.tag : 'UPDATE';
+        head.appendChild(tag);
+        if (item.date) {
+          var d = document.createElement('span');
+          d.className = 'news-date';
+          d.textContent = item.date;
+          head.appendChild(d);
+        }
+        var titleText = (en && item.title_en) ? item.title_en : item.title;
+        var t;
+        if (item.url) {
+          t = document.createElement('a');
+          t.href = item.url;
+          if (item.url.indexOf('http') === 0 && item.url.indexOf('mikiyoko.github.io') === -1) {
+            t.target = '_blank';
+            t.rel = 'noopener noreferrer';
+          }
+        } else {
+          t = document.createElement('strong');
+        }
+        t.textContent = titleText;
+        head.appendChild(t);
+        entry.appendChild(head);
+        var bodyText = (en && item.body_en) ? item.body_en : item.body;
+        if (bodyText) {
+          var p = document.createElement('p');
+          p.className = 'news-entry-body';
+          p.textContent = bodyText;
+          entry.appendChild(p);
+        }
+        list.appendChild(entry);
+      });
+      if (!list.children.length) {
+        var empty = document.createElement('p');
+        empty.className = 'news-entry-body';
+        empty.textContent = en ? 'No updates in this category yet.' : 'このカテゴリの更新はまだありません。';
+        list.appendChild(empty);
+      }
+    });
+  }
+
+  function buildFilters() {
+    ['Ja', 'En'].forEach(function (suffix) {
+      var wrap = document.getElementById('newsFilter' + suffix);
+      if (!wrap) return;
+      var en = suffix === 'En';
+      var options = [['all', en ? 'All' : 'すべて']];
+      Object.keys(TYPES).forEach(function (k) {
+        options.push([k, en ? TYPES[k].en : TYPES[k].ja]);
+      });
+      options.forEach(function (opt) {
+        var btn = document.createElement('button');
+        btn.textContent = opt[1];
+        btn.dataset.type = opt[0];
+        if (opt[0] === currentFilter) btn.classList.add('active');
+        btn.onclick = function () {
+          currentFilter = opt[0];
+          document.querySelectorAll('.news-filter button').forEach(function (b) {
+            b.classList.toggle('active', b.dataset.type === currentFilter);
+          });
+          render();
+        };
+        wrap.appendChild(btn);
+      });
+    });
+  }
+
+  fetch('data/news.json')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      if (!data || !data.items || !data.items.length) return;
+      allItems = data.items;
+      buildFilters();
+      render();
+    })
+    .catch(function () { /* news.json 未生成時は何も表示しない */ });
+})();
 </script>
 </body>
 </html>
