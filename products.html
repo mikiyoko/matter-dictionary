@@ -439,6 +439,35 @@ function clearDeviceTypeFilter() {
   syncUrl();
 }
 
+// 絞り込み条件を1つだけ解除（チップの✕から呼ばれる）
+function clearFilter(type) {
+  if (type === 'deviceType') {
+    currentDeviceType = 'all';
+    var banner = document.getElementById('dt-filter-banner');
+    if (banner) banner.remove();
+  } else if (type === 'maker') {
+    currentMaker = 'all';
+  } else if (type === 'cat') {
+    currentCat = 'all';
+  } else if (type === 'transport') {
+    currentTransport = 'all';
+    document.querySelectorAll('.tfilter').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-t') === 'all');
+    });
+  } else if (type === 'jp') {
+    currentJapanStatus = 'all';
+    var jpBtn = document.getElementById('jpFilterBtn');
+    if (jpBtn) jpBtn.classList.remove('active');
+  } else if (type === 'q') {
+    searchQuery = '';
+    var searchInput = document.getElementById('searchInput');
+    if (searchInput) searchInput.value = '';
+  }
+  if (typeof refreshSidebarActive === 'function') refreshSidebarActive();
+  renderProducts();
+  syncUrl();
+}
+
 // すべての絞り込みを解除
 function clearAllFilters() {
   currentMaker        = 'all';
@@ -529,25 +558,26 @@ function updateActiveFilterBar() {
     return;
   }
 
-  // タグ生成
+  // タグ生成（各チップがどの条件かを type として持つ）
   var tags = [];
   if (currentDeviceType !== 'all') {
     var dtObj = DEVICE_TYPE_MAP[currentDeviceType];
     var dtName = dtObj ? (currentLang === 'ja' ? (dtObj.nameJa || dtObj.name) : dtObj.name) : currentDeviceType;
-    tags.push(dtName + ' <span style="font-family:\'Space Mono\',monospace;font-size:10px;opacity:.6">' + esc(currentDeviceType) + '</span>');
+    tags.push({ html: dtName + ' <span style="font-family:\'Space Mono\',monospace;font-size:10px;opacity:.6">' + esc(currentDeviceType) + '</span>', type: 'deviceType' });
   }
-  if (currentMaker      !== 'all') tags.push(esc(currentMaker));
+  if (currentMaker      !== 'all') tags.push({ html: esc(currentMaker), type: 'maker' });
   if (currentCat        !== 'all') {
     var catObj = (typeof CATEGORIES !== 'undefined') && CATEGORIES.find(function(c){ return c.id === currentCat; });
-    tags.push(catObj ? esc(catObj.label) : esc(currentCat));
+    tags.push({ html: catObj ? esc(catObj.label) : esc(currentCat), type: 'cat' });
   }
-  if (currentTransport  !== 'all') tags.push(esc(currentTransport));
-  if (currentJapanStatus === 'active')   tags.push('🇯🇵 JP取扱あり');
-  if (currentJapanStatus === 'inactive') tags.push('JP取扱なし');
-  if (searchQuery)                  tags.push('「' + esc(searchQuery) + '」');
+  if (currentTransport  !== 'all') tags.push({ html: esc(currentTransport), type: 'transport' });
+  if (currentJapanStatus === 'active')   tags.push({ html: '🇯🇵 JP取扱あり', type: 'jp' });
+  if (currentJapanStatus === 'inactive') tags.push({ html: 'JP取扱なし', type: 'jp' });
+  if (searchQuery)                  tags.push({ html: '「' + esc(searchQuery) + '」', type: 'q' });
 
   var tagsHtml = tags.map(function(t) {
-    return '<span style="background:var(--accent2);color:#0e0f14;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700">' + t + '</span>';
+    return '<span style="display:inline-flex;align-items:center;gap:6px;background:var(--accent2);color:#0e0f14;border-radius:4px;padding:2px 4px 2px 8px;font-size:11px;font-weight:700">' + t.html
+      + '<button onclick="clearFilter(\'' + t.type + '\')" title="この条件を解除" aria-label="この条件を解除" style="background:rgba(14,15,20,0.18);border:none;border-radius:3px;color:#0e0f14;cursor:pointer;font-size:10px;line-height:1;padding:3px 5px;font-weight:700">✕</button></span>';
   }).join('');
 
   if (!bar) {
@@ -559,7 +589,7 @@ function updateActiveFilterBar() {
   }
   bar.innerHTML = '<span style="color:var(--dim)">絞り込み中:</span>'
     + tagsHtml
-    + '<button onclick="clearAllFilters()" style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-size:11px;padding:3px 10px;white-space:nowrap;">✕ 解除</button>';
+    + '<button onclick="clearAllFilters()" style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:4px;color:var(--dim);cursor:pointer;font-size:11px;padding:3px 10px;white-space:nowrap;">✕ すべて解除</button>';
 }
 
 // ─── Render cards ────────────────────────────────────────────
