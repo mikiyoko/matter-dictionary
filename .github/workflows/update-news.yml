@@ -25,7 +25,7 @@ jobs:
       - name: Node.js をセットアップ
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Notionから更新情報を取得
         run: node scripts/fetch-news.js
