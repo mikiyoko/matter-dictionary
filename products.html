@@ -237,6 +237,12 @@ header {
 }
 .csa-link:hover { background: rgba(91,196,245,0.1); border-color: var(--accent2); }
 
+/* 確証レベル（certStatus）表示 */
+.cert-badge { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; font-family: 'Space Mono', monospace; white-space: nowrap; }
+.cert-badge-oem  { background: rgba(91,196,245,0.12); color: var(--accent2); border: 1px solid rgba(91,196,245,0.3); }
+.cert-badge-self { background: rgba(245,166,35,0.12); color: #f5a623; border: 1px solid rgba(245,166,35,0.3); }
+.cert-note { font-size: 11px; color: var(--muted); line-height: 1.65; }
+
 /* Purchase links */
 .modal-links { display: flex; gap: 7px; flex-wrap: wrap; }
 .modal-plink {
@@ -630,6 +636,14 @@ function renderProducts() {
       jpBadge = '<span class="japan-badge japan-badge-inactive">JP取扱なし</span>';
     }
 
+    // 確証レベルバッジ（verified-csa は既定のため表示しない）
+    var certBadge = '';
+    if (p.certStatus === 'verified-oem') {
+      certBadge = '<span class="cert-badge cert-badge-oem">' + (currentLang === 'en' ? 'OEM cert' : 'OEM認証') + '</span>';
+    } else if (p.certStatus === 'self-declared') {
+      certBadge = '<span class="cert-badge cert-badge-self">' + (currentLang === 'en' ? 'Mfr claim' : 'メーカー公表') + '</span>';
+    }
+
     // Purchase links + CSA link on card
     var linksHtml = '';
     if (p.purchaseLinks && p.purchaseLinks.amazon)   linksHtml += '<a class="plink plink-amazon" href="' + esc(p.purchaseLinks.amazon) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Amazon</a>';
@@ -638,7 +652,7 @@ function renderProducts() {
     if (p.csa && p.csa.pageUrl) linksHtml += '<a class="plink plink-csa" href="' + esc(p.csa.pageUrl) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">CSA</a>';
 
     return '<div class="product-card" data-idx="' + realIdx + '">'
-      + '<div class="card-maker"><span class="maker-badge" style="background:' + col + '">' + esc(p.maker || '?') + '</span>' + jpBadge + '</div>'
+      + '<div class="card-maker"><span class="maker-badge" style="background:' + col + '">' + esc(p.maker || '?') + '</span>' + jpBadge + certBadge + '</div>'
       + '<div><div class="card-name-ja">' + esc(displayName) + '</div>'
       + (subName ? '<div class="card-name-en">' + esc(subName) + '</div>' : '')
       + '</div>'
@@ -716,14 +730,35 @@ function openProductModal(idx) {
       });
   }
 
-  // CSA section
+  // CSA section（certStatus で表示を分岐。certStatus の無い旧データは従来表示のまま）
+  var cs = p.certStatus || '';
+  var csaTitle = currentLang === 'en' ? 'CSA Certification' : 'CSA 認証情報';
   var csaHtml = '';
-  if (p.csa) {
+  if (cs === 'self-declared') {
+    // メーカー公表のみ：認証ブロックの代わりに根拠の説明を出す
+    csaTitle = currentLang === 'en' ? 'Compatibility Source' : '対応情報の根拠';
     csaHtml = '<div class="csa-block">'
+      + '<div class="cert-note">' + (currentLang === 'en'
+          ? 'Based on the manufacturer\'s public information. CSA certification has not been confirmed by this site yet.'
+          : 'メーカー公表情報に基づいています。CSA認証は当サイトではまだ確認できていません。') + '</div>'
+      + (p.checkedAt ? '<div class="csa-row"><span class="csa-label">Checked</span><span class="csa-value">' + esc(p.checkedAt) + '</span></div>' : '')
+      + (p.sourceUrl ? '<a class="csa-link" href="' + esc(p.sourceUrl) + '" target="_blank" rel="noopener">↗ ' + (currentLang === 'en' ? 'Open source page' : '出典ページを開く') + '</a>' : '')
+      + '</div>';
+  } else if (p.csa) {
+    var isOem = (cs === 'verified-oem');
+    if (isOem) csaTitle = currentLang === 'en' ? 'Certification Basis (OEM)' : '認証の根拠（OEM元）';
+    csaHtml = '<div class="csa-block">'
+      + (isOem ? '<div class="cert-note">' + (currentLang === 'en'
+          ? 'This is an OEM / rebranded product. It supports Matter based on the certification below (confirmed by this site).'
+          : 'この製品はOEM/リブランド品です。下記の認証をもとにMatterに対応しています（当サイトの確認による）。') + '</div>' : '')
+      + (isOem && p.csa.certHolder ? '<div class="csa-row"><span class="csa-label">Cert Holder</span><span class="csa-value">' + esc(p.csa.certHolder) + '</span></div>' : '')
       + (p.csa.certificateId ? '<div class="csa-row"><span class="csa-label">Certificate</span><span class="csa-value">' + esc(p.csa.certificateId) + '</span></div>' : '')
       + (p.csa.certifiedAt   ? '<div class="csa-row"><span class="csa-label">Certified</span><span class="csa-value">' + esc(p.csa.certifiedAt) + '</span></div>' : '')
       + (p.csa.matterVersion ? '<div class="csa-row"><span class="csa-label">Matter</span><span class="csa-value">v' + esc(p.csa.matterVersion) + '</span></div>' : '')
-      + (p.csa.pageUrl ? '<a class="csa-link" href="' + esc(p.csa.pageUrl) + '" target="_blank" rel="noopener">↗ CSA認証ページを開く</a>' : '')
+      + (p.checkedAt ? '<div class="csa-row"><span class="csa-label">Checked</span><span class="csa-value">' + esc(p.checkedAt) + '</span></div>' : '')
+      + (p.csa.pageUrl ? '<a class="csa-link" href="' + esc(p.csa.pageUrl) + '" target="_blank" rel="noopener">↗ ' + (isOem
+          ? (currentLang === 'en' ? 'Open the cert holder\'s CSA page' : '認証元のCSAページを開く')
+          : (currentLang === 'en' ? 'Open CSA certification page' : 'CSA認証ページを開く')) + '</a>' : '')
       + '</div>';
   }
 
@@ -760,7 +795,7 @@ function openProductModal(idx) {
       + '</div>'
       : '')
     // CSA
-    + (csaHtml ? '<div class="modal-section"><div class="modal-section-title">CSA 認証情報</div>' + csaHtml + '</div>' : '')
+    + (csaHtml ? '<div class="modal-section"><div class="modal-section-title">' + csaTitle + '</div>' + csaHtml + '</div>' : '')
     // Purchase
     + (purchaseHtml ? '<div class="modal-section"><div class="modal-section-title">' + (currentLang === 'en' ? 'Purchase' : '購入リンク') + '</div><div class="modal-links">' + purchaseHtml + '</div></div>' : '');
 
