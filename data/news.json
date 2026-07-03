@@ -1,15 +1,21 @@
 {
-  "updated": "2026-07-03T04:14:07.304Z",
+  "updated": "2026-07-03T05:24:11.729Z",
   "items": [
     {
+      "type": "機能追加",
       "title": "更新情報を追加",
+      "title_en": "Add Update Information",
       "body": "更新情報をここで見れるようにしました",
+      "body_en": "Made it possible to view update information here.",
       "date": "2026-07-03",
       "url": ""
     },
     {
+      "type": "機能追加",
       "title": "製品追加リクエストフォーム",
+      "title_en": "Product Addition Request Form",
       "body": "製品追加のリクエストができるようになりました",
+      "body_en": "You can now submit product addition requests.",
       "date": "2026-07-02",
       "url": "https://mikiyoko.notion.site/26ae15040c0640d690ddee98bb2cb90a"
     }
