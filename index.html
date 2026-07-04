@@ -722,6 +722,10 @@ document.addEventListener("keydown", function(e) {
   if (e.key === "Escape") closeModal();
 });
 
+// お気に入り状態を初期化（renderDevices/renderClusters が isFav を参照するため、初回renderより前に必要）
+var FAVS = loadFavs();
+var favOnly = false;
+
 // Initial render
 renderDevices();
 renderClusters();
@@ -1113,8 +1117,7 @@ function closeModal() {
 
 // ===== お気に入り（★）機能 =====
 // このブラウザのlocalStorageにのみ保存。サーバーには何も送らない。
-var FAVS = loadFavs();
-var favOnly = false;
+// 状態(FAVS/favOnly)は初回renderより前で初期化済み（上部の Initial render 参照）
 
 function loadFavs() {
   try {
