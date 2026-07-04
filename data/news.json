@@ -1,6 +1,15 @@
 {
-  "updated": "2026-07-03T22:56:59.093Z",
+  "updated": "2026-07-04T07:55:52.989Z",
   "items": [
+    {
+      "type": "機能追加",
+      "title": "マイリスト機能を追加",
+      "title_en": "Add My List Feature",
+      "body": "デバイスタイプやクラスターを星をつけて保存できるようにしました(Local Storageのみ)",
+      "body_en": "Made it possible to save device types and clusters with stars (local storage only).",
+      "date": "2026-07-04",
+      "url": ""
+    },
     {
       "type": "機能追加",
       "title": "更新情報を追加",
