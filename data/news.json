@@ -1,6 +1,15 @@
 {
-  "updated": "2026-07-04T07:55:52.989Z",
+  "updated": "2026-07-04T22:52:07.236Z",
   "items": [
+    {
+      "type": "機能追加",
+      "title": "フィードバックボタンを追加",
+      "title_en": "Add Feedback Button",
+      "body": "感想、要望、バグの報告などができるフォームのボタンを追加しました",
+      "body_en": "A button for a form that lets users submit feedback, requests, and bug reports.",
+      "date": "2026-07-04",
+      "url": "https://mikiyoko.notion.site/39354ebbdc3980ba93eac9d7915839c9?pvs=105"
+    },
     {
       "type": "機能追加",
       "title": "マイリスト機能を追加",
