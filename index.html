@@ -321,6 +321,19 @@ a.news-title:visited { color: var(--accent2); }
 .news-tag.t-notice { background: var(--muted); }
 @media (max-width: 600px) { .news-banner { padding: 10px 16px; } }
 
+/* お気に入り（★）機能 */
+.device-card, .cluster-card { position: relative; }
+.fav-btn { position: absolute; top: 8px; right: 8px; background: none; border: none; font-size: 16px; color: var(--border); cursor: pointer; padding: 2px 4px; line-height: 1; transition: color 0.15s, transform 0.1s; z-index: 2; }
+.fav-btn:hover { color: var(--accent3); transform: scale(1.15); }
+.fav-btn.on { color: var(--accent3); }
+.modal-fav { position: static; font-size: 18px; vertical-align: middle; margin-left: 4px; }
+#mylistBtn { cursor: pointer; font-family: inherit; font-size: 12px; }
+#mylistBtn.on { border-color: var(--accent3); color: var(--accent3); }
+.fav-count { font-family: 'Space Mono', monospace; font-size: 10px; background: var(--accent3); color: #0e0f14; border-radius: 8px; padding: 1px 6px; margin-left: 5px; display: inline-block; }
+.fav-count:empty { display: none; }
+.fav-toast { position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 12px); background: var(--surface2); border: 1px solid var(--accent3); color: var(--text); font-size: 13px; padding: 10px 18px; border-radius: 8px; opacity: 0; transition: all 0.3s; z-index: 1000; box-shadow: 0 6px 24px rgba(0,0,0,0.5); pointer-events: none; }
+.fav-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
 .site-footer { border-top: 1px solid var(--border); padding: 40px 28px; text-align: center; font-size: 13px; color: var(--muted); }
 .footer-inner { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 4px 14px; }
 .footer-sep { color: var(--border); }
@@ -390,6 +403,7 @@ a.news-title:visited { color: var(--accent2); }
         </div>
       </div>
     </div>
+    <button class="guide-btn" id="mylistBtn" onclick="toggleFavOnly()" type="button">★ <span id="mylistBtnLabel">マイリスト</span><span class="fav-count" id="favCount"></span></button>
     <a href="products.html" class="guide-btn" id="productsBtn">📦 <span id="productsBtnLabel">製品DB</span></a>
     <a href="https://github.com/mikiyoko/matter-dictionary/discussions" class="guide-btn" id="feedbackBtn" target="_blank" rel="noopener noreferrer">💬 <span id="feedbackBtnLabel">フィードバック</span></a>
     <div class="header-stat">
@@ -572,6 +586,8 @@ function setLang(lang) {
   // 製品DBボタンのラベル
   var productsLabel = document.getElementById('productsBtnLabel');
   if (productsLabel) productsLabel.textContent = lang === 'en' ? 'Products' : '製品DB';
+  var mylistLabel = document.getElementById('mylistBtnLabel');
+  if (mylistLabel) mylistLabel.textContent = lang === 'en' ? 'My List' : 'マイリスト';
   var feedbackLabel = document.getElementById('feedbackBtnLabel');
   if (feedbackLabel) feedbackLabel.textContent = lang === 'en' ? 'Feedback' : 'フィードバック';
   var newsMore = document.getElementById('newsMoreLink');
@@ -809,6 +825,7 @@ function switchView(view) {
 
 function getFilteredDevices() {
   return DEVICE_TYPES.filter(function(d) {
+    if (favOnly && FAVS.devices.indexOf(d.id) < 0) return false;
     var catOk = currentCat === "all" || d.category === currentCat;
     if (!catOk) return false;
     if (!searchQuery) return true;
@@ -831,7 +848,9 @@ function renderDevices() {
   document.getElementById("secCount").textContent = devices.length + (currentLang === "en" ? " items" : " 件");
 
   if (devices.length === 0) {
-    grid.innerHTML = '<div class="empty"><div class="big">🔍</div><div>該当するデバイスがありません</div></div>';
+    grid.innerHTML = favOnly
+      ? '<div class="empty"><div class="big">★</div><div>' + (currentLang === 'en' ? 'No favorite device types yet. Tap ★ on a card to add.' : 'まだお気に入りのデバイスタイプがありません。カードの★を押すと登録できます。') + '</div></div>'
+      : '<div class="empty"><div class="big">🔍</div><div>該当するデバイスがありません</div></div>';
     return;
   }
 
@@ -851,6 +870,7 @@ function renderDevices() {
       return p ? t(p) : pid;
     }).join(', ') + (currentLang === 'en' ? ' superset</div>' : ' の上位互換</div>') : '';
     return '<div class="device-card" data-id="' + d.id + '">' +
+      '<button class="fav-btn' + (isFav('devices', d.id) ? ' on' : '') + '" data-favtype="devices" data-favid="' + d.id + '" type="button" aria-label="お気に入り">★</button>' +
       '<div class="card-head"><div class="card-icon">' + d.icon + '</div><div>' +
       '<div class="card-name">' + t(d) + '</div>' +
       '<div class="card-id">' + d.name + ' · ' + d.deviceTypeId + '</div></div></div>' +
@@ -870,6 +890,7 @@ function renderDevices() {
 function renderClusters() {
   var q = searchQuery;
   var clusters = CLUSTERS.filter(function(c) {
+    if (favOnly && FAVS.clusters.indexOf(c.id) < 0) return false;
     // カテゴリ絞り込み
     var catOk = currentCat === "all" || (c.categories||[]).indexOf(currentCat) >= 0;
     if (!catOk) return false;
@@ -885,7 +906,9 @@ function renderClusters() {
 
   var grid = document.getElementById("clusterGrid");
   if (clusters.length === 0) {
-    grid.innerHTML = '<div class="empty"><div class="big">🔍</div><div>' + (currentLang === 'en' ? 'No clusters found' : '該当するクラスターがありません') + '</div></div>';
+    grid.innerHTML = favOnly
+      ? '<div class="empty"><div class="big">★</div><div>' + (currentLang === 'en' ? 'No favorite clusters yet. Tap ★ on a card to add.' : 'まだお気に入りのクラスターがありません。カードの★を押すと登録できます。') + '</div></div>'
+      : '<div class="empty"><div class="big">🔍</div><div>' + (currentLang === 'en' ? 'No clusters found' : '該当するクラスターがありません') + '</div></div>';
     return;
   }
 
@@ -894,6 +917,7 @@ function renderClusters() {
       return (d.req||[]).indexOf(c.id) >= 0 || (d.opt||[]).indexOf(c.id) >= 0;
     }).slice(0,3);
     return '<div class="cluster-card" data-id="' + c.id + '">' +
+      '<button class="fav-btn' + (isFav('clusters', c.id) ? ' on' : '') + '" data-favtype="clusters" data-favid="' + c.id + '" type="button" aria-label="お気に入り">★</button>' +
       '<div class="cluster-card-id">' + c.clusterId + '</div>' +
       '<div class="cluster-card-name">' + t(c) + '</div>' +
       '<div class="cluster-card-desc">' + c.description + '</div>' +
@@ -991,7 +1015,7 @@ function openDeviceModal(deviceId) {
 
   document.getElementById("modalBody").innerHTML =
     '<div class="modal-icon">' + d.icon + '</div>' +
-    '<div class="modal-title">' + t(d) + '</div>' +
+    '<div class="modal-title">' + t(d) + ' <button class="fav-btn modal-fav' + (isFav('devices', d.id) ? ' on' : '') + '" data-favtype="devices" data-favid="' + d.id + '" type="button" aria-label="お気に入り">★</button></div>' +
     '<div class="modal-id">' + d.name + ' · Device Type ID: ' + d.deviceTypeId + '</div>' +
     '<div class="modal-desc">' + d.description + '</div>' +
     chainHtml +
@@ -1043,7 +1067,7 @@ function openClusterModal(clusterId) {
   document.getElementById("modalBody").innerHTML =
     '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">' +
       '<span style="font-size:38px">🔧</span>' +
-      '<div><div class="modal-title">' + t(cl) + '</div>' +
+      '<div><div class="modal-title">' + t(cl) + ' <button class="fav-btn modal-fav' + (isFav('clusters', cl.id) ? ' on' : '') + '" data-favtype="clusters" data-favid="' + cl.id + '" type="button" aria-label="お気に入り">★</button></div>' +
       '<div class="modal-id">' + cl.name + ' · Cluster ID: ' + cl.clusterId + '</div></div>' +
     '</div>' +
     '<div class="modal-desc">' + cl.description + '</div>' +
@@ -1086,6 +1110,90 @@ function closeModal() {
     window.history.replaceState({}, '', window.location.pathname);
   }
 }
+
+// ===== お気に入り（★）機能 =====
+// このブラウザのlocalStorageにのみ保存。サーバーには何も送らない。
+var FAVS = loadFavs();
+var favOnly = false;
+
+function loadFavs() {
+  try {
+    var f = JSON.parse(localStorage.getItem('matter-dict-favs'));
+    if (f && Array.isArray(f.devices) && Array.isArray(f.clusters)) return f;
+  } catch (e) {}
+  return { devices: [], clusters: [] };
+}
+
+function saveFavs() {
+  localStorage.setItem('matter-dict-favs', JSON.stringify(FAVS));
+}
+
+function isFav(type, id) {
+  return FAVS[type] && FAVS[type].indexOf(id) >= 0;
+}
+
+function toggleFav(type, id) {
+  if (!FAVS[type]) return;
+  var i = FAVS[type].indexOf(id);
+  if (i >= 0) {
+    FAVS[type].splice(i, 1);
+  } else {
+    FAVS[type].push(id);
+    maybeShowFavNotice();
+  }
+  saveFavs();
+  document.querySelectorAll('.fav-btn[data-favtype="' + type + '"][data-favid="' + id + '"]').forEach(function (b) {
+    b.classList.toggle('on', isFav(type, id));
+  });
+  updateFavCount();
+  if (favOnly) { renderDevices(); renderClusters(); }
+}
+
+function updateFavCount() {
+  var n = FAVS.devices.length + FAVS.clusters.length;
+  var el = document.getElementById('favCount');
+  if (el) el.textContent = n > 0 ? String(n) : '';
+}
+
+function toggleFavOnly() {
+  favOnly = !favOnly;
+  var btn = document.getElementById('mylistBtn');
+  if (btn) btn.classList.toggle('on', favOnly);
+  renderDevices();
+  renderClusters();
+}
+
+function maybeShowFavNotice() {
+  if (localStorage.getItem('matter-dict-fav-notice')) return;
+  localStorage.setItem('matter-dict-fav-notice', '1');
+  var toast = document.createElement('div');
+  toast.className = 'fav-toast';
+  toast.textContent = currentLang === 'en'
+    ? '★ Favorites are saved only in this browser.'
+    : '★ お気に入りはこのブラウザにのみ保存されます';
+  document.body.appendChild(toast);
+  setTimeout(function () { toast.classList.add('show'); }, 30);
+  setTimeout(function () {
+    toast.classList.remove('show');
+    setTimeout(function () { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 400);
+  }, 4200);
+}
+
+// ★クリックはcapture段階で受けて、カードのモーダル遷移より先に処理する
+document.addEventListener('click', function (e) {
+  var el = e.target;
+  while (el && el !== document) {
+    if (el.classList && el.classList.contains('fav-btn')) {
+      e.stopPropagation();
+      e.preventDefault();
+      toggleFav(el.getAttribute('data-favtype'), el.getAttribute('data-favid'));
+      return;
+    }
+    el = el.parentNode;
+  }
+}, true);
+
+updateFavCount();
 
 // 初期言語をlocalStorageから復元
 (function() {
