@@ -1,46 +1,50 @@
 # .github/workflows/update-news.yml
 # NotionのUpdateデータベースから更新情報を取得して data/news.json を更新するワークフロー。
-# news.json に変更があれば自動でコミットし、既存のデプロイ（deploy.yml）が動いてサイトに反映されます。
+# news.json に変更があれば自動でコミットし、続けて「Deploy to GitHub Pages」を起動して
+# 公開サイトへ反映する。
 #
 # 実行タイミング:
 #   - 手動: GitHubの「Actions」タブ → 「Update news from Notion」→「Run workflow」ボタン
 #   - 自動: 毎朝7時（日本時間）
-
 name: Update news from Notion
-
 on:
   workflow_dispatch:        # 手動実行ボタン
   schedule:
     - cron: "0 22 * * *"    # UTC 22:00 = 日本時間 朝7:00
-
 jobs:
   update-news:
     runs-on: ubuntu-latest
     permissions:
       contents: write       # news.json をコミットするための権限
+      actions: write        # デプロイ（配達係）を起動するための権限 ★今回追加
     steps:
       - name: リポジトリを取得
         uses: actions/checkout@v4
-
       - name: Node.js をセットアップ
         uses: actions/setup-node@v4
         with:
           node-version: 24
-
       - name: Notionから更新情報を取得
         run: node scripts/fetch-news.js
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
-
       - name: 変更があればコミット
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/news.json
           if git diff --cached --quiet; then
             echo "変更なし（news.jsonは最新です）"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "chore: NotionからNews更新"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: 変更があればサイトを再デプロイ（配達係を呼ぶ）★今回追加
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy.yml
