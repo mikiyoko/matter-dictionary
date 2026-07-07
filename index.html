@@ -357,7 +357,7 @@ a.news-title:visited { color: var(--accent2); }
     <span class="logo-badge">Matter 1.6</span>
     <div>
       <div class="logo-title" id="logoTitle">⚡ Matter辞書</div>
-      <div class="logo-sub">by ライフテックコーディネーター 織田未来</div>
+      <div class="logo-sub" id="logoSub">by ライフテックコーディネーター 織田未来</div>
     </div>
   </div>
   <div class="header-right">
@@ -586,6 +586,8 @@ function setLang(lang) {
   // 製品DBボタンのラベル
   var productsLabel = document.getElementById('productsBtnLabel');
   if (productsLabel) productsLabel.textContent = lang === 'en' ? 'Products' : '製品DB';
+  var logoSub = document.getElementById('logoSub');
+  if (logoSub) logoSub.textContent = lang === 'en' ? 'by Life-Tech Coordinator Miki Oda' : 'by ライフテックコーディネーター 織田未来';
   var mylistLabel = document.getElementById('mylistBtnLabel');
   if (mylistLabel) mylistLabel.textContent = lang === 'en' ? 'My List' : 'マイリスト';
   var feedbackLabel = document.getElementById('feedbackBtnLabel');
