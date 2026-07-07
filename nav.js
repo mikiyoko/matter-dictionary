@@ -89,7 +89,7 @@
     .snav-logo-icon {
       width: 32px;
       height: 32px;
-      background: #059669;
+      background: transparent;
       border-radius: 8px;
       display: flex;
       align-items: center;
@@ -334,7 +334,7 @@
     const html = [
       '<div class="snav-inner">',
       '  <a class="snav-logo" href="index.html">',
-      '    <div class="snav-logo-icon">M</div>',
+      '    <div class="snav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="32" height="32" role="img" aria-label="Matter辞書"><rect x="0.75" y="0.75" width="46.5" height="46.5" rx="11" fill="#14161d" stroke="#2a2d38" stroke-width="1.5"/><path transform="translate(12.9529,12.0000) scale(0.027143,-0.027143) translate(-70,-700)" d="M70 0V700H233L479 295L719 700H882L884 0H702L700 371L520 69H432L253 361V0Z" fill="#e8eaf0"/><rect x="13" y="35" width="16" height="3.6" rx="1.8" fill="#7ee8a2"/><circle cx="33" cy="36.8" r="2.5" fill="#5bc4f5"/></svg></div>',
       '    <span class="snav-logo-text">Matter辞書</span>',
       '  </a>',
       '  <div class="snav-right">',
