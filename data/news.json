@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-06T23:00:53.895Z",
+  "updated": "2026-07-07T03:22:41.844Z",
   "items": [
     {
       "type": "機能追加",
@@ -8,7 +8,7 @@
       "body": "感想、要望、バグの報告などができるフォームのボタンを追加しました",
       "body_en": "A button for a form that lets users submit feedback, requests, and bug reports.",
       "date": "2026-07-04",
-      "url": "https://mikiyoko.notion.site/39354ebbdc3980ba93eac9d7915839c9?pvs=105"
+      "url": ""
     },
     {
       "type": "機能追加",
@@ -32,10 +32,10 @@
       "type": "機能追加",
       "title": "製品追加リクエストフォーム",
       "title_en": "Product Addition Request Form",
-      "body": "製品追加のリクエストができるようになりました",
-      "body_en": "You can now submit product addition requests.",
+      "body": "製品追加のリクエストが製品DBからできるようになりました",
+      "body_en": "Requests for product additions can now be made from the product database.",
       "date": "2026-07-02",
-      "url": "https://mikiyoko.notion.site/26ae15040c0640d690ddee98bb2cb90a"
+      "url": ""
     }
   ]
 }
