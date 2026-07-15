@@ -510,7 +510,14 @@ Promise.all([
   // 製品データはバックグラウンド取得（モーダル表示に使用）
   fetch('https://smart-home-recipe.vercel.app/api/products')
     .then(function(r){ return r.json(); })
-    .then(function(data){ window.ALL_PRODUCTS = data; })
+    .then(function(data){
+      window.ALL_PRODUCTS = data;
+      // ?dt= 直行などで製品データ到着前にデバイスモーダルを開いていた場合、
+      // 対応製品セクションが空のままなので、開いていれば描画し直す。
+      if (currentOpenDeviceId && document.getElementById("overlay").classList.contains("open")) {
+        window.openDeviceModal(currentOpenDeviceId);
+      }
+    })
     .catch(function(){});
 }).catch(function(e) {
   console.error('データ読み込みエラー:', e);
@@ -526,6 +533,8 @@ var currentCat = "all";
 var currentView = "devices";
 var searchQuery = "";
 var openClusterRowId = null;
+// 現在開いているデバイスタイプモーダルのID（製品データ後着時の再描画に使う。デバイス以外を開いている時は null）
+var currentOpenDeviceId = null;
 
 function toggleLearnMenu(e) {
   e.stopPropagation();
@@ -961,6 +970,7 @@ function openDeviceModal(deviceId) {
   var d = DEVICE_TYPES.find(function(x){ return x.id === deviceId; });
   if (!d) return;
   openClusterRowId = null;
+  currentOpenDeviceId = deviceId;
 
   var chain = buildChain(d);
   var chainHtml = '';
@@ -1066,6 +1076,7 @@ function openDeviceModal(deviceId) {
 function openClusterModal(clusterId) {
   var cl = CLUSTERS.find(function(c){ return c.id === clusterId; });
   if (!cl) return;
+  currentOpenDeviceId = null;
 
   var usedIn = DEVICE_TYPES.filter(function(d) {
     return (d.req||[]).indexOf(cl.id) >= 0 || (d.opt||[]).indexOf(cl.id) >= 0;
@@ -1118,6 +1129,7 @@ function buildClusterDetailHtml(cl) {
 
 function closeModal() {
   document.getElementById("overlay").classList.remove("open");
+  currentOpenDeviceId = null;
   if (window.location.search) {
     window.history.replaceState({}, '', window.location.pathname);
   }
