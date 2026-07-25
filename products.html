@@ -204,6 +204,18 @@ header {
 .dt-row-id { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent2); margin-left: auto; flex-shrink: 0; }
 .dt-row-arrow { font-size: 11px; color: var(--dim); flex-shrink: 0; transition: color 0.15s; }
 .dt-row-link:hover .dt-row-arrow { color: var(--accent); }
+/* ハブ製品の「本体内蔵」／「ブリッジ経由」の区別 */
+.dt-origin {
+  font-size: 10px; padding: 2px 6px; border-radius: 4px; flex-shrink: 0;
+  font-family: 'Space Mono', monospace; white-space: nowrap;
+}
+.dt-origin-builtin { background: rgba(126,232,162,0.12); color: var(--accent); border: 1px solid rgba(126,232,162,0.25); }
+.dt-origin-bridged { background: rgba(255,255,255,0.05); color: var(--dim); border: 1px solid var(--border); }
+.dt-origin-note {
+  font-size: 11px; color: var(--dim); line-height: 1.6;
+  margin: 6px 0 0; padding: 8px 10px; background: var(--surface2);
+  border-radius: 6px; border: 1px solid var(--border);
+}
 
 /* Cluster chips */
 .cluster-section-grid { display: flex; flex-direction: column; gap: 5px; }
@@ -690,6 +702,19 @@ function openProductModal(idx) {
 
   // Device types section
   var dtIds = p.allDeviceTypeIds && p.allDeviceTypeIds.length ? p.allDeviceTypeIds : [p.primaryDeviceTypeId];
+
+  // ハブ／ブリッジでは、認証のデバイスタイプに「本体内蔵の機能」と
+  // 「ブリッジ先の子機の機能」が混在する。両者は認証データからは区別できないため、
+  // メーカー公式仕様で内蔵を確認した builtInDeviceTypeIds がある製品でのみ区別を表示する。
+  var primaryNorm = String(p.primaryDeviceTypeId || '').toLowerCase().replace('0x', '');
+  var isHub = primaryNorm === '' || primaryNorm === '000e';
+  var builtIn = p.builtInDeviceTypeIds;          // undefined = 未確認 / [] = 内蔵なし確認済み
+  var showOrigin = isHub && Array.isArray(builtIn);
+  var builtInSet = {};
+  (builtIn || []).forEach(function(id) {
+    builtInSet[String(id).toLowerCase().replace('0x', '')] = true;
+  });
+
   var dtRowsHtml = dtIds.map(function(id) {
     var dt = DEVICE_TYPE_MAP[id];
     var icon = dt ? dt.icon : '📦';
@@ -702,10 +727,22 @@ function openProductModal(idx) {
       + '<div style="flex:1"><div class="dt-row-name">' + esc(nameJ) + '</div>'
       + (nameJ !== nameE ? '<div class="dt-row-en">' + esc(nameE) + '</div>' : '')
       + '</div>'
+      + (showOrigin && String(id).toLowerCase().replace('0x', '') !== '000e'
+             && String(id).toLowerCase().replace('0x', '') !== primaryNorm
+          ? (builtInSet[String(id).toLowerCase().replace('0x', '')]
+              ? '<span class="dt-origin dt-origin-builtin">本体内蔵</span>'
+              : '<span class="dt-origin dt-origin-bridged">ブリッジ経由</span>')
+          : '')
       + '<span class="dt-row-id">' + esc(id) + '</span>'
       + '<span class="dt-row-arrow">↗</span>'
       + '</a>';
   }).join('');
+  if (showOrigin) {
+    dtRowsHtml += '<p class="dt-origin-note">'
+      + 'この製品はハブ／ブリッジです。<strong>本体内蔵</strong>はメーカー公式仕様で本体に搭載を確認できた機能、'
+      + '<strong>ブリッジ経由</strong>は認証時に接続していた子機の機能です（子機は別売の場合があります）。'
+      + '</p>';
+  }
 
   // Clusters section
   var clusters = p.supportedClusters || [];
