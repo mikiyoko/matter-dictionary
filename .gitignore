@@ -1,0 +1,6 @@
+# 決定ログはローカル限定（本リポはPublic）
+# 同じ方針で recipe-site/decisions.md・_shared/ も git 管理外
+decisions.md
+
+# macOS
+.DS_Store
