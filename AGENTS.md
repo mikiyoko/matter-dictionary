@@ -13,12 +13,12 @@
 - **ミッション**: Matter仕様（CSA公式）に基づくデバイスタイプ・クラスター・用語集の日本語リファレンスを提供する
 - **想定読者**: スマートホームに興味を持つエンジニアや詳しいユーザー（技術向けコンテンツ）
 - **オーナー**: 織田未来（Miki Oda）、ライフテックコーディネーター
-- **関連サービス**: [スマートホームレシピサイト](https://smart-home-recipe.vercel.app/)（生活者向けの本体サービス）
+- **関連サービス**: [くらしあわせ（スマートホームレシピサイト）](https://smart-home-recipe.vercel.app/)（生活者向けの本体サービス）
 
 ### 2サービスの位置づけ
 
 ```
-Matter辞書（matter-dictionary）    スマートホームレシピサイト（recipe-site）
+Matter辞書（matter-dictionary）    くらしあわせ（recipe-site）
   ↓ 技術仕様の参照                    ↓ 生活者向けの本体サービス
   エンジニア・詳しいユーザー向け          一般ユーザー向け
   GitHub Pages（静的HTML）             Vercel（Next.js）
@@ -43,11 +43,13 @@ matter-dictionary/
 ├── nav.js                  ← 共通ナビゲーション
 ├── translations-*.js       ← 各ページの日英翻訳データ
 └── data/
-    ├── clusters.json       ← ★ クラスターデータ（132件、Matter仕様）
-    ├── deviceTypes.json    ← ★ デバイスタイプデータ（92件、Matter仕様）
-    ├── glossary.json       ← ★ Matter用語集（36件）
+    ├── clusters.json       ← ★ クラスターデータ（Matter仕様）
+    ├── deviceTypes.json    ← ★ デバイスタイプデータ（Matter仕様）
+    ├── glossary.json       ← ★ Matter用語集
     └── products.js         ← 空テンプレート（製品データはrecipe-siteが管理）
 ```
+
+件数は本文に書かない（古くなるため）。数えるときは `python3 -c "import json;print(len(json.load(open('data/clusters.json'))))"` のようにその場で数える。
 
 **技術スタック:**
 - 純粋なHTML / CSS / JavaScript（フレームワークなし）
@@ -208,7 +210,7 @@ matter-dictionary/
 - about.html の「更新履歴」セクション（id="changelog"）に新バージョンを追記（JA・EN両方）
 - guide.html「Matterって何？」のバージョン記述（最新版の公開時期）→ 本文＋ translations-guide.js のキー＆英訳を揃えて更新
 
-6. ユーザーに確認 → GitHubにpush → GitHub Pagesに自動反映（法6: 確認なくpush禁止）
+6. ユーザーに確認 → GitHubにpush → GitHub Pagesに自動反映（§6: 確認なくpush禁止。描画に触れたら法6のローカル実描画確認も先に）
 
 ### 製品データを更新したいとき
 
