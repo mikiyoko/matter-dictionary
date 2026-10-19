@@ -759,7 +759,7 @@ function openProductModal(idx) {
         return '<a class="cluster-item" href="index.html?cluster=' + esc(c.id) + '" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">'
           + '<span class="cluster-abbr">' + esc(c.picsAbbr || c.id.slice(0,4).toUpperCase()) + '</span>'
           + '<span class="cluster-name">' + esc(c.name) + '</span>'
-          + '<span class="cluster-role">' + esc(c.role || '') + '</span>'
+          + '<span class="cluster-role">' + esc((c.roles && c.roles.length ? c.roles : [c.role || '']).join(' / ')) + '</span>'
           + '<span class="cluster-arrow">↗</span>'
           + '</a>';
       }).join('');
