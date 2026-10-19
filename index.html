@@ -759,6 +759,7 @@ toggleBtn.addEventListener("click", function() {
   if (isMobile()) {
     // スマホ：上下に開閉
     sidebarEl.classList.toggle("mobile-open");
+    if (!sidebarEl.classList.contains("mobile-open")) sidebarEl.scrollTop = 0;
     toggleBtn.textContent = sidebarEl.classList.contains("mobile-open") ? "▲ カテゴリを閉じる" : "▼ カテゴリで絞り込む";
   } else {
     // PC：左右に折りたたみ
@@ -775,6 +776,8 @@ selectCategory = function(catId) {
   origSelectCategory(catId);
   if (isMobile() && sidebarEl.classList.contains("mobile-open")) {
     sidebarEl.classList.remove("mobile-open");
+    // 一覧の下の方を選んだとき、スクロール位置が残るとトグルボタンが枠の外に隠れて押せなくなる
+    sidebarEl.scrollTop = 0;
     toggleBtn.textContent = currentLang === "en" ? "▼ Filter by category" : "▼ カテゴリで絞り込む";
   }
 };
@@ -787,6 +790,7 @@ if (isMobile()) {
 window.addEventListener("resize", function() {
   if (!isMobile()) {
     sidebarEl.classList.remove("mobile-open");
+    sidebarEl.scrollTop = 0;
     if (!sidebarEl.classList.contains("collapsed")) {
       toggleBtn.textContent = "◀";
     }
