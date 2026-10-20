@@ -1,6 +1,15 @@
 {
-  "updated": "2026-10-18T23:50:22.738Z",
+  "updated": "2026-10-20T00:51:48.287Z",
   "items": [
+    {
+      "type": "お知らせ",
+      "title": "IFA2026レポート",
+      "title_en": "IFA2026 Report Distribution",
+      "body": "スマートホームに関するレポートを配信しております",
+      "body_en": "We are distributing a report on smart homes.",
+      "date": "2026-10-19",
+      "url": "https://note.com/mikiyoko/n/n655d40cf2f22"
+    },
     {
       "type": "機能追加",
       "title": "フィードバックボタンを追加",
