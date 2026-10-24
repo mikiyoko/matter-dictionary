@@ -235,6 +235,7 @@ header {
 }
 .cluster-name { font-size: 12px; font-weight: 600; flex: 1; }
 .cluster-role { font-size: 10px; color: var(--dim); font-family: 'Space Mono', monospace; }
+.cluster-note { margin-top: 8px; font-size: 11px; line-height: 1.6; color: var(--dim); }
 .cluster-cat { font-size: 10px; padding: 1px 6px; border-radius: 3px; border: 1px solid var(--border); color: var(--dim); font-family: 'Space Mono', monospace; }
 
 /* CSA cert section */
@@ -836,6 +837,9 @@ function openProductModal(idx) {
       ? '<div class="modal-section">'
       +   '<div class="modal-section-title">' + (currentLang === 'en' ? 'Supported Clusters (' + clusters.length + ')' : 'サポートクラスター（' + clusters.length + '件）') + '</div>'
       +   clusterHtml
+      +   '<p class="cluster-note">' + (currentLang === 'en'
+            ? 'Based on the PICS submitted for certification testing. It shows what was tested and may differ from how the manufacturer describes the product\'s features.'
+            : '認証試験に提出された PICS（実装の申告）にもとづく、試験した内容です。メーカーの製品説明とは異なる場合があります。') + '</p>'
       + '</div>'
       : '')
     // CSA
