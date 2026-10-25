@@ -125,5 +125,5 @@ window.PAGE_TRANSLATIONS = {
   '← Matterとは？に戻る': '← Back to What is Matter?',
   '辞書トップへ': 'Dictionary Top',
   'Matter辞書 | by ライフテックコーディネーター 織田未来 |': 'Matter Dictionary | by Life Tech Coordinator Oda Miki |',
-  '本ページはMatter Specification v1.5（CSA）を参考に、一般ユーザー向けに解説したものです。': 'This page is based on Matter Specification v1.5 (CSA), written for general audiences.',
+  '本ページはMatter Specification v1.6（CSA）を参考に、一般ユーザー向けに解説したものです。': 'This page is based on Matter Specification v1.6 (CSA), written for general audiences.',
 };
