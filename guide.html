@@ -696,7 +696,7 @@ Tag 4: Closure Covering→ <span class="c-purple">Blind</span>           <span c
 
             <h4>実例（DCLは公開データ）</h4>
             <ul>
-              <li><strong>LG（Custom Flow＝0）</strong>
+              <li><strong>LG（Custom Flow＝0）</strong><br>Custom Flow＝0の機器でも、電源を入れてから時間が経って登録待ちが終わったときの戻し方がDCLに載っています。LGの例はその手順です。
                 <blockquote>Press the reset button on the product to enter the commissioning standby state. The LED will blink green.</blockquote>
               </li>
               <li><strong>Aqara Hub M2（Custom Flow＝2）</strong>：Aqara Homeアプリでログイン → ハブと子機をホームに追加 → 「Bind to Matter」で登録モードに → MatterのQRコードを読む</li>
@@ -799,7 +799,7 @@ Tag 4: Closure Covering→ <span class="c-purple">Blind</span>           <span c
 
             <h4>Examples (the DCL is public data)</h4>
             <ul>
-              <li><strong>LG (Custom Flow = 0)</strong>
+              <li><strong>LG (Custom Flow = 0)</strong><br>Even for Custom Flow 0 devices, the DCL lists how to return to commissioning mode once the device has stopped waiting some time after power-on. The LG example is that procedure.
                 <blockquote>Press the reset button on the product to enter the commissioning standby state. The LED will blink green.</blockquote>
               </li>
               <li><strong>Aqara Hub M2 (Custom Flow = 2)</strong>: Log in to the Aqara Home app → add the hub and its sub-devices to a home → enter pairing mode with "Bind to Matter" → scan the Matter QR code</li>
@@ -919,7 +919,7 @@ Tag 4: Closure Covering→ <span class="c-purple">Blind</span>           <span c
     </div>
 
     <div class="info-box" style="margin-top:14px;">
-      <strong>🆕 マルチアドミンとマルチファブリックの違い：</strong>ほぼ同じ機能を指す言葉です。「マルチアドミン」は「複数の管理者に開放する」操作視点、「マルチファブリック」は「複数のFabricに登録できる」構造視点の呼び分けです。Matter 1.4からは「Joint Fabric Administrator」という仕組みで複数エコシステムがより深く協調できるようになりました。
+      <strong>🆕 マルチアドミンとマルチファブリックの違い：</strong>ほぼ同じ機能を指す言葉です。「マルチアドミン」は「複数の管理者に開放する」操作視点、「マルチファブリック」は「複数のFabricに登録できる」構造視点の呼び分けです。Matter 1.4では、Fabricは別々のまま、複数のエコシステムへの共有を自動化する「Enhanced Multi-Admin」が入りました。1.6では、それとは別の方式として「Joint Fabric」が正式に加わり、複数のエコシステムが1つのFabricを共同で管理できるようになりました。Joint Fabricへの参加は、機器のFabricの枠を1つしか使いません。各社のアプリが対応しているかは、まだ確認できていません。
     </div>
 
     <div class="card" style="margin-top:18px;">
