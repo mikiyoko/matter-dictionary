@@ -61,6 +61,24 @@
     .highlight-orange { background: var(--orange-light); border-left: 4px solid var(--orange); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: #92400e; }
     .highlight-red { background: var(--red-light); border-left: 4px solid var(--red); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: #991b1b; }
 
+    /* たたむ（Advanced）：生活者向け本文の下に、仕組みや表をしまう */
+    .adv { margin-top: 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--gray-50); }
+    .adv > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px; padding: 13px 18px; font-size: 14px; font-weight: 700; color: var(--gray-800); }
+    .adv > summary::-webkit-details-marker { display: none; }
+    .adv > summary::after { content: '＋'; margin-left: auto; color: var(--primary); }
+    .adv[open] > summary::after { content: '－'; }
+    .adv > summary:hover { color: var(--primary); }
+    .adv-tag { flex-shrink: 0; font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; color: var(--primary-dark); background: var(--primary-light); border-radius: 999px; padding: 2px 9px; }
+    .adv-body { padding: 0 18px 18px; font-size: 13px; line-height: 1.75; color: var(--gray-700); }
+    .adv-body h4 { font-size: 14px; color: var(--gray-800); margin: 18px 0 6px; }
+    .adv-body p { font-size: 13px; margin-bottom: 10px; }
+    .adv-body ol, .adv-body ul { padding-left: 20px; margin-bottom: 10px; }
+    .adv-body .table-wrap { overflow-x: auto; margin: 10px 0; }
+    .adv-body table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: none; border: 1px solid var(--border); }
+    .adv-body th, .adv-body td { padding: 9px 12px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+    .adv-body th { background: var(--gray-100); font-size: 12px; text-transform: none; letter-spacing: 0; }
+    .adv-body code { font-family: 'Inter', monospace; font-size: 12px; background: var(--gray-100); padding: 1px 5px; border-radius: 3px; word-break: break-all; }
+    .adv-body blockquote { margin: 6px 0 10px; padding: 8px 12px; border-left: 3px solid var(--gray-300); background: #fff; font-size: 12px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
     @media (max-width: 600px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
@@ -232,6 +250,7 @@
       <li><a href="#semantic-tag">セマンティックタグとは？</a></li>
       <li><a href="#network">通信の仕組み</a></li>
       <li><a href="#roles">3つの役割：コントローラー・ブリッジ・ボーダールーター</a></li>
+      <li><a href="#onboarding-code">登録コードの中身と、登録の手順</a></li>
       <li><a href="#multi-admin">マルチアドミンとFabric登録の上限</a></li>
       <li><a href="#faq">よくある質問</a></li>
     </ol>
@@ -602,9 +621,222 @@ Tag 4: Closure Covering→ <span class="c-purple">Blind</span>           <span c
     <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
+  <!-- ===== ONBOARDING CODE ===== -->
+  <section id="onboarding-code" class="fade-in">
+    <div class="section-label">🔢 10 — ONBOARDING CODE</div>
+    <h2 data-ja="登録コードの中身と、登録の手順" data-en="What's in the Setup Code, and How Setup Works">登録コードの中身と、登録の手順</h2>
+
+    <div class="ja-only">
+      <p>箱に付いている登録コードは、手で打つ数字（11桁または21桁）、QRコード、NFCタグの3種類です。中身はどれも同じ「登録に必要な情報のかたまり」で、違うのは<strong>詰め込める量</strong>。QRコードとNFCタグには全部が入り、11桁には最小限だけが入ります。</p>
+      <div class="highlight">💡 QRコードを読むと、アプリは機器を探す手がかりを、数字のコードより多く受け取れます。</div>
+
+      <details class="adv">
+        <summary><span class="adv-tag">ADVANCED</span>登録コードの4つの形と、入っている情報</summary>
+        <div class="adv-body">
+          <div class="table-wrap"><table>
+            <thead><tr><th></th><th>11桁</th><th>21桁</th><th>QR／NFC</th></tr></thead>
+            <tbody>
+              <tr><td>パスコード（8桁の合言葉）</td><td>○</td><td>○</td><td>○</td></tr>
+              <tr><td>Discriminator（機器を見分ける番号）</td><td>一部（12bit中4bit）</td><td>一部（4bit）</td><td>全部（12bit）</td></tr>
+              <tr><td>メーカーID・製品ID</td><td>✕</td><td>○</td><td>○</td></tr>
+              <tr><td>登録方法の種類（Custom Flow）</td><td>✕</td><td>✕（21桁であること自体が合図）</td><td>○</td></tr>
+              <tr><td>どの方法で見つかるか（BLE・Thread・NFCなど）</td><td>✕</td><td>✕</td><td>○</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>頭の1桁で、11桁か21桁か分かる</h4>
+          <p>数字のコードの1桁目が<strong>0〜3なら11桁、4〜7なら21桁</strong>です。8と9は、将来の形式のために空けてあります。最後の1桁はチェック用の数字（Verhoeffという方式）で、打ち間違いにアプリがその場で気づける仕組みがあります。</p>
+
+          <h4>QRコードの中身</h4>
+          <p>QRコードを読むと、<code>MT:</code>で始まる文字列が出てきます。<code>MT:</code>の後ろは数字と英大文字の並び（Base38という詰め方）で、上の表の「QR／NFC」の列の情報がすべて入っています。</p>
+          <ul>
+            <li>形式の版</li>
+            <li>メーカーID・製品ID</li>
+            <li>登録方法の種類（Custom Flow）</li>
+            <li>見つかり方（BLE・家のネットワーク・Wi-Fi・NFC・Thread）</li>
+            <li>Discriminator</li>
+            <li>パスコード</li>
+            <li>追加情報（任意）</li>
+          </ul>
+
+          <h4>NFCタグの中身</h4>
+          <p>NFCタグに入っているのは、<strong>QRコードと同じ<code>MT:</code>の文字列</strong>です。スマホをかざすと、QRコードを読んだのと同じ情報が渡ります。タグはNFCの標準形式（NDEFのURIレコード）で書かれていて、1件のURIレコードに、省略なしで<code>MT:</code>から始まる文字列がそのまま入っています。</p>
+          <p>なお、NFCには2つの使い方があり、別物です。</p>
+          <ul>
+            <li><strong>NFCタグ</strong> … 登録コードを読み取るだけ（QRコードの代わり）</li>
+            <li><strong>NFC Transport Layer（NTL）</strong> … 登録の通信そのものをNFCで行う仕組み。タグの読み取りには使いません。NTLに対応する機器は、スマホ側がNFCでの登録に対応していなくても登録できるよう、QRコードとNFCタグの両方を備え、BLEなど別の登録手段も持つ決まりです。</li>
+          </ul>
+
+          <h4>Discriminator（機器を見分ける番号）</h4>
+          <p>登録を待っている機器が何台かあるとき、どれがどれかを見分ける12bitの番号です。メーカーは、全製品で同じ値を使ってはいけません。何個かセットで売る機器には、連番で振ることが推奨されています。</p>
+        </div>
+      </details>
+
+      <h3 style="margin-top:28px;">21桁は「登録の前に一手間ある」サイン</h3>
+      <p>21桁のコードを持つ機器は、登録の前に何か手順があります。ボタンを押すだけのこともあれば、メーカーのアプリで先に準備が要ることもあります。<strong>どちらなのかは、21桁からは読めません。</strong>アプリがメーカーIDと製品IDを使って、CSAの公開台帳（DCL）に手順を問い合わせる仕組みになっています。</p>
+
+      <div class="card" style="margin-top:18px;">
+        <h3 style="font-size:15px; margin-bottom:12px;">登録の手順は、CSAの公開台帳（DCL）に載っている</h3>
+        <p style="font-size:13px;">機器ごとに「登録方法の種類（Custom Flow）」が決まっています。</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>値</th><th>意味</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>電源を入れるだけ</td></tr>
+            <tr><td>1</td><td>ボタンを押すなど、機器の操作が要る</td></tr>
+            <tr><td>2</td><td>メーカーのアプリなど、追加の手順が要る</td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:13px; margin-bottom:0;">具体的な手順は、DCLに登録されています。Matterの仕様も、手順はDCLで確かめるように定めています。</p>
+
+        <details class="adv">
+          <summary><span class="adv-tag">ADVANCED</span>DCLに載っている登録手順と、数字で見るCustom Flow</summary>
+          <div class="adv-body">
+            <h4>DCLが持っている欄</h4>
+            <p>Custom Flow／手順の「型」（電源の入れ直し・リセットボタンの長押しなどを番号で指定）／手順の文章／案内先のURL／取扱説明書・サポートのURL。手順の「型」を番号で持っているので、各社のアプリは自分の言葉で同じ手順を案内できます。</p>
+
+            <h4>実例（DCLは公開データ）</h4>
+            <ul>
+              <li><strong>LG（Custom Flow＝0）</strong>
+                <blockquote>Press the reset button on the product to enter the commissioning standby state. The LED will blink green.</blockquote>
+              </li>
+              <li><strong>Aqara Hub M2（Custom Flow＝2）</strong>：Aqara Homeアプリでログイン → ハブと子機をホームに追加 → 「Bind to Matter」で登録モードに → MatterのQRコードを読む</li>
+              <li><strong>Hueの案内先URL</strong>：<code>https://account.meethue.com/matter-onboarding?vid=100B&amp;pid=0003&amp;MTop=_&amp;MTcu=_</code><br>メーカーID（vid）と製品ID（pid）が、そのままURLに入っています。</li>
+            </ul>
+
+            <h4>数字で見るCustom Flow（2026年10月時点）</h4>
+            <p>DCLに登録されたモデルのうち（メーカーの申告ベース）：</p>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Custom Flow</th><th>割合</th></tr></thead>
+              <tbody>
+                <tr><td>0（電源を入れるだけ）</td><td>96.0%</td></tr>
+                <tr><td>1（機器の操作が要る）</td><td>2.6%</td></tr>
+                <tr><td>2（追加の手順が要る）</td><td>1.5%</td></tr>
+              </tbody>
+            </table></div>
+            <p>2の機器は、<strong>スマートロック</strong>（Yale・Kwikset・Fortune Brands・LOCKINなど）と<strong>ハブ</strong>（Hue・Aqara・SONOFFなど）に集中しています。鍵はメーカー側の本人確認を通したい、ハブは子機を先に登録しないとMatter側に出せない、といった機器の性質から来ていると考えられます。手抜きや囲い込みとは限りません。</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="highlight-orange" style="margin-top:18px;">
+        <strong>⚠️ 「11桁＝アプリ不要」とは限らない</strong><br>
+        Custom Flowが表すのは、「Matterに登録するときに一手間が要るか」だけです。<strong>買った機能がMatterで全部使えるかどうかは、何も表していません。</strong>メーカーのアプリが要る理由は、少なくとも3つあります。
+        <ol style="padding-left:20px; margin:8px 0 0;">
+          <li>登録の前の手順（＝Custom Flowが1か2）</li>
+          <li>Matterの対象外の機能（メーカー独自の機能・ファームウェアの更新など）</li>
+          <li>つなぎ方の相性（Thread・Wi-Fi・ハブ）</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="en-only" style="display:none;">
+      <p>The setup code that comes with a device takes three forms: digits you type by hand (11 or 21 digits), a QR code, and an NFC tag. Each carries the same thing — the bundle of information needed for setup (the onboarding payload). What differs is <strong>how much each can hold</strong>: the QR code and NFC tag carry everything, while the 11-digit code carries only the minimum.</p>
+      <div class="highlight">💡 Scanning the QR code gives the app more clues for finding the device than the numeric code does.</div>
+
+      <details class="adv">
+        <summary><span class="adv-tag">ADVANCED</span>The Four Forms of the Setup Code and What They Contain</summary>
+        <div class="adv-body">
+          <div class="table-wrap"><table>
+            <thead><tr><th></th><th>11 digits</th><th>21 digits</th><th>QR / NFC</th></tr></thead>
+            <tbody>
+              <tr><td>Passcode (8-digit secret)</td><td>✓</td><td>✓</td><td>✓</td></tr>
+              <tr><td>Discriminator (identifies the device)</td><td>Partial (4 of 12 bits)</td><td>Partial (4 bits)</td><td>Full (12 bits)</td></tr>
+              <tr><td>Vendor ID / Product ID</td><td>✕</td><td>✓</td><td>✓</td></tr>
+              <tr><td>Commissioning type (Custom Flow)</td><td>✕</td><td>✕ (being 21 digits is itself the signal)</td><td>✓</td></tr>
+              <tr><td>How it can be discovered (BLE, Thread, NFC, etc.)</td><td>✕</td><td>✕</td><td>✓</td></tr>
+            </tbody>
+          </table></div>
+
+          <h4>The first digit tells you 11 or 21 digits</h4>
+          <p>If the first digit of the numeric code is <strong>0–3, it is 11 digits; 4–7 means 21 digits</strong>. 8 and 9 are reserved for future formats. The last digit is a check digit (Verhoeff), so the app has a way to notice a typo on the spot.</p>
+
+          <h4>What's inside the QR code</h4>
+          <p>Scanning the QR code gives a string starting with <code>MT:</code>. What follows is a run of digits and capital letters (an encoding called Base38) that holds everything in the "QR / NFC" column above:</p>
+          <ul>
+            <li>Format version</li>
+            <li>Vendor ID and Product ID</li>
+            <li>Commissioning type (Custom Flow)</li>
+            <li>Discovery methods (BLE, home network, Wi-Fi, NFC, Thread)</li>
+            <li>Discriminator</li>
+            <li>Passcode</li>
+            <li>Optional extra data</li>
+          </ul>
+
+          <h4>What's inside the NFC tag</h4>
+          <p>The NFC tag holds <strong>the same <code>MT:</code> string as the QR code</strong>. Tapping your phone passes along exactly what scanning the QR code would. The tag uses the standard NFC format (an NDEF URI record): a single URI record containing the full <code>MT:</code> string, with no abbreviation.</p>
+          <p>Note that NFC is used in two different ways:</p>
+          <ul>
+            <li><strong>NFC Tag</strong> — only for reading the setup code (an alternative to the QR code)</li>
+            <li><strong>NFC Transport Layer (NTL)</strong> — carries the commissioning communication itself over NFC. It is not used for reading tags. Devices that support NTL must have both a QR code and an NFC tag, plus another commissioning method such as BLE, so they can be added even from a phone that does not support NFC commissioning.</li>
+          </ul>
+
+          <h4>Discriminator (the number that identifies a device)</h4>
+          <p>A 12-bit number used to tell devices apart when several are waiting to be added. Manufacturers must not use the same value across all their products, and sequential values are recommended for devices sold in multi-packs.</p>
+        </div>
+      </details>
+
+      <h3 style="margin-top:28px;">21 Digits Means "One Extra Step Before Setup"</h3>
+      <p>A device with a 21-digit code needs some step before setup. Sometimes it's just pressing a button; sometimes you first need to prepare it in the manufacturer's app. <strong>The 21 digits alone don't tell you which.</strong> The system is designed so the app uses the vendor ID and product ID to look up the steps in CSA's public ledger (DCL).</p>
+
+      <div class="card" style="margin-top:18px;">
+        <h3 style="font-size:15px; margin-bottom:12px;">Setup Steps Are Listed in CSA's Public Ledger (DCL)</h3>
+        <p style="font-size:13px;">Each device has a defined commissioning type (Custom Flow).</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Value</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>Just power it on</td></tr>
+            <tr><td>1</td><td>Needs an action on the device, such as pressing a button</td></tr>
+            <tr><td>2</td><td>Needs extra steps, such as the manufacturer's app</td></tr>
+          </tbody>
+        </table></div>
+        <p style="font-size:13px; margin-bottom:0;">The specific steps are registered in the DCL, and the Matter specification itself points to the DCL for them.</p>
+
+        <details class="adv">
+          <summary><span class="adv-tag">ADVANCED</span>Setup Steps in the DCL, and Custom Flow by the Numbers</summary>
+          <div class="adv-body">
+            <h4>Fields the DCL holds</h4>
+            <p>Custom Flow / a "type" of step (power cycle, long-press the reset button, etc., given as a number) / step text / a URL for guidance / user manual and support URLs. Because the step type is a number, each app can describe the same step in its own words.</p>
+
+            <h4>Examples (the DCL is public data)</h4>
+            <ul>
+              <li><strong>LG (Custom Flow = 0)</strong>
+                <blockquote>Press the reset button on the product to enter the commissioning standby state. The LED will blink green.</blockquote>
+              </li>
+              <li><strong>Aqara Hub M2 (Custom Flow = 2)</strong>: Log in to the Aqara Home app → add the hub and its sub-devices to a home → enter pairing mode with "Bind to Matter" → scan the Matter QR code</li>
+              <li><strong>Hue guidance URL</strong>: <code>https://account.meethue.com/matter-onboarding?vid=100B&amp;pid=0003&amp;MTop=_&amp;MTcu=_</code><br>The vendor ID (vid) and product ID (pid) go straight into the URL.</li>
+            </ul>
+
+            <h4>Custom Flow by the numbers (as of October 2026)</h4>
+            <p>Of the models registered in the DCL (as declared by manufacturers):</p>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Custom Flow</th><th>Share</th></tr></thead>
+              <tbody>
+                <tr><td>0 (just power on)</td><td>96.0%</td></tr>
+                <tr><td>1 (device action needed)</td><td>2.6%</td></tr>
+                <tr><td>2 (extra steps needed)</td><td>1.5%</td></tr>
+              </tbody>
+            </table></div>
+            <p>Type 2 devices are concentrated in <strong>smart locks</strong> (Yale, Kwikset, Fortune Brands, LOCKIN, etc.) and <strong>hubs</strong> (Hue, Aqara, SONOFF, etc.). This likely comes from the nature of the devices — lock makers want identity checks on their side, and hubs can't expose sub-devices to Matter until those are registered first — rather than being corner-cutting or lock-in.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="highlight-orange" style="margin-top:18px;">
+        <strong>⚠️ "11 digits" doesn't mean "no app needed"</strong><br>
+        Custom Flow only tells you whether adding the device to Matter takes an extra step. <strong>It says nothing about whether every feature you bought works over Matter.</strong> There are at least three reasons you may still need the manufacturer's app:
+        <ol style="padding-left:20px; margin:8px 0 0;">
+          <li>Steps before setup (Custom Flow 1 or 2)</li>
+          <li>Features outside Matter's scope (manufacturer-specific features, firmware updates, etc.)</li>
+          <li>Connection compatibility (Thread, Wi-Fi, hubs)</li>
+        </ol>
+      </div>
+    </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
+  </section>
+
   <!-- ===== MULTI-ADMIN + FABRIC LIMIT (UPDATED SECTION) ===== -->
   <section id="multi-admin" class="fade-in">
-    <div class="section-label">🔑 10 — MULTI-ADMIN &amp; FABRIC</div>
+    <div class="section-label">🔑 11 — MULTI-ADMIN &amp; FABRIC</div>
     <h2 data-ja="マルチアドミンとFabric登録の上限" data-en="Multi-admin &amp; Fabric Registration Limits">マルチアドミンとFabric登録の上限</h2>
     <p data-ja="Matterのいちばん革命的な機能。<strong>同じデバイスをApple HomeでもGoogle Homeでも同時に使える</strong>のはなぜか？　そして、便利なマルチアドミンにも「上限」という現実の壁があります。" data-en="Matter's most revolutionary feature: <strong>the same device can be used simultaneously in Apple Home and Google Home</strong>. But even multi-admin has a real-world limit to be aware of.">Matterのいちばん革命的な機能。<strong>同じデバイスをApple HomeでもGoogle Homeでも同時に使える</strong>のはなぜか？　そして、便利なマルチアドミンにも「上限」という現実の壁があります。</p>
 
@@ -690,6 +922,26 @@ Tag 4: Closure Covering→ <span class="c-purple">Blind</span>           <span c
       <strong>🆕 マルチアドミンとマルチファブリックの違い：</strong>ほぼ同じ機能を指す言葉です。「マルチアドミン」は「複数の管理者に開放する」操作視点、「マルチファブリック」は「複数のFabricに登録できる」構造視点の呼び分けです。Matter 1.4からは「Joint Fabric Administrator」という仕組みで複数エコシステムがより深く協調できるようになりました。
     </div>
 
+    <div class="card" style="margin-top:18px;">
+      <h3 style="font-size:15px; margin-bottom:12px;" data-ja="🔢 2つ目のアプリに追加するときのコード" data-en="🔢 The Code for Adding a Second App">🔢 2つ目のアプリに追加するときのコード</h3>
+      <div class="ja-only">
+        <p style="font-size:13px;">Apple HomeやGoogle Homeで「他のアプリと共有」などを押すと出る数字は、箱のコードではありません。登録済みのアプリが、その場で作った使い捨ての合言葉です。この合言葉で登録できる窓は、<strong>最大15分</strong>で閉じます。Matterが登録の窓を15分にしているのは、無駄な電波を出し続けないためと、電源を入れてからアプリをダウンロード・インストールして起動し、家の中を移動する時間を見込んだためです。</p>
+        <div class="highlight-blue" style="font-size:13px;">
+          <strong>📝 コラム：一時コードは11桁の数字だけ</strong><br>
+          Matterの仕様は、一時コードをQRコードでも出すことを推奨しています（必須ではありません）。筆者が2026年10月にApple Home・Google Home・Alexaで試したところ、3つとも11桁の数字だけで、QRコードは出ませんでした。理由は公表されていません。数字なら口頭や音声でも伝えられる、という利点は考えられます。
+        </div>
+        <p style="font-size:13px; margin-bottom:0;">しくみと安全性は → <a href="matter-security.html#second-app">セキュリティページ「2つ目のアプリに追加するとき」</a></p>
+      </div>
+      <div class="en-only" style="display:none;">
+        <p style="font-size:13px;">The number you get after tapping "Share with other apps" (or similar) in Apple Home or Google Home is not the code from the box. It is a one-time passcode the app already managing the device creates on the spot. The window for joining with it closes after <strong>15 minutes at most</strong>. Matter keeps commissioning windows to 15 minutes to avoid broadcasting radio signals needlessly, and to allow time to power the device on, download, install and launch the app, and walk around the home.</p>
+        <div class="highlight-blue" style="font-size:13px;">
+          <strong>📝 Column: temporary codes come only as 11 digits</strong><br>
+          The Matter specification recommends also offering the temporary code as a QR code (it is not mandatory). When the author tried Apple Home, Google Home and Alexa in October 2026, all three showed only an 11-digit number and no QR code. No reason has been published; one possible advantage is that numbers can be shared by voice.
+        </div>
+        <p style="font-size:13px; margin-bottom:0;">How it works and why it's safe → <a href="matter-security.html#second-app">Security page: "Adding a Device to a Second App"</a></p>
+      </div>
+    </div>
+
     <!-- troubleshoot banner -->
     <div class="ts-banner">
       <div class="ts-banner-text">
@@ -702,7 +954,7 @@ Tag 4: Closure Covering→ <span class="c-purple">Blind</span>           <span c
   </section>
 
   <section id="faq" class="fade-in">
-    <div class="section-label">❓ 11 — FAQ</div>
+    <div class="section-label">❓ 12 — FAQ</div>
     <h2 data-ja="よくある質問" data-en="FAQ">よくある質問</h2>
     <p>Matterを実際に使い始めるときに出やすい疑問をまとめました。</p>
 
@@ -799,7 +1051,7 @@ Tag 4: Closure Covering→ <span class="c-purple">Blind</span>           <span c
             <div style="font-weight:700; font-size:15px; margin-bottom:8px;">QRコードだけで勝手に家のデバイスに登録されない？セキュリティは大丈夫？</div>
             <div style="font-size:13px; line-height:1.7;">
               <strong style="color:var(--primary);">→ QRコードだけでは登録も操作もできません。</strong><br><br>
-              QRコードは「初回登録の一時的な合言葉」に過ぎません。その後、デバイスが正規品であることを世界共通の証明書（DAC）で確認し、暗号化された通信路を確立するまでいくつもの関門があります。登録完了後はQRコードのパスコードはデバイスから廃棄されます。<br><br>
+              QRコードは「登録のときに使う合言葉」に過ぎません。その後、デバイスが正規品であることを世界共通の証明書（DAC）で確認し、暗号化された通信路を確立するまでいくつもの関門があります。登録が終わった後の通信には、QRコードのパスコードは使われません。<br><br>
               コミッショニングの詳しい仕組みや証明書の構造については、専用ページで図解しています。
               <div style="margin-top:10px;">
                 <a href="matter-security.html" style="display:inline-flex; align-items:center; gap:6px; background:var(--primary); color:#fff; padding:8px 16px; border-radius:8px; text-decoration:none; font-size:13px; font-weight:600;">🔒 Matterのセキュリティを詳しく見る →</a>

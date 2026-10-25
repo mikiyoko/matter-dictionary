@@ -62,6 +62,24 @@
     .highlight-blue { background: var(--blue-light); border-left: 4px solid var(--blue); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: #1e3a8a; line-height: 1.7; }
     .highlight-orange { background: var(--orange-light); border-left: 4px solid var(--orange); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: #92400e; line-height: 1.7; }
     .info-box { background: var(--blue-light); border-left: 4px solid var(--blue); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: #1e3a8a; }
+    /* たたむ（Advanced）：生活者向け本文の下に、仕組みや表をしまう */
+    .adv { margin-top: 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--gray-50); }
+    .adv > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px; padding: 13px 18px; font-size: 14px; font-weight: 700; color: var(--gray-800); }
+    .adv > summary::-webkit-details-marker { display: none; }
+    .adv > summary::after { content: '＋'; margin-left: auto; color: var(--primary); }
+    .adv[open] > summary::after { content: '－'; }
+    .adv > summary:hover { color: var(--primary); }
+    .adv-tag { flex-shrink: 0; font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; color: var(--primary-dark); background: var(--primary-light); border-radius: 999px; padding: 2px 9px; }
+    .adv-body { padding: 0 18px 18px; font-size: 13px; line-height: 1.75; color: var(--gray-700); }
+    .adv-body h4 { font-size: 14px; color: var(--gray-800); margin: 18px 0 6px; }
+    .adv-body p { font-size: 13px; margin-bottom: 10px; }
+    .adv-body ol, .adv-body ul { padding-left: 20px; margin-bottom: 10px; }
+    .adv-body .table-wrap { overflow-x: auto; margin: 10px 0; }
+    .adv-body table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: none; border: 1px solid var(--border); }
+    .adv-body th, .adv-body td { padding: 9px 12px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+    .adv-body th { background: var(--gray-100); font-size: 12px; text-transform: none; letter-spacing: 0; }
+    .adv-body code { font-family: 'Inter', monospace; font-size: 12px; background: var(--gray-100); padding: 1px 5px; border-radius: 3px; word-break: break-all; }
+    .adv-body blockquote { margin: 6px 0 10px; padding: 8px 12px; border-left: 3px solid var(--gray-300); background: #fff; font-size: 12px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
     .grid-2 .card + .card, .grid-3 .card + .card { margin-top: 0; }
@@ -174,6 +192,7 @@
     <ol>
       <li><a href="#concern">「QRコードで勝手に登録されない？」という疑問に答える</a></li>
       <li><a href="#flow">コミッショニングの流れ：登録の7ステップ</a></li>
+      <li><a href="#second-app">2つ目のアプリに追加するとき</a></li>
       <li><a href="#certs">証明書の仕組み：DAC・PAA・DCLとは</a></li>
       <li><a href="#encryption">通信は常に暗号化</a></li>
       <li><a href="#privacy">プライバシーへの配慮</a></li>
@@ -210,8 +229,8 @@
       <div class="point-box purple" style="flex-direction:column;gap:8px;">
         <div class="point-icon">⏱️</div>
         <div>
-          <div class="point-title">コードは一時的なもの</div>
-          <div class="point-desc">QRコード・11桁コードは初回登録の「一時的な合言葉」。登録完了後は使われず、その後の通信は別の証明書（NOC）ベースで行われます。</div>
+          <div class="point-title">コードを使うのは登録のときだけ</div>
+          <div class="point-desc">QRコードや数字のコードは、登録のときに使う合言葉です。登録が終わった後の通信には使われず、別の証明書（NOC）で通信します。箱のコードは工場で決まった固定の値なので、リセットすれば再び使えます。その場限りの使い捨てなのは、2つ目のアプリに追加するときにアプリが出す一時コードのほうです（→03）。</div>
         </div>
       </div>
     </div>
@@ -232,9 +251,9 @@
           <div class="comm-step-line" style="background:#e5e7eb;"></div>
         </div>
         <div class="comm-step-body">
-          <h4 data-ja="📱 QRコード / 11桁コードの読み取り" data-en="📱 Scan QR Code or Enter 11-digit Manual Pairing Code">📱 QRコード / 11桁コードの読み取り</h4>
-          <p data-ja="ユーザーがアプリでデバイスのQRコードまたはマニュアルペアリングコード（11桁）を読み込む。このコードには「デバイスの種別」「初回接続用の短期パスコード」が入っている。" data-en="The user scans the device QR code or enters the 11-digit Manual Pairing Code in the app. This code encodes the device discriminator and a short-lived commissioning passcode.">ユーザーがアプリでデバイスのQRコードまたはマニュアルペアリングコード（11桁）を読み込む。このコードには「デバイスの種別」「初回接続用の短期パスコード」が入っている。</p>
-          <span class="security-note">🔒 コードはこの瞬間だけ有効な使い捨て</span>
+          <h4 data-ja="📱 QRコード / 11桁・21桁コードの読み取り" data-en="📱 Scan the QR Code or Enter the 11- or 21-Digit Manual Pairing Code">📱 QRコード / 11桁・21桁コードの読み取り</h4>
+          <p data-ja="ユーザーがアプリでデバイスのQRコード、または手で打つ数字のコード（11桁または21桁）を読み込む。どの形にも、機器を見分ける番号（Discriminator）と、工場で決まった8桁のパスコードが入っている（11桁・21桁に入るのはDiscriminatorの一部だけ）。QRコードと21桁には、さらにメーカーIDと製品IDも入る。" data-en="The user scans the device&#39;s QR code or enters its Manual Pairing Code (11 or 21 digits). Every form carries a discriminator that identifies the device and an 8-digit passcode set at the factory (the numeric codes carry only part of the discriminator). The QR code and the 21-digit code also include the vendor ID and product ID.">ユーザーがアプリでデバイスのQRコード、または手で打つ数字のコード（11桁または21桁）を読み込む。どの形にも、機器を見分ける番号（Discriminator）と、工場で決まった8桁のパスコードが入っている（11桁・21桁に入るのはDiscriminatorの一部だけ）。QRコードと21桁には、さらにメーカーIDと製品IDも入る。</p>
+          <span class="security-note">🔒 コードを使うのは登録のときだけ</span>
         </div>
       </div>
 
@@ -319,9 +338,66 @@
     <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
-  <!-- 03 証明書の仕組み -->
+  <!-- 03 2つ目のアプリに追加するとき -->
+  <section id="second-app" class="fade-in">
+    <div class="section-label">➕ 03 — ADDING A SECOND APP</div>
+    <h2 data-ja="2つ目のアプリに追加するとき" data-en="Adding a Device to a Second App">2つ目のアプリに追加するとき</h2>
+    <div class="ja-only">
+      <p>Apple HomeやGoogle Homeで「他のアプリと共有」などを押すと出る数字は、箱のコードを表示し直したものではありません。<strong>すでに登録済みのアプリが、その場で新しい合言葉をランダムに作ったもの</strong>です。機器には合言葉そのものは送られず、照合用の値だけが渡ります（機器自身も合言葉を知りません）。</p>
+      <div class="highlight">⏱️ この合言葉で登録できる「窓」は、<strong>最大15分</strong>で閉じます。箱のコードと違い、その場限りの使い捨てのコードです。</div>
+      <details class="adv">
+        <summary><span class="adv-tag">ADVANCED</span>窓の開け方は2つ ― ECMとBCM</summary>
+        <div class="adv-body">
+          <div class="table-wrap"><table>
+            <thead><tr><th>方式</th><th>合言葉</th></tr></thead>
+            <tbody>
+              <tr><td><strong>ECM</strong><br>Enhanced Commissioning Method</td><td>管理者（登録済みのアプリ）がその場でランダムに作る。<strong>家庭のアプリが使うのは、通常こちら</strong></td></tr>
+              <tr><td><strong>BCM</strong><br>Basic Commissioning Method</td><td>工場で決まった合言葉を使い回す</td></tr>
+            </tbody>
+          </table></div>
+          <p>ECMは、コントローラーも機器も実装が必須です。</p>
+          <h4>一時コードが11桁なのは、仕様の決まり</h4>
+          <p>一時コードにメーカーIDと製品IDを入れることは、仕様で禁止されています。すでに動いている機器には「登録の前の一手間」がそもそもないので、21桁にする理由がありません（21桁の意味は<a href="guide.html#onboarding-code">「登録コードの中身と、登録の手順」</a>）。</p>
+          <h4>Matterが登録の窓を15分にしている理由</h4>
+          <p>Matterの仕様は、機器が「登録できます」と頻繁に呼びかけ続ける時間を、最大15分にしています。理由は2つです。</p>
+          <ol>
+            <li>無駄な電波を出し続けないため</li>
+            <li>電源を入れてから、アプリをダウンロード・インストールして起動し、家の中を移動する時間を見込んだため</li>
+          </ol>
+        </div>
+      </details>
+    </div>
+    <div class="en-only" style="display:none;">
+      <p>When you tap "Share with other apps" (or similar) in Apple Home or Google Home, the number you see is not the code from the box shown again. <strong>It is a new passcode that the app already managing the device generates at random, on the spot.</strong> The passcode itself is never sent to the device — only a value for checking it (the device itself does not know the passcode).</p>
+      <div class="highlight">⏱️ The "window" for joining with this passcode closes after <strong>15 minutes at most</strong>. Unlike the code on the box, it is a one-time code.</div>
+      <details class="adv">
+        <summary><span class="adv-tag">ADVANCED</span>Two Ways to Open the Window — ECM and BCM</summary>
+        <div class="adv-body">
+          <div class="table-wrap"><table>
+            <thead><tr><th>Method</th><th>Passcode</th></tr></thead>
+            <tbody>
+              <tr><td><strong>ECM</strong><br>Enhanced Commissioning Method</td><td>Generated at random, on the spot, by the administrator (the app already managing the device). <strong>This is what home apps normally use.</strong></td></tr>
+              <tr><td><strong>BCM</strong><br>Basic Commissioning Method</td><td>Reuses the passcode set at the factory</td></tr>
+            </tbody>
+          </table></div>
+          <p>ECM is mandatory for both controllers and devices.</p>
+          <h4>The temporary code is 11 digits because the spec says so</h4>
+          <p>The specification forbids putting the vendor ID and product ID into a temporary code. A device that is already running has no "extra step before setup", so there is no reason to use a 21-digit code (see <a href="guide.html#onboarding-code">"What's in the Setup Code, and How Setup Works"</a> for what 21 digits means).</p>
+          <h4>Why Matter keeps the commissioning window to 15 minutes</h4>
+          <p>The Matter specification limits how long a device keeps frequently announcing "ready to be added" to 15 minutes at most, for two reasons:</p>
+          <ol>
+            <li>To avoid broadcasting radio signals needlessly</li>
+            <li>To allow time to power the device on, download, install and launch the app, and walk around the home</li>
+          </ol>
+        </div>
+      </details>
+    </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
+  </section>
+
+  <!-- 04 証明書の仕組み -->
   <section id="certs" class="fade-in">
-    <div class="section-label">🛂 03 — CERTIFICATES</div>
+    <div class="section-label">🛂 04 — CERTIFICATES</div>
     <h2 data-ja="証明書の仕組み：DAC・PAA・DCL" data-en="Certificate Chain: DAC, PAI, PAA &amp; DCL">証明書の仕組み：DAC・PAA・DCL</h2>
     <p data-ja="Matterのデバイス認証は、いくつかの証明書と台帳が連携する「信頼の連鎖（Chain of Trust）」によって成り立っています。入国審査のパスポートシステムに例えると分かりやすいです。" data-en="Matter device attestation is built on a Chain of Trust — a system of certificates and a ledger working together. Think of it as a passport system at border control.">Matterのデバイス認証は、いくつかの証明書と台帳が連携する「信頼の連鎖（Chain of Trust）」によって成り立っています。入国審査のパスポートシステムに例えると分かりやすいです。</p>
 
@@ -376,6 +452,10 @@
       📄 <strong>CD（Certification Declaration）</strong>もあります。DACとは別に、製品がMatter認証を取得したことを示す宣言書。CSAの認証試験に合格した製品にのみ発行され、DACとセットで検証されます。
     </div>
 
+    <div class="highlight-blue">
+      🌐 <span data-ja="DCLには、証明書のほかに、機器ごとの登録方法（Custom Flow）と登録の手順も載っています。→ <a href='guide.html#onboarding-code'>登録コードの中身と、登録の手順</a>" data-en="Besides certificates, the DCL also lists each device&#39;s commissioning type (Custom Flow) and setup steps. → <a href='guide.html#onboarding-code'>What&#39;s in the Setup Code, and How Setup Works</a>">DCLには、証明書のほかに、機器ごとの登録方法（Custom Flow）と登録の手順も載っています。→ <a href='guide.html#onboarding-code'>登録コードの中身と、登録の手順</a></span>
+    </div>
+
     <h3 style="margin-top:28px; margin-bottom:12px;">🎬 動画で見る：証明書の仕組み（紙芝居）</h3>
     <p data-ja="ここまでの証明書の連鎖を、アニメーション紙芝居で分かりやすく解説しています。" data-en="The certificate chain described here is also explained through an animated visual walkthrough.">ここまでの証明書の連鎖を、アニメーション紙芝居で分かりやすく解説しています。</p>
     <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:var(--radius); box-shadow:var(--shadow-md); margin-top:12px;">
@@ -391,9 +471,9 @@
     <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
-  <!-- 04 暗号化 -->
+  <!-- 05 暗号化 -->
   <section id="encryption" class="fade-in">
-    <div class="section-label">🔐 04 — ENCRYPTION</div>
+    <div class="section-label">🔐 05 — ENCRYPTION</div>
     <h2 data-ja="通信は常に暗号化" data-en="All Communication is Encrypted">通信は常に暗号化</h2>
     <p data-ja="Matter対応デバイス間の通信は、すべて業界標準の暗号技術で保護されています。" data-en="All communication between Matter devices is protected by industry-standard cryptography.">Matter対応デバイス間の通信は、すべて業界標準の暗号技術で保護されています。</p>
 
@@ -416,9 +496,9 @@
     <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
-  <!-- 05 プライバシー -->
+  <!-- 06 プライバシー -->
   <section id="privacy" class="fade-in">
-    <div class="section-label">🙈 05 — PRIVACY</div>
+    <div class="section-label">🙈 06 — PRIVACY</div>
     <h2 data-ja="プライバシーへの配慮" data-en="Privacy Considerations">プライバシーへの配慮</h2>
 
     <div class="grid-2" style="margin-top:18px;">
@@ -454,9 +534,9 @@
     <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
 
-  <!-- 06 FAQ -->
+  <!-- 07 FAQ -->
   <section id="faq" class="fade-in">
-    <div class="section-label">❓ 06 — FAQ</div>
+    <div class="section-label">❓ 07 — FAQ</div>
     <h2 data-ja="よくある不安・質問" data-en="Common Concerns &amp; Questions">よくある不安・質問</h2>
 
     <div class="faq-item">
@@ -466,7 +546,38 @@
       </div>
       <div class="faq-a">
         <strong data-ja="→ 乗っ取りはできません。" data-en="→ No, they cannot.">→ 乗っ取りはできません。</strong><br>
-        <span data-ja="QRコードは「初回登録のための短期パスコード」であり、これだけでは操作も、登録後の通信も行えません。登録完了後はQRコードのパスコードはデバイスから完全に廃棄されます。また仕様書では、スマートロック等の屋外設置機器はQRコードを外から見えない位置に設置することを推奨しています。" data-en="The QR code is only a short-lived commissioning passcode — it cannot control the device or enable post-commissioning communication. The passcode is fully discarded from the device after commissioning. The specification also recommends that outdoor devices such as smart locks be installed with the QR code facing away from public view.">QRコードは「初回登録のための短期パスコード」であり、これだけでは操作も、登録後の通信も行えません。登録完了後はQRコードのパスコードはデバイスから完全に廃棄されます。また仕様書では、スマートロック等の屋外設置機器はQRコードを外から見えない位置に設置することを推奨しています。</span>
+        <span data-ja="QRコードは登録のための合言葉で、これだけでは操作も、登録後の通信もできません。登録が終わった後の通信には、QRコードのパスコードは使われません。またMatterの仕様は、外箱にQRコードや数字のコードを保護なしで印刷してはいけないと定めています（お店の棚で読み取られないように）。数字のコードは機器本体か同梱物に必ず付いていて、本体のコードやNFCタグは、持ち主が剥がしたり無効にしたりしてよいことになっています。仕様には、煙感知器の本体の裏（金属の取付板側）にNFCタグを付けて、取り付けた後も箱に入ったままでもかざせないようにする例も載っています。また仕様書では、スマートロック等の屋外設置機器はQRコードを外から見えない位置に設置することを推奨しています。" data-en="The QR code is the passphrase for commissioning — on its own it cannot control the device or enable post-commissioning communication, and the passcode is not used for any communication after commissioning. The Matter specification also forbids printing the QR code or numeric code unprotected on the outer packaging (so it cannot be read on a store shelf). The numeric code is always on the device or in its packaging, and owners may peel off or disable the code or NFC tag on the device. The specification even gives the example of a smoke detector with its NFC tag on the back, against a metal mounting plate, so it cannot be tapped once installed or while still in the box. The specification also recommends that outdoor devices such as smart locks be installed with the QR code facing away from public view.">QRコードは登録のための合言葉で、これだけでは操作も、登録後の通信もできません。登録が終わった後の通信には、QRコードのパスコードは使われません。またMatterの仕様は、外箱にQRコードや数字のコードを保護なしで印刷してはいけないと定めています（お店の棚で読み取られないように）。数字のコードは機器本体か同梱物に必ず付いていて、本体のコードやNFCタグは、持ち主が剥がしたり無効にしたりしてよいことになっています。仕様には、煙感知器の本体の裏（金属の取付板側）にNFCタグを付けて、取り付けた後も箱に入ったままでもかざせないようにする例も載っています。また仕様書では、スマートロック等の屋外設置機器はQRコードを外から見えない位置に設置することを推奨しています。</span>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">
+        <div class="faq-badge">Q</div>
+        <div class="faq-q-text" data-ja="複数のアプリで一時コードを出しても、よその家のコードと重ならないの？" data-en="If many apps generate temporary codes, couldn't mine match someone else's?">複数のアプリで一時コードを出しても、よその家のコードと重ならないの？</div>
+      </div>
+      <div class="faq-a">
+        <div class="ja-only">
+          <strong>→ 重なることはありえます。それでも困ることはありません。</strong><br>
+          一時コードはランダムに作るので、よその家と同じ数字になることはありえます。安全を守っているのは、次の3つです。
+          <ol style="padding-left:20px; margin:8px 0;">
+            <li>登録の窓は、最大15分で閉じる</li>
+            <li><strong>20回失敗すると、機器は登録を受け付ける状態を抜ける</strong>（認証試験で確かめる項目）</li>
+            <li>試せるのは、同じ家のネットワークの中からだけ</li>
+          </ol>
+          「重ならないから安全」なのではなく、<strong>「短命で、試せる回数が少ないから安全」</strong>なのです。<br>
+          ⚠️ ただし、窓が開いている間は、コードを知っている人なら試せる状態です。コードのスクリーンショットを人に送るときは、使い終わるまで扱いに気をつけてください。
+        </div>
+        <div class="en-only" style="display:none;">
+          <strong>→ They can match, and that's fine.</strong><br>
+          Temporary codes are generated at random, so the same number could come up in another home. Safety comes from three things instead:
+          <ol style="padding-left:20px; margin:8px 0;">
+            <li>The commissioning window closes after 15 minutes at most</li>
+            <li><strong>After 20 failed attempts, the device leaves the state where it accepts commissioning</strong> (an item checked in certification testing)</li>
+            <li>Attempts can only come from inside the same home network</li>
+          </ol>
+          It is safe not because codes are unique, but <strong>because they are short-lived and allow only a few tries.</strong><br>
+          ⚠️ While the window is open, anyone who knows the code can try it. If you send a screenshot of the code to someone, treat it with care until it has been used.
+        </div>
       </div>
     </div>
 
@@ -519,7 +630,7 @@
   <section class="fade-in">
     <div class="summary-box">
       <h3>🔒 Matterのセキュリティは「多層防御」</h3>
-      <p data-ja="物理的な近接要件 → QRコード（一時パスコード）→ デバイス証明書の照合（DAC/DCL）→ 暗号化通信（PASE/CASE）→ ACLによるアクセス制御。一か所を突破しても他の関門で守られる設計です。" data-en="Physical proximity → QR code (one-time passcode) → Device Attestation (DAC/DCL) → Encrypted session (PASE/CASE) → Access control (ACL). Breaching any one layer still leaves the others intact — this is defense-in-depth.">物理的な近接要件 → QRコード（一時パスコード）→ デバイス証明書の照合（DAC/DCL）→ 暗号化通信（PASE/CASE）→ ACLによるアクセス制御。一か所を突破しても他の関門で守られる設計です。</p>
+      <p data-ja="物理的な近接要件 → QRコード（登録の合言葉）→ デバイス証明書の照合（DAC/DCL）→ 暗号化通信（PASE/CASE）→ ACLによるアクセス制御。一か所を突破しても他の関門で守られる設計です。" data-en="Physical proximity → QR code (commissioning passcode) → Device Attestation (DAC/DCL) → Encrypted session (PASE/CASE) → Access control (ACL). Breaching any one layer still leaves the others intact — this is defense-in-depth.">物理的な近接要件 → QRコード（登録の合言葉）→ デバイス証明書の照合（DAC/DCL）→ 暗号化通信（PASE/CASE）→ ACLによるアクセス制御。一か所を突破しても他の関門で守られる設計です。</p>
     </div>
     <div style="text-align:center; margin-top:36px; padding-top:28px; border-top:1px solid var(--border);">
       <p style="font-size:13px; color:var(--text-light); margin-bottom:16px;">

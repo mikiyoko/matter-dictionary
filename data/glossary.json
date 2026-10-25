@@ -215,8 +215,8 @@
     "termFull": "Basic Commissioning Method",
     "termJa": "基本コミッショニング方式",
     "category": "commissioning",
-    "description": "コミッショニングウィンドウを開く際の簡易的な方式。デバイス固有のパスコードをそのまま使用し、追加の暗号化ネゴシエーションなしにPASEセッションを開く。主に初回コミッショニングや開発用途に使用。セキュリティ面ではECMより劣る。",
-    "relatedTerms": ["ecm", "pase", "administrator-commissioning"],
+    "description": "工場で決まった合言葉（箱のコードと同じパスコード）を使い回して「登録の窓」を開ける方式。ECMのように新しい合言葉を作らない、簡易的なやり方。その固定のパスコードでPASEセッションを確立する。毎回同じ合言葉を使うぶん、ECMより守りは弱い。家庭のアプリが2つ目の追加で使うのは、通常ECMのほう。",
+    "relatedTerms": ["ecm", "pase", "passcode", "administrator-commissioning"],
     "source": "Matter Spec / docs/GLOSSARY.md"
   },
   {
@@ -225,9 +225,73 @@
     "termFull": "Enhanced Commissioning Method",
     "termJa": "拡張コミッショニング方式",
     "category": "commissioning",
-    "description": "追加のマルチ管理者対応のコミッショニング方式。Administrator CommissioningクラスターのOpenCommissioningWindowコマンドで、ランダムに生成した一時パスコードを使ってPASEセッションを開く。BCMより安全でマルチ管理者シナリオの標準方式。",
-    "relatedTerms": ["bcm", "pase", "administrator-commissioning"],
+    "description": "登録済みのアプリ（管理者）が、その場でランダムに作った一時的な合言葉で「登録の窓」を開ける方式。Apple HomeやGoogle Homeで「他のアプリと共有」を押したときに出る数字は、通常この方式で作られる。マルチアドミン（2つ目のアプリへの追加）の標準のやり方で、コントローラーも機器も実装が必須。しくみとしては、Administrator CommissioningクラスターのOpenCommissioningWindowコマンドで窓を開く。このとき機器には合言葉そのものは渡さず、照合用の値（PAKE passcode verifier）だけを渡す。その合言葉でPASEセッションを確立する。BCMより安全。",
+    "relatedTerms": ["bcm", "pase", "passcode", "manual-pairing-code", "administrator-commissioning"],
     "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "onboarding-payload",
+    "term": "Onboarding Payload",
+    "termJa": "オンボーディングペイロード",
+    "category": "commissioning",
+    "description": "機器を登録するのに必要な情報のかたまり。QRコード・手で打つ数字のコード・NFCタグの形で渡す。中身は同じでも詰め込める量が違い、QRとNFCタグには全部、11桁には最小限（パスコードとDiscriminatorの一部）だけが入る。",
+    "relatedTerms": ["manual-pairing-code", "passcode", "discriminator", "custom-flow", "nfc-tag"],
+    "source": "Matter Core Spec 1.6"
+  },
+  {
+    "id": "manual-pairing-code",
+    "term": "Manual Pairing Code",
+    "termJa": "手動ペアリングコード",
+    "category": "commissioning",
+    "description": "手で打ち込む数字の登録コード。11桁と21桁があり、1桁目が0〜3なら11桁、4〜7なら21桁。21桁にはメーカーIDと製品IDが加わり、「登録の前に一手間ある機器」の合図にもなる。最後の1桁はチェック用の数字（Verhoeff方式）で、打ち間違いに気づける仕組みがある。",
+    "relatedTerms": ["onboarding-payload", "passcode", "discriminator", "custom-flow"],
+    "source": "Matter Core Spec 1.6"
+  },
+  {
+    "id": "passcode",
+    "term": "Passcode",
+    "termJa": "パスコード",
+    "category": "commissioning",
+    "description": "8桁の合言葉。登録コードを持っていることの証明になり、最初の暗号通信（PASE）の鍵の元にもなる。箱のパスコードは工場で決まった固定の値。2つ目のアプリに追加するときは、登録済みのアプリがその場で別の一時的なパスコードを作る（→ECM）。",
+    "relatedTerms": ["onboarding-payload", "pase", "ecm", "bcm"],
+    "source": "Matter Core Spec 1.6"
+  },
+  {
+    "id": "discriminator",
+    "term": "Discriminator",
+    "termJa": "ディスクリミネーター",
+    "category": "commissioning",
+    "description": "登録を待っている機器が何台かあるとき、どれがどれかを見分ける12bitの番号。QRとNFCタグには全部、手動コードには一部だけが入る。メーカーは全製品に同じ値を使ってはいけない。",
+    "relatedTerms": ["onboarding-payload", "manual-pairing-code"],
+    "source": "Matter Core Spec 1.6"
+  },
+  {
+    "id": "custom-flow",
+    "term": "Custom Flow",
+    "termJa": "カスタムフロー",
+    "category": "commissioning",
+    "description": "機器ごとに決まっている登録方法の種類。0＝電源を入れるだけ、1＝ボタンを押すなど機器の操作が要る、2＝メーカーのアプリなど追加の手順が要る。具体的な手順はDCLに登録されている。",
+    "relatedTerms": ["dcl", "manual-pairing-code", "onboarding-payload"],
+    "source": "Matter Core Spec 1.6 / CSA DCL"
+  },
+  {
+    "id": "nfc-tag",
+    "term": "NFC Tag",
+    "termJa": "NFCタグ",
+    "category": "commissioning",
+    "description": "QRコードと同じ登録情報（MT:で始まる文字列）を書き込んだタグ。スマホをかざすと、QRを読んだのと同じ情報が渡る。NFCの標準形式（NDEFのURIレコード）で書かれている。",
+    "relatedTerms": ["onboarding-payload", "ntl"],
+    "source": "Matter Core Spec 1.6"
+  },
+  {
+    "id": "ntl",
+    "term": "NTL",
+    "termFull": "NFC Transport Layer",
+    "termJa": "NFCトランスポート層",
+    "category": "commissioning",
+    "description": "登録の通信そのものをNFCで行う仕組み。コードを読むだけのNFCタグとは別物。NTLに対応する機器は、スマホがNFCでの登録に対応していなくても登録できるよう、QRコードとNFCタグの両方に加え、BLEなど別の登録手段も備える。",
+    "relatedTerms": ["nfc-tag", "commissioner", "commissionee"],
+    "source": "Matter Core Spec 1.6"
   },
   {
     "id": "evse",
@@ -318,6 +382,16 @@
     "description": "Matterの認証テストで使用するクラスター固有の短縮コード。各クラスターには固有のPICSコードが割り当てられており（例：On/Off=OO、Thermostat=TSTAT）、認証試験の対象機能を宣言・識別するために使用する。Matter認証を取得するデバイスはPICSに従って試験が実施される。",
     "relatedTerms": [],
     "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "dcl",
+    "term": "DCL",
+    "termFull": "Distributed Compliance Ledger",
+    "termJa": "分散型コンプライアンス台帳",
+    "category": "certification",
+    "description": "CSAが管理する、Matter機器の公開台帳。正規メーカーの証明書や認証の情報のほか、機器ごとの登録方法（Custom Flow）と登録手順、取扱説明書・サポートのURLも載っている。コントローラーは登録のときにここと照合して、本物の機器かを確かめる。",
+    "relatedTerms": ["paa", "dac", "custom-flow", "pics"],
+    "source": "CSA DCL / Matter Core Spec 1.6"
   },
   {
     "id": "bdx",
