@@ -2235,16 +2235,20 @@
     "nameJa": "ジョイントFabric管理者",
     "category": "utility",
     "icon": "🔗",
-    "description": "複数のMatter Fabric（異なるエコシステム）を横断して連携管理するデバイスタイプ（v1.4〜）",
-    "req": [],
+    "description": "複数のエコシステムが1つのFabricを共同で管理する仕組み（Joint Fabric）の管理者役のデバイスタイプ。Matter 1.6で正式に加わった（1.4・1.5の仕様では暫定）",
+    "req": [
+      "joint-fabric-datastore",
+      "joint-fabric-administrator"
+    ],
     "opt": [],
     "tags": [
       "Fabric",
+      "Joint Fabric",
       "マルチエコシステム",
       "連携",
-      "v1.4新規"
+      "v1.6正式"
     ],
-    "notes": "Apple HomeとGoogle HomeをまたいだMatter Fabricの共同管理を可能にする新しいデバイスタイプ。"
+    "notes": "Joint Fabricへの参加は、機器のFabricの枠を1つしか使わない。各社のアプリが対応しているかは未確認（2026年10月時点）。"
   },
   {
     "id": "device-energy-management-dt",
