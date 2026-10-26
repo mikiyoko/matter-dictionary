@@ -53,7 +53,7 @@ window.PAGE_TRANSLATIONS = {
   '🔒 遠隔からの無断起動は不可': '🔒 Remote unauthorized activation is impossible',
   '🔒 SPAKE2+アルゴリズムで傍受・ブルートフォース攻撃を防止': '🔒 SPAKE2+ prevents eavesdropping and brute-force attacks',
   '偽造品・未認定品はここで弾かれる。': 'Counterfeit and non-certified devices are rejected here.',
-  '🔒 世界800社超が参加するDCLで不正品を排除': '🔒 DCL with 800+ members worldwide blocks unauthorized products',
+  '🔒 世界共通の台帳（DCL）で不正品を排除': '🔒 The global ledger (DCL) blocks unauthorized products',
   '🔒 Fabricごとに別の鍵→盗まれても他のFabricには無効': '🔒 Different NOC per Fabric — compromising one doesn\'t affect others',
   '🔒 なりすまし・中間者攻撃を防止': '🔒 Prevents impersonation and man-in-the-middle attacks',
   '🔒 初回コードは完全に廃棄、再利用不可': '🔒 Initial code fully discarded — cannot be reused',

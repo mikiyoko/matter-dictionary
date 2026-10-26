@@ -262,7 +262,127 @@
     <div class="card">
       <p><strong>Matter（マター）</strong>は、<strong>スマートホームデバイスがメーカーを超えて互いにつながるための「共通言語（プロトコル）」</strong>です。</p>
       <p>日本語しか話せない人と英語しか話せない人は会話できません。でも「共通の言語」があれば話せます。<strong>Matterはスマートホームデバイスにとっての「共通言語」</strong>です。AppleのHomePodも、GoogleのNest HubもAmazonのEchoも、Matter対応であれば同じ言葉でデバイスに命令できます。</p>
-      <p><strong>CSA（Connectivity Standards Alliance）— Apple・Google・Amazon・Samsungなど600社以上が参加</strong>する標準化団体が策定しており、2022年に初版がリリース。2026年6月にバージョン1.6が公開されました。</p>
+      <div class="ja-only">
+        <p>Matterが決めているのは、<strong>やりとりの中身と、その守り方</strong>です。機器の種類（デバイスタイプ）、機能の単位（クラスター）、「明かりをつけて」という命令の形、暗号化、登録の手順。<strong>電波そのものはMatterの外</strong>にあり、Wi-Fi・Thread・イーサネットに任せています。その間は、インターネットと同じ住所の仕組み（IPv6）でつなぎます。OSI参照モデルでいうと、上のほう（第5〜7層あたり）の規格です。</p>
+        <details class="adv">
+          <summary><span class="adv-tag">ADVANCED</span>OSI参照モデルとMatterの層</summary>
+          <div class="adv-body">
+            <h4>OSI参照モデルって？</h4>
+            <p>通信の仕組みを7つの段に分けて考えるための物差しです。下の段ほど「電波や電線」、上の段ほど「やりとりの中身」。手紙にたとえると、ざっくり次のようになります。</p>
+            <div class="table-wrap"><table>
+              <thead><tr><th>段</th><th>OSIの名前</th><th>手紙でいうと</th></tr></thead>
+              <tbody>
+                <tr><td>7〜5</td><td>アプリケーション・プレゼンテーション・セッション</td><td>手紙の中身と書き方。何語で、どんな決まりで書くか。封をして、本人だけが読めるようにする</td></tr>
+                <tr><td>4</td><td>トランスポート</td><td>届いたかどうかの確認。書留にするかどうか</td></tr>
+                <tr><td>3</td><td>ネットワーク</td><td>宛先の住所。どの道順で届けるか</td></tr>
+                <tr><td>2〜1</td><td>データリンク・物理</td><td>郵便車が走る道路。電波、電線</td></tr>
+              </tbody>
+            </table></div>
+
+            <h4>Matterの層（Zigbeeと比べて）</h4>
+            <div class="table-wrap"><table>
+              <thead><tr><th>OSI</th><th>Matter</th><th>Zigbee（比較）</th></tr></thead>
+              <tbody>
+                <tr><td>7〜5</td><td><strong>Matterが決める</strong>：データモデル（デバイスタイプ・クラスター）／やりとりの型（読む・書く・命令・通知）／暗号化と認証（PASE・CASE）／メッセージの形</td><td><strong>Zigbeeが決める</strong>：アプリの枠組みとZigbee Cluster Library</td></tr>
+                <tr><td>4</td><td>UDP（＋Matterの再送の仕組みMRP）またはTCP</td><td>（Zigbeeの中で完結）</td></tr>
+                <tr><td>3</td><td><strong>IPv6</strong>（Threadの場合はThreadが担う）</td><td><strong>Zigbeeが決める</strong>：Zigbeeのネットワーク層</td></tr>
+                <tr><td>2〜1</td><td><strong>Wi-Fi／Thread（IEEE 802.15.4）／イーサネット</strong></td><td><strong>IEEE 802.15.4</strong></td></tr>
+              </tbody>
+            </table></div>
+            <p>層の境目は目安です。たとえばMRPはUDPに足した再送の仕組みで、第4層のような働きもします。Thread自体の中の層の分け方は省いています。</p>
+            <p>Zigbeeは上から下まで1つの規格で、いわば「縦に1本」。Matterは上だけを決めて、下はIPv6が通るものを選ぶ「上だけ」の規格です。</p>
+            <p><strong>ThreadとZigbeeは、同じ電波を使っています</strong>（どちらもIEEE 802.15.4、2.4GHz）。違うのはその上の段です。ThreadはIPv6を載せられるので、Matterがそのまま乗ります。</p>
+            <p>新しい機器を登録するときだけは、BLE、Wi-FiのPAF、NFC、Threadの登録用の仕組みといった別の通り道も使います。登録が終わったら、ふだんの通信はIPv6のWi-Fi・Thread・イーサネットだけで行います。</p>
+
+            <h4>根拠</h4>
+            <p>CSAの仕様書（Core 1.6）は冒頭で、MatterをIPの上で動く、スマートホーム機器のためのアプリケーション層の解決策と位置づけています。Googleの開発者向けの解説（<a href="https://developers.home.google.com/matter/primer" target="_blank" rel="noopener">What is Matter?</a>）も、Matterの中核はOSIの上の3層に収まるので、IPv6の通信ならどれの上でも動く、と説明しています。</p>
+          </div>
+        </details>
+      </div>
+      <div class="en-only" style="display:none;">
+        <p>What Matter defines is <strong>the content of the conversation and how it is protected</strong>: the kinds of devices (device types), units of function (clusters), the shape of a command like "turn on the light", encryption, and the commissioning steps. <strong>The radio itself is outside Matter</strong> — that is left to Wi-Fi, Thread and Ethernet, connected in between by IPv6, the same addressing system the internet uses. In terms of the OSI reference model, Matter sits near the top (roughly layers 5–7).</p>
+        <details class="adv">
+          <summary><span class="adv-tag">ADVANCED</span>The OSI Reference Model and Matter's Layers</summary>
+          <div class="adv-body">
+            <h4>What is the OSI reference model?</h4>
+            <p>A yardstick for thinking about communication in seven layers. The lower the layer, the closer to radio waves and wires; the higher, the closer to the content of the exchange. As a rough analogy with sending a letter:</p>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Layer</th><th>OSI name</th><th>In a letter</th></tr></thead>
+              <tbody>
+                <tr><td>7–5</td><td>Application, Presentation, Session</td><td>What the letter says and how it is written — which language, which conventions. Sealing it so only the recipient can read it</td></tr>
+                <tr><td>4</td><td>Transport</td><td>Confirming it arrived — whether to send it registered</td></tr>
+                <tr><td>3</td><td>Network</td><td>The address, and the route it takes</td></tr>
+                <tr><td>2–1</td><td>Data Link, Physical</td><td>The roads the mail truck drives on — radio waves, wires</td></tr>
+              </tbody>
+            </table></div>
+
+            <h4>Matter's layers (compared with Zigbee)</h4>
+            <div class="table-wrap"><table>
+              <thead><tr><th>OSI</th><th>Matter</th><th>Zigbee (for comparison)</th></tr></thead>
+              <tbody>
+                <tr><td>7–5</td><td><strong>Defined by Matter</strong>: data model (device types, clusters) / interaction types (read, write, invoke, subscribe) / encryption and authentication (PASE, CASE) / message format</td><td><strong>Defined by Zigbee</strong>: application framework and the Zigbee Cluster Library</td></tr>
+                <tr><td>4</td><td>UDP (+ Matter's retransmission mechanism, MRP) or TCP</td><td>(handled within Zigbee)</td></tr>
+                <tr><td>3</td><td><strong>IPv6</strong> (handled by Thread on Thread networks)</td><td><strong>Defined by Zigbee</strong>: Zigbee network layer</td></tr>
+                <tr><td>2–1</td><td><strong>Wi-Fi / Thread (IEEE 802.15.4) / Ethernet</strong></td><td><strong>IEEE 802.15.4</strong></td></tr>
+              </tbody>
+            </table></div>
+            <p>Layer boundaries are approximate. MRP, for example, is retransmission added on top of UDP and also does layer-4-like work. Thread's own internal layering is omitted.</p>
+            <p>Zigbee is a single standard from top to bottom — "one vertical stack". Matter defines only the top and runs on whatever carries IPv6 underneath — "top only".</p>
+            <p><strong>Thread and Zigbee use the same radio</strong> (both IEEE 802.15.4, 2.4 GHz). The difference is in the layers above. Because Thread can carry IPv6, Matter runs directly on it.</p>
+            <p>Only when adding a new device are other paths used as well — BLE, Wi-Fi PAF, NFC, or Thread's commissioning mechanism. After commissioning, everyday communication runs only over IPv6 on Wi-Fi, Thread or Ethernet.</p>
+
+            <h4>Sources</h4>
+            <p>The CSA specification (Core 1.6) opens by positioning Matter as an application-layer solution for smart home devices that runs over IP. Google's developer guide (<a href="https://developers.home.google.com/matter/primer" target="_blank" rel="noopener">What is Matter?</a>) likewise explains that the core Matter protocol fits in the top three OSI layers, so it can run over any IPv6 transport.</p>
+          </div>
+        </details>
+      </div>
+      <p><strong>CSA（Connectivity Standards Alliance）— Apple・Google・Amazon・Samsungなど、多くの企業が参加</strong>する標準化団体が策定しており、2022年に初版がリリース。2026年6月にバージョン1.6が公開されました。</p>
+      <div class="ja-only">
+        <details class="adv">
+          <summary><span class="adv-tag">ADVANCED</span>CSAとMatterの歩み</summary>
+          <div class="adv-body">
+            <div class="table-wrap"><table>
+              <thead><tr><th>年</th><th>出来事</th></tr></thead>
+              <tbody>
+                <tr><td style="white-space:nowrap;">2002年10月</td><td>Zigbee Alliance設立。安くて電池が長持ちする無線で、センサーや機器の制御をするための標準づくりから始まった</td></tr>
+                <tr><td style="white-space:nowrap;">2017年1月</td><td>CES 2017でDotdotを発表。Zigbeeの「言葉」を、Threadなど別のネットワークの上でも使えるようにする試み（→<a href="#cluster">クラスターの節のコラム</a>）</td></tr>
+                <tr><td style="white-space:nowrap;">2019年12月</td><td>Amazon・Apple・Google・Zigbee Allianceが「Project Connected Home over IP（CHIP）」を発表。IPの上にロイヤリティフリーの共通規格を作る取り組みで、既存のZigbee 3.0／PROとは別のもの</td></tr>
+                <tr><td style="white-space:nowrap;">2021年5月</td><td>Zigbee AllianceがConnectivity Standards Alliance（CSA）に改称。CHIPは「Matter」と名付けられた。Zigbeeの開発とブランドは続けると表明</td></tr>
+                <tr><td style="white-space:nowrap;">2022年10月</td><td>Matter 1.0の仕様公開と認証プログラムの開始</td></tr>
+                <tr><td style="white-space:nowrap;">2026年6月</td><td>Matter 1.6</td></tr>
+              </tbody>
+            </table></div>
+            <p><strong>改称の理由</strong>：CSA自身が20周年の記事で、1つの技術の名前では団体の活動を表しきれなくなった、特にCHIPが急に進んだことが大きかった、と振り返っています。</p>
+            <p><strong>Matterの言葉は、複数の系譜から来ている</strong>：仕様書の冒頭には、Matter・HomeKit・Weave（Google）・Thread・Zigbeeの用語の対応表があります。創設メンバーが既存の技術を持ち寄る、というCHIP発表時の方針とも合っています。</p>
+            <p><strong>Threadを決めているのはCSAではありません。</strong>Thread Groupという別の団体です。</p>
+            <p><strong>小ネタ</strong>：オープンソースのSDKは、いまもGitHubで<code>project-chip/connectedhomeip</code>という名前です。</p>
+            <p style="font-size:12px; color:var(--text-light);">出典：CSA「<a href="https://csa-iot.org/newsroom/the-zigbee-alliance-celebrates-15-years-and-a-decade-of-standards/" target="_blank" rel="noopener">The Alliance Celebrates 15 Years</a>」「<a href="https://csa-iot.org/newsroom/two-perspectives-on-two-decades-the-past-present-and-future-of-the-alliance/" target="_blank" rel="noopener">Two perspectives on two decades</a>」「<a href="https://csa-iot.org/newsroom/the-zigbee-alliance-to-unveil-universal-language-for-the-iot-from-ces-2017-making-it-possible-for-smart-objects-to-work-together-on-any-network/" target="_blank" rel="noopener">Dotdot（CES 2017）</a>」／Amazon「<a href="https://developer.amazon.com/en-US/alexa/connected-devices/project-chip" target="_blank" rel="noopener">Project Connected Home over IP</a>」／Security Sales「<a href="https://www.securitysales.com/news/zigbee-alliance-rebrands-standards/128945/" target="_blank" rel="noopener">改称とMatterの命名</a>」／CEPro「<a href="https://www.cepro.com/news/matter-1-0-standard-officially-released/" target="_blank" rel="noopener">Matter 1.0</a>」</p>
+          </div>
+        </details>
+      </div>
+      <div class="en-only" style="display:none;">
+        <details class="adv">
+          <summary><span class="adv-tag">ADVANCED</span>A Short History of CSA and Matter</summary>
+          <div class="adv-body">
+            <div class="table-wrap"><table>
+              <thead><tr><th>Date</th><th>Event</th></tr></thead>
+              <tbody>
+                <tr><td style="white-space:nowrap;">Oct 2002</td><td>Zigbee Alliance founded, to create standards for low-cost, long-battery-life wireless sensing and control</td></tr>
+                <tr><td style="white-space:nowrap;">Jan 2017</td><td>Dotdot unveiled at CES 2017 — an effort to let Zigbee's "language" run over other networks such as Thread (see <a href="#cluster">the column in the Clusters section</a>)</td></tr>
+                <tr><td style="white-space:nowrap;">Dec 2019</td><td>Amazon, Apple, Google and the Zigbee Alliance announce Project Connected Home over IP (CHIP): a royalty-free common standard over IP, separate from the existing Zigbee 3.0 / PRO</td></tr>
+                <tr><td style="white-space:nowrap;">May 2021</td><td>The Zigbee Alliance renames itself the Connectivity Standards Alliance (CSA), and CHIP is named "Matter". Zigbee development and branding continue</td></tr>
+                <tr><td style="white-space:nowrap;">Oct 2022</td><td>Matter 1.0 specification released and certification program launched</td></tr>
+                <tr><td style="white-space:nowrap;">Jun 2026</td><td>Matter 1.6</td></tr>
+              </tbody>
+            </table></div>
+            <p><strong>Why the rename</strong>: In its 20th-anniversary article, CSA looks back that a single technology name could no longer describe the organization's work — driven especially by CHIP's rapid progress.</p>
+            <p><strong>Matter's vocabulary comes from several lineages</strong>: the specification opens with a terminology mapping between Matter, HomeKit, Weave (Google), Thread and Zigbee — consistent with CHIP's founding approach of bringing together the founders' existing technologies.</p>
+            <p><strong>Thread is not defined by CSA</strong> but by a separate organization, the Thread Group.</p>
+            <p><strong>Trivia</strong>: the open-source SDK is still named <code>project-chip/connectedhomeip</code> on GitHub.</p>
+            <p style="font-size:12px; color:var(--text-light);">Sources: CSA "<a href="https://csa-iot.org/newsroom/the-zigbee-alliance-celebrates-15-years-and-a-decade-of-standards/" target="_blank" rel="noopener">The Alliance Celebrates 15 Years</a>", "<a href="https://csa-iot.org/newsroom/two-perspectives-on-two-decades-the-past-present-and-future-of-the-alliance/" target="_blank" rel="noopener">Two perspectives on two decades</a>", "<a href="https://csa-iot.org/newsroom/the-zigbee-alliance-to-unveil-universal-language-for-the-iot-from-ces-2017-making-it-possible-for-smart-objects-to-work-together-on-any-network/" target="_blank" rel="noopener">Dotdot (CES 2017)</a>" / Amazon "<a href="https://developer.amazon.com/en-US/alexa/connected-devices/project-chip" target="_blank" rel="noopener">Project Connected Home over IP</a>" / Security Sales "<a href="https://www.securitysales.com/news/zigbee-alliance-rebrands-standards/128945/" target="_blank" rel="noopener">rename and naming of Matter</a>" / CEPro "<a href="https://www.cepro.com/news/matter-1-0-standard-officially-released/" target="_blank" rel="noopener">Matter 1.0</a>"</p>
+          </div>
+        </details>
+      </div>
     </div>
     <div class="highlight">
       <strong>💡 ポイント：</strong>Matterが登場する前は「このスマート電球はApple Homeでしか使えない」という問題が多発していました。Matterはその壁を壊す規格です。
@@ -282,7 +402,7 @@
       </div>
     </div>
     <div class="info-box" style="margin-top:18px;">
-      <strong>🆕 Matter 1.5の新機能：</strong>カメラ・ドアベル・ビデオ通話（WebRTC）・新世代クロージャー（窓・扉）が大幅追加。ヒートポンプ・給湯器など家全体のエネルギー管理も強化されました。
+      <strong>🆕 Matter 1.6の新機能：</strong>新しい機器の種類は増えず、今ある体験を磨き込んだ版です。複数のエコシステムが1つのFabricを共同で管理する「Joint Fabric」が正式に加わったほか、サーモスタットへの提案（サジェスチョン）、煙・CO警報の取り外し検知、防犯センサーのイベント履歴などが入りました。
     </div>
     <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
@@ -387,6 +507,28 @@ Optional Clusters (O):
           <tr><td>カメラ</td><td>Camera AV Stream Management、WebRTC Transport</td><td>映像配信・WebRTCストリーミング</td></tr>
         </tbody>
       </table>
+    </div>
+    <div class="ja-only">
+      <details class="adv">
+        <summary><span class="adv-tag">COLUMN</span>Matterの「言葉」はZigbeeから来ている</summary>
+        <div class="adv-body">
+          <p>「クラスター」「アトリビュート」「コマンド」という考え方は、もともとZigbeeの共通辞書（Zigbee Cluster Library、ZCL）にあったものです。CSA（旧Zigbee Alliance）はこの辞書を電波から切り離してIPの上に載せ、そこから独自に育てました。仕様書も、データモデルの出発点として「Dotdotの構成とZigbee Cluster Library」を挙げたうえで、Matterの形はそこから分かれたものだと書いています。各クラスターの改訂履歴にも、Zigbee向けの要素を取り除いた記録が残っています。</p>
+          <h4>データモデルの文書は、Dotdotから続いている</h4>
+          <p>仕様書のデータモデルの章の改訂履歴では、改訂12〜15が「Dotdot Architecture Model」として公開され、改訂16がMatterのデータモデルの最初の版です。Matterの改訂1は、この改訂16と同じものとして扱われています。つまり、Matterのクラスターやアトリビュートの考え方は、Dotdotの文書を引き継いで育ってきました。ただし、Matterそのものが「Dotdotの改名」というわけではありません。Dotdotから続いているのは、データモデルの部分です。</p>
+          <div class="highlight" style="font-size:13px;">💬 ひとことで言うと、「Zigbeeの言葉を、電波から自由にしたのがMatter」。実際の経緯（Project CHIPやApple・Google・Amazonの参加など）は、かなり単純化した言い方です。歩みは<a href="#what">「Matterって何？」の「CSAとMatterの歩み」</a>へ。</div>
+        </div>
+      </details>
+    </div>
+    <div class="en-only" style="display:none;">
+      <details class="adv">
+        <summary><span class="adv-tag">COLUMN</span>Matter's "Language" Comes from Zigbee</summary>
+        <div class="adv-body">
+          <p>The ideas of "clusters", "attributes" and "commands" originally came from Zigbee's shared dictionary, the Zigbee Cluster Library (ZCL). CSA (formerly the Zigbee Alliance) separated this dictionary from the radio, put it on top of IP, and developed it further on its own. The specification itself names "the Dotdot architecture and the Zigbee Cluster Library" as the starting point of its data model, and states that Matter's form diverged from there. The revision histories of individual clusters also record Zigbee-specific elements being removed.</p>
+          <h4>The data model document continues from Dotdot</h4>
+          <p>In the revision history of the specification's data model chapter, revisions 12–15 were published as the "Dotdot Architecture Model", and revision 16 is the first release of the Matter data model. Matter's revision 1 is treated as identical to revision 16. In other words, Matter's clusters and attributes grew out of the Dotdot document. That does not mean Matter is simply "Dotdot renamed" — what continues from Dotdot is the data model.</p>
+          <div class="highlight" style="font-size:13px;">💬 In a phrase: "Matter is Zigbee's language, set free from the radio." This greatly simplifies the actual history (Project CHIP, Apple, Google and Amazon joining, and more). See <a href="#what">"A Short History of CSA and Matter" under "What is Matter?"</a>.</div>
+        </div>
+      </details>
     </div>
     <div class="highlight-blue">
       <strong>クラスターの「Server」と「Client」：</strong>同じクラスターでも「提供する側（Server）」と「使う側（Client）」があります。電球はOn/Off ClusterのServer（制御される側）で、スマートフォンアプリはOn/Off ClusterのClient（制御する側）です。1つのデバイスがServerにもClientにもなれます。
@@ -506,10 +648,11 @@ Tag 4: Closure Covering→ <span class="c-purple">Blind</span>           <span c
   <section id="network" class="fade-in">
     <div class="section-label">📡 08 — NETWORK</div>
     <h2 data-ja="通信の仕組み" data-en="Network Transport">通信の仕組み</h2>
-    <p data-ja="Matterは複数の通信方式をサポートしています。それぞれ得意不得意があるので、用途に合わせて使い分けられています。" data-en="Matter supports multiple transport protocols, each with different strengths. The right choice depends on the use case.">Matterは複数の通信方式をサポートしています。それぞれ得意不得意があるので、用途に合わせて使い分けられています。</p>
+    <p data-ja="Matterは電波の部分を自分で決めていないので、通信方式はメーカーが機器に合わせて選べます。いつも電源がある機器はWi-Fi、電池で動くセンサーはThread、という具合です。多くの機器は通信方式が製品ごとに決まっていて、利用者が後から切り替えるものではありません。" data-en="Because Matter does not define the radio itself, manufacturers can choose the transport that suits each device — Wi-Fi for always-powered devices, Thread for battery-powered sensors, and so on. For most devices the transport is fixed per product; it is not something users switch later.">Matterは電波の部分を自分で決めていないので、通信方式はメーカーが機器に合わせて選べます。いつも電源がある機器はWi-Fi、電池で動くセンサーはThread、という具合です。多くの機器は通信方式が製品ごとに決まっていて、利用者が後から切り替えるものではありません。</p>
+    <p data-ja="Zigbeeは電波まで含めて1つの規格なので、Zigbeeの機器をつなぐにはZigbeeのハブが要ります。Matterは家のWi-FiやThreadのネットワークにそのまま入ります（Threadの場合はボーダールーターが要ります → <a href='#roles'>3つの役割</a>）。" data-en="Zigbee is a single standard that includes the radio, so Zigbee devices need a Zigbee hub. Matter devices join your home Wi-Fi or Thread network directly (Thread needs a Border Router → <a href='#roles'>3 Roles</a>).">Zigbeeは電波まで含めて1つの規格なので、Zigbeeの機器をつなぐにはZigbeeのハブが要ります。Matterは家のWi-FiやThreadのネットワークにそのまま入ります（Threadの場合はボーダールーターが要ります → <a href="#roles">3つの役割</a>）。</p>
     <div class="transport-grid">
       <div class="transport-card"><div class="chip-list"><span class="chip blue">📶 Wi-Fi</span></div><h3 data-ja="速くて遠くまで届く" data-en="Fast &amp; Wide-reaching">速くて遠くまで届く</h3><p style="font-size:13px;" data-ja="速度が速く家中に届く。ただし電池消耗が多いため、常時電源が取れる機器に向く。スマートプラグ・カメラ・スマートTVなど。" data-en="Fast and wide-ranging. High power consumption makes it best suited for always-on devices: smart plugs, cameras, smart TVs.">速度が速く家中に届く。ただし電池消耗が多いため、常時電源が取れる機器に向く。スマートプラグ・カメラ・スマートTVなど。</p></div>
-      <div class="transport-card"><div class="chip-list"><span class="chip green">🕸 Thread</span></div><h3 data-ja="電池持ちに優れたメッシュ網" data-en="Low-power Mesh Network">電池持ちに優れたメッシュ網</h3><p style="font-size:13px;" data-ja="電池が何年も持つ低消費電力設計。デバイス同士がメッシュを形成するため、Wi-Fiルーター不要でつながる。センサー・スイッチ・スマートロックに最適。" data-en="Low-power design allows batteries to last years. Devices form a self-healing mesh without needing a Wi-Fi router. Ideal for sensors, switches, and smart locks.">電池が何年も持つ低消費電力設計。デバイス同士がメッシュを形成するため、Wi-Fiルーター不要でつながる。センサー・スイッチ・スマートロックに最適。</p></div>
+      <div class="transport-card"><div class="chip-list"><span class="chip green">🕸 Thread</span></div><h3 data-ja="電池持ちに優れたメッシュ網" data-en="Low-power Mesh Network">電池持ちに優れたメッシュ網</h3><p style="font-size:13px;" data-ja="電池が何年も持つ低消費電力設計。デバイス同士がメッシュを形成し、互いに通信をリレーする。スマホや家のWi-Fiとつなぐにはボーダールーターが要る。センサー・スイッチ・スマートロックに最適。" data-en="Low-power design lets batteries last years. Devices form a mesh and relay each other&#39;s traffic. Connecting to phones or your home Wi-Fi requires a Thread Border Router. Ideal for sensors, switches, and smart locks.">電池が何年も持つ低消費電力設計。デバイス同士がメッシュを形成し、互いに通信をリレーする。スマホや家のWi-Fiとつなぐにはボーダールーターが要る。センサー・スイッチ・スマートロックに最適。</p></div>
       <div class="transport-card"><div class="chip-list"><span class="chip gray">🔌 Ethernet</span></div><h3 data-ja="最も安定した有線接続" data-en="Most Reliable — Wired">最も安定した有線接続</h3><p style="font-size:13px;" data-ja="有線なので最も安定。固定設置のハブやルーター内蔵機器に使われる。無線の不安定さがゼロ。" data-en="The most reliable option — wired. Used for fixed-installation hubs and router-integrated devices. Zero wireless interference.">有線なので最も安定。固定設置のハブやルーター内蔵機器に使われる。無線の不安定さがゼロ。</p></div>
     </div>
 
@@ -559,7 +702,7 @@ Tag 4: Closure Covering→ <span class="c-purple">Blind</span>           <span c
     </div>
 
     <div class="highlight" style="margin-top:14px;">
-      <strong>💡 なぜMatterがThreadを採用したか：</strong>オープン規格・IPv6ベース・省電力・メッシュ対応という4つの条件を満たしているから。特に電池駆動のセンサー類では、Wi-FiやBluetoothより圧倒的に有利です。<br><br><strong>🏠 HRAP（Home Router &amp; Access Point）構想：</strong>Matter 1.4から、家庭用Wi-FiルーターにThread ボーダールーター機能を標準搭載する規格が追加されました。通信事業者からレンタルするルーターにこの機能が組み込まれれば、ユーザーが意識しなくても「ネット回線を引いた時点でThreadが使える家」になります。AmazonのeeroなどはすでにThread搭載済みで、この動きが広がると専用ハブ不要でThreadデバイスが使えるようになります。
+      <strong>💡 なぜMatterがThreadを採用したか：</strong>オープン規格・IPv6ベース・省電力・メッシュ対応という4つの条件を満たしているから。特に電池駆動のセンサー類では、Wi-FiやBluetoothより圧倒的に有利です。<br><br><strong>🏠 HRAP（Home Router &amp; Access Point）構想：</strong>Matter 1.4から、家庭用Wi-FiルーターにThreadボーダールーター機能を標準搭載する規格が追加されました。通信事業者からレンタルするルーターにこの機能が組み込まれれば、ユーザーが意識しなくても「ネット回線を引いた時点でThreadが使える家」になります。AmazonのeeroなどはすでにThread搭載済みで、この動きが広がると専用ハブ不要でThreadデバイスが使えるようになります。
     </div>
     <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
@@ -959,6 +1102,30 @@ Tag 4: Closure Covering→ <span class="c-purple">Blind</span>           <span c
     <p>Matterを実際に使い始めるときに出やすい疑問をまとめました。</p>
 
     <div class="card" style="margin-top:18px; padding:0; overflow:hidden;">
+
+      <div style="padding:20px 24px; border-bottom:1px solid var(--border);">
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <div style="flex-shrink:0; width:32px; height:32px; background:var(--primary-light); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--primary); font-size:14px;">Q</div>
+          <div>
+            <div class="ja-only">
+              <div style="font-weight:700; font-size:15px; margin-bottom:8px;">Matterは通信の規格？プロトコル？OSI参照モデルのどの層？</div>
+              <div style="font-size:13px; line-height:1.7;">
+                <strong style="color:var(--primary);">→ Matterは電波の規格ではなく、機器どうしが話す「言葉」の規格です。</strong><br><br>
+                OSI参照モデルでいうと上のほう（第5〜7層あたり）で、下の電波にはWi-FiやThreadを使います。Zigbeeは電波まで含めた一式の規格ですが、MatterはIPv6が通るネットワークならどれの上でも動きます。実はThreadとZigbeeは同じ電波を使っていて、違うのはその上の段です。<br><br>
+                詳しくは<a href="#what">「Matterって何？」</a>と<a href="#network">「通信の仕組み」</a>へ。
+              </div>
+            </div>
+            <div class="en-only" style="display:none;">
+              <div style="font-weight:700; font-size:15px; margin-bottom:8px;">Is Matter a communication standard or a protocol? Which OSI layer is it?</div>
+              <div style="font-size:13px; line-height:1.7;">
+                <strong style="color:var(--primary);">→ Matter is not a radio standard — it is the "language" devices speak to each other.</strong><br><br>
+                In OSI terms it sits near the top (roughly layers 5–7), and uses Wi-Fi or Thread for the radio underneath. Zigbee is a complete standard that includes the radio, while Matter runs on any network that carries IPv6. In fact, Thread and Zigbee use the same radio — the difference is in the layers above.<br><br>
+                More in <a href="#what">"What is Matter?"</a> and <a href="#network">"Network Transport"</a>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div style="padding:20px 24px; border-bottom:1px solid var(--border);">
         <div style="display:flex; gap:12px; align-items:flex-start;">

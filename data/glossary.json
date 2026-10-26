@@ -364,6 +364,62 @@
     "source": "Matter Spec / docs/GLOSSARY.md"
   },
   {
+    "id": "osi-model",
+    "term": "OSI Reference Model",
+    "termJa": "OSI参照モデル",
+    "category": "networking",
+    "description": "通信の仕組みを7つの段に分けて考える物差し。下の段ほど電波や電線、上の段ほどやりとりの中身。実際のプロトコルはぴったり当てはまるわけではなく、考え方の目安。",
+    "relatedTerms": ["application-layer", "ipv6", "ieee-802-15-4"],
+    "source": "ISO/IEC 7498-1 / Matter Core Spec 1.6"
+  },
+  {
+    "id": "application-layer",
+    "term": "Application Layer",
+    "termJa": "アプリケーション層",
+    "category": "networking",
+    "description": "やりとりの中身を決める、一番上の段。Matterは、この上のほう（第5〜7層あたり）を決める規格。",
+    "relatedTerms": ["osi-model", "cluster", "mrp"],
+    "source": "Matter Core Spec 1.6"
+  },
+  {
+    "id": "ipv6",
+    "term": "IPv6",
+    "termJa": "IPv6",
+    "category": "networking",
+    "description": "インターネットと同じ住所の仕組み。MatterはIPv6の上で動くので、IPv6が通るWi-Fi・Thread・イーサネットの上で使える。",
+    "relatedTerms": ["osi-model", "ieee-802-15-4"],
+    "source": "Matter Core Spec 1.6"
+  },
+  {
+    "id": "ieee-802-15-4",
+    "term": "IEEE 802.15.4",
+    "termJa": "IEEE 802.15.4",
+    "category": "networking",
+    "description": "低消費電力の電波の規格（2.4GHz）。ThreadもZigbeeもこの電波を使い、違うのはその上の段。",
+    "relatedTerms": ["ipv6", "zcl"],
+    "source": "Matter Core Spec 1.6"
+  },
+  {
+    "id": "mrp",
+    "term": "MRP",
+    "termFull": "Message Reliability Protocol",
+    "termJa": "メッセージ信頼性プロトコル",
+    "category": "protocols",
+    "description": "Matterが、UDPの上に足した「届いたかの確認と再送」の仕組み。",
+    "relatedTerms": ["application-layer", "ipv6"],
+    "source": "Matter Core Spec 1.6"
+  },
+  {
+    "id": "zcl",
+    "term": "ZCL",
+    "termFull": "Zigbee Cluster Library",
+    "termJa": "Zigbeeクラスターライブラリ",
+    "category": "architecture",
+    "description": "Zigbeeの共通辞書。「クラスター」「アトリビュート」「コマンド」の考え方はここから来ていて、Matterのクラスターの出発点になった。",
+    "relatedTerms": ["cluster", "attribute", "command", "ieee-802-15-4"],
+    "source": "Matter Core Spec 1.6"
+  },
+  {
     "id": "pdc",
     "term": "PDC",
     "termFull": "Per-device Credentials",
