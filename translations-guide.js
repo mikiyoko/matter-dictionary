@@ -51,7 +51,7 @@ window.PAGE_TRANSLATIONS = {
   '高いセキュリティ': 'Strong Security',
   'すべてのデバイスにCSA認証（DAC）が必要。なりすましや不正接続を防ぐ暗号化が標準で組み込まれています。': 'CSA attestation (DAC) is required for all devices. End-to-end encryption preventing impersonation and unauthorized access is built in by default.',
   '💡 ポイント：': '💡 Key point:',
-  'Matterが登場する前は「このスマート電球はApple Homeでしか使えない」という問題が多発していました。Matterはその壁を壊す規格です。': 'Before Matter, "this smart bulb only works with Apple Home" was a common complaint. Matter breaks down that wall.',
+  'Matterが登場する前は「このスマート電球はApple Homeでしか使えない」という問題が多発していました。Matterはその壁をなくすための規格です。': 'Before Matter, "this smart bulb only works with Apple Home" was a common complaint. Matter is designed to remove that wall.',
   '🆕 Matter 1.6の新機能：': '🆕 New in Matter 1.6:',
   '新しい機器の種類は増えず、今ある体験を磨き込んだ版です。登録の通信そのものをNFCで行う「NFCでのコミッショニング」が入りました（NFCタグに登録情報を入れておく仕組みは、1.4.1からあります）。また、複数のエコシステムが1つのFabricを共同で管理する「Joint Fabric」が正式に加わったほか、サーモスタットへの提案（サジェスチョン）、煙・CO警報の取り外し検知、防犯センサーのイベント履歴などが入りました。': 'No new device categories — a release that refines existing experiences. It introduces NFC-based commissioning, where the commissioning communication itself runs over NFC (storing setup information in an NFC tag has been possible since 1.4.1). Joint Fabric, which lets multiple ecosystems jointly manage a single Fabric, was also formally added, along with thermostat suggestions, removal detection for smoke/CO alarms, and event history for security sensors.',
   /* ── Structure ── */
