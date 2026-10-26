@@ -402,7 +402,7 @@
       </div>
     </div>
     <div class="info-box" style="margin-top:18px;">
-      <strong>🆕 Matter 1.6の新機能：</strong>新しい機器の種類は増えず、今ある体験を磨き込んだ版です。複数のエコシステムが1つのFabricを共同で管理する「Joint Fabric」が正式に加わったほか、サーモスタットへの提案（サジェスチョン）、煙・CO警報の取り外し検知、防犯センサーのイベント履歴などが入りました。
+      <strong>🆕 Matter 1.6の新機能：</strong>新しい機器の種類は増えず、今ある体験を磨き込んだ版です。登録の通信そのものをNFCで行う「NFCでのコミッショニング」が入りました（NFCタグに登録情報を入れておく仕組みは、1.4.1からあります）。また、複数のエコシステムが1つのFabricを共同で管理する「Joint Fabric」が正式に加わったほか、サーモスタットへの提案（サジェスチョン）、煙・CO警報の取り外し検知、防犯センサーのイベント履歴などが入りました。
     </div>
     <a href="#toc" class="back-to-toc">↑ Contents</a>
   </section>
@@ -806,8 +806,8 @@ Tag 4: Closure Covering→ <span class="c-purple">Blind</span>           <span c
           <p>NFCタグに入っているのは、<strong>QRコードと同じ<code>MT:</code>の文字列</strong>です。スマホをかざすと、QRコードを読んだのと同じ情報が渡ります。タグはNFCの標準形式（NDEFのURIレコード）で書かれていて、1件のURIレコードに、省略なしで<code>MT:</code>から始まる文字列がそのまま入っています。</p>
           <p>なお、NFCには2つの使い方があり、別物です。</p>
           <ul>
-            <li><strong>NFCタグ</strong> … 登録コードを読み取るだけ（QRコードの代わり）</li>
-            <li><strong>NFC Transport Layer（NTL）</strong> … 登録の通信そのものをNFCで行う仕組み。タグの読み取りには使いません。NTLに対応する機器は、スマホ側がNFCでの登録に対応していなくても登録できるよう、QRコードとNFCタグの両方を備え、BLEなど別の登録手段も持つ決まりです。</li>
+            <li><strong>NFCタグ</strong> … 登録コードを読み取るだけ（QRコードの代わり）。Matter 1.4.1から。</li>
+            <li><strong>NFC Transport Layer（NTL）</strong> … 登録の通信そのものをNFCで行う仕組み。タグの読み取りには使いません。NTLに対応する機器は、スマホ側がNFCでの登録に対応していなくても登録できるよう、QRコードとNFCタグの両方を備え、BLEなど別の登録手段も持つ決まりです。Matter 1.6で加わりました。</li>
           </ul>
 
           <h4>Discriminator（機器を見分ける番号）</h4>
@@ -909,8 +909,8 @@ Tag 4: Closure Covering→ <span class="c-purple">Blind</span>           <span c
           <p>The NFC tag holds <strong>the same <code>MT:</code> string as the QR code</strong>. Tapping your phone passes along exactly what scanning the QR code would. The tag uses the standard NFC format (an NDEF URI record): a single URI record containing the full <code>MT:</code> string, with no abbreviation.</p>
           <p>Note that NFC is used in two different ways:</p>
           <ul>
-            <li><strong>NFC Tag</strong> — only for reading the setup code (an alternative to the QR code)</li>
-            <li><strong>NFC Transport Layer (NTL)</strong> — carries the commissioning communication itself over NFC. It is not used for reading tags. Devices that support NTL must have both a QR code and an NFC tag, plus another commissioning method such as BLE, so they can be added even from a phone that does not support NFC commissioning.</li>
+            <li><strong>NFC Tag</strong> — only for reading the setup code (an alternative to the QR code). Available since Matter 1.4.1.</li>
+            <li><strong>NFC Transport Layer (NTL)</strong> — carries the commissioning communication itself over NFC. It is not used for reading tags. Devices that support NTL must have both a QR code and an NFC tag, plus another commissioning method such as BLE, so they can be added even from a phone that does not support NFC commissioning. Added in Matter 1.6.</li>
           </ul>
 
           <h4>Discriminator (the number that identifies a device)</h4>

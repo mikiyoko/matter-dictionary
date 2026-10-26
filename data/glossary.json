@@ -279,7 +279,7 @@
     "term": "NFC Tag",
     "termJa": "NFCタグ",
     "category": "commissioning",
-    "description": "QRコードと同じ登録情報（MT:で始まる文字列）を書き込んだタグ。スマホをかざすと、QRを読んだのと同じ情報が渡る。NFCの標準形式（NDEFのURIレコード）で書かれている。",
+    "description": "QRコードと同じ登録情報（MT:で始まる文字列）を書き込んだタグ。スマホをかざすと、QRを読んだのと同じ情報が渡る。NFCの標準形式（NDEFのURIレコード）で書かれている。Matter 1.4.1から。",
     "relatedTerms": ["onboarding-payload", "ntl"],
     "source": "Matter Core Spec 1.6"
   },
@@ -289,7 +289,7 @@
     "termFull": "NFC Transport Layer",
     "termJa": "NFCトランスポート層",
     "category": "commissioning",
-    "description": "登録の通信そのものをNFCで行う仕組み。コードを読むだけのNFCタグとは別物。NTLに対応する機器は、スマホがNFCでの登録に対応していなくても登録できるよう、QRコードとNFCタグの両方に加え、BLEなど別の登録手段も備える。",
+    "description": "登録の通信そのものをNFCで行う仕組み。コードを読むだけのNFCタグとは別物。NTLに対応する機器は、スマホがNFCでの登録に対応していなくても登録できるよう、QRコードとNFCタグの両方に加え、BLEなど別の登録手段も備える。Matter 1.6で加わった。",
     "relatedTerms": ["nfc-tag", "commissioner", "commissionee"],
     "source": "Matter Core Spec 1.6"
   },
