@@ -38,6 +38,33 @@ header {
   display: flex; align-items: center; gap: 5px; white-space: nowrap;
 }
 .back-btn:hover { background: var(--surface2); color: var(--accent); border-color: var(--accent); }
+/* 学ぶドロップダウン */
+.learn-menu { position: relative; }
+.learn-btn-p {
+  padding: 6px 13px; border-radius: 7px; font-size: 12px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; text-decoration: none;
+  font-family: 'Noto Sans JP', sans-serif; transition: all 0.15s;
+  display: flex; align-items: center; gap: 5px; white-space: nowrap;
+}
+.learn-btn-p:hover { background: var(--surface2); color: var(--accent); border-color: var(--accent); }
+.learn-dropdown-p {
+  display: none; position: absolute; right: 0; top: calc(100% + 6px);
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  min-width: 220px; z-index: 200; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  overflow: hidden;
+}
+.learn-dropdown-p.open { display: block; }
+.learn-dropdown-p a {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  color: var(--text); text-decoration: none; font-size: 12px; transition: background 0.12s;
+  border-bottom: 1px solid var(--border);
+}
+.learn-dropdown-p a:last-child { border-bottom: none; }
+.learn-dropdown-p a:hover { background: var(--surface2); color: var(--accent); }
+.learn-drop-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+.learn-drop-label { font-weight: 500; }
+.learn-drop-sub { font-size: 10px; color: var(--dim); display: block; margin-top: 1px; }
 .lang-toggle {
   display: flex; align-items: center; border: 1px solid var(--border);
   border-radius: 7px; overflow: hidden; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
@@ -298,6 +325,14 @@ header {
   .logo-badge { display: none; }
   .logo svg { width: 26px; height: 26px; }
   .header-stat { display: none; }
+  .logo { gap: 8px; min-width: 0; }
+  .logo-title { font-size: 13px; white-space: nowrap; }
+  .header-right { gap: 6px; flex-shrink: 0; }
+  .learn-btn-p, .back-btn { padding: 5px 9px; font-size: 11px; }
+  .lang-toggle button { padding: 4px 8px; font-size: 10px; }
+}
+@media (max-width: 400px) {
+  .back-btn span { display: none; }
 }
 
 .site-footer { border-top: 1px solid var(--border); padding: 40px 28px; text-align: center; font-size: 13px; color: var(--muted); }
@@ -360,6 +395,35 @@ header {
   </a>
   <div class="header-right">
     <span class="header-stat" id="headerStat"></span>
+    <div class="learn-menu">
+      <button class="learn-btn-p" onclick="toggleLearnProducts(event)" id="learnBtnP">🎓 <span id="learnBtnPLabel">学ぶ</span> ▾</button>
+      <div class="learn-dropdown-p" id="learnDropdownP">
+        <a href="guide.html">
+          <span class="learn-drop-icon">📡</span>
+          <span><span class="learn-drop-label" id="pdrop-guide">Matterとは？</span><span class="learn-drop-sub" id="pdrop-guide-sub">スマートホーム規格の解説</span></span>
+        </a>
+        <a href="matter-security.html">
+          <span class="learn-drop-icon">🔒</span>
+          <span><span class="learn-drop-label" id="pdrop-security">セキュリティ</span><span class="learn-drop-sub" id="pdrop-security-sub">コミッショニングと暗号化</span></span>
+        </a>
+        <a href="aliro.html">
+          <span class="learn-drop-icon">🔑</span>
+          <span><span class="learn-drop-label" id="pdrop-aliro">Aliroとは？</span><span class="learn-drop-sub" id="pdrop-aliro-sub">スマートロック規格の解説</span></span>
+        </a>
+        <a href="troubleshoot.html">
+          <span class="learn-drop-icon">🔧</span>
+          <span><span class="learn-drop-label" id="pdrop-ts">困ったときは</span><span class="learn-drop-sub" id="pdrop-ts-sub">登録できない・つながらないとき</span></span>
+        </a>
+        <a href="certification.html">
+          <span class="learn-drop-icon">🛠</span>
+          <span><span class="learn-drop-label" id="pdrop-cert">製品をつくる人へ</span><span class="learn-drop-sub" id="pdrop-cert-sub">認証・会員ランク・技適</span></span>
+        </a>
+        <a href="glossary.html">
+          <span class="learn-drop-icon">📖</span>
+          <span><span class="learn-drop-label" id="pdrop-glossary">用語集</span><span class="learn-drop-sub" id="pdrop-glossary-sub">Matter技術用語の解説</span></span>
+        </a>
+      </div>
+    </div>
     <a href="index.html" class="back-btn">← <span id="backBtnLabel">辞書トップ</span></a>
     <div class="lang-toggle">
       <button id="btnJa" class="active" onclick="setLang('ja')">JA</button>
@@ -983,6 +1047,31 @@ document.getElementById('overlay').addEventListener('click', function(e) {
 });
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
 
+// ─── 学ぶドロップダウン ──────────────────────────────────────
+function toggleLearnProducts(e) {
+  e.stopPropagation();
+  document.getElementById('learnDropdownP').classList.toggle('open');
+}
+document.addEventListener('click', function() {
+  var d = document.getElementById('learnDropdownP');
+  if (d) d.classList.remove('open');
+});
+var LEARN_LABELS_P = {
+  'learnBtnPLabel':     { ja: '学ぶ', en: 'Learn' },
+  'pdrop-guide':        { ja: 'Matterとは？',         en: 'What is Matter?' },
+  'pdrop-guide-sub':    { ja: 'スマートホーム規格の解説',  en: 'Smart home standard overview' },
+  'pdrop-security':     { ja: 'セキュリティ',           en: 'Security' },
+  'pdrop-security-sub': { ja: 'コミッショニングと暗号化',  en: 'Commissioning & encryption' },
+  'pdrop-aliro':        { ja: 'Aliroとは？',           en: 'What is Aliro?' },
+  'pdrop-aliro-sub':    { ja: 'スマートロック規格の解説',  en: 'Smart lock standard overview' },
+  'pdrop-ts':           { ja: '困ったときは',           en: 'Troubleshooting' },
+  'pdrop-ts-sub':       { ja: '登録できない・つながらないとき', en: "Can't add or connect a device" },
+  'pdrop-cert':         { ja: '製品をつくる人へ',       en: 'For Builders' },
+  'pdrop-cert-sub':     { ja: '認証・会員ランク・技適',  en: 'Certification, membership, Giteki' },
+  'pdrop-glossary':     { ja: '用語集',                en: 'Glossary' },
+  'pdrop-glossary-sub': { ja: 'Matter技術用語の解説',   en: 'Matter technical terms' },
+};
+
 // ─── Language ────────────────────────────────────────────────
 function setLang(lang) {
   currentLang = lang;
@@ -996,6 +1085,10 @@ function setLang(lang) {
 
 function applyLangUI(lang) {
   var el;
+  Object.keys(LEARN_LABELS_P).forEach(function(id) {
+    var e = document.getElementById(id);
+    if (e) e.textContent = lang === 'en' ? LEARN_LABELS_P[id].en : LEARN_LABELS_P[id].ja;
+  });
   el = document.getElementById('logoTitle');
   if (el) el.textContent = lang === 'en' ? 'Matter Dictionary' : 'Matter辞書';
   el = document.getElementById('backBtnLabel');
@@ -1066,6 +1159,8 @@ Promise.all([
     if (dtParam)     currentDeviceType   = dtParam;
   })();
 
+  document.getElementById('btnJa').classList.toggle('active', currentLang === 'ja');
+  document.getElementById('btnEn').classList.toggle('active', currentLang === 'en');
   applyLangUI(currentLang);
   buildSidebar();
 
