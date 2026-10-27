@@ -435,9 +435,88 @@
     "termFull": "Protocol Implementation Conformance Statement",
     "termJa": "プロトコル実装適合宣言",
     "category": "certification",
-    "description": "Matterの認証テストで使用するクラスター固有の短縮コード。各クラスターには固有のPICSコードが割り当てられており（例：On/Off=OO、Thermostat=TSTAT）、認証試験の対象機能を宣言・識別するために使用する。Matter認証を取得するデバイスはPICSに従って試験が実施される。",
-    "relatedTerms": [],
+    "description": "どの機能を実装したかを申告する書類。認証の試験の前に出し、試験はこの申告に沿って行われる。中の項目は、クラスターごとの短い記号（例：On/Off＝OO、Thermostat＝TSTAT）で書かれる。",
+    "relatedTerms": ["atl", "cd"],
     "source": "Matter Spec / docs/GLOSSARY.md"
+  },
+  {
+    "id": "atl",
+    "term": "ATL",
+    "termFull": "Authorized Test Laboratory",
+    "termJa": "認定試験所",
+    "category": "certification",
+    "description": "CSAが認めた試験所。Matter認証の試験を行う。CSAの一覧には、日本に拠点のある試験所も載っている。",
+    "relatedTerms": ["pics", "cd", "itl"],
+    "source": "CSA公式サイト"
+  },
+  {
+    "id": "itl",
+    "term": "Interop Test Lab",
+    "termFull": "ITL",
+    "termJa": "相互運用テストラボ",
+    "category": "certification",
+    "description": "CSAが米国ポートランドで運営し、各社のアプリやハブと組み合わせて実際に動くかを試すラボ。仕様どおりかを見る認証試験とは別。各社のバッジ（Works with ○○）の試験が、ここに集まりつつある。",
+    "relatedTerms": ["atl", "works-with"],
+    "source": "CSA公式サイト"
+  },
+  {
+    "id": "ctp",
+    "term": "CTP",
+    "termFull": "Certification Transfer Program",
+    "termJa": "認証移転プログラム",
+    "category": "certification",
+    "description": "他社の認証済み製品を、機能を変えずに自社ブランドで出すための制度（ホワイトラベル）。変えてよいのは包装・筐体・画面の見た目とブランドだけ。",
+    "relatedTerms": ["atl", "cd"],
+    "source": "CSA公式サイト"
+  },
+  {
+    "id": "cd",
+    "term": "CD",
+    "termFull": "Certification Declaration",
+    "termJa": "認証宣言",
+    "category": "certification",
+    "description": "製品がMatter認証に合格したことを示す証明。CSAが発行し、機器に入れておく。登録のときに、機器の証明書（DAC）と合わせて確かめられる。",
+    "relatedTerms": ["dac", "dcl", "pics"],
+    "source": "CSA公式サイト / Matter Core Spec 1.6"
+  },
+  {
+    "id": "test-vid",
+    "term": "Test Vendor ID",
+    "termJa": "テスト用VID",
+    "category": "certification",
+    "description": "試作・開発用のメーカーID（0xFFF1〜0xFFF4）。販売する製品には使えない。各社のアプリには、警告付きで登録して試せる。",
+    "relatedTerms": ["cd", "dac"],
+    "source": "Matter Core Spec 1.6"
+  },
+  {
+    "id": "giteki",
+    "term": "Giteki",
+    "termFull": "技術基準適合証明",
+    "termJa": "技適",
+    "category": "certification",
+    "description": "日本で電波を出す機器が、電波法の基準に合っていることの証明。Matter認証とは別の制度で、試作機でも原則必要。",
+    "relatedTerms": ["180-day-rule"],
+    "source": "総務省"
+  },
+  {
+    "id": "180-day-rule",
+    "term": "180-day Rule",
+    "termFull": "技適未取得機器を用いた実験等の特例制度",
+    "termJa": "180日ルール",
+    "category": "certification",
+    "description": "総務省に届け出れば、技適の無い機器を、届け出の日から180日以内なら国内で実験に使える制度。Wi-Fi・Bluetooth・IEEE 802.15.4（Threadが使う電波）などが対象の規格。",
+    "relatedTerms": ["giteki", "ieee-802-15-4"],
+    "source": "総務省"
+  },
+  {
+    "id": "works-with",
+    "term": "Works with ○○",
+    "termFull": "Works with Google Home / Apple Home / Alexa / SmartThings",
+    "termJa": "Works with ○○",
+    "category": "certification",
+    "description": "Google Home・Apple Home・Alexa・SmartThingsで動くことを、それぞれの会社が確かめたバッジ。Matter認証とは別で、付けるかは任意。",
+    "relatedTerms": ["itl"],
+    "source": "Google・Apple・Amazon・Samsungの開発者向けページ"
   },
   {
     "id": "dcl",

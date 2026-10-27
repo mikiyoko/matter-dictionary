@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matter製品をつくる人へ：認証のはなし | Matter辞書</title>
+  <meta name="description" content="Matter対応の製品を作る人向けに、Matter認証・Works with・技適の違い、試作のしかた、CSAの会員ランクと費用、認証の流れをまとめました。">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="favicon-16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #059669;
+      --primary-light: #d1fae5;
+      --primary-dark: #065f46;
+      --blue: #1a56db;
+      --blue-light: #e8f0fe;
+      --purple: #7c3aed;
+      --purple-light: #ede9fe;
+      --orange: #d97706;
+      --orange-light: #fef3c7;
+      --red: #dc2626;
+      --red-light: #fee2e2;
+      --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb;
+      --gray-300: #d1d5db; --gray-600: #4b5563; --gray-700: #374151;
+      --gray-800: #1f2937; --gray-900: #111827;
+      --text: #1f2937; --text-light: #6b7280; --border: #e5e7eb;
+      --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+      --radius: 12px;
+      --green-light: #d1fae5;
+    }
+    body { font-family: 'Noto Sans JP', sans-serif; color: var(--text); background: #f8fafc; line-height: 1.7; }
+
+    .hero { background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #059669 100%); color: #fff; padding: 64px 24px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(110,231,183,0.15) 0%, transparent 60%); }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 500; margin-bottom: 20px; backdrop-filter: blur(4px); }
+    .hero h1 { font-size: clamp(26px, 5vw, 44px); font-weight: 700; font-family: 'Inter', 'Noto Sans JP', sans-serif; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .hero h1 .matter-green { color: #6ee7b7; }
+    .hero p { font-size: 16px; color: rgba(255,255,255,0.85); max-width: 560px; margin: 0 auto 28px; }
+    .hero-tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .hero-tag { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: rgba(255,255,255,0.9); }
+
+    main { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
+    .toc { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; margin-bottom: 48px; box-shadow: var(--shadow); }
+    .toc-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-light); margin-bottom: 12px; }
+    .toc ol { padding-left: 20px; }
+    .toc li { margin-bottom: 6px; }
+    .toc a { color: var(--primary); text-decoration: none; font-size: 14px; }
+    .toc a:hover { text-decoration: underline; }
+    section { margin-bottom: 64px; }
+    .section-label { display: inline-flex; align-items: center; gap: 6px; color: var(--primary); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    h2 { font-size: 26px; font-weight: 700; color: var(--gray-900); margin-bottom: 16px; line-height: 1.3; }
+    h3 { font-size: 17px; font-weight: 700; color: var(--gray-800); margin-bottom: 10px; }
+    p { font-size: 15px; color: var(--gray-700); margin-bottom: 16px; line-height: 1.75; }
+    .card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; box-shadow: var(--shadow); }
+    .card + .card { margin-top: 14px; }
+    .highlight { background: var(--primary-light); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: var(--primary-dark); line-height: 1.7; }
+    .highlight-blue { background: var(--blue-light); border-left: 4px solid var(--blue); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: #1e3a8a; line-height: 1.7; }
+    .highlight-orange { background: var(--orange-light); border-left: 4px solid var(--orange); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: #92400e; line-height: 1.7; }
+    .info-box { background: var(--blue-light); border-left: 4px solid var(--blue); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 14px; color: #1e3a8a; }
+    /* たたむ（Advanced）：生活者向け本文の下に、仕組みや表をしまう */
+    .adv { margin-top: 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--gray-50); }
+    .adv > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px; padding: 13px 18px; font-size: 14px; font-weight: 700; color: var(--gray-800); }
+    .adv > summary::-webkit-details-marker { display: none; }
+    .adv > summary::after { content: '＋'; margin-left: auto; color: var(--primary); }
+    .adv[open] > summary::after { content: '－'; }
+    .adv > summary:hover { color: var(--primary); }
+    .adv-tag { flex-shrink: 0; font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; color: var(--primary-dark); background: var(--primary-light); border-radius: 999px; padding: 2px 9px; }
+    .adv-body { padding: 0 18px 18px; font-size: 13px; line-height: 1.75; color: var(--gray-700); }
+    .adv-body h4 { font-size: 14px; color: var(--gray-800); margin: 18px 0 6px; }
+    .adv-body p { font-size: 13px; margin-bottom: 10px; }
+    .adv-body ol, .adv-body ul { padding-left: 20px; margin-bottom: 10px; }
+    .adv-body .table-wrap { overflow-x: auto; margin: 10px 0; }
+    .adv-body table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: none; border: 1px solid var(--border); }
+    .adv-body th, .adv-body td { padding: 9px 12px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+    .adv-body th { background: var(--gray-100); font-size: 12px; text-transform: none; letter-spacing: 0; }
+    .adv-body code { font-family: 'Inter', monospace; font-size: 12px; background: var(--gray-100); padding: 1px 5px; border-radius: 3px; word-break: break-all; }
+    .adv-body blockquote { margin: 6px 0 10px; padding: 8px 12px; border-left: 3px solid var(--gray-300); background: #fff; font-size: 12px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-2 .card + .card, .grid-3 .card + .card { margin-top: 0; }
+    .point-box { display: flex; gap: 14px; padding: 16px 18px; border-radius: 10px; align-items: flex-start; margin-top: 14px; }
+    .point-box.green { background: var(--green-light); border: 1px solid #a7f3d0; }
+    .point-box.blue { background: var(--blue-light); border: 1px solid #bfdbfe; }
+    .point-box.orange { background: var(--orange-light); border: 1px solid #fcd34d; }
+    .point-box.purple { background: var(--purple-light); border: 1px solid #c4b5fd; }
+    .point-box.red { background: var(--red-light); border: 1px solid #fca5a5; }
+    .point-box .point-icon { font-size: 22px; flex-shrink: 0; }
+    .point-box .point-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+    .point-box .point-desc { font-size: 13px; line-height: 1.65; }
+    .point-box.green .point-title { color: var(--primary-dark); }
+    .point-box.blue .point-title { color: #1e40af; }
+    .point-box.orange .point-title { color: #92400e; }
+    .point-box.purple .point-title { color: var(--purple); }
+    .point-box.red .point-title { color: #991b1b; }
+    .chip { display: inline-block; padding: 2px 9px; border-radius: 6px; font-size: 11px; font-weight: 700; font-family: 'Inter', monospace; }
+    .chip.green { background: var(--green-light); color: var(--primary-dark); border: 1px solid #a7f3d0; }
+    .chip.blue { background: var(--blue-light); color: #1e40af; border: 1px solid #bfdbfe; }
+    .chip.purple { background: var(--purple-light); color: var(--purple); border: 1px solid #c4b5fd; }
+    .chip.orange { background: var(--orange-light); color: #92400e; border: 1px solid #fcd34d; }
+    .chip.gray { background: var(--gray-100); color: var(--gray-600); border: 1px solid var(--gray-300); }
+
+    /* ── コミッショニングフロー図 ── */
+    .comm-flow { display: flex; flex-direction: column; gap: 0; margin: 24px 0; }
+    .comm-step { display: grid; grid-template-columns: 48px 1fr; gap: 0; align-items: stretch; }
+    .comm-step-left { display: flex; flex-direction: column; align-items: center; }
+    .comm-step-num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: 'Inter', sans-serif; font-size: 14px; flex-shrink: 0; z-index: 1; }
+    .comm-step-line { width: 2px; flex: 1; margin: 0 auto; min-height: 16px; }
+    .comm-step-body { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; margin-left: 8px; box-shadow: var(--shadow); }
+    .comm-step-body h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .comm-step-body p { font-size: 13px; color: var(--gray-600); margin: 0; line-height: 1.6; }
+    .comm-step-body .security-note { display: inline-flex; align-items: center; gap: 5px; background: var(--green-light); color: var(--primary-dark); border-radius: 6px; padding: 3px 9px; font-size: 11px; font-weight: 600; margin-top: 8px; }
+
+    /* セキュリティ証明書の階層図 */
+    .cert-chain { display: flex; flex-direction: column; gap: 8px; margin: 18px 0; }
+    .cert-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border); background: #fff; box-shadow: var(--shadow); }
+    .cert-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .cert-title { font-size: 13px; font-weight: 700; }
+    .cert-sub { font-size: 12px; color: var(--text-light); }
+    .cert-arrow { text-align: center; color: var(--text-light); font-size: 18px; margin: -4px 0; }
+
+    /* FAQ */
+    .faq-item { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 12px; }
+    .faq-q { padding: 18px 24px; display: flex; gap: 12px; align-items: flex-start; }
+    .faq-badge { flex-shrink: 0; width: 28px; height: 28px; background: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary); font-size: 13px; }
+    .faq-q-text { font-weight: 700; font-size: 15px; }
+    .faq-a { padding: 0 24px 18px 64px; font-size: 14px; color: var(--gray-600); line-height: 1.75; }
+
+    .summary-box { background: linear-gradient(135deg, #064e3b, #059669); color: #fff; border-radius: var(--radius); padding: 32px 36px; text-align: center; }
+    .summary-box h3 { color: #fff; font-size: 20px; margin-bottom: 12px; }
+    .summary-box p { color: rgba(255,255,255,0.9); font-size: 14px; margin: 0; }
+
+    .site-footer { background: #1f2937; color: #d1d5db; text-align: center; padding: 36px 24px; font-size: 13px; }
+    .footer-inner { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 4px 14px; }
+    .footer-sep { color: #4b5563; }
+    .footer-inner a { color: #6ee7b7; text-decoration: none; transition: color 0.15s; }
+    .footer-inner a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      .site-footer { padding: 28px 16px; }
+      .footer-inner { flex-direction: column; gap: 10px; }
+      .footer-sep { display: none; }
+    }
+
+    .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 640px) {
+      .header-nav a { font-size: 11px; padding: 5px 8px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .comm-step { grid-template-columns: 36px 1fr; }
+    }
+    .back-to-toc { display: block; text-align: right; font-size: 11px; color: var(--text-light); text-decoration: none; margin-top: 24px; }
+    .back-to-toc:hover { color: var(--primary); }
+    /* 認証ページ用：表・箇条書き・手順 */
+    .table-wrap { overflow-x: auto; margin: 16px 0; }
+    .table-wrap table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .table-wrap th { background: var(--gray-50); padding: 10px 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-light); border-bottom: 1px solid var(--border); }
+    .table-wrap td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--gray-700); vertical-align: top; }
+    .table-wrap tr:last-child td { border-bottom: none; }
+    .plain-list { padding-left: 20px; margin: 0 0 16px; font-size: 15px; color: var(--gray-700); line-height: 1.75; }
+    .plain-list li { margin-bottom: 8px; }
+    .step-list { counter-reset: step; list-style: none; margin: 16px 0; padding: 0; }
+    .step-list li { counter-increment: step; position: relative; padding: 12px 16px 12px 56px; margin-bottom: 8px; background: #fff; border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); font-size: 14px; color: var(--gray-700); }
+    .step-list li::before { content: counter(step); position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border-radius: 50%; background: var(--primary-light); color: var(--primary-dark); font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+    #faq .faq-a a, .plain-list a { color: var(--primary); }
+  </style>
+  <script src="nav.js"></script>
+<!-- Start KARTE Tag -->
+<script>!function(n){if(!window[n]){var o=window[n]=function(){var n=[].slice.call(arguments);return o.x?o.x.apply(0,n):o.q.push(n)};o.q=[],o.i=Date.now(),o.allow=function(){o.o="allow"},o.deny=function(){o.o="deny"}}}("krt")</script>
+<script async src="https://cdn-edge.karte.io/b02f0124b54c6cb3e98df4decffad2db/edge.js"></script>
+<!-- End KARTE Tag -->
+</head>
+<body>
+
+<div id="site-nav"></div>
+
+<div class="hero">
+  <div class="hero-badge">🛠 For Builders</div>
+  <h1 data-ja="<span class='matter-green'>Matter</span>製品をつくる人へ<br>認証のはなし"
+      data-en="For People Building <span class='matter-green'>Matter</span> Products<br>Certification Basics">
+    <span class="matter-green">Matter</span>製品をつくる人へ<br>認証のはなし
+  </h1>
+  <p data-ja="「認証は大変？費用は？」「試作だけならどうする？」。Matter対応の製品を作るときに知っておきたい、認証・会員ランク・技適の基本をまとめました。"
+     data-en="&#34;Is certification hard? What does it cost?&#34; &#34;What if I only need a prototype?&#34; The basics of certification, membership levels and Japan&#39;s radio certification (Giteki) for anyone building Matter products.">
+    「認証は大変？費用は？」「試作だけならどうする？」。Matter対応の製品を作るときに知っておきたい、認証・会員ランク・技適の基本をまとめました。
+  </p>
+  <div class="hero-tags">
+    <span class="hero-tag" data-ja="🏷 3つの認証" data-en="🏷 Three Kinds of Certification">🏷 3つの認証</span>
+    <span class="hero-tag" data-ja="🧪 試作と技適" data-en="🧪 Prototypes &amp; Giteki">🧪 試作と技適</span>
+    <span class="hero-tag" data-ja="💳 会員ランクと費用" data-en="💳 Membership &amp; Fees">💳 会員ランクと費用</span>
+    <span class="hero-tag" data-ja="🧭 認証の流れ" data-en="🧭 The Certification Process">🧭 認証の流れ</span>
+  </div>
+</div>
+
+<main>
+
+  <div class="toc fade-in" id="toc">
+    <div class="toc-title" data-ja="📋 このページの内容" data-en="📋 Contents">📋 このページの内容</div>
+    <ol class="ja-only">
+      <li><a href="#faq">よく聞かれる質問から</a></li>
+      <li><a href="#three">「認証」は3種類あって、別物</a></li>
+      <li><a href="#prototype">認証なしで作れる？</a></li>
+      <li><a href="#giteki">日本で試作機の電波を出すとき（技適）</a></li>
+      <li><a href="#process">認証を取るまでの流れ</a></li>
+      <li><a href="#membership">会員ランクと、製品の出し方</a></li>
+      <li><a href="#labs">試験の費用と、日本の試験所</a></li>
+      <li><a href="#interop">各社のバッジの試験は、CSAのラボに集まる方向</a></li>
+      <li><a href="#recert">更新やシリーズ品の認証を軽くする制度</a></li>
+    </ol>
+    <ol class="en-only" style="display:none;">
+      <li><a href="#faq">Common Questions</a></li>
+      <li><a href="#three">Three Kinds of "Certification"</a></li>
+      <li><a href="#prototype">Can You Build Without Certification?</a></li>
+      <li><a href="#giteki">Transmitting from a Prototype in Japan (Giteki)</a></li>
+      <li><a href="#process">The Path to Certification</a></li>
+      <li><a href="#membership">Membership Levels and How You Can Ship</a></li>
+      <li><a href="#labs">Testing Costs and Labs in Japan</a></li>
+      <li><a href="#interop">Badge Testing Is Converging on CSA's Lab</a></li>
+      <li><a href="#recert">Lighter Certification for Updates and Product Lines</a></li>
+    </ol>
+  </div>
+
+  <!-- 00 よく聞かれる質問から -->
+  <section id="faq" class="fade-in">
+    <div class="section-label">❓ 00 — COMMON QUESTIONS</div>
+    <h2 data-ja="よく聞かれる質問から" data-en="Common Questions">よく聞かれる質問から</h2>
+    <div class="ja-only">
+      <p>テクノロジー業界向けの展示会や商談の場で、よく聞かれる質問です。短く答えてから、下の節で詳しく説明します。</p>
+      <div class="faq-item">
+        <div class="faq-q"><div class="faq-badge">Q</div><div class="faq-q-text">認証は大変？費用は？</div></div>
+        <div class="faq-a">費用は大きく3つです。CSAの年会費、1製品ごとの申請料、それに試験所の試験費用。試験費用は各試験所にお問い合わせください。Google・Apple・Amazon・SmartThingsのバッジの試験はCSAのラボに集まる方向で、1か所に持ち込めば済むようになりつつあります。<br>→ <a href="#membership">会員ランク</a>・<a href="#labs">試験の費用</a>・<a href="#interop">CSAのラボ</a></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><div class="faq-badge">Q</div><div class="faq-q-text">研究や試作（PoC）として作れる？</div></div>
+        <div class="faq-a">作れます。開発キット（SDK）はオープンソースで、試作用のメーカーIDも用意されています。各社のアプリにも、警告付きで登録して試せます。ただし日本で電波を出すので、技適の無い試作機なら総務省の「180日の特例」を届け出てください。販売するなら認証が要ります。<br>→ <a href="#prototype">認証なしで作れる？</a>・<a href="#giteki">技適</a></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><div class="faq-badge">Q</div><div class="faq-q-text">どの会員ランクなら、どんな出し方ができる？</div></div>
+        <div class="faq-a">自社で開発して認証を取るなら、Adopter以上です。他社の認証済み製品をブランドを変えて出すだけなら、年会費0のAssociateでもできます。自社の製品を他社に提供する側になれるのは、ParticipantとPromoterだけです。<br>→ <a href="#membership">会員ランクと、製品の出し方</a></div>
+      </div>
+    </div>
+    <div class="en-only" style="display:none;">
+      <p>Questions that come up often at technology trade shows and business meetings. Short answers first; details follow in the sections below.</p>
+      <div class="faq-item">
+        <div class="faq-q"><div class="faq-badge">Q</div><div class="faq-q-text">Is certification hard? What does it cost?</div></div>
+        <div class="faq-a">There are three main costs: the CSA annual membership fee, a per-product application fee, and the test lab's testing fee. For testing fees, please contact each test lab. Badge testing for Google, Apple, Amazon and SmartThings is converging on CSA's lab, so increasingly one submission covers it.<br>→ <a href="#membership">Membership</a> · <a href="#labs">Testing costs</a> · <a href="#interop">CSA's lab</a></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><div class="faq-badge">Q</div><div class="faq-q-text">Can I build one for research or as a prototype (PoC)?</div></div>
+        <div class="faq-a">Yes. The SDK is open source, and vendor IDs for prototyping are provided. You can add your device to each company's app, with a warning, to try it out. But you will be transmitting radio signals in Japan, so for a prototype without Giteki, file a notification under the Ministry's "180-day special rule". To sell, you need certification.<br>→ <a href="#prototype">Building without certification</a> · <a href="#giteki">Giteki</a></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><div class="faq-badge">Q</div><div class="faq-q-text">Which membership level lets me ship in which way?</div></div>
+        <div class="faq-a">To develop and certify your own product, you need Adopter or above. To ship another company's certified product under your own brand, even the free Associate level works. Only Participants and Promoters can be the ones providing their products to others.<br>→ <a href="#membership">Membership levels and how you can ship</a></div>
+      </div>
+    </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
+  </section>
+
+  <!-- 01 3種類の認証 -->
+  <section id="three" class="fade-in">
+    <div class="section-label">🏷 01 — THREE KINDS</div>
+    <h2 data-ja="「認証」は3種類あって、別物" data-en="Three Kinds of &quot;Certification&quot;">「認証」は3種類あって、別物</h2>
+    <div class="ja-only">
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>誰が</th><th>何を確かめる</th><th>要るか</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Matter認証</strong></td><td>CSA</td><td>Matterの仕様どおりに作られているか</td><td>「Matter」と名乗って売るなら必要</td></tr>
+          <tr><td><strong>Works with ○○</strong></td><td>Google・Apple・Amazon・Samsung</td><td>そのアプリで実際にちゃんと動くか</td><td>任意（バッジを付けたい場合）</td></tr>
+          <tr><td><strong>電波の認証</strong>（日本なら技適）</td><td>国（総務省）</td><td>電波法を守っているか</td><td>日本で電波を出すなら原則必要。試作でも</td></tr>
+        </tbody>
+      </table></div>
+      <div class="highlight">💡 Matter認証を取っても、技適は別に要ります。技適を取っても、Matter認証は別です。</div>
+      <p style="font-size:13px; color:var(--text-light);">Matter認証と技適の関係を公式に説明した資料は見当たらないため、ここでは「別の制度」とだけ書いています。CSAには製品のセキュリティの認証（Product Security）もありますが、このページでは扱いません。</p>
+    </div>
+    <div class="en-only" style="display:none;">
+      <div class="table-wrap"><table>
+        <thead><tr><th></th><th>Who</th><th>What it checks</th><th>Required?</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Matter certification</strong></td><td>CSA</td><td>Whether the product is built to the Matter specification</td><td>Required to sell it as "Matter"</td></tr>
+          <tr><td><strong>Works with ...</strong></td><td>Google, Apple, Amazon, Samsung</td><td>Whether it actually works well in their app</td><td>Optional (if you want the badge)</td></tr>
+          <tr><td><strong>Radio certification</strong> (Giteki in Japan)</td><td>Government (Ministry of Internal Affairs and Communications)</td><td>Compliance with the Radio Act</td><td>Generally required to transmit in Japan — even for prototypes</td></tr>
+        </tbody>
+      </table></div>
+      <div class="highlight">💡 Matter certification does not replace Giteki, and Giteki does not replace Matter certification.</div>
+      <p style="font-size:13px; color:var(--text-light);">We found no official document explaining how Matter certification and Giteki relate, so here we only say they are separate schemes. CSA also offers a Product Security certification, which this page does not cover.</p>
+    </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
+  </section>
+
+  <!-- 02 認証なしで作れる？ -->
+  <section id="prototype" class="fade-in">
+    <div class="section-label">🧪 02 — PROTOTYPING</div>
+    <h2 data-ja="認証なしで作れる？" data-en="Can You Build Without Certification?">認証なしで作れる？</h2>
+    <div class="ja-only">
+      <p><strong>作って、手元で試すことはできます。</strong></p>
+      <ul class="plain-list">
+        <li>Matterの開発キット（SDK）はオープンソースで、ライセンスはApache 2.0。研究や試作に使えます。</li>
+        <li>CSAは、<strong>試作・開発のためのメーカーID</strong>（<code>0xFFF1</code>〜<code>0xFFF4</code>）と、テスト用の証明書の作り方を用意しています。仕様書も、メーカーやホビイストの試験・開発のためのものだと書いています。</li>
+        <li>ただし、<strong>販売するなら認証が要ります。</strong>Appleは、Matterアクセサリーを配布・販売するならCSAの認証を受けるよう案内しています。Googleは、一般の利用者向けの製品にはCSAの認証が要り、テスト用IDは使えないとしています。</li>
+      </ul>
+      <details class="adv">
+        <summary><span class="adv-tag">ADVANCED</span>各社アプリでの試し方</summary>
+        <div class="adv-body">
+          <div class="table-wrap"><table>
+            <thead><tr><th></th><th>試し方</th><th>制限・表示</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Google Home</strong></td><td>開発者コンソールでプロジェクトを作り、テスト用IDを登録してQRコードで追加</td><td>テスト用IDで試せるのは、基本の登録・操作まで。製品の試験・フィールドテスト・ファームウェア更新の段階では使えない</td></tr>
+              <tr><td><strong>Apple Home</strong></td><td>Homeアプリで追加すると、認証されていないアクセサリーだという表示が出る（英語の原文は<code>uncertified accessory</code>）。そのまま追加を選べば追加できる（原文は<code>Add Anyway</code>）</td><td>ファームウェア更新の試験には、テスト用の台帳（TestNet DCL）を使う</td></tr>
+              <tr><td><strong>Amazon Alexa</strong></td><td>開発者アカウントのAlexaアプリで「デバイスを追加 → その他 → Matter」</td><td>Matterに対応していない機器だという警告が出て、続けるかを聞かれる（英語の原文は<code>This device isn't Matter compatible</code>）</td></tr>
+              <tr><td><strong>SmartThings</strong></td><td>公開サンプルで、「仮想のMatter機器」をスマホに作って試せる</td><td>実機でのテスト用IDの扱いは、公開資料に記載なし</td></tr>
+            </tbody>
+          </table></div>
+          <p>AppleとAmazonの手順は、それぞれファームウェア更新の試験・照明のサンプル機についての説明で、どんな試作機でも同じとは限りません。</p>
+          <h4>警告が出るのはなぜ？</h4>
+          <p>仕様書が、テスト用IDの機器は、利用者が危険を分かっている場合を除いて、ふだんの家のネットワークに登録すべきでない、としているためです。</p>
+        </div>
+      </details>
+    </div>
+    <div class="en-only" style="display:none;">
+      <p><strong>You can build one and try it out yourself.</strong></p>
+      <ul class="plain-list">
+        <li>The Matter SDK is open source under the Apache 2.0 license, so it can be used for research and prototyping.</li>
+        <li>CSA provides <strong>vendor IDs for prototyping and development</strong> (<code>0xFFF1</code>–<code>0xFFF4</code>) and a way to create test certificates. The specification describes them as being for testing and development by manufacturers and hobbyists.</li>
+        <li>However, <strong>selling requires certification.</strong> Apple directs anyone distributing or selling Matter accessories to CSA certification. Google states that consumer products need CSA certification and cannot use test IDs.</li>
+      </ul>
+      <details class="adv">
+        <summary><span class="adv-tag">ADVANCED</span>Trying It in Each Company's App</summary>
+        <div class="adv-body">
+          <div class="table-wrap"><table>
+            <thead><tr><th></th><th>How to try</th><th>Limits / what you see</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Google Home</strong></td><td>Create a project in the Developer Console, register the test ID, and add the device by QR code</td><td>Test IDs cover only basic commissioning and control. They can't be used for product testing, field trials or firmware updates</td></tr>
+              <tr><td><strong>Apple Home</strong></td><td>Adding it in the Home app shows that it is an <code>uncertified accessory</code>; choose <code>Add Anyway</code> to add it</td><td>Firmware update testing uses the test ledger (TestNet DCL)</td></tr>
+              <tr><td><strong>Amazon Alexa</strong></td><td>In the Alexa app on a developer account: "Add Device → Other → Matter"</td><td>A warning (<code>This device isn't Matter compatible</code>) asks whether to continue</td></tr>
+              <tr><td><strong>SmartThings</strong></td><td>A public sample lets you create a "virtual Matter device" on your phone</td><td>Handling of test IDs on real hardware is not described in public materials</td></tr>
+            </tbody>
+          </table></div>
+          <p>Apple's and Amazon's steps come from explanations about firmware update testing and a sample lighting device respectively, and may not apply to every prototype.</p>
+          <h4>Why the warning?</h4>
+          <p>The specification says devices with test IDs should not be commissioned into a regular home network unless the user understands the risk.</p>
+        </div>
+      </details>
+    </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
+  </section>
+
+  <!-- 03 技適 -->
+  <section id="giteki" class="fade-in">
+    <div class="section-label">📡 03 — GITEKI</div>
+    <h2 data-ja="日本で試作機の電波を出すとき（技適）" data-en="Transmitting from a Prototype in Japan (Giteki)">日本で試作機の電波を出すとき（技適）</h2>
+    <div class="ja-only">
+      <ul class="plain-list">
+        <li>日本で電波を出すには、原則として<strong>技適</strong>が要ります。技適の付いた無線モジュールを組み込んだ製品なら、同じ表示を付けられます。</li>
+        <li>技適の無い試作機は、<strong>「技適未取得機器を用いた実験等の特例制度」（いわゆる180日ルール）</strong>が使えます。総務省のWebで届け出れば、届け出の日から180日以内なら国内で実験に使えます。法人・個人のどちらでも届け出られ、手数料はかかりません。同じ規格・同じ目的での延長はできません。</li>
+        <li>特例の対象表には、無線LANの2.4GHz帯・5GHz帯と6GHz帯（制限付き）、Bluetoothなどが並んでいます。<strong>Matterで使うWi-Fi（2.4GHz帯）・Bluetooth LE・Thread（IEEE 802.15.4）は、どれも特例の対象規格に入っています。</strong>ただし規格の名前だけで使えるわけではなく、機器ごとに、相当する基準に合っていることを確かめて届け出ます。</li>
+        <li>もっと長く実験するなら、<strong>実験試験局</strong>の免許（5年。再免許もできる）を取るか、技適を取ります。</li>
+      </ul>
+      <p style="font-size:13px; color:var(--text-light);">2026年3月時点の総務省の資料にもとづきます。この資料は制度の見直しを検討する会議に出されたもので、制度が変わる可能性があります。</p>
+      <details class="adv">
+        <summary><span class="adv-tag">ADVANCED</span>Threadが対象と言える根拠</summary>
+        <div class="adv-body">
+          <p>特例の対象となる規格は、総務省の告示で決められています（令和元年総務省告示第263号。最終改正は令和5年12月22日施行）。その第四項に「IEEE802.15.4」があります。告示が指定しているのは規格のIEEE 802.15.4で、Threadという名前は出てきません。ThreadはIEEE 802.15.4の電波を使うので、この項に当たります。Bluetoothは「Core Specification Version 2.1以降」です。</p>
+          <p>告示の本文：<a href="https://www.tele.soumu.go.jp/horei/law_honbun/71ab7244.html" target="_blank" rel="noopener">令和元年総務省告示第263号（総務省 電波利用ホームページ）</a></p>
+        </div>
+      </details>
+    </div>
+    <div class="en-only" style="display:none;">
+      <ul class="plain-list">
+        <li>Transmitting radio signals in Japan generally requires <strong>Giteki</strong> (technical conformity certification). A product that incorporates a Giteki-certified radio module can carry the same mark.</li>
+        <li>Prototypes without Giteki can use the <strong>special rule for experiments with equipment lacking Giteki (the "180-day rule")</strong>. After filing a notification online with the Ministry of Internal Affairs and Communications, you may use the equipment for experiments in Japan for up to 180 days from the filing date. Both companies and individuals can file, and there is no fee. It cannot be extended for the same standard and purpose.</li>
+        <li>The list of eligible standards includes 2.4 GHz wireless LAN, 5 GHz and 6 GHz wireless LAN (with restrictions), and Bluetooth, among others. <strong>Wi-Fi (2.4 GHz), Bluetooth LE and Thread (IEEE 802.15.4), as used by Matter, are all eligible standards.</strong> The standard name alone is not enough, though: for each device you confirm it meets the equivalent technical requirements before filing.</li>
+        <li>For longer experiments, obtain an <strong>experimental radio station</strong> license (5 years, renewable) or get Giteki.</li>
+      </ul>
+      <p style="font-size:13px; color:var(--text-light);">Based on Ministry materials as of March 2026. These were submitted to a council reviewing the system, so the rules may change.</p>
+      <details class="adv">
+        <summary><span class="adv-tag">ADVANCED</span>Why Thread Is Covered</summary>
+        <div class="adv-body">
+          <p>Eligible standards are set by a Ministry notice (MIC Notice No. 263 of 2019, last amended effective December 22, 2023). Item 4 of the notice lists "IEEE802.15.4". The notice names the standard IEEE 802.15.4, not Thread; because Thread uses IEEE 802.15.4 radio, it falls under this item. Bluetooth is listed as "Core Specification Version 2.1 or later".</p>
+          <p>Text of the notice: <a href="https://www.tele.soumu.go.jp/horei/law_honbun/71ab7244.html" target="_blank" rel="noopener">MIC Notice No. 263 of 2019 (MIC Radio Use Website, Japanese)</a></p>
+        </div>
+      </details>
+    </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
+  </section>
+
+  <!-- 04 認証の流れ -->
+  <section id="process" class="fade-in">
+    <div class="section-label">🧭 04 — PROCESS</div>
+    <h2 data-ja="認証を取るまでの流れ" data-en="The Path to Certification">認証を取るまでの流れ</h2>
+    <div class="ja-only">
+      <ol class="step-list">
+        <li>CSAに入会する</li>
+        <li>メーカーID（VID）などを用意する</li>
+        <li>使う通信方式を決め、その方式に要る認証を確かめる</li>
+        <li>認定試験所（ATL）を選ぶ</li>
+        <li>日程を決め、試作機と「何を実装したか」の申告書（PICS）を出して試験を受ける</li>
+        <li>CSAの申請ツールで申請する</li>
+        <li>CSAの審査を受ける（追加の資料を求められることもある）</li>
+        <li>認証書が出る。Matterの場合は、認証の証明（CD）とDCLへの登録も付く</li>
+      </ol>
+      <p style="font-size:13px; color:var(--text-light);"><strong>期間</strong>：決まった標準の日数は示されていません。試験所の試験期間と、審査の中身によります。申請の手引きと申告書のひな形は会員向けのページにあるため、ここでは細かい手順は書いていません。</p>
+    </div>
+    <div class="en-only" style="display:none;">
+      <ol class="step-list">
+        <li>Join CSA</li>
+        <li>Obtain a vendor ID (VID) and related items</li>
+        <li>Decide on your transport and confirm the certifications it requires</li>
+        <li>Choose an Authorized Test Laboratory (ATL)</li>
+        <li>Schedule testing and submit your prototype and a declaration of what you implemented (PICS)</li>
+        <li>Apply through CSA's application tool</li>
+        <li>Go through CSA's review (additional materials may be requested)</li>
+        <li>Receive the certificate. For Matter, this also comes with the Certification Declaration (CD) and registration in the DCL</li>
+      </ol>
+      <p style="font-size:13px; color:var(--text-light);"><strong>Timeline</strong>: no standard number of days is given; it depends on the lab's testing period and the review. The application guide and PICS templates are on member-only pages, so detailed steps are not covered here.</p>
+    </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
+  </section>
+
+  <!-- 05 会員ランク -->
+  <section id="membership" class="fade-in">
+    <div class="section-label">💳 05 — MEMBERSHIP</div>
+    <h2 data-ja="会員ランクと、製品の出し方" data-en="Membership Levels and How You Can Ship">会員ランクと、製品の出し方</h2>
+    <div class="ja-only">
+      <div class="table-wrap"><table>
+        <thead><tr><th>ランク</th><th>年会費</th><th>自社で開発した製品の認証</th><th>自社の派生製品</th><th>他社の認証済み製品を自社ブランドで出す（CTP）</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Promoter</strong></td><td>112,500ドル（＋入会金。金額は記載なし）</td><td>○（2,000ドル／製品）</td><td>1,500ドル／製品</td><td>受けられる（1,500ドル／製品）。<strong>出す側にもなれる</strong></td></tr>
+          <tr><td><strong>Participant</strong></td><td>21,500ドル</td><td>○（2,000ドル／製品）</td><td>1,500ドル／製品</td><td>受けられる（1,500ドル／製品）。<strong>出す側にもなれる</strong></td></tr>
+          <tr><td><strong>Adopter</strong></td><td>7,500ドル</td><td>○（3,000ドル／製品）</td><td>2,500ドル／製品</td><td>受けられる（2,500ドル／製品）</td></tr>
+          <tr><td><strong>Associate</strong></td><td>0ドル</td><td>記載なし（会員特典に含まれていない）</td><td>記載なし</td><td>受けられる（2,500ドル／製品＋毎年500ドル／製品）</td></tr>
+        </tbody>
+      </table></div>
+      <p style="font-size:13px; color:var(--text-light);">金額は、2026年10月時点のCSA公式サイトの掲載額です（米ドル。税の扱いは記載なし）。試験所の試験費用は含みません。<a href="https://csa-iot.org/become-member/#Membership" target="_blank" rel="noopener">詳しくはこちら（CSAの会員ページ）</a></p>
+      <h3>読み方</h3>
+      <ul class="plain-list">
+        <li><strong>自社で開発して認証を取るなら、Adopter以上</strong></li>
+        <li><strong>年会費0のAssociateは、他社の認証済み製品をブランドを変えて出す（ホワイトラベル）ための入口</strong></li>
+        <li><strong>ホワイトラベルの元になれる（他社に製品を提供する側）のは、ParticipantとPromoterだけ</strong></li>
+        <li>ホワイトラベル（CTP）で変えてよいのは、包装・筐体・画面の見た目とブランドだけ。機能は変えてはいけません。例として、筐体の色・ロゴ・起動画面が挙がっています。OEM・ODMといった契約の名前で決まるのではなく、機能を変えていないかで決まります。</li>
+      </ul>
+    </div>
+    <div class="en-only" style="display:none;">
+      <div class="table-wrap"><table>
+        <thead><tr><th>Level</th><th>Annual fee</th><th>Certifying your own product</th><th>Your own derivative products</th><th>Shipping another company's certified product under your brand (CTP)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Promoter</strong></td><td>$112,500 (+ initiation fee; amount not listed)</td><td>✓ ($2,000 / product)</td><td>$1,500 / product</td><td>Available ($1,500 / product). <strong>Can also be the source</strong></td></tr>
+          <tr><td><strong>Participant</strong></td><td>$21,500</td><td>✓ ($2,000 / product)</td><td>$1,500 / product</td><td>Available ($1,500 / product). <strong>Can also be the source</strong></td></tr>
+          <tr><td><strong>Adopter</strong></td><td>$7,500</td><td>✓ ($3,000 / product)</td><td>$2,500 / product</td><td>Available ($2,500 / product)</td></tr>
+          <tr><td><strong>Associate</strong></td><td>$0</td><td>Not listed (not among member benefits)</td><td>Not listed</td><td>Available ($2,500 / product + $500 / product per year)</td></tr>
+        </tbody>
+      </table></div>
+      <p style="font-size:13px; color:var(--text-light);">Amounts are as listed on CSA's official website as of October 2026 (USD; tax treatment not stated). Lab testing fees are not included. <a href="https://csa-iot.org/become-member/#Membership" target="_blank" rel="noopener">Details (CSA membership page)</a></p>
+      <h3>How to read it</h3>
+      <ul class="plain-list">
+        <li><strong>To develop and certify your own product: Adopter or above</strong></li>
+        <li><strong>The free Associate level is the entry point for rebranding another company's certified product (white label)</strong></li>
+        <li><strong>Only Participants and Promoters can be the source of a white-label product (providing it to others)</strong></li>
+        <li>Under white labeling (CTP), only packaging, enclosure, on-screen appearance and branding may change — not functionality. Examples given are enclosure color, logo and boot screen. What matters is whether functionality changed, not whether the contract is called OEM or ODM.</li>
+      </ul>
+    </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
+  </section>
+
+  <!-- 06 費用と試験所 -->
+  <section id="labs" class="fade-in">
+    <div class="section-label">🧾 06 — TEST LABS</div>
+    <h2 data-ja="試験の費用と、日本の試験所" data-en="Testing Costs and Labs in Japan">試験の費用と、日本の試験所</h2>
+    <div class="ja-only">
+      <div class="highlight">💡 費用は、CSAの年会費と1製品ごとの申請料、それに試験所の試験費用。<strong>試験費用は、詳しくは各試験所にお問い合わせください。</strong></div>
+      <p>CSAの認定試験所の一覧で、日本の拠点と明記されているのは次の2つです。どちらも、CSAの日本支部（Japan Interest Group）の創設メンバーです。</p>
+      <ul class="plain-list">
+        <li><strong>Allion (Japan)</strong>（アリオン）― 東京都品川区</li>
+        <li><strong>TÜV Rheinland Japan</strong>（テュフ ラインランド ジャパン）― 横浜市都筑区</li>
+      </ul>
+      <p style="font-size:13px; color:var(--text-light);">一覧で国名が日本と書かれているものだけを挙げています。海外の試験所の日本の窓口は含みません。また、一覧にはどの試験所がMatterの試験をできるかは書かれていません。→ <a href="https://csa-iot.org/certification/testing-providers/" target="_blank" rel="noopener">CSAの試験所一覧</a>／<a href="https://csa-iot.org/newsroom/connectivity-standards-alliance%E6%97%A5%E6%9C%AC%E6%94%AF%E9%83%A8%E3%82%92%E8%A8%AD%E7%AB%8B/" target="_blank" rel="noopener">日本支部の設立のお知らせ</a></p>
+    </div>
+    <div class="en-only" style="display:none;">
+      <div class="highlight">💡 Costs are the CSA annual fee, a per-product application fee, and the lab's testing fee. <strong>For testing fees, please contact each test lab.</strong></div>
+      <p>On CSA's list of authorized test labs, two are explicitly listed with locations in Japan. Both are founding members of CSA's Japan Interest Group.</p>
+      <ul class="plain-list">
+        <li><strong>Allion (Japan)</strong> — Shinagawa, Tokyo</li>
+        <li><strong>TÜV Rheinland Japan</strong> — Tsuzuki, Yokohama</li>
+      </ul>
+      <p style="font-size:13px; color:var(--text-light);">Only entries whose country is listed as Japan are included; Japanese sales offices of overseas labs are not. The list also does not say which labs can perform Matter testing. → <a href="https://csa-iot.org/certification/testing-providers/" target="_blank" rel="noopener">CSA testing providers</a> / <a href="https://csa-iot.org/newsroom/connectivity-standards-alliance%E6%97%A5%E6%9C%AC%E6%94%AF%E9%83%A8%E3%82%92%E8%A8%AD%E7%AB%8B/" target="_blank" rel="noopener">Japan Interest Group announcement (Japanese)</a></p>
+    </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
+  </section>
+
+  <!-- 07 CSAのラボ -->
+  <section id="interop" class="fade-in">
+    <div class="section-label">🔄 07 — INTEROP LAB</div>
+    <h2 data-ja="各社のバッジの試験は、CSAのラボに集まる方向" data-en="Badge Testing Is Converging on CSA's Lab">各社のバッジの試験は、CSAのラボに集まる方向</h2>
+    <div class="ja-only">
+      <p>CSAは米国オレゴン州ポートランドに、<strong>相互運用テストラボ（Interop Test Lab）</strong>を持っています。CSAの職員が、各社のハブやアプリと組み合わせて、実際に動くかを試します。仕様どおりかを見る認証試験とは別のものです。</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>バッジ</th><th>CSAのラボの結果の使い方（2026年10月時点）</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Works with Google Home</strong></td><td>段階的にCSAのラボの結果へ移行中で、最終段階ではCSAのラボの結果だけになる。2026年からはすべてのMatter統合でAllianceの相互運用試験が必要、と告知している（各段階の日付は書かれていない）</td></tr>
+          <tr><td><strong>Works with SmartThings</strong></td><td>CSAのラボに出したMatter機器は、SmartThingsの試験も自動で、無料で受けられる（2025年11月のリリースノートで告知）</td></tr>
+          <tr><td><strong>Works with Apple Home</strong></td><td>バッジの条件が「CSAのMatter認証」と「CSAの相互運用試験」</td></tr>
+          <tr><td><strong>Works with Alexa</strong></td><td>CSAのラボの追加サービスとして受けられる。CSAへの申し込みのときに、Alexaの認定も希望すると書く必要がある</td></tr>
+        </tbody>
+      </table></div>
+      <div class="highlight">💡 各社のバッジの試験がCSAのラボに集まってきているので、作る側は1か所に持ち込めばよくなりつつあります。ただし、どのバッジもそれぞれの会社への申し込みと条件があり、1回の試験で4社のバッジがまとめてもらえるわけではありません。</div>
+    </div>
+    <div class="en-only" style="display:none;">
+      <p>CSA runs an <strong>Interop Test Lab</strong> in Portland, Oregon, USA, where CSA staff test whether devices actually work together with each company's hubs and apps. This is separate from certification testing, which checks conformance to the specification.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Badge</th><th>How CSA lab results are used (as of October 2026)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Works with Google Home</strong></td><td>Moving in phases to CSA lab results; in the final phase, only CSA lab results are used. Google has announced that from 2026 all Matter integrations require the Alliance interop test (dates for each phase are not given)</td></tr>
+          <tr><td><strong>Works with SmartThings</strong></td><td>Matter devices submitted to the CSA lab automatically receive SmartThings testing at no charge (announced in November 2025 release notes)</td></tr>
+          <tr><td><strong>Works with Apple Home</strong></td><td>Badge requirements are CSA Matter certification plus CSA interop testing</td></tr>
+          <tr><td><strong>Works with Alexa</strong></td><td>Available as an add-on service of the CSA lab; you must request Alexa certification when applying to CSA</td></tr>
+        </tbody>
+      </table></div>
+      <div class="highlight">💡 With badge testing converging on CSA's lab, builders are increasingly able to bring a product to one place. Each badge still has its own application and conditions, though — one test does not hand you all four badges.</div>
+    </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
+  </section>
+
+  <!-- 08 更新・シリーズ品 -->
+  <section id="recert" class="fade-in">
+    <div class="section-label">♻️ 08 — RECERTIFICATION</div>
+    <h2 data-ja="更新やシリーズ品の認証を軽くする制度" data-en="Lighter Certification for Updates and Product Lines">更新やシリーズ品の認証を軽くする制度</h2>
+    <div class="ja-only">
+      <p>同じ製品のソフト更新や、シリーズ品をまとめて認証するための制度もあります。</p>
+      <details class="adv">
+        <summary><span class="adv-tag">ADVANCED</span>同じ製品の更新や、シリーズ品は？</summary>
+        <div class="adv-body">
+          <ul>
+            <li><strong>FastTrack Recertification</strong>：認証済みのMatter製品のソフト更新のとき、訓練を受けた会員が自社で試験し、CSAのラボに2台出して再認証する制度（2025年1月発表）。使えるのは、訓練を受けたParticipantとPromoter（CSAが案内している解説FAQより）。</li>
+            <li><strong>Portfolio Certification</strong>：元になる製品をもとに、複数の製品を1回の申請でまとめて認証する制度。MatterとZigbeeが対象。どのランクが使えるか、料金はいくらかは示されていません。</li>
+            <li>このほか、似た製品の認証（Certification by Similarity）、製品ファミリーの認証という制度もあります。</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+    <div class="en-only" style="display:none;">
+      <p>There are also schemes for software updates to the same product and for certifying a product line together.</p>
+      <details class="adv">
+        <summary><span class="adv-tag">ADVANCED</span>Updates to the Same Product, or a Product Line?</summary>
+        <div class="adv-body">
+          <ul>
+            <li><strong>FastTrack Recertification</strong>: for software updates to a certified Matter product, trained members test in-house and submit two units to CSA's lab for recertification (announced January 2025). Available to trained Participants and Promoters (per an explanatory FAQ that CSA links to).</li>
+            <li><strong>Portfolio Certification</strong>: certifies multiple products based on a reference product in a single application. Covers Matter and Zigbee. Which levels can use it and the fees are not stated.</li>
+            <li>There are also Certification by Similarity and product family certification.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+    <div style="text-align:center; margin-top:36px; padding-top:28px; border-top:1px solid var(--border);">
+      <p style="font-size:13px; color:var(--text-light); margin-bottom:16px;" data-ja="出典：CSA公式サイト（会員・認証・試験所・ニュース）、Google・Apple・Amazon・Samsungの開発者向けページ、総務省の資料と告示。金額や各社の方針は変わることがあるため、最新の情報は各公式ページで確かめてください。" data-en="Sources: CSA official website (membership, certification, test labs, news), developer pages from Google, Apple, Amazon and Samsung, and MIC materials and notices. Fees and company policies can change; please check each official page for the latest information.">出典：CSA公式サイト（会員・認証・試験所・ニュース）、Google・Apple・Amazon・Samsungの開発者向けページ、総務省の資料と告示。金額や各社の方針は変わることがあるため、最新の情報は各公式ページで確かめてください。</p>
+      <a href="matter-security.html" style="display:inline-block; background:var(--primary); color:#fff; padding:10px 24px; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600; margin:0 6px 8px;" data-ja="← セキュリティのページへ" data-en="← Security">← セキュリティのページへ</a>
+      <a href="index.html" style="display:inline-block; background:var(--gray-700); color:#fff; padding:10px 24px; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600; margin:0 6px 8px;" data-ja="辞書トップへ" data-en="Dictionary Top">辞書トップへ</a>
+    </div>
+    <a href="#toc" class="back-to-toc">↑ Contents</a>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>© Miki Oda / Life Tech Coordinator</span>
+    <span class="footer-sep">|</span>
+    <a href="about.html" data-ja="このサイトについて" data-en="About">このサイトについて</a>
+    <span class="footer-sep">|</span>
+    <a href="license.html" data-ja="ライセンス・出典" data-en="License &amp; Sources">ライセンス・出典</a>
+    <span class="footer-sep">|</span>
+    <a href="https://github.com/mikiyoko/matter-dictionary" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <span class="footer-sep">|</span>
+    <a href="about.html#changelog" data-ja="更新履歴" data-en="Changelog">更新履歴</a>
+  </div>
+</footer>
+
+<script>
+  initNav('certification');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

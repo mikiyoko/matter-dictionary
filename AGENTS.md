@@ -40,6 +40,7 @@ matter-dictionary/
 ├── matter-security.html    ← Matterのセキュリティ解説
 ├── aliro.html              ← Aliro（アクセス制御）解説
 ├── troubleshoot.html       ← トラブルシューティング
+├── certification.html      ← 製品をつくる人向けの認証の解説（日英はページ内の.ja-only/.en-onlyで書き分け）
 ├── nav.js                  ← 共通ナビゲーション
 ├── translations-*.js       ← 各ページの日英翻訳データ
 └── data/
