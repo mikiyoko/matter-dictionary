@@ -5,7 +5,6 @@ window.PAGE_TRANSLATIONS = {
   'とは？': 'What is?',
   'Matter辞書': 'Matter Dictionary',
   /* ── Hero badge & tags ── */
-  '✨ Connectivity Standards Alliance 公式仕様 v1.0': '✨ Connectivity Standards Alliance Official Spec v1.0',
   '🔑 デジタル鍵': '🔑 Digital Key',
   '🏠 ホーム・ホテル・オフィス': '🏠 Home · Hotel · Office',
   '🔒 高セキュリティ': '🔒 High Security',

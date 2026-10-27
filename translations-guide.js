@@ -3,7 +3,6 @@ window.PAGE_TRANSLATIONS = {
   /* ── Page title & hero ── */
   'Matterとは？ | Matter辞書': 'What is Matter? | Matter Dictionary',
   'とは？': 'What is Matter?',
-  '✨ Connectivity Standards Alliance 公式仕様 v1.5': '✨ Connectivity Standards Alliance Official Spec v1.5',
   'メーカーを超えてつながる——': 'Connected beyond brands ——',
   'スマートホームの「共通言語」として世界標準となった規格のすべて': 'Everything about the open standard that became the world\'s smart home common language',
   '🌐 メーカー横断の互換性': '🌐 Cross-Brand Interoperability',
